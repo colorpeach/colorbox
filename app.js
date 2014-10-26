@@ -1,8 +1,35 @@
-var express = require('express');
+var path = require('path');
+var express = require("express");
 var app = express();
+
+app.set("views",__dirname+"/client/views");
+app.set("view engine","jade");
+
+//压缩
+app.use(require('compression')({
+    threshold:512
+}));
+//报文实体解析
+app.use(require('body-parser')());
+//favicon图标
+// app.use(require('serve-favicon')(__dirname + 'client/favicon.ico'));
+//重写http方法，在客户端不支持put或者delete等方法时也能继续使用
+app.use(require("method-override")());
+//cookie解析
+app.use(require("cookie-parser")());
+// app.use(require("express-session")({
+//     secret: settings.secret,
+//     name: 'sid',
+//     cookie: { maxAge:86400000 }
+// }));
+
+//静态文件路径
+app.use(require("serve-static")(path.join(__dirname,"client")));
 
 app.get('/', function(req, res){
   res.send('hello world');
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, function(){
+    console.log('running colorbox');
+});
