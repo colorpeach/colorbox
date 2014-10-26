@@ -1,0 +1,28 @@
+{
+  "name": "colorbox",
+  "version": "0.0.0",
+  "description": "tools,projects and apps",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/colorpeach/colorbox.git"
+  },
+  "keywords": [
+    "tools",
+    "projects",
+    "and",
+    "apps"
+  ],
+  "author": "colorpeach@live.cn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colorpeach/colorbox/issues"
+  },
+  "homepage": "https://github.com/colorpeach/colorbox",
+  "dependencies": {
+    "express": "^4.10.0"
+  }
+}
