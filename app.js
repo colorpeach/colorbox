@@ -2,7 +2,7 @@ var path = require('path');
 var express = require("express");
 var app = express();
 
-app.set("views",__dirname+"/client/views");
+app.set("views",__dirname+"/client");
 app.set("view engine","jade");
 
 //压缩
@@ -17,19 +17,17 @@ app.use(require('body-parser')());
 app.use(require("method-override")());
 //cookie解析
 app.use(require("cookie-parser")());
-// app.use(require("express-session")({
-//     secret: settings.secret,
-//     name: 'sid',
-//     cookie: { maxAge:86400000 }
-// }));
+app.use(require("express-session")({
+    secret: 'colorbox',
+    name: 'sid',
+    cookie: { maxAge:86400000 }
+}));
 
 //静态文件路径
 app.use(require("serve-static")(path.join(__dirname,"client")));
 
-app.get('/', function(req, res){
-  res.send('hello world');
-});
-
 app.listen(process.env.PORT || 3000, function(){
     console.log('running colorbox');
 });
+
+require("./route/route.js")(app);

@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title #{title}
+    meta(charset='utf-8')
+    link(rel='stylesheet', href='/public/css/normalize.css')
+    link(rel='stylesheet', href='/public/css/foundation.css')
+    link(rel='stylesheet', href='/public/css/xicon.css')
+    block css
+  body
+    block content
+    script(src='/lib/angular/1.3.0/angular.js')
+    script(src='/lib/angular/1.3.0/angular-route.js')
+    script(src='/public/js/utils.js')
+    block script
