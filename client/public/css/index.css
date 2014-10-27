@@ -1,0 +1,9 @@
+.view-enter{
+  -webkit-animation-name: bounceInLeft;
+          animation-name: bounceInLeft;
+}
+
+.view-leave{
+  -webkit-animation-name: bounceInRight;
+          animation-name: bounceInRight;
+}
