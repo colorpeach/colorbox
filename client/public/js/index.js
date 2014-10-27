@@ -7,6 +7,10 @@ angular.module('index',['ngRoute', 'login'])
             controller: 'loginCtrl',
             templateUrl: 'login.html'
         })
+        .when('/register', {
+            controller: 'registerCtrl',
+            templateUrl: 'register.html'
+        })
         .otherwise({
             redirectTo: '/'
         });
