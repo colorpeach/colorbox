@@ -11,10 +11,22 @@ block content
         li
           a(href="#")
             span.xicon-th-large
-        li
-          a(view-link, href="/login") 登录
-        li
-          a(view-link, href="/register") 注册
+        if user
+          li.has-dropdown.not-click
+            a #{user.login}
+            ul.dropdown
+              li
+                a 添加应用
+              li
+                a 我的应用
+              li
+                a(href="/logout") 注销
+        if !user
+          li.has-dropdown.not-click
+            a(view-link, href="/login") 登录
+            ul.dropdown
+              li
+                a(view-link, href="/register") 注册
   div(ng-view)
 
 block script

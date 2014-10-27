@@ -1,10 +1,10 @@
-angular.module('login',['utils'])
+angular.module('login', ['ngAnimate', 'common'])
 
 .run(['$templateCache', 'utils',
     function($templateCache,   utils){
         $templateCache.put('login.html', utils.heredoc(function(){/*!
-            <form name="loginForm" action="/login" method="post" ng-submit="submit($event)">
-                <div class="row">
+            <form name="loginForm" action="/login" method="post" ng-submit="submit($event)" ng-animate="view">
+                <div class="row small-4">
                     <fieldset>
                         <legend> 登录 </legend>
                         <div ng-repeat="error in errorMsgs" class="alert-box alert">{{error}}</div>
@@ -26,7 +26,7 @@ angular.module('login',['utils'])
 
         $templateCache.put('register.html', utils.heredoc(function(){/*!
             <form name="registerForm" action="/register" method="post" ng-submit="submit($event)">
-                <div class="row">
+                <div class="row small-4">
                     <fieldset>
                         <legend> 注册 </legend>
                         <div ng-repeat="error in errorMsgs" class="alert-box alert">{{error}}</div>
@@ -75,6 +75,9 @@ angular.module('login',['utils'])
             e.preventDefault();
             loginBox.enter($scope.data)
             .success(function(data){
+                location.href = '/';
+            })
+            .error(function(data){
                 $scope.errorMsgs = data.errorMsg || [];
             });
         };
@@ -90,6 +93,9 @@ angular.module('login',['utils'])
             e.preventDefault();
             loginBox.register($scope.data)
             .success(function(data){
+                location.href = '/';
+            })
+            .error(function(data){
                 $scope.errorMsgs = data.errorMsg || [];
             });
         };

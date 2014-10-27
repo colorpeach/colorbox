@@ -9,5 +9,5 @@ module.exports = function(app){
 
     app.post('/login', login.enter);
     app.post('/register', login.register);
-    app.post('/logout', login.out);
+    app.get('/logout', login.out);
 };
