@@ -1,0 +1,16 @@
+form(name="loginForm", action="/register", method="post", ng-submit="submit($event)")
+  div.row.medium-4
+    fieldset
+      legend  注册 
+      div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+      div.large-12.columns
+        label(for="username") 用户名
+        input(id="username", type="text", name="username", ng-model="data.username")
+      div.large-12.columns
+        label(for="password") 密码
+        input(id="password", type="password", name="password", ng-model="data.password")
+      div.large-12.columns
+        label(for="confirm-password") 确认密码
+        input(id="confirm-password", type="password", name="confirm-password")
+      div.large-12.columns
+        input.button.expand(type="submit", value="注册")

@@ -1,0 +1,32 @@
+module.exports = {
+    //需要权限访问
+    authPath:[
+        "apps",
+        "user"
+    ],
+    //需要权限ajax访问
+    authAjaxPath:[
+        "get",
+        "post",
+        "put",
+        "options",
+        "head",
+        "delete"
+    ],
+    //不需要权限ajax访问
+    unauthAjaxPath:[
+        "fetch"
+    ],
+    //不需要权限访问
+    unauthPath:[
+        "",
+        "login",
+        "logout",
+        "register"
+    ],
+    //静态文件路径
+    staticPath:[
+        "public",
+        "lib"
+    ]
+};

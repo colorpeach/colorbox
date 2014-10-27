@@ -6,19 +6,22 @@ block content
       li.name
         h1
           a(href="/") colorBox
+      li.toggle-topbar.menu-icon
+        a(href="#")
+          span Menu
     section.top-bar-section
       ul.right
         li
-          a(href="#")
+          a(href="#", title="所有应用")
             span.xicon-th-large
         if user
           li.has-dropdown.not-click
             a #{user.login}
             ul.dropdown
               li
-                a 添加应用
+                a(view-link, href="/add-dialog") 添加应用
               li
-                a 我的应用
+                a(view-link, href="/my-apps") 我的应用
               li
                 a(href="/logout") 注销
         if !user
@@ -31,4 +34,12 @@ block content
 
 block script
   script(src="/public/js/login.js")
+  if user
+    script.
+      angular.module('login')
+      .value('user', {
+          login: '#{user.login}'
+      })
+  script(src="/public/js/add-app.js")
+  script(src="/public/js/my-apps.js")
   script(src="/public/js/index.js")

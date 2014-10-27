@@ -1,4 +1,4 @@
-angular.module('index',['ngRoute', 'login'])
+angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
 
 .config(['$routeProvider',
     function($routeProvider){
@@ -11,8 +11,17 @@ angular.module('index',['ngRoute', 'login'])
             controller: 'registerCtrl',
             templateUrl: 'register.html'
         })
-        .otherwise({
-            redirectTo: '/'
+        .when('/add', {
+            controller: 'addAppCtrl',
+            templateUrl: 'add-app.html'
+        })
+        .when('/add-dialog', {
+            controller: 'myAppsCtrl',
+            templateUrl: 'dialog.html'
+        })
+        .when('/my-apps', {
+            controller: 'myAppsCtrl',
+            templateUrl: 'my-apps.html'
         });
     }
 ])

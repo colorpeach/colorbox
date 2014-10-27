@@ -1,0 +1,9 @@
+div.my-apps
+  div.row
+    div.columns.medium-4
+      ul.pricing-table
+        li.title 应用列表
+          a.button.small.right(view-link, href="/add-dialog") 添加
+        li.bullet-item(ng-repeat="app in apps", ng-bind="app.name")
+    div.columns.medium-8
+  

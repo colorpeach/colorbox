@@ -1,9 +1,9 @@
-.view-enter{
-  -webkit-animation-name: bounceInLeft;
-          animation-name: bounceInLeft;
+.alert-box.ng-enter{
+  -webkit-animation-name: fadeInDown;
+          animation-name: fadeInDown;
 }
 
-.view-leave{
-  -webkit-animation-name: bounceInRight;
-          animation-name: bounceInRight;
+.alert-box.ng-leave{
+  -webkit-animation-name: fadeInDown;
+          animation-name: fadeInDown;
 }
