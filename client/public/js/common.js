@@ -80,7 +80,7 @@ angular.module('common', [])
         }
 
         return "<div>" +
-                "<div class='alert-box "+className+" animate-enter' ng-animate=\"'animate'\">"+
+                "<div class='alert-box "+className+" animated ng-enter'>"+
                     "<strong>"+(obj.title||"")+"</strong>"+obj.content+
                 "</div>" +
                 "</div>";
@@ -108,16 +108,16 @@ angular.module('common', [])
             },addSpan);
 
             showQueue.push($timeout(function(){
-                $item.addClass('animate-leave');
+                $item.children().addClass('ng-leave');
                 $timeout(function(){
                     $item.remove();
-                },600);
+                },1000);
                 showQueue.shift();
                 if(!showQueue.length){
                     boxTimeout = $timeout(function(){
                         box[0].style.display = 'block';
                         boxTimeout=null;
-                    },600);
+                    },1000);
                 }
             },removeSpan));
         }else{

@@ -7,3 +7,104 @@
   -webkit-animation-name: fadeInDown;
           animation-name: fadeInDown;
 }
+
+.sidebar{
+  padding: 32px 0;
+}
+
+.sidebar li.ng-leave{
+  -webkit-animation-name: fadeOutLeft;
+          animation-name: fadeOutLeft;
+}
+
+.sidebar li.active{
+  background-color: #eee;
+}
+
+.prompt-box{
+  position: fixed;
+  width: 400px;
+  top:30px;
+  left:0;
+  right:0;
+  z-index: 1050;
+  margin: auto;
+  text-align:center;
+}
+
+.prompt-box .alert-box{
+  padding: 5px 40px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.prompt-box .alert-box.ng-enter{
+  -webkit-animation-name: fadeInUp;
+          animation-name: fadeInUp;
+}
+
+.prompt-box .alert-box.ng-leave{
+  -webkit-animation-name: fadeOutUp;
+          animation-name: fadeOutUp;
+}
+
+html,
+body,
+.main-box,
+.add-app,
+.my-apps{
+  height: 100%;
+}
+
+.main-box{
+  margin-top: -45px;
+  padding-top: 45px;
+}
+
+.add-app,
+.my-apps{
+  position: relative;
+}
+
+.add-app-editor{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 45px;
+  right: 0;
+}
+
+.add-app-editor > div{
+  position: relative;
+}
+
+.add-app-editor textarea,
+.add-app-editor iframe{
+  height: 100%;
+  width: 100%;
+}
+
+.box-name{
+  display: block;
+  position: absolute;
+  padding: 5px;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  color: #fff;
+}
+
+.add-app-editor > div:hover .box-name{
+  display: none;
+}
+
+.add-app-toolbar{
+  position: absolute;
+  height: 45px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  color: #fff;
+  background-color: #333;
+  overflow: hidden;
+}

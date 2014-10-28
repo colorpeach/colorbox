@@ -1,4 +1,4 @@
-angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
+angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp'])
 
 .config(['$routeProvider',
     function($routeProvider){
@@ -11,7 +11,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
             controller: 'registerCtrl',
             templateUrl: 'register.html'
         })
-        .when('/add', {
+        .when('/add/:id', {
             controller: 'addAppCtrl',
             templateUrl: 'add-app.html'
         })

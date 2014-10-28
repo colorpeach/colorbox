@@ -1,9 +1,28 @@
 div.my-apps
   div.row
-    div.columns.medium-4
-      ul.pricing-table
-        li.title 应用列表
-          a.button.small.right(view-link, href="/add-dialog") 添加
-        li.bullet-item(ng-repeat="app in apps", ng-bind="app.name")
-    div.columns.medium-8
-  
+    div.sidebar
+      div.columns.medium-4
+        ul.pricing-table
+          li.bullet-item 应用列表
+            a.xicon-plus.right(view-link, href="/add-dialog", title="添加应用")
+          li.bullet-item.animated(ng-repeat="app in apps", ng-class="{active: app._id === current._id}")
+            a(ng-bind="app.name", ng-click="chooseApp(app, $index)")
+      div.columns.medium-8(ng-show="current._id")
+        div.large-12.columns
+          h3.left(ng-bind="current.name")
+          a.button.success.right(href="#/add/{{current._id}}") 开发 
+        form(action="", method="post", ng-submit="submit($event)")
+          input(type="hidden")
+          div.large-12.columns
+            label(for="specification") 应用规格
+            div(id="specification", tabindex=0)
+          div.large-12.columns
+            label(for="description") 应用描述
+            textarea(id="description", name="description", ng-model="current.description")
+          div.large-12.columns
+            input.button(type="submit", value="保存修改")
+            input.button.success(type="button", value="申请发布")
+        div.large-12.columns
+          label() 删除应用
+          input.button.alert(type="button", value="删除应用", ng-click="del()")
+      

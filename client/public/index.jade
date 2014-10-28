@@ -30,16 +30,10 @@ block content
             ul.dropdown
               li
                 a(view-link, href="/register") 注册
-  div(ng-view)
+  div.main-box(ng-view)
 
 block script
   script(src="/public/js/login.js")
-  if user
-    script.
-      angular.module('login')
-      .value('user', {
-          login: '#{user.login}'
-      })
-  script(src="/public/js/add-app.js")
   script(src="/public/js/my-apps.js")
+  script(src="/public/js/add-app.js")
   script(src="/public/js/index.js")

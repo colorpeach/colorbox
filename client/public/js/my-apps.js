@@ -26,8 +26,17 @@ angular.module('myApps', [])
 ['$http',
     function($http){
         return {
+            get: function(id){
+                return $http.get('/get/app?_id='+ id);
+            },
             add: function(data){
                 return $http.post('/post/add/app', data);
+            },
+            del: function(id){
+                return $http.post('/post/del/app', {_id: id});
+            },
+            save: function(data){
+                return $http.post('/post/save/app', data);
             },
             getApps: function(){
                 return $http.get('/get/apps');
@@ -37,9 +46,11 @@ angular.module('myApps', [])
 ])
 
 .controller('myAppsCtrl', 
-['$scope', 'appsCrud', '$location',
-    function($scope,   appsCrud,   $location){
+['$scope', 'appsCrud', '$location', 'prompt',
+    function($scope,   appsCrud,   $location,   prompt){
         $scope.apps = [];
+        $scope.current = {};
+
         appsCrud.getApps()
         .success(function(data){
             $scope.apps = data.apps;
@@ -53,6 +64,29 @@ angular.module('myApps', [])
             appsCrud.add($scope.data)
             .success(function(){
                 $location.url('my-apps');
+            });
+        };
+
+        $scope.del = function(){
+            appsCrud.del($scope.current._id)
+            .success(function(){
+                $scope.apps.splice($scope.current.$index, 1);
+                $scope.current = {};
+            });
+        };
+
+        $scope.chooseApp = function(app, $index){
+            $scope.current = app;
+            $scope.current.$index = $index;
+        };
+
+        $scope.submit = function(e){
+            e.preventDefault();
+            appsCrud.save($scope.current)
+            .success(function(){
+                prompt({
+                    content: '保存成功'
+                });
             });
         };
     }

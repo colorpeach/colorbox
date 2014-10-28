@@ -46,10 +46,16 @@ module.exports = function(app){
     app.post('/register', login.register);
     app.get('/logout', login.out);
     
+    //应用预览页面
+    app.get('/apps/preview/:id', apps.apps_preview);
     //添加应用
     app.post('/post/add/app', apps.add);
     //更新应用
     app.post('/post/save/app', apps.save);
+    //删除应用
+    app.post('/post/del/app', apps.del);
+    //获取应用
+    app.get('/get/app', apps.get);
     //获取用户的所有应用
     app.get('/get/apps', apps.getApps);
 };
