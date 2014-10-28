@@ -6,4 +6,131 @@
 .alert-box.ng-leave{
   -webkit-animation-name: fadeInDown;
           animation-name: fadeInDown;
-} 
+}
+
+.sidebar{
+  padding: 32px 0;
+}
+
+.sidebar li.ng-leave{
+  -webkit-animation-name: fadeOutLeft;
+          animation-name: fadeOutLeft;
+}
+
+.sidebar li.active{
+  background-color: #eee;
+}
+
+.prompt-box{
+  position: fixed;
+  width: 400px;
+  top:30px;
+  left:0;
+  right:0;
+  z-index: 1050;
+  margin: auto;
+  text-align:center;
+}
+
+.prompt-box .alert-box{
+  padding: 5px 40px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.prompt-box .alert-box.ng-enter{
+  -webkit-animation-name: fadeInUp;
+          animation-name: fadeInUp;
+}
+
+.prompt-box .alert-box.ng-leave{
+  -webkit-animation-name: fadeOutUp;
+          animation-name: fadeOutUp;
+}
+
+.main-box,
+.add-app,
+.my-apps{
+  height: 100%;
+}
+
+.main-box{
+  margin-top: -45px;
+  padding-top: 45px;
+}
+
+.add-app,
+.my-apps{
+  position: relative;
+}
+
+.add-app-editor{
+  position: absolute;
+  top: 45px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.add-app-editor > div{
+  position: relative;
+  overflow: hidden;
+}
+
+.add-app-editor textarea,
+.add-app-editor iframe{
+  height: 100%;
+  width: 100%;
+}
+
+.box-name{
+  display: block;
+  position: absolute;
+  padding: 5px;
+  top: 0;
+  right: 0;
+  background-color: #333;
+  color: #fff;
+  opacity: .5;
+}
+
+.add-app-toolbar{
+  position: absolute;
+  height: 45px;
+  left: 0;
+  top: 0;
+  right: 0;
+  color: #fff;
+  background-color: #333;
+  overflow: hidden;
+}
+
+.add-app-toolbar .button-group .button:hover,
+.add-app-toolbar .button-group .button:focus{
+  background-color: #008cba;
+}
+
+.add-app-toolbar .button-group .active{
+  background-color: #007095;
+}
+
+.app-list ul a{
+  display: block;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #43ac6a;
+}
+
+.app-list ul li.ng-enter{
+  -webkit-animation-name: fadeInDown;
+          animation-name: fadeInDown;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}

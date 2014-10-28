@@ -1,12 +1,25 @@
 div.add-app
-  div.jade-box.columns.large-4
-    h3 jade
-    textarea(ng-model="data.jade")
-  div.css-box.columns.large-4
-    h3 css
-    textarea(ng-model="data.css")
-  div.js-box.columns.large-4
-    h3 js
-    textarea(ng-model="data.js")
-  div.preview-box
-    iframe(src="")
+  form.sidebar(action="/post/save/app", method="post", ng-submit="submit($event)")
+    input(type="hidden", name="_id", value="{{data._id}}")
+    div.add-app-editor(resize-box)
+      div.jade-box
+        span.box-name jade
+        textarea(name="jade", ng-model="data.jade", ng-keydown='save($event)')
+      div.css-box
+        span.box-name css
+        textarea(name="css", ng-model="data.css", ng-keydown='save($event)')
+      div.js-box
+        span.box-name js
+        textarea(name="js", ng-model="data.js", ng-keydown='save($event)')
+      div.preview-box
+        span.box-name preview
+        iframe(ng-src="{{previewUrl}}", border=0, frameBorder=0)
+    div.add-app-toolbar
+      div.small-2.columns(ng-bind="data.name")
+      div.small-2.columns
+        select.left(ng-options="key as ('布局' + key) for (key, layout) in layouts", ng-model="layoutIndex")
+      div.small-6.columns
+        div.button-group.round
+          input.button.small(type="button", ng-repeat="(name, box) in boxs", value="{{name}}", ng-click="toggle(box)", ng-class="{active: box.show}")
+      div.small-2.columns
+        input.button.small(type="submit", value="保存")

@@ -1,0 +1,11 @@
+div.app-list
+  form(action="", method="get", ng-submit="submit($event)")
+    div.row.collapse.sidebar
+      div.small-8.columns
+        input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
+      div.small-4.columns
+        input.button.postfix.small(type="submit", value="搜索")
+    div.row
+      ul.clearing-thumbs
+        li(ng-repeat="app in apps")
+          a.th(ng-bind="app.name", href="/apps/preview/{{app._id}}", target="_blank")

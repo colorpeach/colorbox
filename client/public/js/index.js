@@ -1,8 +1,12 @@
-angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
+angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'appList'])
 
 .config(['$routeProvider',
     function($routeProvider){
         $routeProvider
+        .when('/app-list', {
+            controller: 'appListCtrl',
+            templateUrl: 'app-list.html'
+        })
         .when('/login', {
             controller: 'loginCtrl',
             templateUrl: 'login.html'
@@ -11,7 +15,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
             controller: 'registerCtrl',
             templateUrl: 'register.html'
         })
-        .when('/add', {
+        .when('/add/:id', {
             controller: 'addAppCtrl',
             templateUrl: 'add-app.html'
         })
@@ -22,6 +26,9 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'addApp', 'myApps'])
         .when('/my-apps', {
             controller: 'myAppsCtrl',
             templateUrl: 'my-apps.html'
+        })
+        .otherwise({
+            redirectTo: '/'
         });
     }
 ])

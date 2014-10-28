@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-  nav.top-bar(data-topbar, role="navigation")
+  nav.top-bar
     ul.title-area
       li.name
         h1
@@ -12,7 +12,7 @@ block content
     section.top-bar-section
       ul.right
         li
-          a(href="#", title="所有应用")
+          a(view-link, href="/app-list", title="所有应用")
             span.xicon-th-large
         if user
           li.has-dropdown.not-click
@@ -30,16 +30,11 @@ block content
             ul.dropdown
               li
                 a(view-link, href="/register") 注册
-  div(ng-view)
+  div.main-box(ng-view)
 
 block script
   script(src="/public/js/login.js")
-  if user
-    script.
-      angular.module('login')
-      .value('user', {
-          login: '#{user.login}'
-      })
-  script(src="/public/js/add-app.js")
   script(src="/public/js/my-apps.js")
+  script(src="/public/js/add-app.js")
+  script(src="/public/js/app-list.js")
   script(src="/public/js/index.js")

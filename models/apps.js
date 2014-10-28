@@ -1,10 +1,11 @@
 var dbClient = require('../database');
 var tidy = dbClient.column({
-    name: 'name',
-    jade: 'jade',
-    css: 'css',
-    js: 'js',
-    user: 'user'
+    name:        'name',
+    description: 'description',
+    jade:        'jade',
+    css:         'css',
+    js:          'js',
+    user:        'user'
 });
 var apps = {};
 
@@ -38,6 +39,18 @@ apps.query = function(data,fn,filter){
     dbClient.connect([
         function(db,callback){
             db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
+                callback(err,data);
+            });
+        }
+    ],fn);
+}
+
+//删除app
+apps.del = function(data,fn){
+    var d = tidy(data);
+    dbClient.connect([
+        function(db,callback){
+            db.collection('apps').remove(d,function(err,data){
                 callback(err,data);
             });
         }
