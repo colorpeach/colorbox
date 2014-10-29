@@ -9,7 +9,8 @@ div.my-apps
             a(ng-bind="app.name", ng-click="chooseApp(app, $index)")
       div.columns.medium-8(ng-show="current._id")
         div.large-12.columns
-          h3.left(ng-bind="current.name")
+          h3.left
+            a(href="/apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
           a.button.success.right.small(href="#/add/{{current._id}}") 开发 
         form(action="", method="post", ng-submit="submit($event)")
           input(type="hidden")

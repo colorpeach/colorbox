@@ -75,20 +75,22 @@
 .add-app-editor > div{
   position: relative;
   overflow: hidden;
+  padding: 5px;
 }
 
 .add-app-editor textarea,
 .add-app-editor iframe{
   height: 100%;
   width: 100%;
+  border: 1px solid #ccc;
 }
 
 .box-name{
   display: block;
   position: absolute;
   padding: 5px;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
   background-color: #333;
   color: #fff;
   opacity: .5;
@@ -133,4 +135,34 @@
           animation-duration: 1s;
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
+}
+
+.resize-bar{
+  position: absolute!important;
+  background-color: #aaa;
+  display: none;
+}
+
+.resize-bar.dir-h{
+  cursor: s-resize;
+  display: block;
+}
+
+.resize-bar.dir-v{
+  cursor: w-resize;
+  display: block;
+}
+
+.resize-mark{
+  background-color: #ccc;
+  position: absolute!important;
+  padding: 0!important;
+}
+
+.resize-overlay{
+  position: absolute!important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
