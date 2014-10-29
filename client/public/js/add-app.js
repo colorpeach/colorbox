@@ -46,27 +46,31 @@ angular.module('addApp', ['myApps'])
                 preview: {show: true, index: 3}
             };
         var resizeBarTpl = utils.heredoc(function(){/*!
-                <div resize-bar class="resize-bar"></div><div resize-bar class="resize-bar"></div><div resize-bar class="resize-bar"></div>
+                <div resize-bar class="resize-bar"></div>
             */});
                     
-        //计算实际显示的行或列的个数
-        function calcLength(list, isOut){
+        //计算实际显示的行或列尺寸总和
+        function getShowRate(list, dir, isGroup){
             var l = 0;
 
-            if(isOut){
+            if(isGroup){
+                var key = dir === 'h' ? 'height' : 'width';
                 list.forEach(function(n, i){
-                    l += calcLength(n) ? 1 : 0;
+                    var box = boxs[n[0]];
+                    l += parseFloat(box.show && box.real && box.real[key]) || 0
                 });
             }else{
+                var key = dir === 'h' ? 'width' : 'height';
                 list.forEach(function(n, i){
-                    if(boxs[n].show) l++;
+                    var box = boxs[n];
+                    l += parseFloat(box.show && box.real && box.real[key]) || 0
                 });
             }
 
-            return l;
+            return (l || 100)/100;
         }
         //根据布局方向返回css
-        function setCss(dir, valList){
+        function getCss(dir, valList){
             var list = dir === 'h' ? ['width', 'height', 'left', 'top'] : ['height', 'width', 'top', 'left'];
             var css = {};
 
@@ -77,19 +81,38 @@ angular.module('addApp', ['myApps'])
             return css;
         }
         
+        function setRealSize(scope){
+            var layout = scope.layouts[scope.layoutIndex];
+            var list = layout.list;
+            var main = 100/list.length;
+            
+            list.forEach(function(group){
+                var support = 100/group.length;
+                group.forEach(function(item){
+                    scope.boxs[item].real = layout.dir === 'h' ? {width: support, height: main} : {width: main, height: support};
+//                     scope.boxs[item].mainRate = 1;
+//                     scope.boxs[item].supportRate = 1;
+                });
+            });
+        }
+        
         return {
             restrict: 'A',
             compile: function(){
                 return function(scope, element, attrs){
                     var $boxs = element.children();
-                    var $resizeBars = angular.element(resizeBarTpl);
+                    var boxCount = $boxs.length;
+                    var $resizeBars = angular.element(Math.pow(2, boxCount-2).toString(2).replace(/\d/g, resizeBarTpl));
                     var resizeMap = {};
 
                     scope.layoutIndex = 0;
                     scope.layouts = layouts;
                     scope.boxs = boxs;
 
-                    scope.$watch('layoutIndex', updateView);
+                    scope.$watch('layoutIndex', function(i){
+                        setRealSize(scope);
+                        updateView(i);
+                    });
                     scope.toggle = function(box){
                         box.show = !box.show;
                         updateView(scope.layoutIndex);
@@ -104,48 +127,64 @@ angular.module('addApp', ['myApps'])
                         var resizeBarIndex = 0;
                         var groupIndex = 0;
                         var lastGroup;
-                        var mainLength = calcLength(layout.list, true);
+                        var mainRate = getShowRate(layout.list, layout.dir, true);
+                        var mainOffset = 0;
+                        var main = layout.dir === 'h' ? 'height' : 'width';
+                        var support = layout.dir === 'v' ? 'height' : 'width';
 
                         $resizeBars.removeClass('dir-h dir-v');
 
                         layout.list.forEach(function(n){
-                            var itemIndex = 0;
                             var lastItem;
-                            var supportLength = calcLength(n);
+                            var supportRate = getShowRate(n, layout.dir);
+                            var supportOffset = 0;
+                            var realMain = 0;
                             
                             n.forEach(function(m){
                                 var boxCss = {position: 'absolute', display: boxs[m].show ? 'block' : 'none'};
-                                var css = setCss(layout.dir, [100/supportLength + '%', 100/mainLength + '%', 100/supportLength * itemIndex + '%', 100/mainLength * groupIndex + '%']);
-
+                                var real = boxs[m].real;
+                                var css = getCss(layout.dir, [real[support]/supportRate + '%', real[main]/mainRate + '%', supportOffset/supportRate + '%', mainOffset/mainRate + '%']);
+                                
+                                boxs[m].resizeBarIndex = null;
+                                //记录boxs的位置
+                                angular.extend(boxs[m], css);
                                 $boxs.eq(boxs[m].index).css(angular.extend({}, css, boxCss));
-                                if(itemIndex){
+                                if(supportOffset){
                                     //当前group有item显示
                                     $resizeBars.eq(resizeBarIndex)
                                         .css(angular.extend({}, css, layout.dir === 'h' ? resizeBarVCss : resizeBarHCss))
                                         .addClass(layout.dir === 'h' ? 'dir-v' : 'dir-h')
                                         //记录调整尺寸的目标
                                         .data('resizeTarget', {last: lastItem, next: m});
+                                    //扩展boxs和resizebar的关系
+                                    boxs[m].resizeBarIndex = resizeBarIndex + boxCount;
+//                                     boxs[m].mainRate = mainRate;
+//                                     boxs[m].supportRate = supportRate;
+                                
                                 }
                                 
                                 if(boxs[m].show){
                                     lastItem = m;
-                                    itemIndex++ && resizeBarIndex++;
+                                    supportOffset && resizeBarIndex++;
+                                    supportOffset += real[support];
+                                    realMain = real[main];
                                 }
                             });
 
-                            if(groupIndex){
+                            if(mainOffset){
                                 //当前group至少有一个item显示
                                 $resizeBars.eq(resizeBarIndex)
-                                    .css(setCss(layout.dir, ['100%', '10px', 0, 100 * groupIndex/mainLength + '%']))
+                                    .css(getCss(layout.dir, ['100%', '10px', 0, mainOffset/mainRate + '%']))
                                     .css(layout.dir === 'h' ? {marginTop: '-5px'} : {marginLeft: '-5px'})
                                     .addClass(layout.dir === 'h' ? 'dir-h' : 'dir-v')
                                     //记录调整尺寸的目标
                                     .data('resizeTarget', {last: lastGroup, next: n});
                             }
 
-                            if(itemIndex){
+                            if(supportOffset){
                                 lastGroup = n;
-                                groupIndex++ && resizeBarIndex++;
+                                mainOffset && resizeBarIndex++;
+                                mainOffset += realMain;
                             }
                         });
                     }
@@ -165,6 +204,72 @@ angular.module('addApp', ['myApps'])
                 <div class="resize-overlay"></div>
             */});
         
+        //Set items resize left, width, top, height
+        function setItemResize(dir, offset, resizeTarget, $boxs, boxs, element){
+            var size, position, temp = {};
+            var $last = $boxs.eq(boxs[resizeTarget.last].index);
+            var $next = $boxs.eq(boxs[resizeTarget.next].index);
+            var last = boxs[resizeTarget.last];
+            var next = boxs[resizeTarget.next];
+
+            if(dir === 'x'){
+                size = 'width';
+                position = 'left';
+            }else{
+                size = 'height';
+                position = 'top';
+            }
+
+            last[size] = offset - parseFloat(last[position]) + '%';
+//             last.real[size] = parseFloat(last[size]) * last.supportRate;
+            next[size] = parseFloat(next[position]) + parseFloat(next[size]) - offset + '%';
+//             next.real[size] = parseFloat(next[size]) * next.supportRate;
+            temp[size] = last[size];
+            $last.css(temp);
+            temp = {};
+            next[position] = temp[position] = offset + '%';
+            element.css(temp);
+            temp[size] = next[size];
+            $next.css(temp);
+        }
+        //Set items in group resize left, width, top, height
+        function setGroupResize(dir, offset, resizeTarget, $boxs, boxs, element){
+            var size, position, temp = {};
+            var $resizeBars = $boxs;
+
+            if(dir === 'x'){
+                size = 'width';
+                position = 'left';
+            }else{
+                size = 'height';
+                position = 'top';
+            }
+
+            resizeTarget.last.forEach(function(n){
+                var $item = $boxs.eq(boxs[n].index);
+                var item = boxs[n];
+                item[size] = offset - parseFloat(item[position]) + '%';
+                temp = {};
+                temp[size] = item[size];
+                $item.css(temp);
+                $resizeBars.eq(item.resizeBarIndex).css(temp);
+            });
+            resizeTarget.next.forEach(function(n){
+                var $item = $boxs.eq(boxs[n].index);
+                var item = boxs[n];
+                item[size] = parseFloat(item[position]) + parseFloat(item[size]) - offset + '%';
+                temp = {};
+                temp[position] = offset + '%';
+                temp[size] = item[size];
+                $item.css(temp);
+                $resizeBars.eq(item.resizeBarIndex).css(temp);
+                item[position] = temp[position];
+            });
+
+            temp = {};
+            temp[position] = offset + '%';
+            element.css(temp);
+        }
         return {
             restrict: 'A',
             compile: function(){
@@ -204,7 +309,8 @@ angular.module('addApp', ['myApps'])
                             var point = {
                                 x: e.clientX - pRect.left,
                                 y: e.clientY - pRect.top
-                            }
+                            };
+//                             var resizeTarget = element.data('resizeTarget');
 
                             $resizeMark.css(dir === 'x' ? {left: point.x + 'px'} : {top: point.y + 'px'});
                         });
@@ -224,25 +330,15 @@ angular.module('addApp', ['myApps'])
                     function resize(element, dir, pRect, point){
                         var resizeTarget = element.data('resizeTarget');
                         var $boxs = element.parent().children();
+                        var left = point.x * 100/pRect.width;
+                        var top = point.y * 100/pRect.height;
 
                         if(typeof resizeTarget.last === 'string'){
                             //resizeBar的目标是item
-                            if(dir === 'x'){
-                                var left = point.x * 100/pRect.width + '%';
-                                var lastRect = $boxs.eq(scope.boxs[resizeTarget.last].index)[0].getBoundingClientRect();
-                                var nextRect = $boxs.eq(scope.boxs[resizeTarget.next].index)[0].getBoundingClientRect();
-
-                                $boxs.eq(scope.boxs[resizeTarget.last].index).css({width: (point.x - lastRect.left) * 100/pRect.width + '%'});
-                                $boxs.eq(scope.boxs[resizeTarget.next].index).css({left: left, width: (nextRect.left - point.x + nextRect.width) * 100/pRect.width + '%'});
-                                element.css({left: left});
-                            }else{
-                                $boxs.eq(scope.boxs[resizeTarget.last].index).css();
-                                $boxs.eq(scope.boxs[resizeTarget.next].index).css();
-                            }
+                            setItemResize(dir, dir === 'x' ? left : top, resizeTarget, $boxs, scope.boxs, element);
                         }else{
-                            resizeTarget.last.forEach(function(n){
-                                $boxs.eq(scope.boxs[n].index).css();
-                            });
+                            //resizeBar的目标是group
+                            setGroupResize(dir, dir === 'x' ? left : top, resizeTarget, $boxs, scope.boxs, element);
                         }
                     }
                 };
