@@ -111,24 +111,21 @@
   top: 5px;
   right: 5px;
   color: #fff;
-  background-color: #666;
-  opactiy: .8;
+  background-color: #ccc;
   overflow: hidden;
 }
 
-.add-app-toolbar .button-group .button:hover,
-.add-app-toolbar .button-group .button:focus{
-  background-color: #008cba;
-  opactiy: .5;
+.add-app-toolbar .button-group .button{
+  background-color: #008cba!important;
 }
 
 .add-app-toolbar .button-group .active{
-  background-color: #007095;
+  background-color: #007095!important;
 }
 
 .add-app-toolbar select,
 .add-app-toolbar input {
-  padding      : 0;
+  padding      : 0 20px 0 0;
   margin       : 0;
   height       : 30px;
   line-height  : 12px;

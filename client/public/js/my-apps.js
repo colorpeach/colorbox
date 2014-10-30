@@ -68,6 +68,13 @@ angular.module('myApps', [])
         };
 
         $scope.del = function(){
+            if(window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称') !== $scope.current.name){
+                prompt({
+                    content: '无法删除，应用名称填写错误',
+                    type: 'warning'
+                });
+                return;
+            }
             appsCrud.del($scope.current._id)
             .success(function(){
                 $scope.apps.splice($scope.current.$index, 1);
