@@ -17,7 +17,7 @@ div.add-app
     div.add-app-toolbar
       div.small-2.columns(ng-bind="data.name")
       div.small-2.columns
-        select.left(ng-options="key as ('布局' + (key+1)) for (key, layout) in layouts", ng-model="layoutIndex")
+        select.left(ng-options="key as ('布局' + key) for (key, layout) in layouts", ng-model="layoutIndex")
       div.small-6.columns
         div.button-group.round
           input.button.small(type="button", ng-repeat="(name, box) in boxs", value="{{name}}", ng-click="toggle(box)", ng-class="{active: box.show}")

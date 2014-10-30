@@ -34,10 +34,10 @@ angular.module('addApp', ['myApps'])
         var resizeBarHCss = {marginTop: '-5px', height: '10px'};
         var resizeBarVCss = {marginLeft: '-5px', width: '10px'};
         var layouts = {
-                0: {dir: 'h', list: [['jade', 'css', 'js'], ['preview']]},
-                1: {dir: 'v', list: [['jade', 'js'], ['css', 'preview']]},
-                2: {dir: 'v', list: [['jade', 'css', 'js'], ['preview']]},
-                3: {dir: 'h', list: [['jade', 'css', 'js', 'preview']]}
+                1: {dir: 'h', list: [['jade', 'css', 'js'], ['preview']]},
+                2: {dir: 'v', list: [['jade', 'js'], ['css', 'preview']]},
+                3: {dir: 'v', list: [['jade', 'css', 'js'], ['preview']]},
+                4: {dir: 'h', list: [['jade', 'css', 'js', 'preview']]}
             };
         var boxs = {
                 jade: {show: true, index: 0},
@@ -57,7 +57,8 @@ angular.module('addApp', ['myApps'])
                 var key = dir === 'h' ? 'height' : 'width';
                 list.forEach(function(n, i){
                     var box = boxs[n[0]];
-                    l += parseFloat(box.show && box.real && box.real[key]) || 0
+                    var show = n.some(function(x){ return boxs[x].show;});
+                    l += parseFloat(show && box.real && box.real[key]) || 0
                 });
             }else{
                 var key = dir === 'h' ? 'width' : 'height';
@@ -90,8 +91,8 @@ angular.module('addApp', ['myApps'])
                 var support = 100/group.length;
                 group.forEach(function(item){
                     scope.boxs[item].real = layout.dir === 'h' ? {width: support, height: main} : {width: main, height: support};
-//                     scope.boxs[item].mainRate = 1;
-//                     scope.boxs[item].supportRate = 1;
+                    scope.boxs[item].mainRate = 1;
+                    scope.boxs[item].supportRate = 1;
                 });
             });
         }
@@ -105,7 +106,7 @@ angular.module('addApp', ['myApps'])
                     var $resizeBars = angular.element(Math.pow(2, boxCount-2).toString(2).replace(/\d/g, resizeBarTpl));
                     var resizeMap = {};
 
-                    scope.layoutIndex = 0;
+                    scope.layoutIndex = 1;
                     scope.layouts = layouts;
                     scope.boxs = boxs;
 
@@ -123,7 +124,7 @@ angular.module('addApp', ['myApps'])
                     
                     //根据layout和boxs更新布局
                     function updateView(layoutIndex){
-                        var layout = scope.layouts[layoutIndex || 0];
+                        var layout = scope.layouts[layoutIndex || 1];
                         var resizeBarIndex = 0;
                         var groupIndex = 0;
                         var lastGroup;
@@ -149,7 +150,7 @@ angular.module('addApp', ['myApps'])
                                 //记录boxs的位置
                                 angular.extend(boxs[m], css);
                                 $boxs.eq(boxs[m].index).css(angular.extend({}, css, boxCss));
-                                if(supportOffset){
+                                if(supportOffset && boxs[m].show){
                                     //当前group有item显示
                                     $resizeBars.eq(resizeBarIndex)
                                         .css(angular.extend({}, css, layout.dir === 'h' ? resizeBarVCss : resizeBarHCss))
@@ -158,8 +159,8 @@ angular.module('addApp', ['myApps'])
                                         .data('resizeTarget', {last: lastItem, next: m});
                                     //扩展boxs和resizebar的关系
                                     boxs[m].resizeBarIndex = resizeBarIndex + boxCount;
-//                                     boxs[m].mainRate = mainRate;
-//                                     boxs[m].supportRate = supportRate;
+                                    boxs[m].mainRate = mainRate;
+                                    boxs[m].supportRate = supportRate;
                                 
                                 }
                                 
@@ -171,7 +172,7 @@ angular.module('addApp', ['myApps'])
                                 }
                             });
 
-                            if(mainOffset){
+                            if(supportOffset && mainOffset){
                                 //当前group至少有一个item显示
                                 $resizeBars.eq(resizeBarIndex)
                                     .css(getCss(layout.dir, ['100%', '10px', 0, mainOffset/mainRate + '%']))
@@ -221,9 +222,9 @@ angular.module('addApp', ['myApps'])
             }
 
             last[size] = offset - parseFloat(last[position]) + '%';
-//             last.real[size] = parseFloat(last[size]) * last.supportRate;
+            last.real[size] = parseFloat(last[size]) * last.supportRate;
             next[size] = parseFloat(next[position]) + parseFloat(next[size]) - offset + '%';
-//             next.real[size] = parseFloat(next[size]) * next.supportRate;
+            next.real[size] = parseFloat(next[size]) * next.supportRate;
             temp[size] = last[size];
             $last.css(temp);
             temp = {};
@@ -249,6 +250,7 @@ angular.module('addApp', ['myApps'])
                 var $item = $boxs.eq(boxs[n].index);
                 var item = boxs[n];
                 item[size] = offset - parseFloat(item[position]) + '%';
+                item.real[size] = parseFloat(item[size]) * item.mainRate;
                 temp = {};
                 temp[size] = item[size];
                 $item.css(temp);
@@ -258,6 +260,7 @@ angular.module('addApp', ['myApps'])
                 var $item = $boxs.eq(boxs[n].index);
                 var item = boxs[n];
                 item[size] = parseFloat(item[position]) + parseFloat(item[size]) - offset + '%';
+                item.real[size] = parseFloat(item[size]) * item.mainRate;
                 temp = {};
                 temp[position] = offset + '%';
                 temp[size] = item[size];
