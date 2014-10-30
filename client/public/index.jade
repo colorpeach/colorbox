@@ -1,4 +1,6 @@
 extends ../layout
+block css
+  link(rel='stylesheet', href="/lib/codemirror/4.7/lib/codemirror.css")
 
 block content
   nav.top-bar
@@ -33,6 +35,10 @@ block content
   div.main-box(ng-view)
 
 block script
+  script(src="/lib/codemirror/4.7/lib/codemirror.js")
+  script(src="/lib/codemirror/4.7/mode/javascript/javascript.js")
+  script(src="/lib/codemirror/4.7/mode/jade/jade.js")
+  script(src="/lib/codemirror/4.7/mode/css/css.js")
   script(src="/public/js/login.js")
   script(src="/public/js/my-apps.js")
   script(src="/public/js/add-app.js")

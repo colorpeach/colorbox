@@ -66,7 +66,7 @@
 
 .add-app-editor{
   position: absolute;
-  top: 45px;
+  top: 35px;
   left: 0;
   bottom: 0;
   right: 0;
@@ -76,44 +76,74 @@
   position: relative;
   overflow: hidden;
   padding: 5px;
+  transition: 0.3s all;
 }
 
 .add-app-editor textarea,
 .add-app-editor iframe{
   height: 100%;
   width: 100%;
+}
+
+.add-app-box{
+  position: absolute;
+  top: 35px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
   border: 1px solid #ccc;
 }
 
 .box-name{
   display: block;
   position: absolute;
-  padding: 5px;
+  padding: 0 5px;
   top: 5px;
   right: 5px;
-  background-color: #333;
-  color: #fff;
-  opacity: .5;
+  color: #333;
+  z-index: 10;
 }
 
 .add-app-toolbar{
   position: absolute;
-  height: 45px;
-  left: 0;
-  top: 0;
-  right: 0;
+  height: 30px;
+  left: 5px;
+  top: 5px;
+  right: 5px;
   color: #fff;
-  background-color: #333;
+  background-color: #666;
+  opactiy: .8;
   overflow: hidden;
 }
 
 .add-app-toolbar .button-group .button:hover,
 .add-app-toolbar .button-group .button:focus{
   background-color: #008cba;
+  opactiy: .5;
 }
 
 .add-app-toolbar .button-group .active{
   background-color: #007095;
+}
+
+.add-app-toolbar select,
+.add-app-toolbar input {
+  padding      : 0;
+  margin       : 0;
+  height       : 30px;
+  line-height  : 12px;
+  font-size    : 12px;
+  width        : auto;
+}
+
+.add-app-toolbar .columns{
+  padding-right: 0;
+}
+
+.add-app-toolbar .button-group{
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
 }
 
 .app-list ul a{
@@ -156,6 +186,8 @@
   background-color: #ccc;
   position: absolute!important;
   padding: 0!important;
+  transition: none!important;
+  z-index: 10;
 }
 
 .resize-overlay{

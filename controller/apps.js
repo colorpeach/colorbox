@@ -5,13 +5,17 @@ var Apps = {};
 
 Apps.apps_preview = function(req, res){
     apps.query({_id: req.params.id}, function(data){
-        var appData = data[0];
-        var html = jade.renderFile('client/template/app-preview.jade', appData);
-        var body = appData.jade ? jade.render(appData.jade) : '';
+        try{
+            var appData = data[0];
+            var html = jade.renderFile('client/template/app-preview.jade', appData);
+            var body = appData.jade ? jade.render(appData.jade) : '';
 
-        html = html.replace('<style>', '<style>' + (appData.css || ''))
-                    .replace('<body>', '<body>' + body)
-                    .replace('<script>', '<script>' + (appData.js || ''));
+            html = html.replace('<style>', '<style>' + (appData.css || ''))
+                        .replace('<body>', '<body>' + body)
+                        .replace('<script>', '<script>' + (appData.js || ''));
+        }catch(e){
+            var html = 'error: \n' + e.message;
+        }
         res.end(html, 'utf-8');
     });
 };

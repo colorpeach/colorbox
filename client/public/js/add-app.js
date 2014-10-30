@@ -11,19 +11,24 @@ angular.module('addApp', ['myApps'])
         });
 
         $scope.submit = function(e){
-            e.preventDefault();
+            e && e.preventDefault();
             appsCrud.save($scope.data)
             .success(function(){
                 $window.frames[0].location.reload();
             });
         };
 
-        $scope.save = function(e){
-            if(e.ctrlKey && e.keyCode === 83){
-                e.preventDefault();
-                //ctrl + s
-                $scope.submit(e);
-            }
+        $scope.jade = {
+            mode: 'jade',
+            save: $scope.submit
+        };
+        $scope.css = {
+            mode: 'css',
+            save: $scope.submit
+        };
+        $scope.javascript = {
+            mode: 'javascript',
+            save: $scope.submit
         };
     }
 ])
@@ -103,7 +108,7 @@ angular.module('addApp', ['myApps'])
                 return function(scope, element, attrs){
                     var $boxs = element.children();
                     var boxCount = $boxs.length;
-                    var $resizeBars = angular.element(Math.pow(2, boxCount-2).toString(2).replace(/\d/g, resizeBarTpl));
+                    var $resizeBars = angular.element(Array(boxCount).join(resizeBarTpl));
                     var resizeMap = {};
 
                     scope.layoutIndex = 1;
@@ -345,6 +350,54 @@ angular.module('addApp', ['myApps'])
                         }
                     }
                 };
+            }
+        };
+    }
+])
+
+.directive('codeEditor', 
+[
+    function(){
+        return {
+            restrict: 'A',
+            compile: function(){
+                return function(scope, element, attrs){
+                    if(CodeMirror){
+                        var userSave = false;
+                        var config = scope[attrs.codeEditor];
+                        var cm = CodeMirror.fromTextArea(element[0], {
+                            mode: config.mode,
+                            lineNumbers: false,
+                            value: element[0],
+                            extraKeys: {
+                                'Ctrl-S': function(cm){
+                                    cm.save();
+                                }
+                            }
+                        });
+
+                        cm.setSize('100%', '100%');
+
+                        scope.$watch(attrs.ngModel, function(newValue, oldValue){
+                            if(!userSave){
+                                newValue && newValue !== oldValue && cm.doc.setValue(newValue);
+                            }else{
+                                userSave = false;
+                            }
+                        });
+
+                        cm.on('keyHandled', function(cm, name, e){
+                            var keys = attrs.ngModel.split('.');
+                            if(name === 'Ctrl-S'){
+                                e.preventDefault();
+                                userSave = true;
+                                //TODO
+                                scope[keys[0]][keys[1]] = cm.doc.getValue();
+                                config.save(e);
+                            }
+                        });
+                    }
+                }
             }
         };
     }
