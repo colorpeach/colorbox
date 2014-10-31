@@ -68,8 +68,10 @@ angular.module('myApps', [])
         };
 
         $scope.del = function(){
-            if(window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称') !== $scope.current.name){
-                prompt({
+            var sure = window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称');
+            
+            if(sure !== $scope.current.name){
+                sure !== null && prompt({
                     content: '无法删除，应用名称填写错误',
                     type: 'warning'
                 });

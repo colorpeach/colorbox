@@ -1,3 +1,48 @@
+.top-bar{
+  z-index: 1000;
+}
+
+.desktop-box,
+.desktop-added-list{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.desktop-added-list{
+  top: 55px;
+  padding: 10px;
+}
+
+.desktop-all-list{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #333;
+}
+
+/* .desktop-added-list li{
+  float: left;
+  height: 120px;
+  width: 120px;
+  padding: 10px;
+} */
+
+.desktop-add-btn{
+  font-size: 100px;
+  border: 1px solid;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.desktop-add-btn:hover{
+  color: #ddd;
+}
+
 .alert-box.ng-enter{
   -webkit-animation-name: fadeInDown;
           animation-name: fadeInDown;
@@ -9,7 +54,7 @@
 }
 
 .sidebar{
-  padding: 32px 0;
+  padding: 20px 0 0;
 }
 
 .sidebar li.ng-leave{
@@ -143,11 +188,21 @@
   background-color: #fff;
 }
 
-.app-list ul a{
+.app-list{
+  padding: 0 20px 20px;
+}
+
+.app-list ul,
+.desktop-added-list{
+  min-height: 100px;
+}
+
+.app-list ul a,
+.desktop-added-list a{
   display: block;
   height: 100px;
   width: 100px;
-  line-height: 100px;
+  line-height: 90px;
   text-align: center;
   color: #fff;
   font-size: 20px;
@@ -193,4 +248,14 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.drag-placeholder{
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  background-color:#47a447 !important;
+  opacity:.5 !important;
+  border-width:0 !important;
+  z-index: 1000;
 }

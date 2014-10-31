@@ -1,0 +1,5 @@
+div.desktop-box(ng-controller="desktopCtrl")
+  ul.desktop-added-list.clearing-thumbs(drag-contain=true)
+    li.desktop-app(ng-click="switchStatus('add')")
+      span.xicon-plus.desktop-add-btn
+  div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")

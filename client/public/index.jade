@@ -7,7 +7,7 @@ block content
     ul.title-area
       li.name
         h1
-          a(href="/") colorBox
+          a(view-link, href="/") colorBox
       li.toggle-topbar.menu-icon
         a(href="#")
           span Menu
@@ -21,7 +21,7 @@ block content
             a #{user.login}
             ul.dropdown
               li
-                a(view-link, href="/add-dialog") 添加应用
+                a(view-link, href="/add-dialog") 新增应用
               li
                 a(view-link, href="/my-apps") 我的应用
               li
