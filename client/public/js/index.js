@@ -109,7 +109,9 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
             restrict: 'A',
             compile: function(){
                 return function(scope, element, attrs){
-                    element.find('a').bind('mousedown', function(e){
+                    var timer;
+                    
+                    element.find('a').bind('click', function(e){
                         if(!scope.allowDrag) return;
                         e.preventDefault();
                     });
@@ -117,15 +119,20 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                     element.bind('mousedown', function(e){
                         if(!scope.allowDrag) return;
                         e.preventDefault();
-                        var timer;
 
                         if(timer){
                             $timeout.cancel(timer);
                         }
 
-                        $timeout(function(){
+                        timer = $timeout(function(){
                             startDrag(e);
                         }, 300);
+                    });
+                    
+                    element.bind('mouseup', function(){
+                        if(timer){
+                            $timeout.cancel(timer);
+                        }
                     });
 
                     function startDrag(e){
@@ -133,6 +140,8 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         var $placeholder = dragPlaceholder(element, $moveContain);
                         var rect = element[0].getBoundingClientRect();
                         var relative = {};
+                        
+                        console.log(element.scope());
 
                         relative.x = e.clientX - rect.left;
                         relative.y = e.clientY - rect.top;
