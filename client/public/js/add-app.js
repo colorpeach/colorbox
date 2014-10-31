@@ -10,9 +10,17 @@ angular.module('addApp', ['myApps'])
             $scope.previewUrl = $sce.trustAsResourceUrl('/apps/preview/' + data.app._id);
         });
 
-        $scope.submit = function(e){
+        $scope.submit = function(e, key){
             e && e.preventDefault();
-            appsCrud.save($scope.data)
+            var data = {_id: $scope.data._id};
+            
+            if(key){
+                data[key] = $scope.data[key];
+            }else{
+                data = $scope.data;
+            }
+            
+            appsCrud.save(data)
             .success(function(){
                 $window.frames[0].location.reload();
             });
@@ -20,16 +28,23 @@ angular.module('addApp', ['myApps'])
 
         $scope.jade = {
             mode: 'jade',
-            save: $scope.submit
+            key: 'jade',
+            save: save
         };
         $scope.css = {
             mode: 'css',
-            save: $scope.submit
+            key: 'css',
+            save: save
         };
         $scope.javascript = {
             mode: 'javascript',
-            save: $scope.submit
+            key: 'js',
+            save: save
         };
+        
+        function save(e){
+            $scope.submit(e, this.key);
+        }
     }
 ])
 
@@ -363,6 +378,7 @@ angular.module('addApp', ['myApps'])
             compile: function(){
                 return function(scope, element, attrs){
                     if(CodeMirror){
+                        var keys = attrs.ngModel.split('.');
                         var userSave = false;
                         var config = scope[attrs.codeEditor];
                         var cm = CodeMirror.fromTextArea(element[0], {
@@ -387,7 +403,6 @@ angular.module('addApp', ['myApps'])
                         });
 
                         cm.on('keyHandled', function(cm, name, e){
-                            var keys = attrs.ngModel.split('.');
                             if(name === 'Ctrl-S'){
                                 e.preventDefault();
                                 userSave = true;
@@ -395,6 +410,10 @@ angular.module('addApp', ['myApps'])
                                 scope[keys[0]][keys[1]] = cm.doc.getValue();
                                 config.save(e);
                             }
+                        });
+                        
+                        cm.on('blur', function(cm){
+                            scope[keys[0]][keys[1]] = cm.doc.getValue();
                         });
                     }
                 }

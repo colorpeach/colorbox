@@ -109,6 +109,10 @@
   position: relative;
 }
 
+.my-apps-header{
+  padding-top: 55px;
+}
+
 .add-app-editor{
   position: absolute;
   top: 35px;
@@ -198,7 +202,8 @@
 }
 
 .app-list ul a,
-.desktop-added-list a{
+.desktop-added-list a,
+.app-logo{
   display: block;
   height: 100px;
   width: 100px;
@@ -208,6 +213,15 @@
   font-size: 20px;
   font-weight: bold;
   background-color: #43ac6a;
+}
+
+.app-logo{
+  margin-bottom: 20px;
+  margin-right: 20px;
+  border: solid 4px #fff;
+  max-width: 100%;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+  transition: all 200ms ease-out;
 }
 
 .app-list ul li.ng-enter{
@@ -235,7 +249,7 @@
 }
 
 .resize-mark{
-  background-color: #ccc;
+  background-color: #999;
   position: absolute!important;
   padding: 0!important;
   transition: none!important;

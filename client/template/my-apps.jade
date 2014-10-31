@@ -9,9 +9,12 @@ div.my-apps
             a(ng-bind="app.name", ng-click="chooseApp(app, $index)")
       div.columns.medium-8(ng-show="current._id")
         div.large-12.columns
-          h3.left
-            a(href="/apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
-          a.button.success.right.small(href="#/add/{{current._id}}") 开发 
+          div.left.app-logo {{current.name}}
+          div.my-apps-header
+            h3.left
+              a(href="/apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
+            a.button.warning.small.right(href="#/add/{{current._id}}") 开发 
+          hr
         form(action="", method="post", ng-submit="submit($event)")
           input(type="hidden")
           //div.large-12.columns
