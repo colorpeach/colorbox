@@ -1,5 +1,7 @@
-div.desktop-box(ng-controller="desktopCtrl")
-  ul.desktop-added-list.clearing-thumbs(drag-contain=true)
+div.desktop-box(ng-controller="desktopCtrl", ng-class='{adding: status.adding}')
+  ul.desktop-added-list(drag-contain='apps', drag-box='apps', ng-class='{adding: status.adding}')
     li.desktop-app(ng-click="switchStatus('add')")
       span.xicon-plus.desktop-add-btn
+    li(drag-item, ng-repeat="app in apps")
+      a.th(ng-bind="app.name", href="/apps/preview/{{app._id}}", target="_blank")
   div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")

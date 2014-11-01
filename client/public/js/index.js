@@ -41,6 +41,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     function($scope){
         $scope.status = {};
         $scope.allowDrag = true;
+        $scope.apps = [];
 
         $scope.switchStatus = function(type){
             if(type === 'add'){
@@ -102,11 +103,12 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     }
 ])
 
-.directive('desktopDrag', 
-['utils', '$window', 'dragPlaceholder', '$timeout',
-    function(utils, $window, dragPlaceholder, $timeout){
+.directive('dragItem', 
+['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope',
+    function(utils, $window, dragPlaceholder, $timeout, $rootScope){
         return {
             restrict: 'A',
+//             require: ['dragBox'],
             compile: function(){
                 return function(scope, element, attrs){
                     var timer;
@@ -140,8 +142,6 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         var $placeholder = dragPlaceholder(element, $moveContain);
                         var rect = element[0].getBoundingClientRect();
                         var relative = {};
-                        
-                        console.log(element.scope());
 
                         relative.x = e.clientX - rect.left;
                         relative.y = e.clientY - rect.top;
@@ -174,13 +174,50 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
 
                             $placeholder.remove();
                             if($pointElement.attr('drag-contain')){
-                                $pointElement.append(element);
+                                $pointElement.scope().add(scope.remove(scope.$index));
+                                $rootScope.$apply();
                             }
                         });
                     }
                 }
             }
         }
+    }
+])
+
+.directive('dragBox',
+[
+    function(){
+        return {
+            restrict: 'A',
+            compile: function(){
+                return function(scope, element, attrs){
+                    scope.remove = function remove(i){
+                        return scope[attrs.dragBox].splice(i, 1)[0];
+                    }
+                };
+            }
+        };
+    }
+])
+
+.directive('dragContain', 
+[
+    function(){
+        return {
+            restrict: 'A',
+            compile: function(){
+                return function(scope, element, attrs){
+                    scope.add = function add(item, i){
+                        if(i !== undefined){
+                            scope[attrs.dragBox].splice(i, 0, item);
+                        }else{
+                            scope[attrs.dragBox].push(item);
+                        }
+                    };
+                };
+            }
+        };
     }
 ]);
 
