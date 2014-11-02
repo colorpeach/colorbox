@@ -11,7 +11,7 @@
   overflow-y: hidden;
 }
 
-.desktop-box.adding{
+.desktop-box.draging{
   background-image: -webkit-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
   background-image: -moz-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
   background-image: -o-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
@@ -19,6 +19,9 @@
   background-repeat: repeat;
   background-position: top left;
   background-size: 100% 120px;
+}
+
+.desktop-box.adding{
   bottom: 197px;
 }
 
@@ -26,11 +29,11 @@
   position: relative;
   height: 100%;
   width: 1441px;
-  padding: 10px 0 10px 10px;
   margin: 0 auto;
+  overflow-y: auto;
 }
 
-.desktop-added-list.adding{
+.desktop-added-list.draging{
   background-image: -webkit-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
   background-image: -moz-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
   background-image: -o-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
@@ -234,6 +237,8 @@
 .desktop-added-list li{
   display: block;
   position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .desktop-added-list li.ng-enter{
@@ -246,8 +251,6 @@
 }
 
 .app-logo{
-  margin-bottom: 20px;
-  margin-right: 20px;
   border: solid 4px #fff;
   max-width: 100%;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
@@ -294,12 +297,15 @@
   bottom: 0;
 }
 
-.drag-placeholder{
+.drag-temp{
   position: absolute;
   display: block;
   pointer-events: none;
-  background-color:#47a447 !important;
   opacity:.5 !important;
-  border-width:0 !important;
   z-index: 1000;
+}
+
+.drag-placeholder{
+  background-color:#47a447 !important;
+  border-width:0 !important;
 }

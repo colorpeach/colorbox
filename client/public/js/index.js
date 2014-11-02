@@ -88,8 +88,8 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 css.height = rect.bottom - rect.top +'px';
             }
 
-            clone.html('');
-            clone.addClass('drag-placeholder');
+//             clone.html('');
+            clone.addClass('drag-temp');
             clone.css(css);
 
             if(isInsert){
@@ -103,9 +103,26 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     }
 ])
 
+.factory('calcPosition', 
+[
+    function(){
+        var cell = {
+            x: 120,
+            y: 120
+        };
+        
+        return function(point, containRect){
+            return {
+                left: Math.floor((point.x - containRect.left)/cell.x) * cell.x + 'px',
+                top: Math.floor((point.y - containRect.top)/cell.y) * cell.y + 'px'
+            };
+        };
+    }
+])
+
 .directive('dragItem', 
-['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope',
-    function(utils, $window, dragPlaceholder, $timeout, $rootScope){
+['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope', 'calcPosition',
+    function(utils, $window, dragPlaceholder, $timeout, $rootScope, calcPosition){
         return {
             restrict: 'A',
 //             require: ['dragBox'],
@@ -139,17 +156,33 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
 
                     function startDrag(e){
                         var $moveContain = angular.element($window.document.body);
-                        var $placeholder = dragPlaceholder(element, $moveContain);
+                        var $drag = dragPlaceholder(element, $moveContain);
+                        //TODO 使用了queryselector，待改进
+                        var $contain = angular.element($moveContain[0].querySelector('.desktop-added-list'));
+                        var containRect = $contain[0].getBoundingClientRect();
+                        var $placeholder = dragPlaceholder(element, $contain);
                         var rect = element[0].getBoundingClientRect();
+                        var position = {
+                            top: '-100%',
+                            left: '-100%'
+                        };
+                        var moveTimer;
                         var relative = {};
+                        
+                        $rootScope.$broadcast('dragStart');
 
                         relative.x = e.clientX - rect.left;
                         relative.y = e.clientY - rect.top;
 
-                        $placeholder.css({
+                        $drag.css({
                             left: rect.left + 'px',
                             top: rect.top + 'px'
                         });
+                        
+                        $placeholder.css(position);
+                        $placeholder.html('');
+                        $placeholder.addClass('drag-placeholder');
+                        $contain.append($placeholder);
 
                         $moveContain.bind('mousemove', function(e){
                             var point = {
@@ -157,26 +190,44 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                                 y: e.clientY
                             };
 
-                            $placeholder.css({
+                            $drag.css({
                                 left: point.x - relative.x + 'px',
                                 top: point.y - relative.y + 'px'
                             });
+                            
+                            if(moveTimer){
+                                $timeout.cancel(moveTimer);
+                            }
+                            
+                            moveTimer = $timeout(function(){
+                                position = calcPosition(point, containRect);
+                                $placeholder.css(position);
+                            }, 100);
                         });
 
                         $moveContain.bind('mouseup', function(e){
                             $moveContain.off('mousemove');
                             $moveContain.off('mouseup');
+                            if(moveTimer){
+                                $timeout.cancel(moveTimer);
+                            }
                             var point = {
                                 x: e.clientX,
                                 y: e.clientY
                             };
                             var $pointElement = angular.element($window.document.elementFromPoint(point.x, point.y));
-
+                            
+                            $drag.remove();
                             $placeholder.remove();
+                            
                             if($pointElement.attr('drag-contain')){
-                                $pointElement.scope().add(scope.remove(scope.$index));
+                                var item = scope.remove(scope.$index);
+                                item.position = calcPosition(point, containRect);
+                                $pointElement.scope().add(item);
                                 $rootScope.$apply();
                             }
+                            
+                            $rootScope.$broadcast('dragEnd');
                         });
                     }
                 }
@@ -215,6 +266,16 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                             scope[attrs.dragBox].push(item);
                         }
                     };
+                    
+                    scope.$on('dragStart', function(){
+                        element.addClass('draging');
+                        element.parent().addClass('draging');
+                    });
+                    
+                    scope.$on('dragEnd', function(){
+                        element.removeClass('draging');
+                        element.parent().removeClass('draging');
+                    });
                 };
             }
         };
