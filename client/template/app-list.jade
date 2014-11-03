@@ -8,4 +8,4 @@ div.app-list
     div.row
       ul.clearing-thumbs(drag-box='apps')
         li(drag-item, ng-repeat="app in apps")
-          a.app-logo.th(ng-bind="app.name", href="/apps/preview/{{app._id}}", target="_blank")
+          a.app-logo.th(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")

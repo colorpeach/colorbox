@@ -31,6 +31,7 @@
   width: 1441px;
   margin: 0 auto;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .desktop-added-list.draging{
@@ -234,6 +235,12 @@
   background-color: #43ac6a;
 }
 
+.desktop-added-list iframe{
+  height: 100%;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
 .desktop-added-list li{
   display: block;
   position: absolute;
@@ -295,6 +302,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1000;
 }
 
 .drag-temp{
@@ -303,9 +311,14 @@
   pointer-events: none;
   opacity:.5 !important;
   z-index: 1000;
+  cursor: move;
 }
 
 .drag-placeholder{
   background-color:#47a447 !important;
   border-width:0 !important;
+}
+
+.drag-placeholder.wrong{
+  background-color:#f00 !important;
 }

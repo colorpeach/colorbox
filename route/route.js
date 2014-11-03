@@ -47,7 +47,7 @@ module.exports = function(app){
     app.get('/logout', login.out);
     
     //应用预览页面
-    app.get('/apps/preview/:id', apps.apps_preview);
+    app.get('/_apps/preview/:id', apps.apps_preview);
     //添加应用
     app.post('/post/add/app', apps.add);
     //更新应用
@@ -59,5 +59,5 @@ module.exports = function(app){
     //获取用户的所有应用
     app.get('/get/apps', apps.get_apps);
     //获取发布的应用
-    app.get('/fetch/published/apps', apps.get_published_apps);
+    app.get('/_get/published/apps', apps.get_published_apps);
 };

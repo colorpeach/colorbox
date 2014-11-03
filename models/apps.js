@@ -1,11 +1,12 @@
 var dbClient = require('../database');
 var tidy = dbClient.column({
-    name:        'name',
-    description: 'description',
-    jade:        'jade',
-    css:         'css',
-    js:          'js',
-    user:        'user'
+    name         :'name',
+    description  :'description',
+    jade         :'jade',
+    css          :'css',
+    js           :'js',
+    user         :'user',
+    sizes        :'sizes'
 });
 var apps = {};
 
