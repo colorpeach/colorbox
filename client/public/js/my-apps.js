@@ -49,7 +49,15 @@ angular.module('myApps', [])
 ['$scope', 'appsCrud', '$location', 'prompt',
     function($scope,   appsCrud,   $location,   prompt){
         $scope.apps = [];
+        $scope.currentSize = {};
         $scope.current = {};
+        $scope.sizeOptions = {
+            false: '显示logo',
+            true: '显示页面'
+        };
+        $scope.status = {
+            addSize: false
+        };
 
         appsCrud.getApps()
         .success(function(data){
@@ -81,12 +89,26 @@ angular.module('myApps', [])
             .success(function(){
                 $scope.apps.splice($scope.current.$index, 1);
                 $scope.current = {};
+                $scope.currentSize = {};
             });
         };
 
         $scope.chooseApp = function(app, $index){
             $scope.current = app;
             $scope.current.$index = $index;
+            $scope.currentSize = {};
+            !$scope.current.sizes && ($scope.current.sizes = []);
+            !$scope.current.sizes.length && ($scope.current.sizes.push({x: '1', y: '1', showIframe: 'false'}));
+        };
+        
+        $scope.addSize = function(){
+            $scope.current.sizes.push($scope.currentSize);
+            $scope.currentSize = {};
+            $scope.status.addSize = false;
+        };
+        
+        $scope.delSize = function(i){
+            $scope.current.sizes.splice(i, 1);
         };
 
         $scope.submit = function(e){

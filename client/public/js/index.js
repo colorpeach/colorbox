@@ -117,8 +117,8 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 return {
                     left: Math.floor((point.x - containRect.left)/cell.x) * cell.x + 'px',
                     top: Math.floor((point.y - containRect.top)/cell.y) * cell.y + 'px',
-                    width: (item.size && item.size.x ? (item.size.x * cell.x - (item.size.x-2) * offset) : (cell.x - offset)) + 'px',
-                    height: (item.size && item.size.y ? (item.size.y * cell.y - (item.size.y-2) * offset) : (cell.y - offset)) + 'px'
+                    width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
+                    height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
                 }
             },
             //判断预设位置是否正确
@@ -137,8 +137,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 //预设位置与其他重叠
                 if(itemRect.left < 0 ||
                     itemRect.top < 0 ||
-                    itemRect.right > containRect.width ||
-                    itemRect.bottom > containRect.height
+                    itemRect.right > containRect.width
                     ){
                     return false;
                 }
@@ -187,11 +186,13 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                     element.find('a').bind('click', function(e){
                         if(!scope.allowDrag) return;
                         e.preventDefault();
+                        scope.app.show = !scope.app.show;
                     });
 
                     element.bind('mousedown', function(e){
                         if(!scope.allowDrag) return;
-                        e.preventDefault();
+                        if(e.target.tagName !== 'SELECT')
+                            e.preventDefault();
 
                         if(timer){
                             $timeout.cancel(timer);
@@ -225,6 +226,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         };
                         var moveTimer;
                         var relative = {};
+                        var point = {};
                         
                         $rootScope.$broadcast('dragStart');
 
@@ -241,9 +243,15 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         $placeholder.addClass('drag-placeholder');
                         $contain.append($placeholder);
                         $moveContain.append($overlay);
+                        
+                        //TODO 暂时写法
+                        if(!item.size){
+                            item.size = {};
+                            item.size.showIframe = 'false';
+                        }
 
                         $moveContain.bind('mousemove', function(e){
-                            var point = {
+                            point = {
                                 x: e.clientX,
                                 y: e.clientY
                             };
@@ -276,7 +284,9 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                             $placeholder.remove();
                             $overlay.remove();
                             
-                            if(positionIsRight){
+                            if(positionIsRight &&
+                                point.x < containRect.left + containRect.width &&
+                                point.y < containRect.top + containRect.height){
                                 item.position = position;
                                 $contain.scope().add(item);
                             }else{
