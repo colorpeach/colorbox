@@ -11,6 +11,6 @@ form(name="loginForm", action="/register", method="post", ng-submit="submit($eve
         input(id="password", type="password", name="password", ng-model="data.password")
       div.large-12.columns
         label(for="confirm-password") 确认密码
-        input(id="confirm-password", type="password", name="confirm-password")
+        input(id="confirm-password", type="password", name="confirm-password", ng-model="data.confirmPassword")
       div.large-12.columns
         input.button.expand(type="submit", value="注册")
