@@ -1,5 +1,7 @@
-div.desktop-box(ng-controller="desktopCtrl")
-  ul.desktop-added-list.clearing-thumbs(drag-contain=true)
-    li.desktop-app(ng-click="switchStatus('add')")
-      span.xicon-plus.desktop-add-btn
+div.desktop-box(ng-controller="desktopCtrl", ng-class='{adding: status.adding}')
+  ul.desktop-added-list(drag-contain='apps', drag-box='apps')
+    li(drag-item, ng-repeat="app in apps", ng-style="app.position")
+      span.xicon-plus.desktop-add-btn(ng-if="app.isButton",ng-click="switchStatus('add')")
+      a.app-logo.th(ng-if="!app.isButton && !app.size", ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
+      iframe(ng-if="app.size", ng-src="{{app.url}}", border=0, frameBorder=0)
   div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")

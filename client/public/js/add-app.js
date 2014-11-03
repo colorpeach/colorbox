@@ -2,12 +2,12 @@ angular.module('addApp', ['myApps'])
 
 .controller('addAppCtrl',
 ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',
-    function($scope,   appsCrud,   $routeParams,   $window, $sce){
+    function($scope,   appsCrud,   $routeParams,   $window,   $sce){
         $scope.data = {};
         appsCrud.get($routeParams.id)
         .success(function(data){
             $scope.data = data.app;
-            $scope.previewUrl = $sce.trustAsResourceUrl('/apps/preview/' + data.app._id);
+            $scope.previewUrl = $sce.trustAsResourceUrl('/_apps/preview/' + data.app._id);
         });
 
         $scope.submit = function(e, key){

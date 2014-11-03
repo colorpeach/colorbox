@@ -3,7 +3,8 @@ var tidy = dbClient.column({
     login:'username',
     email:'email',
     password:'password',
-    config: 'config'
+    config: 'config',
+    desktopApps: 'desktopApps'
 });
 var user = {};
 

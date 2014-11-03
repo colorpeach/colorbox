@@ -15,14 +15,21 @@ module.exports = {
     ],
     //不需要权限ajax访问
     unauthAjaxPath:[
-        "fetch"
+        "_get",
+        "_post",
+        "_put",
+        "_options",
+        "_head",
+        "_delete"
     ],
     //不需要权限访问
     unauthPath:[
         "",
         "login",
         "logout",
-        "register"
+        "register",
+        "_apps",
+        "_user"
     ],
     //静态文件路径
     staticPath:[

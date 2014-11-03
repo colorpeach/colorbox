@@ -39,8 +39,10 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
 .controller('desktopCtrl',
 ['$scope',
     function($scope){
+        var addButton = {isButton: true, position: {left: 0, top: 0}};
         $scope.status = {};
         $scope.allowDrag = true;
+        $scope.apps = [addButton];
 
         $scope.switchStatus = function(type){
             if(type === 'add'){
@@ -87,8 +89,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 css.height = rect.bottom - rect.top +'px';
             }
 
-            clone.html('');
-            clone.addClass('drag-placeholder');
+            clone.addClass('drag-temp');
             clone.css(css);
 
             if(isInsert){
@@ -102,11 +103,83 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     }
 ])
 
-.directive('desktopDrag', 
-['utils', '$window', 'dragPlaceholder', '$timeout',
-    function(utils, $window, dragPlaceholder, $timeout){
+.factory('calcMethods', 
+[
+    function(){
+        var cell = {
+            x: 120,
+            y: 120
+        };
+        var offset = 20;
+        
+        return {
+            position: function(item, point, containRect){
+                return {
+                    left: Math.floor((point.x - containRect.left)/cell.x) * cell.x + 'px',
+                    top: Math.floor((point.y - containRect.top)/cell.y) * cell.y + 'px',
+                    width: (item.size && item.size.x ? (item.size.x * cell.x - (item.size.x-2) * offset) : (cell.x - offset)) + 'px',
+                    height: (item.size && item.size.y ? (item.size.y * cell.y - (item.size.y-2) * offset) : (cell.y - offset)) + 'px'
+                }
+            },
+            //判断预设位置是否正确
+            positionIsRight: function(position, containRect, items){
+                var itemRect = {};
+                var overlap;
+
+                angular.forEach(position, function(n, i){
+                    itemRect[i] = parseFloat(n);
+                });
+
+                itemRect.right = itemRect.left + itemRect.width;
+                itemRect.bottom = itemRect.top + itemRect.height;
+
+                //预设位置不在包含框内
+                //预设位置与其他重叠
+                if(itemRect.left < 0 ||
+                    itemRect.top < 0 ||
+                    itemRect.right > containRect.width ||
+                    itemRect.bottom > containRect.height
+                    ){
+                    return false;
+                }
+
+                for(var i=0, len=items.length;i<len;i++){
+                    if(overlap = isOverlap(itemRect, calcRect(items[i].position))){
+                        break;
+                    }
+                }
+
+                return !overlap;
+            }
+        };
+
+        //判断两个item是否有重叠
+        function isOverlap(rect, aRect){
+            return !(rect.left > aRect.right ||
+                    rect.top > aRect.bottom ||
+                    rect.right < aRect.left ||
+                    rect.bottom < aRect.top);
+        }
+
+        function calcRect(position){
+            var rect = {};
+            rect.top = parseFloat(position.top);
+            rect.left = parseFloat(position.left);
+            rect.width = parseFloat(position.width) || cell.x - offset;
+            rect.height = parseFloat(position.height) || cell.y - offset;
+            rect.right = rect.left + rect.width;
+            rect.bottom = rect.top + rect.height;
+            return rect;
+        }
+    }
+])
+
+.directive('dragItem', 
+['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope', 'calcMethods', '$sce',
+    function(utils, $window, dragPlaceholder, $timeout, $rootScope, calcMethods, $sce){
         return {
             restrict: 'A',
+//             require: ['dragBox'],
             compile: function(){
                 return function(scope, element, attrs){
                     var timer;
@@ -136,20 +209,38 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                     });
 
                     function startDrag(e){
+                        var item = scope.remove(scope.$index);
+                        var positionIsRight = true;
+                        var $overlay = angular.element('<div class="resize-overlay"></div>');
                         var $moveContain = angular.element($window.document.body);
-                        var $placeholder = dragPlaceholder(element, $moveContain);
+                        var $drag = dragPlaceholder(element, $moveContain);
+                        //TODO 使用了queryselector，待改进
+                        var $contain = angular.element($moveContain[0].querySelector('.desktop-added-list'));
+                        var containRect = $contain[0].getBoundingClientRect();
+                        var $placeholder = dragPlaceholder(element, $contain);
                         var rect = element[0].getBoundingClientRect();
+                        var position = {
+                            top: '-100%',
+                            left: '-100%'
+                        };
+                        var moveTimer;
                         var relative = {};
                         
-                        console.log(element.scope());
+                        $rootScope.$broadcast('dragStart');
 
                         relative.x = e.clientX - rect.left;
                         relative.y = e.clientY - rect.top;
 
-                        $placeholder.css({
+                        $drag.css({
                             left: rect.left + 'px',
                             top: rect.top + 'px'
                         });
+                        
+                        $placeholder.css(position);
+                        $placeholder.html('');
+                        $placeholder.addClass('drag-placeholder');
+                        $contain.append($placeholder);
+                        $moveContain.append($overlay);
 
                         $moveContain.bind('mousemove', function(e){
                             var point = {
@@ -157,30 +248,102 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                                 y: e.clientY
                             };
 
-                            $placeholder.css({
+                            $drag.css({
                                 left: point.x - relative.x + 'px',
                                 top: point.y - relative.y + 'px'
                             });
+                            
+                            if(moveTimer){
+                                $timeout.cancel(moveTimer);
+                            }
+                            
+                            moveTimer = $timeout(function(){
+                                position = calcMethods.position(item, point, containRect);
+                                positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps);
+                                $placeholder[positionIsRight ? 'removeClass' : 'addClass']('wrong');
+                                $placeholder.css(position);
+                            }, 50);
                         });
 
                         $moveContain.bind('mouseup', function(e){
                             $moveContain.off('mousemove');
                             $moveContain.off('mouseup');
-                            var point = {
-                                x: e.clientX,
-                                y: e.clientY
-                            };
-                            var $pointElement = angular.element($window.document.elementFromPoint(point.x, point.y));
-
-                            $placeholder.remove();
-                            if($pointElement.attr('drag-contain')){
-                                $pointElement.append(element);
+                            if(moveTimer){
+                                $timeout.cancel(moveTimer);
                             }
+                            
+                            $drag.remove();
+                            $placeholder.remove();
+                            $overlay.remove();
+                            
+                            if(positionIsRight){
+                                item.position = position;
+                                $contain.scope().add(item);
+                            }else{
+                                scope.add(item, scope.$index);
+                            }
+                            
+                            $rootScope.$apply();
+                            $rootScope.$broadcast('dragEnd');
                         });
                     }
                 }
             }
         }
+    }
+])
+
+.directive('dragBox',
+[
+    function(){
+        return {
+            restrict: 'A',
+            compile: function(){
+                return function(scope, element, attrs){
+                    scope.add = function add(item, i){
+                        if(i !== undefined){
+                            scope[attrs.dragBox].splice(i, 0, item);
+                        }else{
+                            scope[attrs.dragBox].push(item);
+                        }
+                    };
+
+                    scope.remove = function remove(i){
+                        return scope[attrs.dragBox].splice(i, 1)[0];
+                    }
+                };
+            }
+        };
+    }
+])
+
+.directive('dragContain', 
+[
+    function(){
+        return {
+            restrict: 'A',
+            compile: function(){
+                return function(scope, element, attrs){
+                    scope.add = function add(item, i){
+                        if(i !== undefined){
+                            scope[attrs.dragBox].splice(i, 0, item);
+                        }else{
+                            scope[attrs.dragBox].push(item);
+                        }
+                    };
+                    
+                    scope.$on('dragStart', function(){
+                        element.addClass('draging');
+                        element.parent().addClass('draging');
+                    });
+                    
+                    scope.$on('dragEnd', function(){
+                        element.removeClass('draging');
+                        element.parent().removeClass('draging');
+                    });
+                };
+            }
+        };
     }
 ]);
 
