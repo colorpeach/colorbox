@@ -1,5 +1,7 @@
 var user = require('../models/user');
+var userRule = require('../client/valid/user');
 var baseRes = require('./baseResponse');
+var registerValid = require('./rules');
 var login = {};
 
 //用户登录
@@ -23,16 +25,22 @@ login.out = function(req,res){
 
 //用户注册
 login.register = function(req,res){
-    user.query({username:req.body.username},function(list){
-        if(list.length){
-            res.end(baseRes({errorMsg:['用户已存在']}));
-        }else{
-            user.add(req.body,function(data){
-                req.session.user = data[0];
-                res.end(baseRes());
-            });
-        }
-    });
+    var r = registerValid.validate(req.body,userRule);
+    if(r.valid){
+        user.query({username:req.body.username},function(list){
+            if(list.length){
+                res.end(baseRes({errorMsg:['用户已存在']}));
+            }else{
+                user.add(req.body,function(data){
+                    req.session.user = data[0];
+                    res.end(baseRes());
+                });
+            }
+        });
+    }else{
+        res.end(baseRes(r));
+    }
+
 }
 
 module.exports = login;

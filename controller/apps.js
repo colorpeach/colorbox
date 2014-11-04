@@ -61,7 +61,11 @@ Apps.get_apps = function(req, res){
 };
 
 Apps.get_published_apps = function(req, res){
-    apps.query(req.query, function(list){
+    //拼接模糊查询
+    var param = {};
+    req.query.name && (param.name = new RegExp(req.query.name));
+
+    apps.query(param, function(list){
         res.end(baseRes({apps: list}));
     },{jade: 0, css: 0, js: 0});
 };
