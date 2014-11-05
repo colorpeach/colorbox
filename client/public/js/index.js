@@ -72,7 +72,6 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
         var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
         var init = false;
         
-        $scope.apps = [addButton];
         $scope.status = {};
         $scope.allowDrag = true;
 
@@ -83,9 +82,12 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 data.desktopApps.forEach(function(n, i){
                     n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                 });
+            }else{
+                $scope.apps = [addButton];
             }
         })
         .then(function(){
+            $scope.apps = [addButton];
             $timeout(function(){
                 init = true;
             }, 0);
