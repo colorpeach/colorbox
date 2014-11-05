@@ -1,4 +1,4 @@
-angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'appList'])
+angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'appList', 'message'])
 
 .config(['$routeProvider',
     function($routeProvider){
@@ -14,6 +14,10 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
         .when('/register', {
             controller: 'registerCtrl',
             templateUrl: 'register.html'
+        })
+        .when('/message-board', {
+            controller: 'messageCtrl',
+            templateUrl: 'message.html'
         })
         .when('/add/:id', {
             controller: 'addAppCtrl',

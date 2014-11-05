@@ -2,6 +2,7 @@ var pages = require('../controller/pages.js');
 var apps = require('../controller/apps.js');
 var login = require('../controller/login.js');
 var user = require('../controller/user.js');
+var messages = require('../controller/messages.js');
 
 var settings = require('../settings');
 var authPath = settings.authPath;
@@ -65,4 +66,11 @@ module.exports = function(app){
     app.get('/get/apps', apps.get_apps);
     //获取发布的应用
     app.get('/_get/published/apps', apps.get_published_apps);
+
+    //获取留言
+    app.get('/_get/messages', messages.get_messages);
+    //回复留言
+    app.post('/post/save/message', messages.save);
+    //添加留言
+    app.post('/post/add/message', messages.add);
 };

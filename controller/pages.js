@@ -19,7 +19,7 @@ pages.html = function(req, res){
     
     fs.exists(fileUrl, function(exists){
         if(exists){
-            res.render(url);
+            res.render(url, {user: req.session.user});
         }else{
             res.render('template/not-found');
         }
