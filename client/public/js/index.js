@@ -86,8 +86,10 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 $scope.apps = [addButton];
             }
         })
-        .then(function(){
+        .error(function(){
             $scope.apps = [addButton];
+        })
+        .then(function(){
             $timeout(function(){
                 init = true;
             }, 0);
