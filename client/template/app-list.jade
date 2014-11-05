@@ -8,5 +8,5 @@ div.app-list
     div.row
       ul.clearing-thumbs(drag-box='apps')
         li.relative(drag-item, ng-repeat="app in apps")
-          a.app-logo.th(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
+          a.app-logo(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
           select.size-option(ng-model="app.size", ng-options="o as (o.x+' × '+o.y) for (key, o) in app.sizes")

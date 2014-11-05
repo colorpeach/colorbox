@@ -1,6 +1,7 @@
 var pages = require('../controller/pages.js');
 var apps = require('../controller/apps.js');
 var login = require('../controller/login.js');
+var user = require('../controller/user.js');
 
 var settings = require('../settings');
 var authPath = settings.authPath;
@@ -45,6 +46,10 @@ module.exports = function(app){
     app.post('/login', login.enter);
     app.post('/register', login.register);
     app.get('/logout', login.out);
+    //获取用户桌面应用
+    app.get('/get/desktop/apps', user.getDesktopApps);
+    //更新桌面应用
+    app.post('/post/save/desktop/apps', user.updateDesktopApps);
     
     //应用预览页面
     app.get('/_apps/preview/:id', apps.apps_preview);

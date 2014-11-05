@@ -52,15 +52,28 @@
   background-color: #333;
 }
 
-.desktop-add-btn{
+.desktop-drag-btn{
   font-size: 100px;
-  border: 1px solid;
   color: #ccc;
   cursor: pointer;
 }
 
-.desktop-add-btn:hover{
+.desktop-drag-btn:hover{
   color: #ddd;
+}
+
+.desktop-remove-btn{
+  position: absolute;
+  top: 20px;
+  left: -20px;
+  height: 20px;
+  width: 20px;
+  color: #333;
+  background-color: #ccc;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0;
+  font-size: 20px;
 }
 
 .alert-box.ng-enter{
@@ -233,6 +246,9 @@
   font-size: 20px;
   font-weight: bold;
   background-color: #43ac6a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .relative{
@@ -256,7 +272,6 @@
 .desktop-added-list iframe{
   height: 100%;
   width: 100%;
-  border: 1px solid #ccc;
 }
 
 .iframe-app-drag{
@@ -264,14 +279,15 @@
   left: -20px;
   height: 20px;
   width: 20px;
-  opacity: .2;
+  opacity: 0;
   background-color: #ccc;
   cursor: move;
   font-size: 20px;
 }
 
-.iframe-app-drag:hover{
-  opacity: 1;
+.desktop-added-list li:hover .iframe-app-drag,
+.desktop-added-list li:hover .desktop-remove-btn{
+  opacity: .2;
 }
 
 .desktop-added-list li{
@@ -291,9 +307,7 @@
 }
 
 .app-logo{
-  border: solid 4px #fff;
   max-width: 100%;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
   transition: all 200ms ease-out;
 }
 
