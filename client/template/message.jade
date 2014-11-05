@@ -1,15 +1,20 @@
 div.row
-  div.large-12.columns
-    form(ng-submit="submit()")
-      fieldset
-        legend  留言 
-        div.large-12.columns
-          label(for="content") {{label}}
-          textarea(id="content", name="content", ng-model="data.content", rows=5, required)
-        div.large-3.columns
-          input.button.expand.secondary(type="button", value="取消", ng-click="cancel()", ng-show="current")
-        div.large-3.columns
-          input.button.expand(type="submit", value="发布")
+  if !user
+    div.large-12.columns
+      a(view-link, href="/login") 登陆 
+      | 后可留言
+  if user
+    div.large-12.columns
+      form(ng-submit="submit()")
+        fieldset
+          legend  留言 
+          div.large-12.columns
+            label(for="content") {{label}}
+            textarea(id="content", name="content", ng-model="data.content", rows=5, required)
+          div.large-3.columns
+            input.button.expand.secondary(type="button", value="取消", ng-click="cancel()", ng-show="current")
+          div.large-3.columns
+            input.button.expand(type="submit", value="发布")
   div.large-12.columns.panel(ng-repeat="msg in messages")
     p
       if user
