@@ -71,7 +71,8 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     function($scope,   desktopCurd,   safeApply,   $timeout,   $sce){
         var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
         var init = false;
-
+        
+        $scope.apps = [addButton];
         $scope.status = {};
         $scope.allowDrag = true;
 
@@ -82,13 +83,13 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 data.desktopApps.forEach(function(n, i){
                     n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                 });
-            }else{
-                $scope.apps = [addButton];
             }
+        })
+        .then(function(){
             $timeout(function(){
                 init = true;
             }, 0);
-        })
+        });
 
         $scope.$watch('apps.length', function(){
             init && desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
