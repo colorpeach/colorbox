@@ -1,4 +1,4 @@
-angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'appList'])
+angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'appList', 'message'])
 
 .config(['$routeProvider',
     function($routeProvider){
@@ -14,6 +14,10 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
         .when('/register', {
             controller: 'registerCtrl',
             templateUrl: 'register.html'
+        })
+        .when('/message-board', {
+            controller: 'messageCtrl',
+            templateUrl: 'message.html'
         })
         .when('/add/:id', {
             controller: 'addAppCtrl',
@@ -36,18 +40,77 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
     }
 ])
 
+.factory('desktopCurd',
+['$http',
+    function($http){
+        return {
+            getDesktopApps: function(){
+                return $http.get('/get/desktop/apps');
+            },
+            updateDesktopApps: function(data){
+                return $http.post('/post/save/desktop/apps', data);
+            }
+        };
+    }
+])
+
+.factory('safeApply',
+['$rootScope',
+    function($rootScope){
+        return function(fn) {
+            var phase = $rootScope.$$phase;
+            if(phase == '$apply' || phase == '$digest') {
+                if(fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            }else {
+                this.$apply(fn);
+            }
+        };
+    }
+])
+
 .controller('desktopCtrl',
-['$scope',
-    function($scope){
-        var addButton = {isButton: true, position: {left: 0, top: 0}};
+['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce',
+    function($scope,   desktopCurd,   safeApply,   $timeout,   $sce){
+        var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
+        var init = false;
+        
         $scope.status = {};
         $scope.allowDrag = true;
-        $scope.apps = [addButton];
+
+        desktopCurd.getDesktopApps()
+        .success(function(data){
+            if(data.desktopApps && data.desktopApps.length){
+                $scope.apps = data.desktopApps;
+                data.desktopApps.forEach(function(n, i){
+                    n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                });
+            }else{
+                $scope.apps = [addButton];
+            }
+        })
+        .error(function(){
+            $scope.apps = [addButton];
+        })
+        .then(function(){
+            $timeout(function(){
+                init = true;
+            }, 0);
+        });
+
+        $scope.$watch('apps.length', function(){
+            init && desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
+        });
 
         $scope.switchStatus = function(type){
             if(type === 'add'){
                 $scope.status.adding = !$scope.status.adding;
             }
+        };
+
+        $scope.removeApp = function(i){
+            $scope.apps.splice(i, 1);
         };
     }
 ])
@@ -113,12 +176,12 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
         var offset = 20;
         
         return {
-            position: function(item, point, containRect){
+            position: function(item, point, containRect, contain){
                 return {
-                    left: Math.floor((point.x - containRect.left)/cell.x) * cell.x + 'px',
-                    top: Math.floor((point.y - containRect.top)/cell.y) * cell.y + 'px',
-                    width: (item.size && item.size.x ? (item.size.x * cell.x - (item.size.x-2) * offset) : (cell.x - offset)) + 'px',
-                    height: (item.size && item.size.y ? (item.size.y * cell.y - (item.size.y-2) * offset) : (cell.y - offset)) + 'px'
+                    left: Math.floor((contain.scrollLeft + point.x - containRect.left)/cell.x) * cell.x + 'px',
+                    top: Math.floor((contain.scrollTop + point.y - containRect.top)/cell.y) * cell.y + 'px',
+                    width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
+                    height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
                 }
             },
             //判断预设位置是否正确
@@ -137,12 +200,12 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 //预设位置与其他重叠
                 if(itemRect.left < 0 ||
                     itemRect.top < 0 ||
-                    itemRect.right > containRect.width ||
-                    itemRect.bottom > containRect.height
+                    itemRect.right > containRect.width
                     ){
                     return false;
                 }
 
+                //遍历其他应用
                 for(var i=0, len=items.length;i<len;i++){
                     if(overlap = isOverlap(itemRect, calcRect(items[i].position))){
                         break;
@@ -187,11 +250,13 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                     element.find('a').bind('click', function(e){
                         if(!scope.allowDrag) return;
                         e.preventDefault();
+                        scope.app.show = !scope.app.show;
                     });
 
                     element.bind('mousedown', function(e){
                         if(!scope.allowDrag) return;
-                        e.preventDefault();
+                        if(e.target.tagName !== 'SELECT')
+                            e.preventDefault();
 
                         if(timer){
                             $timeout.cancel(timer);
@@ -225,6 +290,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         };
                         var moveTimer;
                         var relative = {};
+                        var point = {};
                         
                         $rootScope.$broadcast('dragStart');
 
@@ -241,9 +307,18 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         $placeholder.addClass('drag-placeholder');
                         $contain.append($placeholder);
                         $moveContain.append($overlay);
+                        
+                        position = calcMethods.position(item, point, containRect, $contain[0]);
+                        positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps);
+                        
+                        //TODO 暂时写法
+                        if(!item.size){
+                            item.size = {};
+                            item.size.showIframe = 'false';
+                        }
 
                         $moveContain.bind('mousemove', function(e){
-                            var point = {
+                            point = {
                                 x: e.clientX,
                                 y: e.clientY
                             };
@@ -258,7 +333,7 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                             }
                             
                             moveTimer = $timeout(function(){
-                                position = calcMethods.position(item, point, containRect);
+                                position = calcMethods.position(item, point, containRect, $contain[0]);
                                 positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps);
                                 $placeholder[positionIsRight ? 'removeClass' : 'addClass']('wrong');
                                 $placeholder.css(position);
@@ -268,15 +343,18 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                         $moveContain.bind('mouseup', function(e){
                             $moveContain.off('mousemove');
                             $moveContain.off('mouseup');
+
                             if(moveTimer){
                                 $timeout.cancel(moveTimer);
                             }
                             
-                            $drag.remove();
                             $placeholder.remove();
                             $overlay.remove();
-                            
-                            if(positionIsRight){
+                            $drag.remove();
+
+                            if(positionIsRight &&
+                                point.x < containRect.left + containRect.width &&
+                                point.y < containRect.top + containRect.height){
                                 item.position = position;
                                 $contain.scope().add(item);
                             }else{
@@ -345,6 +423,6 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
             }
         };
     }
-]);
+])
 
 angular.bootstrap(document, ['index']);

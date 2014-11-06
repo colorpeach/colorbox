@@ -19,9 +19,19 @@ div.my-apps
           input(type="hidden")
           div.large-12.columns
             label 应用尺寸
-              span.xicon-plus
-            div 1 × 1
+              span.xicon-plus(ng-click="status.addSize = !status.addSize")
             div(ng-repeat="size in current.sizes") {{size.x}} × {{size.y}}
+              div.right(ng-if="$index", ng-click="delSize($index)") ×
+            div.row.collapse(ng-show="status.addSize")
+              div.small-3.columns
+                input(type="text", ng-model="currentSize.x")
+              div.small-1.columns ×
+              div.small-3.columns
+                input(type="text", ng-model="currentSize.y")
+              div.small-3.columns
+                select(ng-model="currentSize.showIframe", ng-options=" key as o for (key, o) in sizeOptions")
+              div.small-2.columns
+                input.button.tiny(type="button", value="添加", ng-click="addSize()")
           div.large-12.columns
             label(for="description") 应用描述
             textarea(id="description", name="description", ng-model="current.description")

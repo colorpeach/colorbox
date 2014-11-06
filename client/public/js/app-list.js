@@ -22,10 +22,6 @@ angular.module('appList', [])
             .success(function(data){
                 $scope.apps = data.apps;
                 $scope.apps.forEach(function(n, i){
-                    n.size = {
-                        x: 3,
-                        y: 3
-                    };
                     n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                 });
             });

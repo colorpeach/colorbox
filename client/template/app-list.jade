@@ -7,5 +7,6 @@ div.app-list
         input.button.postfix.small(type="submit", value="搜索")
     div.row
       ul.clearing-thumbs(drag-box='apps')
-        li(drag-item, ng-repeat="app in apps")
-          a.app-logo.th(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
+        li.relative(drag-item, ng-repeat="app in apps")
+          a.app-logo(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
+          select.size-option(ng-model="app.size", ng-options="o as (o.x+' × '+o.y) for (key, o) in app.sizes")

@@ -14,6 +14,8 @@ block content
     section.top-bar-section
       ul.right
         li
+          a(view-link, href="/message-board", title="留言板") 留言板
+        li
           a(view-link, href="/app-list", title="所有应用")
             span.xicon-th-large
         if user
@@ -43,4 +45,5 @@ block script
   script(src="/public/js/my-apps.js")
   script(src="/public/js/add-app.js")
   script(src="/public/js/app-list.js")
+  script(src="/public/js/message.js")
   script(src="/public/js/index.js")
