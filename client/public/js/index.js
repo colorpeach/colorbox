@@ -404,9 +404,9 @@ angular.module('index',['ngAnimate', 'ngRoute', 'login', 'myApps', 'addApp', 'ap
                 return function(scope, element, attrs){
                     scope.add = function add(item, i){
                         if(i !== undefined){
-                            scope[attrs.dragBox].splice(i, 0, item);
+                            scope[attrs.dragContain].splice(i, 0, item);
                         }else{
-                            scope[attrs.dragBox].push(item);
+                            scope[attrs.dragContain].push(item);
                         }
                     };
                     
