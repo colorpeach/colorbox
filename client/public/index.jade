@@ -23,8 +23,6 @@ block content
             a #{user.login}
             ul.dropdown
               li
-                a(view-link, href="/add-dialog") 新增应用
-              li
                 a(view-link, href="/my-apps") 我的应用
               li
                 a(href="/logout") 注销
@@ -37,13 +35,4 @@ block content
   div.main-box(ng-view)
 
 block script
-  script(src="/lib/codemirror/4.7/lib/codemirror.js")
-  script(src="/lib/codemirror/4.7/mode/javascript/javascript.js")
-  script(src="/lib/codemirror/4.7/mode/jade/jade.js")
-  script(src="/lib/codemirror/4.7/mode/css/css.js")
-  script(src="/public/js/login.js")
-  script(src="/public/js/my-apps.js")
-  script(src="/public/js/add-app.js")
-  script(src="/public/js/app-list.js")
-  script(src="/public/js/message.js")
-  script(src="/public/js/index.js")
+  script(src="/public/js/bootstrap.js")

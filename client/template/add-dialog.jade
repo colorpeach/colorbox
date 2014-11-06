@@ -1,0 +1,11 @@
+div.reveal-modal-bg(style="display:block")
+div.reveal-modal(style="display:block;visibility:visible")
+  a.close-reveal-modal(ng-click="back()")&#215;
+  fieldset
+    legend  添加应用 
+    div.large-12.columns
+      label(for="name") 应用名称
+      input#name(type="text", name="name", ng-model="data.name")
+    div.large-12.columns
+      input.button(type="button", value="添加", ng-click="add()")
+      input.button.secondary(type="button", value="取消", ng-click="back()")
