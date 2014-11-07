@@ -35,7 +35,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/add/:id': {
                 templateUrl: 'add-app.html',
                 controller: 'addAppCtrl',
-                dependencies: ['add-app']
+                dependencies: ['js/add-app']
             },
             '/add-dialog': {
                 templateUrl: 'add-dialog.html',

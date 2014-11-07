@@ -1,4 +1,4 @@
-define(['js/app'], function(app){
+define(['js/app', 'html2canvas'], function(app){
     app
     .factory('desktopCurd',
     ['$http',
@@ -34,7 +34,6 @@ define(['js/app'], function(app){
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce){
             var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
-            var init = false;
 
             $scope.status = {};
             $scope.allowDrag = true;
@@ -52,15 +51,10 @@ define(['js/app'], function(app){
             })
             .error(function(){
                 $scope.apps = [addButton];
-            })
-            .then(function(){
-                $timeout(function(){
-                    init = true;
-                }, 0);
             });
 
-            $scope.$watch('apps.length', function(){
-                init && desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
+            $scope.$on('updateDrag', function(){
+                desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
             });
 
             $scope.switchStatus = function(type){
@@ -80,48 +74,28 @@ define(['js/app'], function(app){
     [
         function(){
             //生成占位元素
-            return function(el, contain, isInsert){
-                var clone = el.clone();
-
-                var style = clone[0].style;
+            return function(el, contain, hasScreenshots){
+                var div = angular.element('<div>');
                 var rect = el[0].getBoundingClientRect();
                 var css = {};
 
-                //定位元素
-                if(style.position === 'absolute' || style.position === 'fixed'){
-                    css.top = style.top;
-                    css.right = style.right;
-                    css.bottom = style.bottom;
-                    css.left = style.left;
-                }
-
-                if(!style.width){
-                    //TODO 判断太长，不够全面，需优化
-                    if(!(
-                        clone[0].tagName === 'DIV'
-                        && (!style.display || style.display === 'block')
-                        && style.float !== 'left'
-                        && style.float !== 'right'
-                        && style.position !== 'absolute'
-                        && style.position !== 'fixed'
-                    )){
-                        css.width = rect.right - rect.left +'px';
+                hasScreenshots &&
+                html2canvas(el[0], {
+                    onrendered: function(canvas){
+                        div.append(canvas);
                     }
-                }
-                if(!style.height){
-                    css.height = rect.bottom - rect.top +'px';
-                }
+                })
 
-                clone.addClass('drag-temp');
-                clone.css(css);
+                css.width = rect.right - rect.left +'px';
+                css.height = rect.bottom - rect.top +'px';
+                css.marginTop = css.marginLeft = '10px';
 
-                if(isInsert){
-                    el.after(clone);
-                }else{
-                    (contain).append(clone);
-                }
+                div.addClass('drag-temp');
+                div.css(css);
 
-                return clone;
+                contain.append(div);
+
+                return div;
             }
         }
     ])
@@ -145,7 +119,7 @@ define(['js/app'], function(app){
                     }
                 },
                 //判断预设位置是否正确
-                positionIsRight: function(position, containRect, items){
+                positionIsRight: function(position, containRect, items, index){
                     var itemRect = {};
                     var overlap;
 
@@ -167,7 +141,7 @@ define(['js/app'], function(app){
 
                     //遍历其他应用
                     for(var i=0, len=items.length;i<len;i++){
-                        if(overlap = isOverlap(itemRect, calcRect(items[i].position))){
+                        if(i !== index && (overlap = isOverlap(itemRect, calcRect(items[i].position)))){
                             break;
                         }
                     }
@@ -202,7 +176,6 @@ define(['js/app'], function(app){
         function(utils, $window, dragPlaceholder, $timeout, $rootScope, calcMethods, $sce){
             return {
                 restrict: 'A',
-    //             require: ['dragBox'],
                 compile: function(){
                     return function(scope, element, attrs){
                         var timer;
@@ -234,11 +207,11 @@ define(['js/app'], function(app){
                         });
 
                         function startDrag(e){
-                            var item = scope.remove(scope.$index);
+                            var item = scope.getDrapData(scope.$index);
                             var positionIsRight = true;
                             var $overlay = angular.element('<div class="resize-overlay"></div>');
                             var $moveContain = angular.element($window.document.body);
-                            var $drag = dragPlaceholder(element, $moveContain);
+                            var $drag = dragPlaceholder(element, $moveContain, true);
                             //TODO 使用了queryselector，待改进
                             var $contain = angular.element($moveContain[0].querySelector('.desktop-added-list'));
                             var containRect = $contain[0].getBoundingClientRect();
@@ -252,6 +225,8 @@ define(['js/app'], function(app){
                             var relative = {};
                             var point = {};
 
+                            item.draging = true;
+                            $rootScope.$apply();
                             $rootScope.$broadcast('dragStart');
 
                             relative.x = e.clientX - rect.left;
@@ -269,7 +244,7 @@ define(['js/app'], function(app){
                             $moveContain.append($overlay);
 
                             position = calcMethods.position(item, point, containRect, $contain[0]);
-                            positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps);
+                            positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
 
                             //TODO 暂时写法
                             if(!item.size){
@@ -294,7 +269,7 @@ define(['js/app'], function(app){
 
                                 moveTimer = $timeout(function(){
                                     position = calcMethods.position(item, point, containRect, $contain[0]);
-                                    positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps);
+                                    positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
                                     $placeholder[positionIsRight ? 'removeClass' : 'addClass']('wrong');
                                     $placeholder.css(position);
                                 }, 50);
@@ -316,11 +291,13 @@ define(['js/app'], function(app){
                                     point.x < containRect.left + containRect.width &&
                                     point.y < containRect.top + containRect.height){
                                     item.position = position;
-                                    $contain.scope().add(item);
-                                }else{
-                                    scope.add(item, scope.$index);
+                                    if(scope.$parent !== $contain.scope()){
+                                        $contain.scope().add(item);
+                                    }
+                                    $rootScope.$broadcast('updateDrag');
                                 }
-
+                                
+                                item.draging = false;
                                 $rootScope.$apply();
                                 $rootScope.$broadcast('dragEnd');
                             });
@@ -346,9 +323,13 @@ define(['js/app'], function(app){
                             }
                         };
 
-                        scope.remove = function remove(i){
-                            return scope[attrs.dragBox].splice(i, 1)[0];
-                        }
+                        scope.remove = function(i){
+                            return scope[attrs.dragBox].splice(i, 1);
+                        };
+
+                        scope.getDrapData = function(i){
+                            return scope[attrs.dragBox][i];
+                        };
                     };
                 }
             };

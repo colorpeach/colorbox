@@ -4,7 +4,7 @@ require.config({
         'angular'                 : '/lib/angular/1.3.0/angular.min',
         'angular-route'           : '/lib/angular/1.3.0/angular-route.min',
         'angular-animate'         : '/lib/angular/1.3.0/angular-animate.min',
-        'add-app'                 : '/public/js/add-app'
+        'html2canvas'             : '/lib/html2canvas/0.4.1/html2canvas.min'
     },
     shim: {
         'angular': {

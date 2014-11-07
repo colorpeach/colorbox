@@ -65,7 +65,7 @@
 .desktop-remove-btn{
   position: absolute;
   top: 20px;
-  left: -10px;
+  left: -20px;
   height: 20px;
   width: 20px;
   color: #333;
@@ -276,7 +276,7 @@
 
 .iframe-app-drag{
   position: absolute;
-  left: -10px;
+  left: -20px;
   height: 20px;
   width: 20px;
   opacity: 0;
@@ -295,6 +295,12 @@
   position: absolute;
   margin-top: 10px;
   margin-left: 10px;
+  transition: all .3s ease-out;
+  opacity: 1;
+}
+
+.desktop-added-list li.draging{
+  opacity: .4;
 }
 
 .desktop-added-list li.ng-enter{
