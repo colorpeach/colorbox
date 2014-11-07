@@ -1,4 +1,4 @@
-define(['js/app', '../../lib/codemirror', 'loadmode', 'js/my-apps'], function(app, CodeMirror){
+define(['js/app', 'cm/lib/codemirror', 'js/my-apps'], function(app, CodeMirror){
     app
     .controller('addAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',
@@ -373,11 +373,7 @@ define(['js/app', '../../lib/codemirror', 'loadmode', 'js/my-apps'], function(ap
     .directive('codeEditor', 
     [
         function(){
-            var meta = {
-                css: 'text/css',
-                jade: 'text/x-jade',
-                javascript: 'text/javascript'
-            };
+            CodeMirror.modeURL = '/lib/codemirror/4.7/mode/%N/%N.js';
             
             return {
                 restrict: 'A',
@@ -389,7 +385,7 @@ define(['js/app', '../../lib/codemirror', 'loadmode', 'js/my-apps'], function(ap
                             var config = scope[attrs.codeEditor];
 
                             var cm = CodeMirror.fromTextArea(element[0], {
-//                                 mode: config.mode,
+                                mode: config.mode,
                                 lineNumbers: false,
                                 value: element[0],
                                 extraKeys: {
@@ -398,9 +394,10 @@ define(['js/app', '../../lib/codemirror', 'loadmode', 'js/my-apps'], function(ap
                                     }
                                 }
                             });
-
-                            cm.setOption("mode",meta[config.mode]);
-                            CodeMirror.autoLoadMode(cm, config.mode);
+                            
+                            require(['cm/mode/' + config.mode + '/' + config.mode], function(){
+                                cm.setOption('mode', config.mode);
+                            });
 
                             cm.setSize('100%', '100%');
 

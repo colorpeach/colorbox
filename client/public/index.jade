@@ -33,6 +33,7 @@ block content
               li
                 a(view-link, href="/register") 注册
   div.main-box(ng-view)
+  div.route-overlay(ng-show="loading")
 
 block script
   script(src="/public/js/bootstrap.js")

@@ -100,5 +100,17 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     ]);
 
+    app.run(
+    ['$rootScope',
+        function($rootScope){
+            $rootScope.$on('$routeChangeStart', function(){
+                $rootScope.loading = true;
+            });
+            $rootScope.$on('$routeChangeSuccess', function(){
+                $rootScope.loading = false;
+            });
+        }
+    ]);
+
     return app;
 });
