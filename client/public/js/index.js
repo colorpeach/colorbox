@@ -1,4 +1,4 @@
-define(['js/app', 'html2canvas'], function(app){
+define(['js/app'], function(app){
     app
     .factory('desktopCurd',
     ['$http',
@@ -31,8 +31,8 @@ define(['js/app', 'html2canvas'], function(app){
     ])
 
     .controller('desktopCtrl',
-    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce',
-        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce){
+    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
+        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
             var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
 
             $scope.status = {};
@@ -53,7 +53,7 @@ define(['js/app', 'html2canvas'], function(app){
                 $scope.apps = [addButton];
             });
 
-            $scope.$on('updateDrag', function(){
+            $scope.$on('updateDesktop', function(){
                 desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
             });
 
@@ -65,6 +65,7 @@ define(['js/app', 'html2canvas'], function(app){
 
             $scope.removeApp = function(i){
                 $scope.apps.splice(i, 1);
+                $rootScope.$broadcast('updateDesktop');
             };
         }
     ])
@@ -79,12 +80,14 @@ define(['js/app', 'html2canvas'], function(app){
                 var rect = el[0].getBoundingClientRect();
                 var css = {};
 
-                hasScreenshots &&
-                html2canvas(el[0], {
-                    onrendered: function(canvas){
-                        div.append(canvas);
-                    }
-                })
+                require(['html2canvas'], function(){
+                    hasScreenshots &&
+                    html2canvas(el[0], {
+                        onrendered: function(canvas){
+                            div.append(canvas);
+                        }
+                    })
+                });
 
                 css.width = rect.right - rect.left +'px';
                 css.height = rect.bottom - rect.top +'px';
@@ -294,7 +297,7 @@ define(['js/app', 'html2canvas'], function(app){
                                     if(scope.$parent !== $contain.scope()){
                                         $contain.scope().add(item);
                                     }
-                                    $rootScope.$broadcast('updateDrag');
+                                    $rootScope.$broadcast('updateDesktop');
                                 }
                                 
                                 item.draging = false;

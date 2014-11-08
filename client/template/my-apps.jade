@@ -15,8 +15,7 @@ div.my-apps
               a(href="/_apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
             a.button.warning.small.right(href="#/add/{{current._id}}") 开发 
           hr
-        form(action="", method="post", ng-submit="submit($event)")
-          input(type="hidden")
+        form(ng-submit="submit($event)")
           div.large-12.columns
             label 应用尺寸
               span.xicon-plus(ng-click="status.addSize = !status.addSize")

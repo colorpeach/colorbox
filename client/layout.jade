@@ -3,13 +3,14 @@ html
   head
     title #{title}
     meta(charset='utf-8')
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel='stylesheet', href='/public/css/normalize.css')
     link(rel='stylesheet', href='/public/css/foundation.min.css')
     link(rel='stylesheet', href='/public/css/animate.min.css')
-    link(rel='stylesheet', href='/public/css/xicon.css')
+    link(rel='stylesheet', href='/public/css/icon.css')
     link(rel='stylesheet', href='/public/css/index.css')
     block css
   body
     block content
-    script(src="/lib/requirejs/2.1.14/require.js")
+    script(src="/lib/requirejs/2.1.15/require.min.js")
     block script

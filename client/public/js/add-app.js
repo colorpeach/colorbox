@@ -1,4 +1,4 @@
-define(['js/app', 'cm/lib/codemirror', 'js/my-apps'], function(app, CodeMirror){
+define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror){
     app
     .controller('addAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',

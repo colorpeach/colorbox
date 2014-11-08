@@ -20,16 +20,18 @@ module.exports = {
         "_put",
         "_options",
         "_head",
-        "_delete"
+        "_delete",
+        "_login",
+        "_register"
     ],
     //不需要权限访问
     unauthPath:[
         "",
-        "login",
-        "logout",
-        "register",
+        "_logout",
         "_apps",
-        "_user"
+        "_user",
+        '_snippets',
+        '_logs'
     ],
     //静态文件路径
     staticPath:[

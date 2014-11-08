@@ -22,10 +22,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'appListCtrl',
                 dependencies: ['js/app-list']
             },
-            '/my-apps': {
-                templateUrl: 'my-apps.html',
-                controller: 'myAppsCtrl',
-                dependencies: ['js/my-apps']
+            '/dashboard/:tab': {
+                templateUrl: 'dashboard.html',
+                controller: 'dashboardCtrl',
+                dependencies: ['js/dashboard']
             },
             '/message-board': {
                 templateUrl: 'message.html',
@@ -36,11 +36,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'add-app.html',
                 controller: 'addAppCtrl',
                 dependencies: ['js/add-app']
-            },
-            '/add-dialog': {
-                templateUrl: 'add-dialog.html',
-                controller: 'myAppsCtrl',
-                dependencies: ['js/my-apps']
             }
         }
     };

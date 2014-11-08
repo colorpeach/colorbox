@@ -5,10 +5,10 @@ define(['js/app'], function(app){
         function($http){
             return {
                 enter: function(data){
-                    return $http.post('/login', data);
+                    return $http.post('/_login', data);
                 },
                 register: function(data){
-                    return $http.post('/register', data);
+                    return $http.post('/_register', data);
                 }
             };
         }
