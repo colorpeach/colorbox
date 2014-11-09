@@ -18,9 +18,11 @@ html
             textarea#content(name="content", required)
             input.button(type="submit", value="提交")
     div.row
-      h1 colorBox更新日志
+      div.large-12.columns
+        h1 colorBox更新日志
     each log in logs
       div.row
-        hr
-        div #{log.date}
-        div !{log.content}
+        div.large-12.columns
+          hr
+        div.large-12.columns #{log.date}
+        div.large-12.columns !{log.content}

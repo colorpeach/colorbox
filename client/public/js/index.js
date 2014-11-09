@@ -189,7 +189,7 @@ define(['js/app'], function(app){
                             scope.app.show = !scope.app.show;
                         });
 
-                        element.bind('mousedown', function(e){
+                        element.bind('mousedown touchstart', function(e){
                             if(!scope.allowDrag) return;
                             if(e.target.tagName !== 'SELECT')
                                 e.preventDefault();
@@ -255,7 +255,7 @@ define(['js/app'], function(app){
                                 item.size.showIframe = 'false';
                             }
 
-                            $moveContain.bind('mousemove', function(e){
+                            $moveContain.bind('mousemove touchmove', function(e){
                                 point = {
                                     x: e.clientX,
                                     y: e.clientY
@@ -278,7 +278,7 @@ define(['js/app'], function(app){
                                 }, 50);
                             });
 
-                            $moveContain.bind('mouseup', function(e){
+                            $moveContain.bind('mouseup touchend', function(e){
                                 $moveContain.off('mousemove');
                                 $moveContain.off('mouseup');
 
