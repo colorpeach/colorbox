@@ -203,7 +203,7 @@ define(['js/app'], function(app){
                             }, 300);
                         });
 
-                        element.bind('mouseup', function(){
+                        element.bind('mouseup touchend', function(){
                             if(timer){
                                 $timeout.cancel(timer);
                             }
@@ -287,7 +287,7 @@ define(['js/app'], function(app){
                                     positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
                                     $placeholder[positionIsRight ? 'removeClass' : 'addClass']('wrong');
                                     $placeholder.css(position);
-                                }, 50);
+                                }, 20);
                             });
 
                             $moveContain.bind('mouseup touchend', function(e){
