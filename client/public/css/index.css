@@ -481,6 +481,8 @@
   right: 0;
   bottom: 0;
   background-color: transparent;
+  opacity: .9;
+  z-index: 1000;
 }
 
 .route-overlay.ng-enter{
@@ -499,6 +501,38 @@
           animation-duration: 1s;
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
+}
+
+.route-waiting{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 30px;
+  margin-left: -15px;
+  margin-top: -15px;
+  color: #999;
+  font-size: 30px;
+  line-height: 30px;
+  -webkit-animation: waiting 1s infinite linear;
+  animation: waiting 1s infinite linear;
+}
+
+@-webkit-keyframes waiting{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waiting{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
 }
 
 /*message-board*/

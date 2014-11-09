@@ -6,6 +6,8 @@ block content
   include ./nav.jade
   div.main-box(ng-view)
   div.route-overlay(ng-show="loading")
+    div.route-waiting
+      span.icon-spinner2
 
 block script
   script(src="/public/js/bootstrap.js")
