@@ -313,7 +313,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                             };
 
                             if(dir === 'x'){
-                                relative = point.x - pRect.left;
+                                relative = point.x;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -321,7 +321,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                     height: rect.height + 'px'
                                 });
                             }else{
-                                relative = point.y - pRect.top;
+                                relative = point.y;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -337,7 +337,6 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                     x: (e.touches ? e.touches[0].clientX : e.clientX) - pRect.left,
                                     y: (e.touches ? e.touches[0].clientY : e.clientY) - pRect.top
                                 };
-    //                             var resizeTarget = element.data('resizeTarget');
 
                                 $resizeMark.css(dir === 'x' ? {left: point.x + 'px'} : {top: point.y + 'px'});
                             });
