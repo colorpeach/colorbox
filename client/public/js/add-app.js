@@ -316,14 +316,14 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                 relative = point.x;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
-                                    left: rect.left - pRect.left + 'px',
+                                    left: 5 + rect.left - pRect.left + 'px',
                                     width: '1px',
                                     height: rect.height + 'px'
                                 });
                             }else{
                                 relative = point.y;
                                 $resizeMark.css({
-                                    top: rect.top - pRect.top + 'px',
+                                    top: 5 + rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
                                     width: rect.width + 'px',
                                     height: '1px'
