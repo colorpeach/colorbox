@@ -309,7 +309,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                             var relative;
 
                             if(dir === 'x'){
-                                relative = e.clientX - pRect.left;
+                                relative =(e.touches[0] ? e.touches[0].clientX :  e.clientX) - pRect.left;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -317,7 +317,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                     height: rect.height + 'px'
                                 });
                             }else{
-                                relative = e.clientY - pRect.top;
+                                relative = (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -330,8 +330,8 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
 
                             $parent.on('mousemove', function(e){
                                 var point = {
-                                    x: e.clientX - pRect.left,
-                                    y: e.clientY - pRect.top
+                                    x: (e.touches[0] ? e.touches[0].clientX : e.clientX) - pRect.left,
+                                    y: (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top
                                 };
     //                             var resizeTarget = element.data('resizeTarget');
 
@@ -344,8 +344,8 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                 $parent.off('mousemove');
                                 $parent.off('mouseup');
                                 resize(element, dir, pRect, {
-                                    x: e.clientX - pRect.left,
-                                    y: e.clientY - pRect.top
+                                    x: (e.touches[0] ? e.touches[0].clientX : e.clientX) - pRect.left,
+                                    y: (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top
                                 });
                             });
                         });

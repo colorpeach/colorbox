@@ -232,8 +232,13 @@ define(['js/app'], function(app){
                             $rootScope.$apply();
                             $rootScope.$broadcast('dragStart');
 
-                            relative.x = e.clientX - rect.left;
-                            relative.y = e.clientY - rect.top;
+                            if(e.touches){
+                                relative.x = e.touches[0].clientX - rect.left;
+                                relative.y = e.touches[0].clientY - rect.top;
+                            }else{
+                                relative.x = e.clientX - rect.left;
+                                relative.y = e.clientY - rect.top;
+                            }
 
                             $drag.css({
                                 left: rect.left + 'px',
@@ -256,10 +261,17 @@ define(['js/app'], function(app){
                             }
 
                             $moveContain.bind('mousemove touchmove', function(e){
-                                point = {
-                                    x: e.clientX,
-                                    y: e.clientY
-                                };
+                                if(e.touches){
+                                    point = {
+                                        x: e.touches[0].clientX,
+                                        y: e.touches[0].clientY
+                                    };
+                                }else{
+                                    point = {
+                                        x: e.clientX,
+                                        y: e.clientY
+                                    };
+                                }
 
                                 $drag.css({
                                     left: point.x - relative.x + 'px',
