@@ -344,8 +344,8 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                             $parent.on('mouseup touchend', function(e){
                                 $resizeMark.remove();
                                 $resizeOverlay.remove();
-                                $parent.off('mousemove');
-                                $parent.off('mouseup');
+                                $parent.off('mousemove touchmove');
+                                $parent.off('mouseup touchend');
                                 resize(element, dir, pRect, point);
                             });
                         });

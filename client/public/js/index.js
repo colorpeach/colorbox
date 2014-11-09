@@ -291,8 +291,8 @@ define(['js/app'], function(app){
                             });
 
                             $moveContain.bind('mouseup touchend', function(e){
-                                $moveContain.off('mousemove');
-                                $moveContain.off('mouseup');
+                                $moveContain.off('mousemove touchmove');
+                                $moveContain.off('mouseup touchend');
 
                                 if(moveTimer){
                                     $timeout.cancel(moveTimer);
