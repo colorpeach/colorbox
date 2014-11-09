@@ -359,6 +359,15 @@
           animation-fill-mode: both;
 }
 
+.desktop-added-list li.ng-leave{
+  -webkit-animation-name: zoomOut;
+          animation-name: zoomOut;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+
 .app-logo{
   max-width: 100%;
   transition: all 200ms ease-out;
@@ -505,7 +514,7 @@
 
 .dashboard-slidebar{
   position: absolute;
-  width: 200px;
+  width: 160px;
   top: 0;
   left: 0;
   bottom: 0;
@@ -565,7 +574,8 @@
 }
 
 .dashboard-box{
-  margin-left: 200px;
+  display: block;
+  margin-left: 160px;
   padding: 0 10px;
   height: 100%;
   background-color: #fafafa;
