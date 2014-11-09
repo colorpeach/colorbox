@@ -298,7 +298,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                 compile: function(){
                     return function(scope, element, attrs){
 
-                        element.on('mousedown', function(e){
+                        element.on('mousedown touchstart', function(e){
                             e.preventDefault();
                             var dir = element.hasClass('dir-h') ? 'y' : 'x';
                             var $resizeMark = angular.element(resizeMarkTpl);
@@ -307,9 +307,13 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                             var pRect = $parent[0].getBoundingClientRect();
                             var rect = element[0].getBoundingClientRect();
                             var relative;
+                            var point = {
+                                x: (e.touches ? e.touches[0].clientX : e.clientX) - pRect.left,
+                                y: (e.touches ? e.touches[0].clientY : e.clientY) - pRect.top
+                            };
 
                             if(dir === 'x'){
-                                relative =(e.touches[0] ? e.touches[0].clientX :  e.clientX) - pRect.left;
+                                relative = point.x - pRect.left;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -317,7 +321,7 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                     height: rect.height + 'px'
                                 });
                             }else{
-                                relative = (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top;
+                                relative = point.y - pRect.top;
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -328,25 +332,22 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
 
                             $parent.append($resizeMark).append($resizeOverlay);
 
-                            $parent.on('mousemove', function(e){
-                                var point = {
-                                    x: (e.touches[0] ? e.touches[0].clientX : e.clientX) - pRect.left,
-                                    y: (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top
+                            $parent.on('mousemove touchmove', function(e){
+                                point = {
+                                    x: (e.touches ? e.touches[0].clientX : e.clientX) - pRect.left,
+                                    y: (e.touches ? e.touches[0].clientY : e.clientY) - pRect.top
                                 };
     //                             var resizeTarget = element.data('resizeTarget');
 
                                 $resizeMark.css(dir === 'x' ? {left: point.x + 'px'} : {top: point.y + 'px'});
                             });
 
-                            $parent.on('mouseup', function(e){
+                            $parent.on('mouseup touchend', function(e){
                                 $resizeMark.remove();
                                 $resizeOverlay.remove();
                                 $parent.off('mousemove');
                                 $parent.off('mouseup');
-                                resize(element, dir, pRect, {
-                                    x: (e.touches[0] ? e.touches[0].clientX : e.clientX) - pRect.left,
-                                    y: (e.touches[0] ? e.touches[0].clientY : e.clientY) - pRect.top
-                                });
+                                resize(element, dir, pRect, point);
                             });
                         });
 
