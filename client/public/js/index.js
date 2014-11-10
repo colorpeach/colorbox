@@ -177,6 +177,26 @@ define(['js/app'], function(app){
     .directive('dragItem', 
     ['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope', 'calcMethods', '$sce',
         function(utils, $window, dragPlaceholder, $timeout, $rootScope, calcMethods, $sce){
+            var eventsMap = {
+                web: {
+                    down: 'mousedown',
+                    up: 'mouseup',
+                    move: 'mousemove'
+                },
+                mobile: {
+                    down: 'touchstart',
+                    up: 'touchend',
+                    move: 'touchmove'
+                }
+            };
+            var device;
+
+            if($window.document.hasOwnProperty("ontouchstart")){
+                device = 'mobile';
+            }else{
+                device = 'web';
+            }
+
             return {
                 restrict: 'A',
                 compile: function(){
@@ -189,7 +209,10 @@ define(['js/app'], function(app){
                             scope.app.show = !scope.app.show;
                         });
 
-                        element.bind('mousedown touchstart', function(e){
+                        element.bind(eventsMap[device].down, elementDown);
+                        element.bind(eventsMap[device].up, elementUp);
+
+                        function elementDown(e){
                             if(!scope.allowDrag) return;
                             if(e.target.tagName !== 'SELECT')
                                 e.preventDefault();
@@ -201,13 +224,13 @@ define(['js/app'], function(app){
                             timer = $timeout(function(){
                                 startDrag(e);
                             }, 300);
-                        });
+                        }
 
-                        element.bind('mouseup touchend', function(){
+                        function elementUp(e){
                             if(timer){
                                 $timeout.cancel(timer);
                             }
-                        });
+                        }
 
                         function startDrag(e){
                             var item = scope.getDrapData(scope.$index);
@@ -260,7 +283,7 @@ define(['js/app'], function(app){
                                 item.size.showIframe = 'false';
                             }
 
-                            $moveContain.bind('mousemove touchmove', function(e){
+                            $moveContain.bind(eventsMap[device].move, function(e){
                                 if(e.touches){
                                     point = {
                                         x: e.touches[0].clientX,
@@ -290,9 +313,9 @@ define(['js/app'], function(app){
                                 }, 20);
                             });
 
-                            $moveContain.bind('mouseup touchend', function(e){
-                                $moveContain.off('mousemove touchmove');
-                                $moveContain.off('mouseup touchend');
+                            $moveContain.bind(eventsMap[device].up, function(e){
+                                $moveContain.off(eventsMap[device].move);
+                                $moveContain.off(eventsMap[device].up);
 
                                 if(moveTimer){
                                     $timeout.cancel(moveTimer);

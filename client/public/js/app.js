@@ -106,6 +106,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ['$rootScope', '$window',
         function($rootScope, $window){
             $rootScope.$on('$routeChangeStart', function(e, route){
+                $rootScope.loadMessage = '';
                 $rootScope.loading = true;
                 $window.document.title = route.$$route.title;
             });

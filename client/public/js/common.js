@@ -154,17 +154,107 @@ define(['angular'], function(){
 
         return prompt;
     }])
-
-    .directive('viewLink',
+    
+    .factory('fixed',
     [
         function(){
-            return {
-                restrict: 'A',
-                compile: function(_element, _attrs){
-                    var href = _element.attr('href');
-                    _element.attr('href', '#' + href);
+            return function(target,attachment,options){
+                var offset = target[0].getBoundingClientRect(),
+                    tip = attachment,
+                    tipRect = tip[0].getBoundingClientRect(),
+                    arrowGap = 6,
+                    css = {},
+                    tipW,tipH,
+                    opts = {
+                        dir:'b',
+                        x:0,
+                        y:0
+                    };
+
+                angular.extend(opts,options);
+                tipW = tipRect.right - tipRect.left;
+                tipH = tipRect.bottom - tipRect.top;
+
+                switch(opts.dir){
+                    case 'l':
+                        css = {
+                            left:offset.left - tipW - arrowGap,
+                            top:offset.top - tipH/2 + (offset.bottom - offset.top)/2
+                        };
+                        break;
+                    case 'r':
+                        css = {
+                            left:offset.right + tipW +arrowGap,
+                            top:offset.top - tipH/2 + (offset.bottom - offset.top)/2
+                        };
+                        break;
+                    case 't':
+                        css = {
+                            left:offset.left - tipW/2 + (offset.right - offset.left)/2,
+                            top:offset.top - arrowGap
+                        };
+                        break;
+                    default:
+                        css = {
+                            left:offset.left - tipW/2 + (offset.right - offset.left)/2,
+                            top:offset.bottom + arrowGap
+                        };
+                        break;
                 }
-            };
+
+                css.left += +opts.x||0;
+                css.top += +opts.y||0;
+                
+                css.left += 'px';
+                css.top += 'px';
+
+                tip.css(css);
+            }
+        }
+    ])
+
+    .directive('tip',
+    ['fixed',
+        function(fixed){
+            var tipHTML = 
+                '<div class="cm-tip hide">'
+                    + '<div class="cm-tip-arrow"></div>'
+                    + '<div class="cm-tip-content"></div>'
+                 + '</div>';
+            var tipDom = angular.element(tipHTML);
+
+            angular.element(document.body).append(tipDom);
+
+            return {
+                restrict:'A',
+                compile:function(){
+                    
+                    return function(scope,element,attrs){
+                        var tip = tipDom;
+                        var title = attrs.title;
+                        
+                        element.removeAttr('title');
+                        
+                        element.bind('mouseenter',function(){
+                            
+                            tip.removeClass('hide');
+                            tip.children().eq(1).text(attrs.title)
+
+                            if(attrs.tip === 'l'){
+                                fixed(element, tip, {dir: 'l'});
+                                tip.children().eq(0).addClass('cm-tip-arrow-left');
+                            }else{
+                                fixed(element, tip);
+                                tip.children().eq(0).removeClass('cm-tip-arrow-left');
+                            }
+                        });
+                        
+                        element.bind('mouseleave',function(){
+                            tip.addClass('hide');
+                        })
+                    }
+                }
+            }
         }
     ])
 
