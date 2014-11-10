@@ -476,12 +476,12 @@
 
 .route-overlay{
   position: fixed;
-  top: 0;
+  top: 35px;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: transparent;
-  opacity: .9;
+  opacity: .3;
   z-index: 1000;
 }
 
@@ -510,11 +510,22 @@
   height: 30px;
   margin-left: -15px;
   margin-top: -15px;
-  color: #999;
+  color: #000;
   font-size: 30px;
   line-height: 30px;
   -webkit-animation: waiting 1s infinite linear;
   animation: waiting 1s infinite linear;
+}
+
+.route-message{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  margin: auto;
+  text-align: center;
 }
 
 @-webkit-keyframes waiting{
@@ -664,12 +675,7 @@
   background-color: #eee;
 }
 
-.dashboard-box-item:hover .dashboard-box-item-btns{
-  display: block;
-}
-
 .dashboard-box-item-btns{
-  display: none;
   float: right;
 }
 

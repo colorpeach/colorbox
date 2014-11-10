@@ -22,7 +22,7 @@ user.add = function(data,fn){
 
 //更新用户
 user.update = function(data,fn){
-    var d = dbClient.split(tidy(data));
+    var d = dbClient.split(tidy(data), ['login']);
     dbClient.connect([
         function(db,callback){
             db.collection('user').update(d.search,{$set:d.data},function(err,data){

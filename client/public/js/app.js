@@ -4,35 +4,42 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         defaultRoutePath: '/',
         routes: {
             '/': {
+                title: 'colorBox-桌面',
                 templateUrl: 'index.html',
                 dependencies: ['js/index', 'js/app-list']
             },
             '/login': {
+                title: '登录colorBox',
                 templateUrl: 'login.html',
                 controller: 'loginCtrl',
                 dependencies: ['js/login']
             },
             '/register': {
+                title: '注册colorBox账号',
                 templateUrl: 'register.html',
                 controller: 'registerCtrl',
                 dependencies: ['js/login']
             },
             '/app-list': {
+                title: 'colorBox-所有应用',
                 templateUrl: 'app-list.html',
                 controller: 'appListCtrl',
                 dependencies: ['js/app-list']
             },
             '/dashboard/:tab': {
+                title: 'colorBox-我的仪表盘',
                 templateUrl: 'dashboard.html',
                 controller: 'dashboardCtrl',
                 dependencies: ['js/dashboard']
             },
             '/message-board': {
+                title: 'colorBox-留言板',
                 templateUrl: 'message.html',
                 controller: 'messageCtrl',
                 dependencies: ['js/message']
             },
             '/add/:id': {
+                title: 'colorBox-应用编辑',
                 templateUrl: 'add-app.html',
                 controller: 'addAppCtrl',
                 dependencies: ['js/add-app']
@@ -60,7 +67,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
             if(config.routes !== undefined){
                 angular.forEach(config.routes, function(route, path){
-                    $routeProvider.when(path, {templateUrl:route.templateUrl, resolve:dependencyResolverFor(route.dependencies), controller: route.controller});
+                    $routeProvider.when(path, {templateUrl:route.templateUrl, resolve:dependencyResolverFor(route.dependencies), controller: route.controller, title: route.title});
                 });
             }
 
@@ -96,14 +103,25 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ]);
 
     app.run(
-    ['$rootScope',
-        function($rootScope){
-            $rootScope.$on('$routeChangeStart', function(){
+    ['$rootScope', '$window',
+        function($rootScope, $window){
+            $rootScope.$on('$routeChangeStart', function(e, route){
                 $rootScope.loading = true;
+                $window.document.title = route.$$route.title;
             });
             $rootScope.$on('$routeChangeSuccess', function(){
                 $rootScope.loading = false;
             });
+            $rootScope.$on('$routeChangeError', function(){
+                $rootScope.loadMessage = '加载失败, 点击重新载入';
+                $rootScope.loading = false;
+            });
+
+            $rootScope.reload = location.reload;
+            $rootScope.setLoad = function(o){
+                angular.isDefined(o.loading) && ($rootScope.loading = o.loading);
+                angular.isDefined($rootScope.loadMessage) && ($rootScope.loadMessage = o.loadMessage);
+            };
         }
     ]);
 

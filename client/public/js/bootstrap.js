@@ -1,5 +1,6 @@
 require.config({
     baseUrl: '/',
+    waitSeconds: 20,
     paths: {
         'angular'                 : '/lib/angular/1.3.0/angular.min',
         'angular-route'           : '/lib/angular/1.3.0/angular-route.min',

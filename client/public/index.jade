@@ -5,9 +5,11 @@ block css
 block content
   include ./nav.jade
   div.main-box(ng-view)
-  div.route-overlay(ng-show="loading")
-    div.route-waiting
+  div.route-overlay(ng-show="loading || loadMessage")
+    div.route-waiting(ng-show="loading")
       span.icon-spinner2
+    div.route-message(ng-show="loadMessage")
+      a(ng-click="reload()", ng-bind="loadMessage")
 
 block script
   script(src="/public/js/bootstrap.js")
