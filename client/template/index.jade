@@ -1,4 +1,4 @@
-div.desktop-box(ng-controller="desktopCtrl", ng-class='{adding: status.adding}')
+div.desktop-box(ng-class='{adding: status.adding}')
   ul.desktop-added-list(drag-contain='apps', drag-box='apps')
     li(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
       span.icon-plus.desktop-drag-btn(ng-if="app.isButton && app.addButton",ng-click="switchStatus('add')", title="添加桌面应用")
@@ -7,4 +7,4 @@ div.desktop-box(ng-controller="desktopCtrl", ng-class='{adding: status.adding}')
       div.app-side-btns
         span.app-side-btn.icon-minus(ng-if="app.size.showIframe === 'true'", title="拖拽应用")
         span.app-side-btn.icon-remove(ng-if="!app.isButton", ng-click="removeApp($index)", title="从桌面删除应用")
-  div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")
+div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")

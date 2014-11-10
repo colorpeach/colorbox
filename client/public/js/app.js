@@ -6,6 +6,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/': {
                 title: 'colorBox-桌面',
                 templateUrl: 'index.html',
+                controller: 'desktopCtrl',
                 dependencies: ['js/index', 'js/app-list']
             },
             '/login': {

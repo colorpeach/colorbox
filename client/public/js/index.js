@@ -214,8 +214,9 @@ define(['js/app'], function(app){
 
                         function elementDown(e){
                             if(!scope.allowDrag) return;
-                            if(e.target.tagName !== 'SELECT')
+                            if(device === 'web' && e.target.tagName !== 'SELECT'){
                                 e.preventDefault();
+                            }
 
                             if(timer){
                                 $timeout.cancel(timer);
@@ -227,6 +228,8 @@ define(['js/app'], function(app){
                         }
 
                         function elementUp(e){
+//                             if(e.target.tagName !== 'SELECT')
+//                                 e.preventDefault();
                             if(timer){
                                 $timeout.cancel(timer);
                             }
@@ -272,7 +275,7 @@ define(['js/app'], function(app){
                             $placeholder.html('');
                             $placeholder.addClass('drag-placeholder');
                             $contain.append($placeholder);
-                            $moveContain.append($overlay);
+                            $contain.parent().append($overlay);
 
                             position = calcMethods.position(item, point, containRect, $contain[0]);
                             positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
@@ -285,6 +288,7 @@ define(['js/app'], function(app){
 
                             $moveContain.bind(eventsMap[device].move, function(e){
                                 if(e.touches){
+                                    e.preventDefault();
                                     point = {
                                         x: e.touches[0].clientX,
                                         y: e.touches[0].clientY
@@ -326,8 +330,10 @@ define(['js/app'], function(app){
                                 $drag.remove();
 
                                 if(positionIsRight &&
-                                    point.x < containRect.left + containRect.width &&
-                                    point.y < containRect.top + containRect.height){
+                                    point.x < containRect.left + containRect.width
+//                                      &&
+//                                     point.y < containRect.top + containRect.height
+                                    ){
                                     item.position = position;
                                     if(scope.$parent !== $contain.scope()){
                                         $contain.scope().add(item);

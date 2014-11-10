@@ -10,19 +10,21 @@ html
     link(rel='stylesheet', href='/public/css/index.css')
   body
     include ./nav.jade
-    if user && user.admin
-      form(method="post", action="/post/add/log")
+    div.main-box
+      div
+        if user && user.admin
+          form(method="post", action="/post/add/log")
+            div.row
+              div.large-12.columns
+                label(for="content") 日志内容
+                textarea#content(name="content", required)
+                input.button(type="submit", value="提交")
         div.row
           div.large-12.columns
-            label(for="content") 日志内容
-            textarea#content(name="content", required)
-            input.button(type="submit", value="提交")
-    div.row
-      div.large-12.columns
-        h1 colorBox更新日志
-    each log in logs
-      div.row
-        div.large-12.columns
-          hr
-        div.large-12.columns #{log.date}
-        div.large-12.columns !{log.content}
+            h1 colorBox更新日志
+        each log in logs
+          div.row
+            div.large-12.columns
+              hr
+            div.large-12.columns #{log.date}
+            div.large-12.columns !{log.content}
