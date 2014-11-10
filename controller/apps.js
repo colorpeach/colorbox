@@ -27,16 +27,14 @@ Apps.get = function(req, res){
 };
 
 Apps.add = function(req, res){
-    apps.query({name:req.body.name},function(list){
+    apps.query({name: req.body.name},function(list){
         if(list.length){
-            res.end(baseRes({errorMsg:['app已经存在']}));
+            res.end(baseRes({errorMsg: ['应用已经存在']}));
         }else{
-            var data = {};
-            data.user = req.session.user.login;
-            data.name = req.body.name;
+            req.body.user = req.session.user.login;
             
-            apps.add(data,function(data){
-                res.end(baseRes(data));
+            apps.add(req.body, function(data){
+                res.end(baseRes({app: data[0]}));
             });
         }
     });

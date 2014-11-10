@@ -25,6 +25,6 @@ pages.html = function(req, res){
         }
     });
     
-}
+};
 
 module.exports = pages;

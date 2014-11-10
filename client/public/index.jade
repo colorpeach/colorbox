@@ -3,47 +3,11 @@ block css
   link(rel='stylesheet', href="/lib/codemirror/4.7/lib/codemirror.css")
 
 block content
-  nav.top-bar
-    ul.title-area
-      li.name
-        h1
-          a(view-link, href="/") colorBox
-      li.toggle-topbar.menu-icon
-        a(href="#")
-          span Menu
-    section.top-bar-section
-      ul.right
-        li
-          a(view-link, href="/message-board", title="留言板") 留言板
-        li
-          a(view-link, href="/app-list", title="所有应用")
-            span.xicon-th-large
-        if user
-          li.has-dropdown.not-click
-            a #{user.login}
-            ul.dropdown
-              li
-                a(view-link, href="/add-dialog") 新增应用
-              li
-                a(view-link, href="/my-apps") 我的应用
-              li
-                a(href="/logout") 注销
-        if !user
-          li.has-dropdown.not-click
-            a(view-link, href="/login") 登录
-            ul.dropdown
-              li
-                a(view-link, href="/register") 注册
+  include ./nav.jade
   div.main-box(ng-view)
+  div.route-overlay(ng-show="loading")
+    div.route-waiting
+      span.icon-spinner2
 
 block script
-  script(src="/lib/codemirror/4.7/lib/codemirror.js")
-  script(src="/lib/codemirror/4.7/mode/javascript/javascript.js")
-  script(src="/lib/codemirror/4.7/mode/jade/jade.js")
-  script(src="/lib/codemirror/4.7/mode/css/css.js")
-  script(src="/public/js/login.js")
-  script(src="/public/js/my-apps.js")
-  script(src="/public/js/add-app.js")
-  script(src="/public/js/app-list.js")
-  script(src="/public/js/message.js")
-  script(src="/public/js/index.js")
+  script(src="/public/js/bootstrap.js")

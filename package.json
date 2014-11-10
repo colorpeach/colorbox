@@ -35,6 +35,7 @@
     "serve-favicon": "^2.1.6",
     "morgan": "^1.4.1",
     "mongodb": "^1.4.19",
-    "async": "^0.9.0"
+    "async": "^0.9.0",
+    "showdown": "^0.3.1"
   }
 }

@@ -1,33 +1,28 @@
 var dbClient = require('../database');
 var tidy = dbClient.column({
-    name         : 'name',
-    description  : 'description',
-    jade         : 'jade',
-    css          : 'css',
-    js           : 'js',
-    user         : 'user',
-    sizes        : 'sizes'
+    date         : 'date',
+    content  : 'content'
 });
-var apps = {};
+var logs = {};
 
-//新增app
-apps.add = function(data,fn){
+//新增log
+logs.add = function(data,fn){
     var d = tidy(data);
     dbClient.connect([
         function(db,callback){
-            db.collection('apps').insert(d,function(err,data){
+            db.collection('logs').insert(d,function(err,data){
                 callback(err,data);
             });
         }
     ],fn);
 }
 
-//更新app
-apps.update = function(data,fn){
+//更新log
+logs.update = function(data,fn){
     var d = dbClient.split(tidy(data));
     dbClient.connect([
         function(db,callback){
-            db.collection('apps').update(d.search,{$set:d.data},function(err,data){
+            db.collection('logs').update(d.search,{$set:d.data},function(err,data){
                 callback(err,data);
             });
         }
@@ -35,27 +30,27 @@ apps.update = function(data,fn){
 }
 
 //查询
-apps.query = function(data,fn,filter){
+logs.query = function(data,fn,filter){
     var d = tidy(data);
     dbClient.connect([
         function(db,callback){
-            db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
+            db.collection('logs').find(d,{fields:filter}).sort({'date': -1}).toArray(function(err,data){
                 callback(err,data);
             });
         }
     ],fn);
 }
 
-//删除app
-apps.del = function(data,fn){
+//删除log
+logs.del = function(data,fn){
     var d = tidy(data);
     dbClient.connect([
         function(db,callback){
-            db.collection('apps').remove(d,function(err,data){
+            db.collection('logs').remove(d,function(err,data){
                 callback(err,data);
             });
         }
     ],fn);
 }
 
-module.exports = apps;
+module.exports = logs;
