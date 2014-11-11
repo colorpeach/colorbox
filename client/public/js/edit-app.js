@@ -1,6 +1,6 @@
 define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror){
     app
-    .controller('addAppCtrl',
+    .controller('editAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',
         function($scope,   appsCrud,   $routeParams,   $window,   $sce){
             $scope.data = {};

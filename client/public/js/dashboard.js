@@ -110,14 +110,6 @@ define(['js/app'], function(app){
                 });
             };
 
-            $scope.chooseApp = function(app, $index){
-                $scope.current = app;
-                $scope.current.$index = $index;
-                $scope.currentSize = {};
-                !$scope.current.sizes && ($scope.current.sizes = []);
-                !$scope.current.sizes.length && ($scope.current.sizes.push({x: '1', y: '1', showIframe: 'false'}));
-            };
-
             $scope.switchAddSize = function(){
                 if($scope.status.addSize = !$scope.status.addSize){
                     $scope.currentSize = {x: 1, y: 1, showIframe: false};
@@ -227,6 +219,16 @@ define(['js/app'], function(app){
                         content: '删除成功'
                     });
                     $scope.switch(null, 'list');
+                });
+            };
+
+            $scope.submit = function(e){
+                e.preventDefault();
+                snippetsCrud.save($scope.current)
+                .success(function(){
+                    prompt({
+                        content: '保存成功'
+                    });
                 });
             };
         }
