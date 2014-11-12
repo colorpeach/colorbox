@@ -38,6 +38,10 @@ define(['js/app'], function(app){
     .controller('myAppsCtrl',
     ['$scope', 'appsCrud', 'prompt',
         function($scope,   appsCrud, prompt){
+            if($scope.tab !== 'apps'){
+                return;
+            }
+
             $scope.currentSize = {};
             $scope.current = {};
             $scope.sizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -49,6 +53,11 @@ define(['js/app'], function(app){
                 addSize: false,
                 page: 'list'
             };
+
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入应用列表...'
+            });
 
             appsCrud.getApps()
             .success(function(data){
@@ -163,10 +172,19 @@ define(['js/app'], function(app){
     .controller('mySnippetsCtrl',
     ['$scope', 'snippetsCrud', 'prompt',
         function($scope, snippetsCrud, prompt){
+            if($scope.tab !== 'snippets'){
+                return;
+            }
+            
             $scope.current = {};
             $scope.status = {
                 page: 'list'
             };
+
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入代码片段列表...'
+            });
             
             snippetsCrud.getSnippets()
             .success(function(data){

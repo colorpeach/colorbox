@@ -1,8 +1,13 @@
-define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace, CodeMirror){
+define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace){
     app
     .controller('editAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',
         function($scope,   appsCrud,   $routeParams,   $window,   $sce){
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入代码'
+            });
+
             $scope.data = {};
             appsCrud.get($routeParams.id)
             .success(function(data){
@@ -375,7 +380,7 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace, CodeMirror){
     .directive('codeEditor', 
     ['$timeout',
         function($timeout){
-            CodeMirror.modeURL = '/lib/codemirror/4.7/mode/%N/%N.js';
+//             CodeMirror.modeURL = '/lib/codemirror/4.7/mode/%N/%N.js';
             
             return {
                 restrict: 'A',
@@ -454,7 +459,10 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace, CodeMirror){
 
                         scope.$watch('data.' + config.key, function(newValue, oldValue){
                             if(!userSave){
-                                newValue && newValue !== oldValue && editor.setValue(newValue);
+                                if(newValue && newValue !== oldValue){
+                                    editor.setValue(newValue);
+                                    editor.clearSelection();
+                                }
                             }else{
                                 userSave = false;
                             }

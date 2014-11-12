@@ -24,6 +24,11 @@ define(['js/app'], function(app){
             $scope.data = {};
             $scope.current = null;
 
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入留言...'
+            });
+
             messageCurd.getMessages()
             .success(function(data){
                 $scope.messages = data.messages;

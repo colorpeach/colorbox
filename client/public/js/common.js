@@ -32,8 +32,8 @@ define(['angular'], function(){
 
     //拦截器
     .factory('promptInterceptor',
-    ['$q', 'prompt',
-        function($q,   prompt){
+    ['$q', 'prompt', '$rootScope',
+        function($q,   prompt,   $rootScope){
             return {
                 response: function success(d){
                     if(d.data.error){
@@ -50,6 +50,7 @@ define(['angular'], function(){
     //                         })
                         }
                     }
+                    $rootScope.removeLoad();
                     return d;
                 }
             }

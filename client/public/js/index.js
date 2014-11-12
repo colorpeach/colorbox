@@ -38,6 +38,11 @@ define(['js/app'], function(app){
             $scope.status = {};
             $scope.allowDrag = true;
 
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入桌面应用...'
+            });
+
             desktopCurd.getDesktopApps()
             .success(function(data){
                 if(data.desktopApps && data.desktopApps.length){

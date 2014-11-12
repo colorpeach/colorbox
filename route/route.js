@@ -33,8 +33,14 @@ module.exports = function(app){
                     return;
                 }
             }
-            
-            next();
+
+//             if(path.indexOf('.') < 0){
+//                 setTimeout(function(){
+//                     next();
+//                 }, 1000);
+//             }else{
+                next();
+//             }
         }else{
             res.render('template/not-found',{user:req.session.user});
         }

@@ -548,26 +548,27 @@ body{
 .route-waiting{
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 0;
+  right: 0;
   height: 30px;
-  margin-left: -15px;
   margin-top: -15px;
+  text-align: center;
   color: #000;
-  font-size: 30px;
   line-height: 30px;
+}
+
+.route-waiting .waiting-icon{
+  display: inline-block;
+  height: 30px;
+  font-size: 30px;
+  vertical-align: top;
   -webkit-animation: waiting 1s infinite linear;
   animation: waiting 1s infinite linear;
 }
 
-.route-message{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 20px;
-  margin: auto;
-  text-align: center;
+.route-waiting .waiting-msg{
+  margin-left: 10px;
+  font-size: 16px;
 }
 
 @-webkit-keyframes waiting{

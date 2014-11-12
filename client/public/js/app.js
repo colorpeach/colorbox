@@ -107,15 +107,16 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ['$rootScope', '$window',
         function($rootScope, $window){
             $rootScope.$on('$routeChangeStart', function(e, route){
-                $rootScope.loadMessage = '';
+                $rootScope.loadMessage = '载入页面...';
                 $rootScope.loading = true;
                 $window.document.title = route.$$route.title;
             });
             $rootScope.$on('$routeChangeSuccess', function(){
                 $rootScope.loading = false;
+                $rootScope.loadMessage = '';
             });
             $rootScope.$on('$routeChangeError', function(){
-                $rootScope.loadMessage = '加载失败, 点击重新载入';
+                $rootScope.loadMessage = '加载失败, 请刷新页面';
                 $rootScope.loading = false;
             });
 
@@ -123,6 +124,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             $rootScope.setLoad = function(o){
                 angular.isDefined(o.loading) && ($rootScope.loading = o.loading);
                 angular.isDefined($rootScope.loadMessage) && ($rootScope.loadMessage = o.loadMessage);
+            };
+            $rootScope.removeLoad = function(){
+                $rootScope.loading = '';
+                $rootScope.loadMessage = '';
             };
         }
     ]);

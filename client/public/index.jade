@@ -6,10 +6,9 @@ block content
   include ./nav.jade
   div.main-box(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
-    div.route-waiting(ng-show="loading")
-      span.icon-spinner2
-    div.route-message(ng-show="loadMessage")
-      a(ng-click="reload()", ng-bind="loadMessage")
+    div.route-waiting
+      span.icon-spinner2.waiting-icon(ng-show="loading")
+      span.waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
 
 block script
   script(src="/public/js/bootstrap.js")
