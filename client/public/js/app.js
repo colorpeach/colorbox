@@ -39,11 +39,11 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'messageCtrl',
                 dependencies: ['js/message']
             },
-            '/add/:id': {
+            '/edit/app/:id': {
                 title: 'colorBox-应用编辑',
-                templateUrl: 'add-app.html',
-                controller: 'addAppCtrl',
-                dependencies: ['js/add-app']
+                templateUrl: 'edit-app.html',
+                controller: 'editAppCtrl',
+                dependencies: ['js/edit-app']
             }
         }
     };
