@@ -28,6 +28,10 @@ require.config({
         {
             name: 'cm',
             location: '/lib/codemirror/4.7'
+        },
+        {
+            name: 'ace',
+            location: '/lib/ace'
         }
     ]
 });

@@ -1,4 +1,4 @@
-define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror){
+define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace, CodeMirror){
     app
     .controller('addAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce',
@@ -216,8 +216,8 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
     ])
 
     .directive('resizeBar', 
-    ['utils', 
-        function(utils){
+    ['utils', '$rootScope',
+        function(utils,   $rootScope){
             var resizeMarkTpl = utils.heredoc(function(){/*!
                     <div class="resize-mark"></div>
                 */});
@@ -363,6 +363,8 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
                                 //resizeBar的目标是group
                                 setGroupResize(dir, dir === 'x' ? left : top, resizeTarget, $boxs, scope.boxs, element);
                             }
+
+                            $rootScope.$broadcast('resizeBarResize');
                         }
                     };
                 }
@@ -371,58 +373,101 @@ define(['js/app', 'cm/lib/codemirror', 'js/dashboard'], function(app, CodeMirror
     ])
 
     .directive('codeEditor', 
-    [
-        function(){
+    ['$timeout',
+        function($timeout){
             CodeMirror.modeURL = '/lib/codemirror/4.7/mode/%N/%N.js';
             
             return {
                 restrict: 'A',
+
                 compile: function(){
                     return function(scope, element, attrs){
-                        if(CodeMirror){
-                            var keys = attrs.ngModel.split('.');
-                            var userSave = false;
-                            var config = scope[attrs.codeEditor];
+//                         if(CodeMirror){
+//                             var keys = attrs.ngModel.split('.');
+//                             var userSave = false;
+//                             var config = scope[attrs.codeEditor];
 
-                            var cm = CodeMirror.fromTextArea(element[0], {
-                                mode: config.mode,
-                                lineNumbers: false,
-                                value: element[0],
-                                extraKeys: {
-                                    'Ctrl-S': function(cm){
-                                        cm.save();
-                                    }
-                                }
-                            });
+//                             var cm = CodeMirror.fromTextArea(element[0], {
+//                                 mode: config.mode,
+//                                 lineNumbers: false,
+//                                 value: element[0],
+//                                 extraKeys: {
+//                                     'Ctrl-S': function(cm){
+//                                         cm.save();
+//                                     }
+//                                 }
+//                             });
                             
-                            require(['cm/mode/' + config.mode + '/' + config.mode], function(){
-                                cm.setOption('mode', config.mode);
-                            });
+//                             require(['cm/mode/' + config.mode + '/' + config.mode], function(){
+//                                 cm.setOption('mode', config.mode);
+//                             });
 
-                            cm.setSize('100%', '100%');
+//                             cm.setSize('100%', '100%');
 
-                            scope.$watch(attrs.ngModel, function(newValue, oldValue){
-                                if(!userSave){
-                                    newValue && newValue !== oldValue && cm.doc.setValue(newValue);
-                                }else{
-                                    userSave = false;
-                                }
-                            });
+//                             scope.$watch(attrs.ngModel, function(newValue, oldValue){
+//                                 if(!userSave){
+//                                     newValue && newValue !== oldValue && cm.doc.setValue(newValue);
+//                                 }else{
+//                                     userSave = false;
+//                                 }
+//                             });
 
-                            cm.on('keyHandled', function(cm, name, e){
-                                if(name === 'Ctrl-S'){
-                                    e.preventDefault();
-                                    userSave = true;
-                                    //TODO
-                                    scope[keys[0]][keys[1]] = cm.doc.getValue();
-                                    config.save(e);
-                                }
-                            });
+//                             cm.on('keyHandled', function(cm, name, e){
+//                                 if(name === 'Ctrl-S'){
+//                                     e.preventDefault();
+//                                     userSave = true;
+//                                     //TODO
+//                                     scope[keys[0]][keys[1]] = cm.doc.getValue();
+//                                     config.save(e);
+//                                 }
+//                             });
 
-                            cm.on('blur', function(cm){
-                                scope[keys[0]][keys[1]] = cm.doc.getValue();
-                            });
-                        }
+//                             cm.on('blur', function(cm){
+//                                 scope[keys[0]][keys[1]] = cm.doc.getValue();
+//                             });
+//                         }
+                        var editor = ace.edit(element[0]);
+                        var userSave = false;
+                        var config = scope[attrs.codeEditor];
+                        var resizeTimer = 0;
+
+                        editor.setTheme("ace/theme/chrome");
+                        editor.getSession().setMode("ace/mode/" + config.mode);
+
+                        editor.setKeyboardHandler();
+
+                        editor.getSession().on('change', function(){
+                            scope.data[config.key] = editor.getValue();
+                        });
+
+                        editor.commands.addCommand({
+                            name: 'save',
+                            bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+                            exec: function(editor) {
+                                userSave = true;
+                                //TODO
+                                scope.data[config.key] = editor.getValue();
+                                config.save();
+                            },
+                            readOnly: false
+                        });
+
+                        scope.$watch('data.' + config.key, function(newValue, oldValue){
+                            if(!userSave){
+                                newValue && newValue !== oldValue && editor.setValue(newValue);
+                            }else{
+                                userSave = false;
+                            }
+                        });
+
+                        scope.$on('resizeBarResize', function(){
+                            if(resizeTimer){
+                                $timeout.cancel(resizeTimer);
+                            }
+                            $timeout(function(){
+                                editor.resize();
+                            }, 300);
+                        });
                     }
                 }
             };

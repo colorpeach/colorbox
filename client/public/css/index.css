@@ -241,7 +241,7 @@ body{
 }
 
 .add-app-box{
-  position: absolute;
+  position: absolute!important;
   top: 35px;
   left: 5px;
   right: 5px;
