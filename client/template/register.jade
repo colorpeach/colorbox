@@ -4,6 +4,9 @@ form(name="loginForm", action="/register", method="post", ng-submit="submit($eve
       legend  注册 
       div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
       div.large-12.columns
+        label(for="email") 邮箱
+        input(id="email", type="email", name="email", ng-model="data.email")
+      div.large-12.columns
         label(for="username") 用户名
         input(id="username", type="text", name="username", ng-model="data.username")
       div.large-12.columns

@@ -120,7 +120,7 @@ define(['js/app'], function(app){
             return {
                 position: function(item, point, containRect, contain){
                     return {
-                        left: Math.floor((contain.scrollLeft + point.x - containRect.left)/cell.x) * cell.x + 'px',
+                        left: Math.floor((contain.parentNode.scrollLeft + point.x)/cell.x) * cell.x + 'px',
                         top: Math.floor((contain.scrollTop + point.y - containRect.top)/cell.y) * cell.y + 'px',
                         width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
                         height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
@@ -141,8 +141,9 @@ define(['js/app'], function(app){
                     //预设位置不在包含框内
                     //预设位置与其他重叠
                     if(itemRect.left < 0 ||
-                        itemRect.top < 0 ||
-                        itemRect.right > containRect.width
+                        itemRect.top < 0
+//                          ||
+//                         itemRect.right > containRect.width
                         ){
                         return false;
                     }

@@ -54,8 +54,8 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace){
     ])
 
     .directive('resizeBox',
-    ['utils', '$compile',
-        function(utils,   $compile){
+    ['utils', '$compile', '$rootScope',
+        function(utils,   $compile,   $rootScope){
             var resizeBarHCss = {marginTop: '-5px', height: '10px'};
             var resizeBarVCss = {marginLeft: '-5px', width: '10px'};
             var layouts = {
@@ -213,6 +213,8 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace){
                                     mainOffset += realMain;
                                 }
                             });
+
+                            $rootScope.$broadcast('resizeUpdateView');
                         }
                     }
                 }
@@ -468,14 +470,17 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace){
                             }
                         });
 
-                        scope.$on('resizeBarResize', function(){
+                        scope.$on('resizeBarResize', resize);
+                        scope.$on('resizeUpdateView', resize);
+                        
+                        function resize(){
                             if(resizeTimer){
                                 $timeout.cancel(resizeTimer);
                             }
                             $timeout(function(){
                                 editor.resize();
                             }, 300);
-                        });
+                        }
                     }
                 }
             };
