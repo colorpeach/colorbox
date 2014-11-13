@@ -50,7 +50,10 @@ define(['angular'], function(){
     //                         })
                         }
                     }
-                    $rootScope.removeLoad();
+                    if(!(angular.isString(d.data) && d.data[0] === '<')){
+                        //请求非模板数据返回时，去除loading
+                        $rootScope.removeLoad();
+                    }
                     return d;
                 }
             }
