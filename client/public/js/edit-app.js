@@ -475,7 +475,7 @@ define(['js/app', 'ace/ace', 'js/dashboard'], function(app, ace){
                         
                         function resize(){
                             if(resizeTimer){
-                                $timeout.cancel(resizeTimer);
+                                resizeTimer = $timeout.cancel(resizeTimer);
                             }
                             $timeout(function(){
                                 editor.resize();
