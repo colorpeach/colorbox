@@ -32,6 +32,10 @@ require.config({
         {
             name: 'ace',
             location: '/lib/ace'
+        },
+        {
+            name: 'directive',
+            location: '/public/directive'
         }
     ]
 });

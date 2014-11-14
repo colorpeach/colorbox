@@ -1,66 +1,269 @@
-define(['angular'], function(){
-    angular.module('components', [])
-
-/*
-*@param resizeBox {Array}
-*
-*{
-    dir: 'v'
-    items: [
-        {
-            template: '',
-            hide: false,
-            real: {
-                x: 0,
-                y: 0
-            },
-            show: {
-                x: 0,
-                y: 0
+define(['angular', 'js/app'], function(_, app){
+    app
+    /*
+    *@param resizeBox {Array}
+    *
+    *{
+        dir: 'v',
+        groupReals: [30, 70],
+        items: [
+            {
+                template: '',
+                hide: false,
+                real: 0,
+                show: 0
             }
-        }
-    ]
-}
-*
-*/
+        ]
+    }
+    *
+    */
     .directive('resizeBox',
-    ['$templateCache',
-        function($templateCache){
-            var itemTpl = '<div>{0}</div>';
-            var resizeBarTpl = '<div resize-bar></div>';
+    ['$templateCache', '$rootScope', '$compile',
+        function($templateCache,   $rootScope,   $compile){
+            var resizeBarTpl = '<div resize-bar class="resize-bar"></div>';
+                 
+            //返回显示的group和item的数量
+            function getShows(items, layout, groupReals){
+                var showGroupsCount = 0;
+                var showGroupsReal = 0;
+                var showItemsReals = [];
+                var showItems = [];
+                var showItemsCountList = [];
+                var index = 0;
+                
+                angular.forEach(layout, function(group, groupIndex){
+                    var showItemsCount = 0;
+                    var showItemsReal = 0;
+                    
+                    angular.forEach(group, function(item, itemIndex){
+                        if(!items[index].hide){
+                            showItemsCount++;
+                            showItemsReal += item.real;
+                            showItems.push([groupIndex, itemIndex, index]);
+                        }
+                        index++;
+                    })
+                    
+                    showItemsReals.push(showItemsReal);
+                    if(showItemsCount){
+                        showGroupsCount++;
+                        showGroupsReal += groupReals[groupIndex];
+                    }
+                    
+                    showItemsCountList.push(showItemsCount);
+                });
+                
+                return {
+                    groups: showGroupsCount,
+                    showItemsCountList: showItemsCountList,
+                    showItemsReals: showItemsReals,
+                    showGroupsReal: showGroupsReal,
+                    showItems: showItems
+                };
+            }
+            
+            //矫正real的值
+            function correctReal(items){
+                items.forEach(function(group, groupIndex){
+                    var totalReal = sum(group);
+                    
+                    if(!totalReal){
+                        group.forEach(function(n, i){
+                            n.real = 100 / group.length;
+                        });
+                    }else{
+                        group.forEach(function(n, i){
+                            n.real = n.real * 100/totalReal
+                        });
+                    }
+                });
+            }
+            
+            function sum(list, key){
+                var s = 0;
+                var i = 0;
+                for(;i<list.length;i++){
+                    s += +(key ? list[i][key] : list[i]) || 0;
+                }
+                return s;
+            }
+            
+            function css(top, left, height, width){
+                var unit = '%';
+                return {
+                    top: top + unit,
+                    left: left + unit,
+                    height: height + unit,
+                    width: width + unit,
+                    display: 'block'
+                };
+            }
+
+            function getAttr(scope, key){
+                var current = scope;
+                var value;
+                while(current && angular.isDefined(value = scope[key])){
+                    current = current.$parent;
+                }
+                return value;
+            }
 
             return {
                 restrict: 'A',
                 compile: function(){
                     return function(scope, element, attrs){
-                        var config = function(scope, key){
-                            var current = scope;
-                            var value;
-                            while(current && angular.isDefined(value = scope[key])){
-                                current = current.$parent();
-                            }
-                            return value;
-                        }(scope, attrs.resizeBox);
-                        var $resizeBars = angular.element(Array(config.items.length - 1).join(resizeBarTpl));
+                        var config = getAttr(scope, attrs.resizeBox);
+                        var current;
+                        var $resizeBars = angular.element(Array(config.items.length).join(resizeBarTpl));
+                        var $items = angular.element(config.items.map(function(n, i){
+                                return $templateCache.get(n.template) || n.template;
+                            }).join(''));
 
                         //填充html
-                        element.html(
-                            config.items.concat.apply([], config.items)
-                            .map(function(n, i){
-                                var template = $templateCache.get(n.template) || n.template;
-                                itemTpl.replace(/\{\d+\}/, template);
-                            }).join('')
-                        );
+                        $compile($items)(scope);
+                        $compile($resizeBars)(scope);
+                        element.append($items);
                         element.append($resizeBars);
 
-                        function toggleResizeItem(){
+                        updateLayout(config.layout);
 
+                        scope.$on('layoutResizeBox', function(e, layout){
+                            updateLayout(layout);
+                        });
+
+                        scope.$on('toggleResizeBox', function(e, i){
+                            toggleResizeItem(i);
+                        });
+                        
+                        scope.$on('resizeBarUpdate', function(e, offset, resizeTarget){
+                            resizeUpdateView(current, resizeTarget, offset);
+                            updateView();
+                        });
+
+                        function updateLayout(layout){
+                            if(!layout){
+                                for(var n in config.layouts){
+                                    current = config.layouts[n];
+                                    break;
+                                }
+                            }else{
+                                current = config.layouts[layout];
+                            }
+
+                            if(!current.groupReals){
+                                //TODO
+                                current.groupReals = Array(current.items.length).join('|').split('|').map(function(){ return 100/current.items.length});
+                            }
+
+                            correctReal(current.items);
+                            current.shows = getShows(config.items, current.items, current.groupReals)
+                            updateView();
+                        }
+
+                        function toggleResizeItem(index){
+                            var items = config.items;
+                            items[index].hide = !items[index].hide;
+                            current.shows = getShows(config.items, current.items, current.groupReals);
+                            updateView();
+                        }
+                        
+                        //resize更新
+                        function resizeUpdateView(current, resizeTarget, offset){
+                            var l = resizeTarget.last;
+                            var n = resizeTarget.next;
+                            var shows = current.shows;
+                            var items = current.items;
+                            var groupReals = current.groupReals;
+                            
+                            if(resizeTarget.type === 'item'){
+                                items[l[0]][l[1]].real = items[l[0]][l[1]].real + offset * 100/shows.showItemsReals[l[0]];
+                                items[n[0]][n[1]].real = items[n[0]][n[1]].real - offset * 100/shows.showItemsReals[n[0]];
+                            }else{
+                                groupReals[l[0]] = groupReals[l[0]] + offset * 100/shows.showGroupsReal;
+                                groupReals[n[0]] = groupReals[n[0]] - offset * 100/shows.showGroupsReal;
+                            }
                         }
 
                         function updateView(){
+                            var resizeBarWidth = config.resizeBarWidth;
+                            var shows = current.shows;
+                            var groupReals = current.groupReals;
+                            var dir = current.dir;
+                            var items = current.items;
+                            var last;
+                            
+                            $items.css({display: 'none'});
+                            $resizeBars.removeClass('dir-v dir-h');
 
+                            shows.showItems.forEach(function(n, i, arr){
+                                var item = items[n[0]][n[1]];
+                                var main = 100 * groupReals[n[0]]/shows.showGroupsReal;
+                                var assist = 100 * item.real/shows.showItemsReals[n[0]];
+                                var mainOffset = sum(groupReals.slice(0, n[0]));
+                                var assistOffset = sum(items[n[0]].slice(0, n[1]), 'real');
+                                
+                                if(dir === 'v'){
+                                    item.css = css(mainOffset, assistOffset, main, assist);
+                                }else{
+                                    item.css = css(assistOffset, mainOffset, assist, main);
+                                }
+                                
+                                $items.eq(n[2]).css(item.css);
+                                
+                                //设置resizeBar样式
+                                if(i && i < arr.length){
+                                    var resizeBarClass = 'dir-v';
+                                    var resizeDir = 'v';
+                                    var resizeType = 'item';
+                                    var resizeBarCss = {
+                                        top: 0,
+                                        left: 0,
+                                        width: resizeBarWidth + 'px',
+                                        height: resizeBarWidth + 'px',
+                                        marginLeft: 0,
+                                        marginTop: 0,
+                                        display: 'block'
+                                    };
+                                    
+                                    //如果last和next在同一个group
+                                    if(arr[i-1][0] === n[0]){
+                                        if(dir === 'v'){
+                                            resizeBarCss.left = assistOffset + '%';
+                                            resizeBarCss.top = mainOffset + '%';
+                                            resizeBarCss.height = main + '%';
+                                            resizeBarCss.marginLeft = -resizeBarWidth/2 + 'px'
+                                        }else{
+                                            resizeBarCss.left = mainOffset + '%';
+                                            resizeBarCss.top = assistOffset + '%';
+                                            resizeBarCss.width = main + '%';
+                                            resizeBarCss.marginTop = -resizeBarWidth/2 + 'px'
+                                            resizeBarClass = 'dir-h';
+                                            resizeDir = 'h';
+                                        }
+                                    }else{
+                                        if(dir === 'v'){
+                                            resizeBarCss.top = mainOffset + '%';
+                                            resizeBarCss.width = '100%';
+                                            resizeBarCss.marginTop = -resizeBarWidth/2 + 'px';
+                                            resizeBarClass = 'dir-h';
+                                            resizeDir = 'h';
+                                        }else{
+                                            resizeBarCss.left = mainOffset + '%';
+                                            resizeBarCss.height = '100%';
+                                            resizeBarCss.marginLeft = -resizeBarWidth/2 + 'px';
+                                        }
+                                        resizeType = 'group';
+                                    }
+                                    $resizeBars.eq(i-1)
+                                        .addClass(resizeBarClass)
+                                        .css(resizeBarCss)
+                                        .data('resizeTarget', {last: arr[i-1], next: n, type: resizeType, dir: resizeDir});
+                                }
+                            });
+                            
+
+                            $rootScope.$broadcast('resizeUpdate');
                         }
-
                     };
                 }
             };
@@ -68,8 +271,8 @@ define(['angular'], function(){
     ])
 
     .directive('resizeBar',
-    ['$rootScope',
-        function($rootScope){
+    ['$rootScope', '$window',
+        function($rootScope,   $window){
             var resizeMarkTpl = '<div class="resize-mark"></div>';
             var resizeOverlayTpl = '<div class="resize-overlay"></div>';
             var eventsMap = {
@@ -92,95 +295,26 @@ define(['angular'], function(){
                 device = 'web';
             }
 
-            //Set items resize left, width, top, height
-            function setItemResize(dir, offset, resizeTarget, $boxs, boxs, element){
-                var size, position, temp = {};
-                var $last = $boxs.eq(boxs[resizeTarget.last].index);
-                var $next = $boxs.eq(boxs[resizeTarget.next].index);
-                var last = boxs[resizeTarget.last];
-                var next = boxs[resizeTarget.next];
-
-                if(dir === 'x'){
-                    size = 'width';
-                    position = 'left';
-                }else{
-                    size = 'height';
-                    position = 'top';
-                }
-
-                last[size] = offset - parseFloat(last[position]) + '%';
-                last.real[size] = parseFloat(last[size]) * last.supportRate;
-                next[size] = parseFloat(next[position]) + parseFloat(next[size]) - offset + '%';
-                next.real[size] = parseFloat(next[size]) * next.supportRate;
-                temp[size] = last[size];
-                $last.css(temp);
-                temp = {};
-                next[position] = temp[position] = offset + '%';
-                element.css(temp);
-                temp[size] = next[size];
-                $next.css(temp);
-            }
-            //Set items in group resize left, width, top, height
-            function setGroupResize(dir, offset, resizeTarget, $boxs, boxs, element){
-                var size, position, temp = {};
-                var $resizeBars = $boxs;
-
-                if(dir === 'x'){
-                    size = 'width';
-                    position = 'left';
-                }else{
-                    size = 'height';
-                    position = 'top';
-                }
-
-                resizeTarget.last.forEach(function(n){
-                    var $item = $boxs.eq(boxs[n].index);
-                    var item = boxs[n];
-                    item[size] = offset - parseFloat(item[position]) + '%';
-                    item.real[size] = parseFloat(item[size]) * item.mainRate;
-                    temp = {};
-                    temp[size] = item[size];
-                    $item.css(temp);
-                    $resizeBars.eq(item.resizeBarIndex).css(temp);
-                });
-                resizeTarget.next.forEach(function(n){
-                    var $item = $boxs.eq(boxs[n].index);
-                    var item = boxs[n];
-                    item[size] = parseFloat(item[position]) + parseFloat(item[size]) - offset + '%';
-                    item.real[size] = parseFloat(item[size]) * item.mainRate;
-                    temp = {};
-                    temp[position] = offset + '%';
-                    temp[size] = item[size];
-                    $item.css(temp);
-                    $resizeBars.eq(item.resizeBarIndex).css(temp);
-                    item[position] = temp[position];
-                });
-
-                temp = {};
-                temp[position] = offset + '%';
-                element.css(temp);
-            }
-
             return {
                 restrict: 'A',
                 compile: function(){
                     return function(scope, element, attrs){
                         element.on(eventsMap[device].down, function(e){
                             e.preventDefault();
-                            var dir = element.hasClass('dir-h') ? 'y' : 'x';
+                            var resizeTarget = element.data('resizeTarget');
+                            var dir = resizeTarget.dir;
                             var $resizeMark = angular.element(resizeMarkTpl);
                             var $resizeOverlay = angular.element(resizeOverlayTpl);
                             var $parent = element.parent();
                             var pRect = $parent[0].getBoundingClientRect();
                             var rect = element[0].getBoundingClientRect();
-                            var relative;
                             var point = {
                                 x: (e.touches ? e.touches[0].clientX : e.clientX) - pRect.left,
                                 y: (e.touches ? e.touches[0].clientY : e.clientY) - pRect.top
                             };
+                            var relative = point;
 
-                            if(dir === 'x'){
-                                relative = point.x;
+                            if(dir === 'v'){
                                 $resizeMark.css({
                                     top: rect.top - pRect.top + 'px',
                                     left: 5 + rect.left - pRect.left + 'px',
@@ -188,7 +322,6 @@ define(['angular'], function(){
                                     height: rect.height + 'px'
                                 });
                             }else{
-                                relative = point.y;
                                 $resizeMark.css({
                                     top: 5 + rect.top - pRect.top + 'px',
                                     left: rect.left - pRect.left + 'px',
@@ -205,7 +338,7 @@ define(['angular'], function(){
                                     y: (e.touches ? e.touches[0].clientY : e.clientY) - pRect.top
                                 };
 
-                                $resizeMark.css(dir === 'x' ? {left: point.x + 'px'} : {top: point.y + 'px'});
+                                $resizeMark.css(dir === 'v' ? {left: point.x + 'px'} : {top: point.y + 'px'});
                             });
 
                             $parent.on(eventsMap[device].up, function(e){
@@ -213,29 +346,24 @@ define(['angular'], function(){
                                 $resizeOverlay.remove();
                                 $parent.off(eventsMap[device].move);
                                 $parent.off(eventsMap[device].up);
-                                resize(element, dir, pRect, point);
+                                resize(resizeTarget, pRect, point, relative);
                             });
                         });
 
-                        function resize(element, dir, pRect, point){
-                            var resizeTarget = element.data('resizeTarget');
-                            var $boxs = element.parent().children();
-                            var left = point.x * 100/pRect.width;
-                            var top = point.y * 100/pRect.height;
-
-                            if(typeof resizeTarget.last === 'string'){
-                                //resizeBar的目标是item
-                                setItemResize(dir, dir === 'x' ? left : top, resizeTarget, $boxs, scope.boxs, element);
+                        function resize(resizeTarget, pRect, point, relative){
+                            var offset;
+                            
+                            if(resizeTarget.dir === 'v'){
+                                offset = (point.x - relative.x) * 100/pRect.width;
                             }else{
-                                //resizeBar的目标是group
-                                setGroupResize(dir, dir === 'x' ? left : top, resizeTarget, $boxs, scope.boxs, element);
+                                offset = (point.y - relative.y) * 100/pRect.height;
                             }
 
-                            $rootScope.$broadcast('resizeBarResize');
+                            $rootScope.$broadcast('resizeBarUpdate', offset, resizeTarget);
                         }
                     };
                 }
             };
         }
-    ])
+    ]);
 });

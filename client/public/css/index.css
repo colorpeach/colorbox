@@ -228,7 +228,7 @@ body{
 }
 
 .add-app-editor > div{
-  position: relative;
+  position: absolute;
   overflow: hidden;
   padding: 5px;
   transition: 0.3s all;
