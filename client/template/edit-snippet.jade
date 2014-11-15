@@ -1,0 +1,32 @@
+div.add-app
+  form.sidebar(ng-submit="submit($event)")
+    input(type="hidden", name="_id", value="{{data._id}}")
+    div.add-app-editor(resize-box="resizeBox")
+    div.add-app-toolbar
+      div.small-2.columns(ng-bind="data.name")
+      div.small-10.columns
+        input.button.tiny.success.right(type="submit", value="保存")
+        div.button-group.right
+          input.button.tiny(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
+        select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
+script(type='text/ng-template',id='html-editor')
+  div
+    span.box-name jade
+    div.add-app-toolbar
+    div.add-app-box(code-editor="jade")
+script(type='text/ng-template',id='javascript-editor')
+  div
+    span.box-name js
+    div.add-app-toolbar
+    div.add-app-box(code-editor="javascript")
+script(type='text/ng-template',id='css-editor')
+  div
+    span.box-name css
+    div.add-app-toolbar
+    div.add-app-box(code-editor="css")
+script(type='text/ng-template',id='preview')
+  div
+    span.box-name preview
+    div.add-app-toolbar
+    div.add-app-box
+      iframe(ng-src="{{previewUrl}}", frameBorder=0)

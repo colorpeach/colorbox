@@ -11,21 +11,41 @@
 
 .cm-tip-arrow{
     position: absolute;
-    border-width: 0 6px 6px;
+    border-width: 6px;
     border-style: solid;
-    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(0, 0, 0, 0.9);
-    top: -6px;
+    border-color: rgba(255, 255, 255, 0);
+}
+
+.cm-tip-arrow-top{
+    border-top-color: rgba(0, 0, 0, 0.9);
+    border-bottom-width: 0;
+    bottom: -8px;
     left: 50%;
     margin-left: -6px;
 }
 
 .cm-tip-arrow-left{
-    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(0, 0, 0, 0.9);
-    top:50%;
-    left:auto;
-    right:-6px;
-    margin-top:-6px;
-    border-width: 6px 0 6px 6px;
+    border-left-color: rgba(0, 0, 0, 0.9);
+    border-right-width: 0;
+    top: 50%;
+    right :-8px;
+    margin-top: -6px;
+}
+
+.cm-tip-arrow-right{
+    border-right-color: rgba(0, 0, 0, 0.9);
+    border-left-width: 0;
+    top: 50%;
+    left: -8px;
+    margin-top: -6px;
+}
+
+.cm-tip-arrow-bottom{
+    border-bottom-color: rgba(0, 0, 0, 0.9);
+    border-top-width: 0;
+    left: 50%;
+    top: -8px;
+    margin-left:-6px;
 }
 
 .cm-tip-content{
@@ -635,7 +655,6 @@ body{
   overflow: hidden;
   width: 120px;
   height: 120px;
-  padding-top: 10px;
   margin: 30px auto 0;
   background-color: #ccc;
   border-radius: 50%;
@@ -739,13 +758,49 @@ body{
   width: 180px;
 }
 
+.app-type-list{
+  margin-left: 0;
+}
+
+.app-type-list li{
+  display: block;
+}
+
+.app-type-list li > a{
+  display: block;
+  padding: 5px 10px;
+  margin-top: -1px;
+  border: 1px solid #ccc;
+}
+
+.app-type-list li > a:hover{
+  background-color: #ececec;
+  box-shadow: 0 1px 1px #ccc inset;
+}
+
+.app-type-list li.active a{
+  background-color: #008cba;
+  color: #fff;
+  box-shadow: 0 1px 1px #007095 inset;
+}
+
 .app-all-right{
   margin-left: 200px;
-  padding-top: 1px;
+}
+
+.app-all-head{
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.app-all-right ul{
+  margin-left: 0;
+  margin-bottom: 20px;
   border-left: 1px solid #ccc;
 }
 
-.app-all-right > li{
+.app-all-right li{
   display: block;
   overflow: hidden;
   float: left;
@@ -756,9 +811,10 @@ body{
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  min-width: 190px;
 }
 
-.app-all-right > li.ng-enter{
+.app-all-right li.ng-enter{
       -webkit-animation-name: fadeIn;
               animation-name: fadeIn;
   -webkit-animation-duration: 1s;
@@ -767,16 +823,16 @@ body{
           animation-fill-mode: both;
 }
 
-.app-all-right > li .app{
+.app-all-right li .app{
   opacity: 1;
   transition: .3s all;
 }
 
-.app-all-right > li:hover .app{
+.app-all-right li:hover .app{
   opacity: 0;
 }
 
-.app-all-right > li:hover .app-detail{
+.app-all-right li:hover .app-detail{
   top: 0;
 }
 
@@ -786,6 +842,11 @@ body{
 
 .app-all-right .app-overview{
   padding: 0 10px;
+}
+
+.app-all-right .app-user{
+  font-size: 12px;
+  color: #999;
 }
 
 .app-all-right .app-stars{

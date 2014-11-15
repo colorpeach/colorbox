@@ -4,46 +4,52 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         defaultRoutePath: '/',
         routes: {
             '/': {
-                title: 'colorBox-桌面',
+                title: '桌面',
                 templateUrl: 'index.html',
                 controller: 'desktopCtrl',
                 dependencies: ['js/index', 'js/app-list']
             },
             '/login': {
-                title: '登录colorBox',
+                title: '登录',
                 templateUrl: 'login.html',
                 controller: 'loginCtrl',
                 dependencies: ['js/login']
             },
             '/register': {
-                title: '注册colorBox账号',
+                title: '注册',
                 templateUrl: 'register.html',
                 controller: 'registerCtrl',
                 dependencies: ['js/login']
             },
             '/app-list': {
-                title: 'colorBox-所有应用',
+                title: '所有应用',
                 templateUrl: 'app-all.html',
                 controller: 'appListCtrl',
                 dependencies: ['js/app-list']
             },
             '/dashboard/:tab': {
-                title: 'colorBox-我的仪表盘',
+                title: '我的仪表盘',
                 templateUrl: 'dashboard.html',
                 controller: 'dashboardCtrl',
                 dependencies: ['js/dashboard']
             },
             '/message-board': {
-                title: 'colorBox-留言板',
+                title: '留言板',
                 templateUrl: 'message.html',
                 controller: 'messageCtrl',
                 dependencies: ['js/message']
             },
             '/edit/app/:id': {
-                title: 'colorBox-应用编辑',
+                title: '编辑应用',
                 templateUrl: 'edit-app.html',
                 controller: 'editAppCtrl',
                 dependencies: ['js/edit-app']
+            },
+            '/edit/snippet/:id': {
+                title: '编辑代码片段',
+                templateUrl: 'edit-snippet.html',
+                controller: 'editSnippetCtrl',
+                dependencies: ['js/edit-snippet']
             }
         }
     };
@@ -109,7 +115,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             $rootScope.$on('$routeChangeStart', function(e, route){
                 $rootScope.loadMessage = '载入页面...';
                 $rootScope.loading = true;
-                $window.document.title = route.$$route.title;
+                $rootScope.title = route.$$route.title;
+                $window.document.title = 'colorBox-' + route.$$route.title;
             });
             $rootScope.$on('$routeChangeSuccess', function(){
                 $rootScope.loading = false;

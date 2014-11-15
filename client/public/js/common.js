@@ -162,7 +162,7 @@ define(['angular'], function(){
     .factory('fixed',
     [
         function(){
-            return function(target,attachment,options){
+            return function(target, attachment, options){
                 var offset = target[0].getBoundingClientRect(),
                     tip = attachment,
                     tipRect = tip[0].getBoundingClientRect(),
@@ -188,7 +188,7 @@ define(['angular'], function(){
                         break;
                     case 'r':
                         css = {
-                            left:offset.right + tipW +arrowGap,
+                            left:offset.right + arrowGap,
                             top:offset.top - tipH/2 + (offset.bottom - offset.top)/2
                         };
                         break;
@@ -233,24 +233,35 @@ define(['angular'], function(){
                 restrict:'A',
                 compile:function(){
                     
-                    return function(scope,element,attrs){
+                    return function(scope, element, attrs){
                         var tip = tipDom;
                         var title = attrs.title;
                         
                         element.removeAttr('title');
                         
                         element.bind('mouseenter',function(){
-                            
-                            tip.removeClass('hide');
-                            tip.children().eq(1).text(attrs.title)
+                            var arrowClass = 'cm-tip-arrow-left';
 
-                            if(attrs.tip === 'l'){
-                                fixed(element, tip, {dir: 'l'});
-                                tip.children().eq(0).addClass('cm-tip-arrow-left');
-                            }else{
-                                fixed(element, tip);
-                                tip.children().eq(0).removeClass('cm-tip-arrow-left');
+                            tip.removeClass('hide');
+                            tip.children()[0].className = '';
+                            tip.children().eq(1).text(attrs.title);
+
+                            switch(attrs.tip){
+                                case 'l':
+                                    arrowClass = 'cm-tip-arrow-left';
+                                break;
+                                case 't':
+                                    arrowClass = 'cm-tip-arrow-top';
+                                break;
+                                case 'r':
+                                    arrowClass = 'cm-tip-arrow-right';
+                                break;
+                                default:
+                                    arrowClass = 'cm-tip-arrow-bottom';
                             }
+
+                            fixed(element, tip, {dir: attrs.tip});
+                            tip.children().eq(0).addClass(arrowClass + ' cm-tip-arrow');
                         });
                         
                         element.bind('mouseleave',function(){
