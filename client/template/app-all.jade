@@ -1,0 +1,24 @@
+div.relative
+  div.row.sidebar
+    div.app-all-left
+      form(ng-submit="submit($event)")
+        div.small-8.columns
+          input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
+        div.small-4.columns
+          input.button.postfix.small(type="submit", value="搜索")
+    ul.app-all-right.clearfix
+      li(drag-item, ng-repeat="app in apps")
+        div.app
+          div.app-logo(ng-bind="app.name", title="{{app.name}}")
+          div.app-overview
+            span(ng-bind="app.name")
+          div.app-stars
+            span.icon-star3
+        div.app-detail
+          div.app-overview
+            a(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
+          div.app-stars
+            span.icon-star3
+          div.app-description(ng-bind="app.description || '无描述'")
+          div.app-buttons
+            button.button.tiny() 添加到桌面

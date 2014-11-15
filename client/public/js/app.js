@@ -23,7 +23,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/app-list': {
                 title: 'colorBox-所有应用',
-                templateUrl: 'app-list.html',
+                templateUrl: 'app-all.html',
                 controller: 'appListCtrl',
                 dependencies: ['js/app-list']
             },
