@@ -1,20 +1,22 @@
 define(['angular', 'js/app'], function(_, app){
     app
     /*
-    *@param resizeBox {Array}
+    *@param resizeBox {Object}
     *
-    *{
-        dir: 'v',
-        groupReals: [30, 70],
-        items: [
-            {
-                template: '',
-                hide: false,
-                real: 0,
-                show: 0
-            }
-        ]
-    }
+    *   {
+    *       resizeBarWidth: 10,
+    *       items: [
+    *           {template: 'css-editor', hide: false},
+    *           {template: 'html-editor', hide: false},
+    *           {template: 'javascript-editor', hide: false},
+    *           {template: 'preview', hide: false}
+    *       ],
+    *       laoout: 1,
+    *       layouts: {
+    *           1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
+    *           2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]}
+    *       }
+    *   }
     *
     */
     .directive('resizeBox',
@@ -30,12 +32,16 @@ define(['angular', 'js/app'], function(_, app){
                 var showItems = [];
                 var showItemsCountList = [];
                 var index = 0;
+                var mainOffsets = [];
+                var assistOffsetsList = [];
                 
                 angular.forEach(layout, function(group, groupIndex){
                     var showItemsCount = 0;
                     var showItemsReal = 0;
+                    var assistOffsets = [];
                     
                     angular.forEach(group, function(item, itemIndex){
+                        assistOffsets.push(showItemsReal);
                         if(!items[index].hide){
                             showItemsCount++;
                             showItemsReal += item.real;
@@ -45,6 +51,8 @@ define(['angular', 'js/app'], function(_, app){
                     })
                     
                     showItemsReals.push(showItemsReal);
+                    assistOffsetsList.push(assistOffsets);
+                    mainOffsets.push(showGroupsReal);
                     if(showItemsCount){
                         showGroupsCount++;
                         showGroupsReal += groupReals[groupIndex];
@@ -54,18 +62,20 @@ define(['angular', 'js/app'], function(_, app){
                 });
                 
                 return {
-                    groups: showGroupsCount,
-                    showItemsCountList: showItemsCountList,
-                    showItemsReals: showItemsReals,
-                    showGroupsReal: showGroupsReal,
-                    showItems: showItems
+                    mainOffsets: mainOffsets,
+                    assistOffsetsList: assistOffsetsList,
+                    groups: showGroupsCount, //显示的group个数
+                    showItemsCountList: showItemsCountList, //显示的group下显示的item个数
+                    showItemsReals: showItemsReals, //显示的group下对应的显示的item的real值的和
+                    showGroupsReal: showGroupsReal, //显示的group的real值的和
+                    showItems: showItems //显示的items（items的坐标）
                 };
             }
             
             //矫正real的值
             function correctReal(items){
                 items.forEach(function(group, groupIndex){
-                    var totalReal = sum(group);
+                    var totalReal = sum(group, 'real');
                     
                     if(!totalReal){
                         group.forEach(function(n, i){
@@ -176,11 +186,13 @@ define(['angular', 'js/app'], function(_, app){
                             var groupReals = current.groupReals;
                             
                             if(resizeTarget.type === 'item'){
-                                items[l[0]][l[1]].real = items[l[0]][l[1]].real + offset * 100/shows.showItemsReals[l[0]];
-                                items[n[0]][n[1]].real = items[n[0]][n[1]].real - offset * 100/shows.showItemsReals[n[0]];
+                                shows.assistOffsetsList[n[0]][n[1]] = shows.assistOffsetsList[n[0]][n[1]] + offset * shows.showItemsReals[l[0]]/100;
+                                items[l[0]][l[1]].real = items[l[0]][l[1]].real + offset * shows.showItemsReals[l[0]]/100;
+                                items[n[0]][n[1]].real = items[n[0]][n[1]].real - offset * shows.showItemsReals[l[0]]/100;
                             }else{
-                                groupReals[l[0]] = groupReals[l[0]] + offset * 100/shows.showGroupsReal;
-                                groupReals[n[0]] = groupReals[n[0]] - offset * 100/shows.showGroupsReal;
+                                shows.mainOffsets[n[0]] = shows.mainOffsets[n[0]] + offset * shows.showGroupsReal/100;
+                                groupReals[l[0]] = groupReals[l[0]] + offset * shows.showGroupsReal/100;
+                                groupReals[n[0]] = groupReals[n[0]] - offset * shows.showGroupsReal/100;
                             }
                         }
 
@@ -193,14 +205,14 @@ define(['angular', 'js/app'], function(_, app){
                             var last;
                             
                             $items.css({display: 'none'});
-                            $resizeBars.removeClass('dir-v dir-h');
+                            $resizeBars.removeClass('dir-v dir-h').css({display: 'none'});
 
                             shows.showItems.forEach(function(n, i, arr){
                                 var item = items[n[0]][n[1]];
                                 var main = 100 * groupReals[n[0]]/shows.showGroupsReal;
                                 var assist = 100 * item.real/shows.showItemsReals[n[0]];
-                                var mainOffset = sum(groupReals.slice(0, n[0]));
-                                var assistOffset = sum(items[n[0]].slice(0, n[1]), 'real');
+                                var mainOffset = 100 * shows.mainOffsets[n[0]]/shows.showGroupsReal;
+                                var assistOffset = 100 * shows.assistOffsetsList[n[0]][n[1]]/shows.showItemsReals[n[0]];
                                 
                                 if(dir === 'v'){
                                     item.css = css(mainOffset, assistOffset, main, assist);

@@ -7,7 +7,7 @@ div.add-app
       div.small-10.columns
         input.button.tiny.success.right(type="submit", value="保存")
         div.button-group.right
-          input.button.tiny(type="button", ng-repeat="box in boxs", value="{{box}}", ng-click="toggle($index)", ng-class="{active: box.show}")
+          input.button.tiny(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
         select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div

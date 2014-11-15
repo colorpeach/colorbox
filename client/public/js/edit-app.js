@@ -60,15 +60,17 @@ define(['js/app', 'ace/ace', 'js/dashboard', 'directive/resize'], function(app, 
             $scope.resizeBox = {
                 resizeBarWidth: 10,
                 items: [
-                    {template: 'css-editor', hide: false},
-                    {template: 'html-editor', hide: false},
-                    {template: 'javascript-editor', hide: false},
-                    {template: 'preview', hide: false}
+                    {template: 'css-editor', hide: false, name: 'css'},
+                    {template: 'html-editor', hide: false, name: 'jade'},
+                    {template: 'javascript-editor', hide: false, name: 'js'},
+                    {template: 'preview', hide: false, name: 'preview'}
                 ],
                 laoout: 1,
                 layouts: {
                     1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
-                    2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]}
+                    2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]},
+                    3: {dir: 'h', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
+                    4: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}, {index: 3}]]}
                 }
             };
 
