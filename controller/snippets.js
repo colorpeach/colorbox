@@ -58,4 +58,10 @@ _snippets.get_user_snippets = function(req, res){
     },{jade: 0, css: 0, js: 0});
 };
 
+_snippets.get_snippets = function(req, res){
+    snippets.query({}, function(list){
+        res.end(baseRes({snippets: list}));
+    },{jade: 0, css: 0, js: 0});
+};
+
 module.exports = _snippets;

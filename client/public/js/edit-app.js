@@ -1,4 +1,4 @@
-define(['js/app', 'ace/ace', 'js/dashboard', 'directive/resize'], function(app, ace){
+define(['js/app', 'ace/ace'], function(app, ace){
     app
     .controller('editAppCtrl',
     ['$scope', 'appsCrud', '$routeParams', '$window', '$sce', '$rootScope',

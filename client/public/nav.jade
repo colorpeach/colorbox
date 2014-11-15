@@ -1,6 +1,6 @@
 nav.top-bar
   a.name(href="/#/") colorBox
-  a.name(ng-bind="title")
+  a.title(ng-bind="title")
   ul.top-bar-right
     li
       a(tip, href="/_logs", title="网站更新日志")
@@ -8,6 +8,9 @@ nav.top-bar
     li
       a(tip, href="/#/message-board", title="留言板")
         span.icon-copy2
+    li
+      a(tip, href="/#/snippets-square", title="代码广场")
+        span.icon-code
     li
       a(tip, href="/#/app-list", title="所有应用")
         span.icon-stack

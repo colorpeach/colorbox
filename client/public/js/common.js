@@ -273,6 +273,47 @@ define(['angular'], function(){
         }
     ])
 
+    .directive('starBar',
+    [
+        function(){
+            var fill = '<span class="icon-star3"></span>';
+            var half = '<span class="icon-star2"></span>';
+            var empty = '<span class="icon-star1"></span>';
+
+            function updateScore(list, element){
+                var score = 5;
+                
+                if(list && list.length){
+                    if(list.length === 1){
+                        score = list[0];
+                    }else{
+                        score = list.reduce(function(x, y){ return x + y;})/list.length
+                    }
+                }
+
+                element.html(
+                    //星值对应
+                    //全星.7 ~ 1
+                    //半星.31 ~ .69
+                    //空星0 ~ .3
+                    Array(Math.floor(score + 1.3)).join(fill)
+                    + (score%1 > .3 && score%1 < .7 ? half : '')
+                    + Array(Math.floor(6.3 - score )).join(empty)
+                );
+            }
+
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var map = scope[attrs.starBar];
+                    var list = Object.keys(map || {});
+
+                    updateScore(list, element);
+                }
+            };
+        }
+    ])
+
     .directive('dialog',
     ['utils',
         function(utils){

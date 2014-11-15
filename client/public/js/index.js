@@ -75,6 +75,24 @@ define(['js/app'], function(app){
         }
     ])
 
+    .controller('ListCtrl',
+    ['$scope', 'appsCrud', '$sce',
+        function($scope,   appsCrud,   $sce){
+            $scope.apps = [];
+            
+            $scope.submit = function(e){
+                e.preventDefault();
+                appsCrud.getPublishedApps($scope.name)
+                .success(function(data){
+                    $scope.apps = data.apps;
+                    data.apps.forEach(function(n, i){
+                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                    });
+                });
+            }
+        }
+    ])
+
 
     .factory('dragPlaceholder',
     [

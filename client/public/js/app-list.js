@@ -1,19 +1,9 @@
 define(['js/app'], function(app){
     app
-    .factory('appListCurd', 
-    ['$http',
-        function($http){
-            return {
-                getPublishedApps: function(name){
-                    return $http.get('/_get/published/apps' + (name ? ('?name=' + name):''));
-                }
-            };
-        }
-    ])
 
     .controller('appListCtrl', 
-    ['$scope', 'appListCurd', '$sce', '$location',
-        function($scope,   appListCurd,   $sce,   $location){
+    ['$scope', 'appsCrud', '$sce', '$location',
+        function($scope,   appsCrud,   $sce,   $location){
             $scope.query = $location.search();
             $scope.appTypeList = [
                 {name: '工具', key: 'tool'},
@@ -36,7 +26,7 @@ define(['js/app'], function(app){
                 },
             ];
             
-            appListCurd.getPublishedApps($scope.query.name)
+            appsCrud.getPublishedApps($scope.query.name)
             .success(function(data){
                 $scope.blocks[0].apps = data.apps;
                 $scope.blocks[1].apps = data.apps;

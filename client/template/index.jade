@@ -7,4 +7,15 @@ div.desktop-box(ng-class='{adding: status.adding}')
       div.app-side-btns
         span.app-side-btn.icon-minus(ng-if="app.size.showIframe === 'true'", title="拖拽应用")
         span.app-side-btn.icon-remove(ng-if="!app.isButton", ng-click="removeApp($index)", title="从桌面删除应用")
-div.desktop-all-list(ng-include="'app-list.html'", ng-controller="appListCtrl", ng-show="status.adding")
+div.desktop-all-list.app-list(ng-show="status.adding", ng-controller="ListCtrl")
+  form(action="", method="get", ng-submit="submit($event)")
+    div.row.collapse.sidebar
+      div.small-8.columns
+        input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
+      div.small-4.columns
+        input.button.postfix.small(type="submit", value="搜索")
+    div.row
+      ul.clearing-thumbs(drag-box='apps')
+        li.relative(drag-item, ng-repeat="app in apps")
+          a.app-logo(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
+          select.size-option(ng-model="app.size", ng-options="o as (o.x+' × '+o.y) for (key, o) in app.sizes")

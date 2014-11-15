@@ -89,6 +89,8 @@ module.exports = function(app){
     app.get('/get/snippet', snippets.get);
     //获取用户的所有片段
     app.get('/_get/user/snippets', snippets.get_user_snippets);
+    //获取所有片段
+    app.get('/_get/snippets', snippets.get_snippets);
 
     //获取留言
     app.get('/_get/messages', messages.get_messages);

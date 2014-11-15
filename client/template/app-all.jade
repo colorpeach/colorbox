@@ -18,18 +18,12 @@ div.relative
               div.app-logo(ng-bind="app.name", title="{{app.name}}")
               div.app-overview
                 span(ng-bind="app.name")
-              div.app-stars
-                - var n = 0
-                while n++ < 5
-                  span.icon-star3
+              div.app-stars(star-bar)
                 span.app-user.right by {{app.user}}
             div.app-detail
               div.app-overview
                 a(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
-              div.app-stars
-                - var n = 0
-                while n++ < 5
-                  span.icon-star3
+              div.app-stars(star-bar)
               div.app-description(ng-bind="app.description || '无描述'")
               div.app-buttons
                 button.button.tiny() 添加到桌面

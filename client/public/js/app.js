@@ -7,7 +7,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '桌面',
                 templateUrl: 'index.html',
                 controller: 'desktopCtrl',
-                dependencies: ['js/index', 'js/app-list']
+                dependencies: ['js/index', 'js/dashboard-apps']
             },
             '/login': {
                 title: '登录',
@@ -25,13 +25,19 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '所有应用',
                 templateUrl: 'app-all.html',
                 controller: 'appListCtrl',
-                dependencies: ['js/app-list']
+                dependencies: ['js/app-list', 'js/dashboard-apps']
+            },
+            '/snippets-square': {
+                title: '代码广场',
+                templateUrl: 'snippets-square.html',
+                controller: 'snippetsSquareCtrl',
+                dependencies: ['js/snippets-square', 'js/dashboard-snippets']
             },
             '/dashboard/:tab': {
                 title: '我的仪表盘',
                 templateUrl: 'dashboard.html',
                 controller: 'dashboardCtrl',
-                dependencies: ['js/dashboard']
+                dependencies: ['js/dashboard', 'js/dashboard-apps', 'js/dashboard-snippets']
             },
             '/message-board': {
                 title: '留言板',
@@ -43,13 +49,13 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '编辑应用',
                 templateUrl: 'edit-app.html',
                 controller: 'editAppCtrl',
-                dependencies: ['js/edit-app']
+                dependencies: ['js/edit-app', 'js/dashboard', 'directive/resize']
             },
             '/edit/snippet/:id': {
                 title: '编辑代码片段',
                 templateUrl: 'edit-snippet.html',
                 controller: 'editSnippetCtrl',
-                dependencies: ['js/edit-snippet']
+                dependencies: ['js/edit-snippet', 'js/dashboard', 'directive/resize']
             }
         }
     };
