@@ -33,7 +33,7 @@ li.dashboard-box(ng-show="status.page === 'detail'")
   form(ng-submit="submit($event)")
     div.large-12.columns
       label(for="opensource") 开放源代码
-      input(type="checkbox", id="opensource", name="opensource", ng-model="current.opensource", tip="r", title="开放源代码后，别人可查看，编辑，fork你的代码")
+      input(type="checkbox", id="opensource", name="opensource", ng-model="current.opensource", tip="r", title="开放源代码后，代码将出现在代码广场")
     div.large-12.columns
       label(for="description") 描述
       textarea(id="description", name="description", ng-model="current.description")

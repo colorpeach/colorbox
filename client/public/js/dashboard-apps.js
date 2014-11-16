@@ -19,8 +19,8 @@ define(['js/app'], function(app){
                 getUserApps: function(){
                     return $http.get('/get/apps');
                 },
-                getPublishedApps: function(name){
-                    return $http.get('/_get/published/apps' + (name ? ('?name=' + name):''));
+                getPublishedApps: function(data){
+                    return $http.get('/_get/published/apps', {params: data});
                 }
             };
         }

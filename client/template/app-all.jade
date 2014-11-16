@@ -1,4 +1,4 @@
-div.relative
+div.relative(scroll-load="load")
   div.row.sidebar
     div.app-all-left
       div.clearfix
@@ -28,3 +28,4 @@ div.relative
               div.app-description(ng-bind="app.description || '无描述'")
               div.app-buttons
                 button.button.tiny() 添加到桌面
+        div(ng-bind="block.message", ng-show="block.message")

@@ -1,0 +1,18 @@
+div.snippet-detail
+  iframe.snippet-iframe(ng-src="{{url}}", width="100%", height="500px", frameBorder=0)
+  div.snippet-bar
+    ul.row
+      li(tip="b", title="赞")
+        span.icon-thumbs-up
+      li(tip="b", title="重新载入")
+        span.icon-spinner6
+  div.row.sidebar
+    div.medium-8.columns
+      div.large-12.columns
+        div 描述
+        div(ng-bind="snippet.description || '无描述'")
+      hr
+      div.large-12.columns
+        div 评论
+        ul
+          li(ng-repeat="comment in comments")

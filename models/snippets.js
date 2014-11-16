@@ -6,7 +6,8 @@ var tidy = dbClient.column({
     css          : 'css',
     js           : 'js',
     user         : 'user',
-    comments     : 'comments'
+    comments     : 'comments',
+    stars        : 'stars'
 });
 var snippets = {};
 

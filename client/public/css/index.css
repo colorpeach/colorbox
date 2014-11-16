@@ -75,6 +75,7 @@
 }
 
 .top-bar a.title{
+  float: left;
   padding: 0;
   font-size: 12px;
   vertical-align: top;
@@ -886,4 +887,101 @@ body{
 .app-all-right .columns{
   padding-left: 0;
   padding-right: 0;
+}
+
+/*snippets-square*/
+.snippets-square{
+
+}
+
+.snippets-square ul{
+  margin-left: 0;
+}
+
+.snippets-square li{
+  display: block;
+  float: left;
+  width: 25%;
+  padding: 5px;
+  min-width: 200px;
+}
+
+.snippets-square .snippet{
+  display: block;
+  box-shadow: 0 0 1px #999;
+  transition: .3s box-shadow;
+}
+
+.snippets-square .snippet:hover{
+  box-shadow: 0 0 10px #999;
+}
+
+.snippets-square .snippet-overview{
+  padding: 5px 10px;
+  line-height: 1;
+}
+
+.snippets-square .snippet-user{
+  float: right;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 14px;
+}
+
+.snippets-square .snippet-img{
+  height: 140px;
+}
+
+.snippets-square div.snippet-img{
+  height: 140px;
+  background-color: #43ac6a;
+  color: #fff;
+  line-height: 140px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.snippets-square .snippet-detail{
+  padding: 0 10px 5px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.snippets-square .snippet-detail span{
+  display: inline-block;
+  margin-left: 5px;
+  color: #999;
+  cursor: pointer;
+  transition: .3s color;
+}
+
+.snippets-square .snippet-detail span:hover{
+  color: #333;
+}
+
+/*snippet-detail*/
+.snippet-detail{
+  padding-bottom: 100px;
+}
+
+.snippet-detail .snippet-iframe{
+  border: 2px solid #ccc;
+}
+
+.snippet-detail .snippet-bar{
+  margin-top: -7px;
+  background-color: #333;
+  box-shadow: 0 5px 5px #999;
+}
+
+.snippet-detail .snippet-bar li{
+  display: inline-block;
+  border-right: 1px solid #444;
+  padding: 5px 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.snippet-detail .snippet-bar li:hover{
+  background-color: #444;
 }

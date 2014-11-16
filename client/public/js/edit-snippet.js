@@ -1,8 +1,8 @@
 define(['js/app', 'ace/ace'], function(app, ace){
     app
     .controller('editSnippetCtrl',
-    ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope',
-        function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope){
+    ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage',
+        function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage){
             $scope.setLoad({
                 loading: true,
                 loadMessage: '载入代码'
@@ -53,30 +53,40 @@ define(['js/app', 'ace/ace'], function(app, ace){
 
             $scope.boxs = ['css', 'jade', 'js', 'preview'];
 
+            //使用localstorage存储编辑器设置
+            storage.bind($scope, 'resizeBox', {
+                defaultValue: {
+                    resizeBarWidth: 10,
+                    items: [
+                        {template: 'css-editor', hide: false, name: 'css'},
+                        {template: 'html-editor', hide: false, name: 'jade'},
+                        {template: 'javascript-editor', hide: false, name: 'js'},
+                        {template: 'preview', hide: false, name: 'preview'}
+                    ],
+                    laoout: 1,
+                    layouts: {
+                        1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
+                        2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]},
+                        3: {dir: 'h', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
+                        4: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}, {index: 3}]]}
+                    }
+                }
+            });
+
+            storage.bind($scope, 'layout', {
+                defaultValue: 1
+            });
+
             $scope.toggle = function(i){
                 $rootScope.$broadcast('toggleResizeBox', i);
             };
 
-            $scope.resizeBox = {
-                resizeBarWidth: 10,
-                items: [
-                    {template: 'css-editor', hide: false, name: 'css'},
-                    {template: 'html-editor', hide: false, name: 'jade'},
-                    {template: 'javascript-editor', hide: false, name: 'js'},
-                    {template: 'preview', hide: false, name: 'preview'}
-                ],
-                laoout: 1,
-                layouts: {
-                    1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
-                    2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]},
-                    3: {dir: 'h', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
-                    4: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}, {index: 3}]]}
-                }
-            };
-
-            $scope.layout = 1;
             $scope.$watch('layout', function(i){
                 $rootScope.$broadcast('layoutResizeBox', i);
+            });
+
+            $scope.$on('resizeUpdate', function(){
+                storage.update('resizeBox');
             });
         }
     ])

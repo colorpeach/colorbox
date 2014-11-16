@@ -49,13 +49,19 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '编辑应用',
                 templateUrl: 'edit-app.html',
                 controller: 'editAppCtrl',
-                dependencies: ['js/edit-app', 'js/dashboard', 'directive/resize']
+                dependencies: ['js/edit-app', 'js/dashboard-apps', 'directive/resize']
             },
             '/edit/snippet/:id': {
                 title: '编辑代码片段',
                 templateUrl: 'edit-snippet.html',
                 controller: 'editSnippetCtrl',
-                dependencies: ['js/edit-snippet', 'js/dashboard', 'directive/resize']
+                dependencies: ['js/edit-snippet', 'js/dashboard-snippets', 'directive/resize']
+            },
+            '/snippet/detail/:id': {
+                title: '代码片段',
+                templateUrl: 'snippet-detail.html',
+                controller: 'snippetDetailCtrl',
+                dependencies: ['js/snippet-detail', 'js/dashboard-snippets']
             }
         }
     };

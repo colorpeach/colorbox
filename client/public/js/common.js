@@ -8,6 +8,51 @@ define(['angular'], function(){
         }
     ])
 
+    .factory('storage',
+    ['$window',
+         function($window){
+
+            var storage = (typeof $window.localStorage === 'undefined') ? undefined : $window.localStorage;
+            var supported = !(typeof storage === 'undefined');
+            var map = {};
+            
+            //https://github.com/agrublev/angularLocalStorage
+            if (supported) {
+                // When Safari (OS X or iOS) is in private browsing mode it appears as though localStorage
+                // is available, but trying to call .setItem throws an exception below:
+                // "QUOTA_EXCEEDED_ERR: DOM Exception 22: An attempt was made to add something to storage that exceeded the quota."
+                var testKey = '__' + Math.round(Math.random() * 1e7);
+
+                try {
+                    localStorage.setItem(testKey, testKey);
+                    localStorage.removeItem(testKey);
+                }
+                catch (err) {
+                    supported = false;
+                }
+            }
+
+            return {
+                bind: function(scope, key, opts){
+                    map[key] = scope;
+                    scope[key] = angular.fromJson(storage.getItem(key)) || opts.defaultValue;
+                    if(supported){
+                        scope.$watch(key, function(val){
+                            storage.setItem(key, angular.toJson(val));
+                        });
+                    }
+                },
+                update: function(key, value){
+                    if(typeof value === 'undefined'){
+                        storage.setItem(key, angular.toJson(map[key][key]));
+                    }else{
+                        storage.setItem(key, angular.toJson(value));
+                    }
+                }
+            }
+        }
+    ])
+
     .factory('utils', function(){
         var docprefix = /^[^\/]+\/\*!\s*/;
         var docsuffix = /\s*\*\/[^\/]+$/;
@@ -309,6 +354,33 @@ define(['angular'], function(){
                     var list = Object.keys(map || {});
 
                     updateScore(list, element);
+                }
+            };
+        }
+    ])
+
+    //滚动加载
+    .directive('scrollLoad',
+    ['$timeout',
+        function($timeout){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var fn = scope[attrs.scrollLoad];
+                    var timer = 0;
+
+                    element.bind('scroll', function(){
+                        if(timer){
+                            $timeout.cancel(timer);
+                        }
+
+                        timer = $timeout(function(){
+                            var height = element[0].getBoundingClientRect().height;
+                            if(height + element[0].scrollTop >= element[0].scrollHeight -30){
+                                fn();
+                            }
+                        }, 100);
+                    });
                 }
             };
         }

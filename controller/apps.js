@@ -32,6 +32,7 @@ Apps.add = function(req, res){
             res.end(baseRes({errorMsg: ['应用已经存在']}));
         }else{
             req.body.user = req.session.user.login;
+            req.body.createDate = new Date();
             
             apps.add(req.body, function(data){
                 res.end(baseRes({app: data[0]}));
@@ -61,11 +62,17 @@ Apps.get_apps = function(req, res){
 Apps.get_published_apps = function(req, res){
     //拼接模糊查询
     var param = {};
+    var opera = {
+        limit: 8
+    };
+    opera.sort = {};
     req.query.name && (param.name = new RegExp(req.query.name));
+    req.query.sort && (opera.sort[req.query.sort] = -1);
+    req.query.skip && (opera.skip = req.query.skip * 8);
 
-    apps.query(param, function(list){
+    apps.operaQuery(param, function(list){
         res.end(baseRes({apps: list}));
-    },{jade: 0, css: 0, js: 0});
+    }, {jade: 0, css: 0, js: 0}, opera);
 };
 
 module.exports = Apps;

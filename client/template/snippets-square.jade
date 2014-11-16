@@ -1,5 +1,14 @@
 div
-  div.row.snippets-square
-    ul
+  div.row.snippets-square.sidebar
+    ul.clearfix
       li(ng-repeat="snippet in snippets")
-        div(ng-bind="snippet.name")
+        div.snippet
+          a(href="/#/snippet/detail/{{snippet._id}}")
+            //img.snippet-img
+            div.snippet-img(ng-bind="snippet.name")
+          div.snippet-overview
+            a.snippet-name(ng-bind="snippet.name", href="/#/snippet/detail/{{snippet._id}}")
+            span.snippet-user by {{snippet.user}}
+          //div.snippet-detail
+            //span.icon-tag
+            //span.snippet-favour.icon-thumbs-up
