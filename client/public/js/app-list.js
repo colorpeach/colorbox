@@ -25,7 +25,7 @@ define(['js/app'], function(app){
                 {
                     name: '所有应用',
                     apps: [],
-                    message: '正在加载应用...'
+                    message: ''
                 },
             ];
             
