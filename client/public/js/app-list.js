@@ -62,10 +62,9 @@ define(['js/app'], function(app){
             var skip = 0;
             var last = false;
             $scope.load = function(){
-                if(last){
+                if(last || $scope.blocks[2].message){
                     return;
                 }
-                
                 
                 $scope.blocks[2].message = '正在加载应用...';
                 appsCrud.getPublishedApps({
