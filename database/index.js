@@ -2,7 +2,7 @@ var async = require('async');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var ObjectID = require('mongodb').ObjectID;
-var url = process.env.MONGODB || 'mongodb://wxen:ll0427##@ds049180.mongolab.com:49180/colorbox' || 'mongodb://127.0.0.1:27017/colorbox';
+var url = process.env.MONGODB || 'mongodb://127.0.0.1:27017/colorbox';
 
 //async waterfall 
 module.exports = {
