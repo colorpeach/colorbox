@@ -31,32 +31,37 @@ define(['js/app'], function(app){
     ])
 
     .controller('desktopCtrl',
-    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
-        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
+    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope', 'user',
+        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope,   user){
             var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
 
             $scope.status = {};
             $scope.allowDrag = true;
 
-            $scope.setLoad({
-                loading: true,
-                loadMessage: '载入桌面应用...'
-            });
+            if(user.login){
+                //如果用户已经登录
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '载入桌面应用...'
+                });
 
-            desktopCurd.getDesktopApps()
-            .success(function(data){
-                if(data.desktopApps && data.desktopApps.length){
-                    $scope.apps = data.desktopApps;
-                    data.desktopApps.forEach(function(n, i){
-                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
-                    });
-                }else{
+                desktopCurd.getDesktopApps()
+                .success(function(data){
+                    if(data.desktopApps && data.desktopApps.length){
+                        $scope.apps = data.desktopApps;
+                        data.desktopApps.forEach(function(n, i){
+                            n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                        });
+                    }else{
+                        $scope.apps = [addButton];
+                    }
+                })
+                .error(function(){
                     $scope.apps = [addButton];
-                }
-            })
-            .error(function(){
+                });
+            }else{
                 $scope.apps = [addButton];
-            });
+            }
 
             $scope.$on('updateDesktop', function(){
                 desktopCurd.updateDesktopApps({desktopApps: $scope.apps});

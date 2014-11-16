@@ -10,3 +10,29 @@ block content
 
 block script
   script(src="/public/js/bootstrap.js")
+  if user
+    script.
+      require(['js/app'], function(app){
+        app
+        .factory('user',
+        [
+          function(){
+            return {
+              login: '#{user.login}'
+            }
+          }
+        ]);
+      });
+  if !user
+    script.
+      require(['js/app'], function(app){
+        app
+        .factory('user',
+        [
+          function(){
+            return {
+              login: ''
+            }
+          }
+        ])
+      });
