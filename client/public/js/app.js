@@ -1,7 +1,11 @@
 define(['angular-route', 'angular-animate', 'js/common'], function(){
     var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
-    var noAuthPaths = ['/login', '/register'];
-    var authPaths = ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id'];
+    var pathsMap = {
+        noAuthPaths: ['/login', '/register'],
+        authPaths: ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id'],
+        login: false
+    };
+
     var config = {
         defaultRoutePath: '/',
         routes: {
@@ -73,6 +77,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         function($rootScope,   $sce){
             $rootScope.user = angular.user;
             $rootScope.$watch('user.login', function(val){
+                pathsMap.login = !!val;
                 $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
             });
             delete angular.user;
@@ -105,14 +110,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                         resolve: dependencyResolverFor(route, path), 
                         controller: route.controller, 
                         title: route.title,
-//                         redirectTo: function(){
+                        redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
-//                             if(noAuthPaths.indexOf(route.path) > -1 && $rootScope.user){
-//                                 return '/';
-//                             }else if(authPaths.indexOf(route.path) > -1 && $rootScope.user){
-//                                 return '/login';
-//                             }
-//                         }
+                            if(pathsMap.noAuthPaths.indexOf(path) > -1 && pathsMap.login){
+                                return '/';
+                            }else if(pathsMap.authPaths.indexOf(path) > -1 && !pathsMap.login){
+                                return '/login';
+                            }
+                        }
                     });
                 });
             }
@@ -143,6 +148,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                                 $rootScope.$apply(function(){
                                     deferred.resolve();
                                 });
+                            }, function(){
+                                deferred.reject();
                             });
 
                             return deferred.promise;
