@@ -359,6 +359,27 @@ define(['angular'], function(){
         }
     ])
 
+    .directive('srcElement',
+    ['$sce',
+        function($sce){
+            var reg = /\{(.+)\}/;
+
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var url = attrs.srcElement;
+                    var m = url.match(reg);
+
+                    if(m){
+                        scope.$watch(m[1], function(val){
+                            val && element.attr('src', $sce.trustAsResourceUrl(url.replace(reg, val)));
+                        });
+                    }
+                }
+            };
+        }
+    ])
+
     //滚动加载
     .directive('scrollLoad',
     ['$timeout',

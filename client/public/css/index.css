@@ -82,8 +82,31 @@
   color: #fff;
 }
 
+a.top-bar-user{
+  float: right;
+  position: relative;
+  padding: 0;
+}
+
+.top-bar-user-icon{
+  display: inline-block;
+  height: 36px;
+  width: 36px;
+  background-color: #ececec;
+  color: #fff;
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.top-bar-user img{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .top-bar-right{
   float: right;
+  margin-left: 0;
 }
 
 .top-bar-right li{
@@ -913,6 +936,7 @@ body{
 }
 
 .snippets-square .snippet:hover{
+  margin-top: -2px;
   box-shadow: 0 0 10px #999;
 }
 

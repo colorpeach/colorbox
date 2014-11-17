@@ -31,14 +31,14 @@ define(['js/app'], function(app){
     ])
 
     .controller('desktopCtrl',
-    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope', 'user',
-        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope,   user){
+    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
+        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
             var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
 
             $scope.status = {};
             $scope.allowDrag = true;
 
-            if(user.login){
+            if($rootScope.user){
                 //如果用户已经登录
                 $scope.setLoad({
                     loading: true,

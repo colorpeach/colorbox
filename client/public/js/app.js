@@ -1,5 +1,7 @@
 define(['angular-route', 'angular-animate', 'js/common'], function(){
     var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
+    var noAuthPaths = ['/login', '/register'];
+    var authPaths = ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id'];
     var config = {
         defaultRoutePath: '/',
         routes: {
@@ -66,6 +68,17 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     };
 
+    app.run(
+    ['$rootScope', '$sce',
+        function($rootScope,   $sce){
+            $rootScope.user = angular.user;
+            $rootScope.$watch('user.login', function(val){
+                $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
+            });
+            delete angular.user;
+        }
+    ]);
+
     app.config(
     [
         '$routeProvider',
@@ -74,8 +87,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         '$compileProvider',
         '$filterProvider',
         '$provide',
+        '$rootScopeProvider',
 
-        function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide){
+        function($routeProvider, $locationProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $rootScopeProvider){
             app.controller = bind($controllerProvider, 'register', app);
             app.directive  = bind($compileProvider, 'directive', app);
             app.filter     = bind($filterProvider, 'register', app);
@@ -86,7 +100,20 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
             if(config.routes !== undefined){
                 angular.forEach(config.routes, function(route, path){
-                    $routeProvider.when(path, {templateUrl:route.templateUrl, resolve:dependencyResolverFor(route.dependencies), controller: route.controller, title: route.title});
+                    $routeProvider.when(path, {
+                        templateUrl: route.templateUrl, 
+                        resolve: dependencyResolverFor(route, path), 
+                        controller: route.controller, 
+                        title: route.title,
+//                         redirectTo: function(){
+                            //如果用户已经登录，无法再看到登录和注册页面
+//                             if(noAuthPaths.indexOf(route.path) > -1 && $rootScope.user){
+//                                 return '/';
+//                             }else if(authPaths.indexOf(route.path) > -1 && $rootScope.user){
+//                                 return '/login';
+//                             }
+//                         }
+                    });
                 });
             }
 
@@ -101,19 +128,26 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 }
             }
 
-            function dependencyResolverFor(dependencies){
+            function dependencyResolverFor(route, path){
                 var definition = {
-                    resolver: ['$q','$rootScope', function($q, $rootScope){
-                        var deferred = $q.defer();
+                    resolver: [
+                        '$q','$rootScope', '$window',
+                        function($q,   $rootScope,   $window){
+                            var deferred = $q.defer();
 
-                        require(dependencies, function(){
-                            $rootScope.$apply(function(){
-                                deferred.resolve();
+                            require(route.dependencies, function(){
+
+                                $rootScope.title = route.title;
+                                $window.document.title = 'colorBox-' + route.title;
+
+                                $rootScope.$apply(function(){
+                                    deferred.resolve();
+                                });
                             });
-                        });
 
-                        return deferred.promise;
-                    }]
+                            return deferred.promise;
+                        }
+                    ]
                 }
 
                 return definition;
@@ -127,8 +161,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             $rootScope.$on('$routeChangeStart', function(e, route){
                 $rootScope.loadMessage = '载入页面...';
                 $rootScope.loading = true;
-                $rootScope.title = route.$$route.title;
-                $window.document.title = 'colorBox-' + route.$$route.title;
             });
             $rootScope.$on('$routeChangeSuccess', function(){
                 $rootScope.loading = false;

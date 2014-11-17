@@ -3,26 +3,24 @@ nav.top-bar
   a.title(ng-bind="title")
   ul.top-bar-right
     li
-      a(tip, href="/_logs", title="网站更新日志")
-        span.icon-bug
-    li
-      a(tip, href="/#/message-board", title="留言板")
-        span.icon-copy2
+      a(tip, href="/#/app-list", title="所有应用")
+        span.icon-stack
     li
       a(tip, href="/#/snippets-square", title="代码广场")
         span.icon-code
     li
-      a(tip, href="/#/app-list", title="所有应用")
-        span.icon-stack
-    if user
-      li
-        a(tip, href="/#/dashboard/apps", title="我的仪表盘")
-          span.icon-dashboard
-      li
-        a(tip, href="/_logout", title="退出登录")
-          span.icon-arrow-right2
-    if !user
-      li
-        a(href="/#/login") 登录
-      li
-        a(href="/#/register") 注册
+      a(tip, href="/#/message-board", title="留言板")
+        span.icon-copy2
+    li
+      a(tip, href="/_logs", title="网站更新日志")
+        span.icon-bug
+    li(ng-show="user")
+      a(tip, href="/_logout", title="退出登录")
+        span.icon-arrow-right2
+    li(ng-show="!user")
+      a(href="/#/login") 登录
+    li(ng-show="!user")
+      a(href="/#/register") 注册
+  a.top-bar-user(tip, href="/#/dashboard/apps", title="我的仪表盘", ng-show="user")
+    img(src-element="http://identicon.relucks.org/{user.login}?size=36")
+    span.top-bar-user-icon.icon-user
