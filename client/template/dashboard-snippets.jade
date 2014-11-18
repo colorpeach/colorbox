@@ -1,0 +1,44 @@
+li.dashboard-box(ng-show="status.page === 'list'")
+  div.dashboard-box-head
+    span 代码片段列表
+    span.right.icon-plus.btn-icon(title="新建代码片段", ng-click="switch($event, 'add')")
+  div.dashboard-box-list
+    a.dashboard-box-item(href="#/edit/snippet/{{snippet._id}}", ng-repeat="snippet in snippets")
+      span {{snippet.name}}
+      div.dashboard-box-item-btns
+        span.icon-cog(title="应用设置", ng-click="switch($event, 'detail', snippet, $index)")
+
+li.dashboard-box(ng-show="status.page === 'add'")
+  div.dashboard-box-head
+    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    span 新建代码片段
+  form(ng-submit="add()")
+    div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+    div.large-12.columns
+      label(for="app-name") 名称
+      input#app-name(type="text", name="name", ng-model="data.name", required)
+    div.large-12.columns
+      label(for="app-description") 描述
+      textarea#app-description(name="description", ng-model="data.description")
+    div.large-12.columns
+      input.button.small(type="submit", value="提交")
+
+li.dashboard-box(ng-show="status.page === 'detail'")
+  div.dashboard-box-head
+    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    a(href="/_snippets/preview/{{current._id}}", target="_blank", ng-bind="current.name")
+    a.right.icon-code(href="#/edit/snippet/{{current._id}}", title="开发代码")
+  div.dashboard-app-logo-wrap
+    div.left.app-logo {{current.name}}
+  form(ng-submit="submit($event)")
+    div.large-12.columns
+      label(for="opensource") 开放源代码
+      input(type="checkbox", id="opensource", name="opensource", ng-model="current.opensource", tip="r", title="开放源代码后，代码将出现在代码广场")
+    div.large-12.columns
+      label(for="description") 描述
+      textarea(id="description", name="description", ng-model="current.description")
+    div.large-12.columns
+      input.button.small(type="submit", value="保存修改")
+  div.large-12.columns
+    label() 删除
+    input.button.alert.small(type="button", value="删除", ng-click="del()")

@@ -1,0 +1,21 @@
+div
+  div.row.snippets-square.sidebar
+    div.text-center.snippets-square-labels
+      button(ng-repeat="(key, label) in labels", ng-bind="label", class="button tiny {{key}}")
+    div
+      input(type="text")
+    div.text-center
+      button.button.small.secondary() 手气不错
+      button.button.small() 搜索
+    ul.clearfix
+      li(ng-repeat="snippet in snippets")
+        div.snippet
+          a(href="/#/snippet/detail/{{snippet._id}}")
+            //img.snippet-img
+            div.snippet-img(ng-bind="snippet.name")
+          div.snippet-overview
+            a.snippet-name(ng-bind="snippet.name", href="/#/snippet/detail/{{snippet._id}}")
+            span.snippet-user by {{snippet.user}}
+          //div.snippet-detail
+            //span.icon-tag
+            //span.snippet-favour.icon-thumbs-up

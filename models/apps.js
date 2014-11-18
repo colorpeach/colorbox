@@ -6,7 +6,9 @@ var tidy = dbClient.column({
     css          : 'css',
     js           : 'js',
     user         : 'user',
-    sizes        : 'sizes'
+    sizes        : 'sizes',
+    createDate   : 'createDate',
+    stars        : 'stars'
 });
 var apps = {};
 
@@ -42,6 +44,28 @@ apps.query = function(data,fn,filter){
             db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
                 callback(err,data);
             });
+        }
+    ],fn);
+}
+
+//查询
+apps.operaQuery = function(data, fn, filter, opera){
+    var d = tidy(data);
+    dbClient.connect([
+        function(db,callback){
+            if(opera){
+                var o = db.collection('apps').find(d,{fields:filter});
+                for(var n in opera){
+                    o = o[n](opera[n]);
+                }
+                o.toArray(function(err,data){
+                    callback(err,data);
+                });
+            }else{
+                db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
+                    callback(err,data);
+                });
+            }
         }
     ],fn);
 }

@@ -26,7 +26,7 @@ app.use(require("express-session")({
 //静态文件路径
 app.use(require("serve-static")(path.join(__dirname,"client")));
 
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || process.env.VMC_APP_PORT || 3000, function(){
     console.log('running colorbox');
 });
 

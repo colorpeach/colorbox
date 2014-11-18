@@ -20,9 +20,16 @@ define(['js/app'], function(app){
     .controller('messageCtrl',
     ['$scope', 'messageCurd', 'prompt', '$window',
         function($scope,   messageCurd,   prompt,   $window){
+            var $scrollBox = $window.document.querySelector('.main-box > div');
+            var $content = $window.document.querySelector('#content');
             $scope.label = '内容';
             $scope.data = {};
             $scope.current = null;
+
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入留言...'
+            });
 
             messageCurd.getMessages()
             .success(function(data){
@@ -33,7 +40,8 @@ define(['js/app'], function(app){
                 $scope.current = msg;
                 $scope.label = '回复 ' + user;
                 $scope.data.to = user;
-                $window.scrollTo(0, 0);
+                $scrollBox.scrollTop = 0;
+                $content.focus();
             };
 
             $scope.cancel = function(){

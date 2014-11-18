@@ -1,4 +1,59 @@
 /*common*/
+.cm-tip{
+    position: fixed;
+    border-radius: 4px;
+    border: 2px solid rgba(0, 0, 0, 0.9);
+    color: #333;
+    background-color: #fff;
+    font-size: 12px;
+    z-index: 1050;
+}
+
+.cm-tip-arrow{
+    position: absolute;
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0);
+}
+
+.cm-tip-arrow-top{
+    border-top-color: rgba(0, 0, 0, 0.9);
+    border-bottom-width: 0;
+    bottom: -8px;
+    left: 50%;
+    margin-left: -6px;
+}
+
+.cm-tip-arrow-left{
+    border-left-color: rgba(0, 0, 0, 0.9);
+    border-right-width: 0;
+    top: 50%;
+    right :-8px;
+    margin-top: -6px;
+}
+
+.cm-tip-arrow-right{
+    border-right-color: rgba(0, 0, 0, 0.9);
+    border-left-width: 0;
+    top: 50%;
+    left: -8px;
+    margin-top: -6px;
+}
+
+.cm-tip-arrow-bottom{
+    border-bottom-color: rgba(0, 0, 0, 0.9);
+    border-top-width: 0;
+    left: 50%;
+    top: -8px;
+    margin-left:-6px;
+}
+
+.cm-tip-content{
+    padding:5px 10px;
+    white-space: nowrap;
+}
+
+
 .top-bar{
   height: 36px;
   z-index: 1000;
@@ -13,16 +68,52 @@
 }
 
 .top-bar a{
+  display: inline-block;
+  padding: 0 10px;
+  height: 36px;
   line-height: 36px;
+}
+
+.top-bar a.title{
+  float: left;
+  padding: 0;
+  font-size: 12px;
+  vertical-align: top;
+  color: #fff;
+}
+
+a.top-bar-user{
+  float: right;
+  position: relative;
+  padding: 3px;
+}
+
+.top-bar-user-icon{
+  overflow: hidden;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  background-color: #444;
+  color: #fff;
+  font-size: 30px;
+  line-height: 34px;
+  border-radius: 50%;
+}
+
+.top-bar-user img{
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 50%;
 }
 
 .top-bar-right{
   float: right;
+  margin-left: 0;
 }
 
 .top-bar-right li{
   display: inline-block;
-  padding: 0 10px;
   font-size: 16px;
   border-left: 1px solid #444;
 }
@@ -50,18 +141,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  top: 45px;
-  overflow-y: hidden;
-}
-
-.desktop-box.draging{
-  background-image: -webkit-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -moz-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -o-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%);
-  background-repeat: repeat;
-  background-position: top left;
-  background-size: 100% 120px;
+  top: 35px;
+  height: auto!important;
+  overflow-y: auto;
 }
 
 .desktop-box.adding{
@@ -69,7 +151,6 @@
 }
 
 .desktop-added-list{
-  position: relative;
   height: 100%;
   width: 1441px;
   margin: 0 auto;
@@ -77,21 +158,26 @@
   overflow-x: hidden;
 }
 
-.desktop-added-list.draging{
-  background-image: -webkit-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -moz-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -o-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%);
+/*.desktop-all-list.draging{
+  background-image: -webkit-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
+                    -webkit-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
+  background-image: -moz-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
+                    -moz-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
+  background-image: -o-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%), 
+                    -o-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%),
+                    linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%);
   background-repeat: repeat;
-  background-position: top left;
-  background-size: 120px 100%;
-}
+  background-position: 0 0;
+  background-size: 120px 120px;
+}*/
 
 .desktop-all-list{
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
+  height: auto!important;
   background-color: #333;
 }
 
@@ -119,6 +205,7 @@
 
 .sidebar{
   padding: 20px 0 0;
+  min-width: 420px;
 }
 
 .sidebar li.ng-leave{
@@ -163,9 +250,19 @@
   height: 100%;
 }
 
+body{
+  overflow: hidden;
+}
+
 .main-box{
   margin-top: -36px;
   padding-top: 36px;
+  position: relative;
+}
+
+.main-box > div{
+  height: 100%;
+  overflow: auto;
 }
 
 .add-app,
@@ -186,7 +283,7 @@
 }
 
 .add-app-editor > div{
-  position: relative;
+  position: absolute;
   overflow: hidden;
   padding: 5px;
   transition: 0.3s all;
@@ -199,7 +296,7 @@
 }
 
 .add-app-box{
-  position: absolute;
+  position: absolute!important;
   top: 35px;
   left: 5px;
   right: 5px;
@@ -476,12 +573,12 @@
 
 .route-overlay{
   position: fixed;
-  top: 0;
+  top: 35px;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: transparent;
-  opacity: .9;
+  opacity: .3;
   z-index: 1000;
 }
 
@@ -506,15 +603,27 @@
 .route-waiting{
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 0;
+  right: 0;
   height: 30px;
-  margin-left: -15px;
   margin-top: -15px;
-  color: #999;
-  font-size: 30px;
+  text-align: center;
+  color: #000;
   line-height: 30px;
+}
+
+.route-waiting .waiting-icon{
+  display: inline-block;
+  height: 30px;
+  font-size: 30px;
+  vertical-align: top;
   -webkit-animation: waiting 1s infinite linear;
   animation: waiting 1s infinite linear;
+}
+
+.route-waiting .waiting-msg{
+  margin-left: 10px;
+  font-size: 16px;
 }
 
 @-webkit-keyframes waiting{
@@ -581,7 +690,6 @@
   overflow: hidden;
   width: 120px;
   height: 120px;
-  padding-top: 10px;
   margin: 30px auto 0;
   background-color: #ccc;
   border-radius: 50%;
@@ -664,12 +772,7 @@
   background-color: #eee;
 }
 
-.dashboard-box-item:hover .dashboard-box-item-btns{
-  display: block;
-}
-
 .dashboard-box-item-btns{
-  display: none;
   float: right;
 }
 
@@ -681,4 +784,272 @@
 
 .dashboard-box-item-btns span:hover{
   color: #999;
+}
+
+/*app-all*/
+.app-all-left{
+  position: absolute;
+  width: 180px;
+}
+
+.app-type-list{
+  margin-left: 0;
+}
+
+.app-type-list li{
+  display: block;
+}
+
+.app-type-list li > a{
+  display: block;
+  padding: 5px 10px;
+  margin-top: -1px;
+  border: 1px solid #ccc;
+}
+
+.app-type-list li > a:hover{
+  background-color: #ececec;
+  box-shadow: 0 1px 1px #ccc inset;
+}
+
+.app-type-list li.active a{
+  background-color: #008cba;
+  color: #fff;
+  box-shadow: 0 1px 1px #007095 inset;
+}
+
+.app-all-right{
+  margin-left: 200px;
+}
+
+.app-all-head{
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.app-all-right ul{
+  margin-left: 0;
+  margin-bottom: 20px;
+  border-left: 1px solid #ccc;
+}
+
+.app-all-right li{
+  display: block;
+  overflow: hidden;
+  float: left;
+  position: relative;
+  width: 25%;
+  padding: 5px;
+  margin-top: -1px;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  min-width: 199.5px;
+}
+
+.app-all-right li.ng-enter{
+      -webkit-animation-name: fadeIn;
+              animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+
+.app-all-right li .app{
+  opacity: 1;
+  transition: .3s all;
+}
+
+.app-all-right li:hover .app{
+  opacity: 0;
+}
+
+.app-all-right li:hover .app-detail{
+  top: 0;
+}
+
+.app-all-right .app-logo{
+  height: 100px;
+}
+
+.app-all-right .app-overview{
+  padding: 0 10px;
+}
+
+.app-all-right .app-user{
+  font-size: 12px;
+  color: #999;
+}
+
+.app-all-right .app-stars{
+  padding: 0 10px;
+  font-size: 10px;
+}
+
+.app-all-right .app-detail{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 10px 0;
+  box-shadow: 0 1px 2px 0 #ccc inset;
+  transition: .3s all;
+  background-color: #ececec;
+}
+
+.app-all-right .app-description{
+  padding: 0 10px;
+  height: 50px;
+  font-size: 12px;
+}
+
+.app-all-right .app-buttons{
+  text-align: center;
+}
+
+.app-all-left .columns,
+.app-all-right .columns{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/*snippets-square*/
+.snippets-square .snippets-square-labels button{
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.snippets-square ul{
+  margin-left: 0;
+}
+
+.snippets-square li{
+  display: block;
+  float: left;
+  width: 250px;
+  padding: 5px;
+}
+
+.snippets-square .snippet{
+  display: block;
+  box-shadow: 0 0 1px #999;
+  transition: .3s box-shadow;
+}
+
+.snippets-square .snippet:hover{
+  position: relative;
+  top: -2px;
+  box-shadow: 0 0 10px #999;
+}
+
+.snippets-square .snippet-overview{
+  padding: 5px 10px;
+  line-height: 1;
+}
+
+.snippets-square .snippet-user{
+  float: right;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 14px;
+}
+
+.snippets-square .snippet-img{
+  height: 140px;
+}
+
+.snippets-square div.snippet-img{
+  height: 140px;
+  background-color: #43ac6a;
+  color: #fff;
+  line-height: 140px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.snippets-square .snippet-detail{
+  padding: 0 10px 5px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.snippets-square .snippet-detail span{
+  display: inline-block;
+  margin-left: 5px;
+  color: #999;
+  cursor: pointer;
+  transition: .3s color;
+}
+
+.snippets-square .snippet-detail span:hover{
+  color: #333;
+}
+
+/*snippet-detail*/
+.snippet-detail{
+  padding-bottom: 100px;
+}
+
+.snippet-detail .snippet-iframe{
+  border: 2px solid #ccc;
+}
+
+.snippet-detail .snippet-bar{
+  margin-top: -7px;
+  background-color: #333;
+  box-shadow: 0 5px 5px #999;
+}
+
+.snippet-detail .snippet-bar li{
+  display: inline-block;
+  border-right: 1px solid #444;
+  padding: 5px 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.snippet-detail .snippet-bar li:hover{
+  background-color: #444;
+}
+
+@media screen and (min-width: 681px) and (max-width: 820px){
+  .app-all-left{
+    position: static;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .app-all-right{
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .snippets-square{
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 680px){
+  .app-all-left{
+    position: static;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .app-all-right{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .snippets-square{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

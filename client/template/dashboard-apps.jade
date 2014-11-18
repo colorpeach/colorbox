@@ -1,0 +1,53 @@
+li.dashboard-box(ng-show="status.page === 'list'")
+  div.dashboard-box-head
+    span 应用列表
+    span.right.icon-plus.btn-icon(title="新建应用", ng-click="switch($event, 'add')")
+  div.dashboard-box-list
+    a.dashboard-box-item(href="#/edit/app/{{app._id}}", ng-repeat="app in apps")
+      span {{app.name}}
+      div.dashboard-box-item-btns
+        span.icon-cog(title="应用设置", ng-click="switch($event, 'detail', app, $index)")
+
+li.dashboard-box(ng-show="status.page === 'add'")
+  div.dashboard-box-head
+    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    span 新建应用
+  form(ng-submit="add()")
+    div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+    div.large-12.columns
+      label(for="app-name") 应用名称
+      input#app-name(type="text", name="name", ng-model="data.name", required)
+    div.large-12.columns
+      label(for="app-description") 应用描述
+      textarea#app-description(name="description", ng-model="data.description")
+    div.large-12.columns
+      input.button.small(type="submit", value="提交")
+
+li.dashboard-box(ng-show="status.page === 'detail'")
+  div.dashboard-box-head
+    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    a(href="/_apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
+    a.right.icon-code(href="#/edit/app/{{current._id}}", title="开发代码")
+  div.dashboard-app-logo-wrap
+    div.left.app-logo {{current.name}}
+  form(ng-submit="submit($event)")
+    div.large-12.columns
+      label 应用尺寸
+        span.icon-plus.btn-icon(ng-click="switchAddSize()")
+      span.dashboard-box-app-size.label.secondary(ng-repeat="size in current.sizes") {{size.x}} × {{size.y}}
+        span.icon-close.btn-icon(ng-if="$index", ng-click="delSize($index)")
+      div.dashboard-app-size-form(ng-show="status.addSize")
+        select(ng-model="currentSize.x", ng-options = "o as o for o in sizeOptions")
+        | × 
+        select(ng-model="currentSize.y", ng-options = "o as o for o in sizeOptions")
+        select(ng-model="currentSize.showIframe", ng-options="key as o for (key, o) in showOptions")
+        input.button.tiny(type="button", value="添加", ng-click="addSize()")
+    div.large-12.columns
+      label(for="description") 应用描述
+      textarea(id="description", name="description", ng-model="current.description")
+    div.large-12.columns
+      input.button.small(type="submit", value="保存修改")
+      input.button.success.small(type="button", value="申请发布")
+  div.large-12.columns
+    label() 删除应用
+    input.button.alert.small(type="button", value="删除应用", ng-click="del()")

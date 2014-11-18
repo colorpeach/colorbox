@@ -38,20 +38,30 @@ define(['js/app'], function(app){
             $scope.status = {};
             $scope.allowDrag = true;
 
-            desktopCurd.getDesktopApps()
-            .success(function(data){
-                if(data.desktopApps && data.desktopApps.length){
-                    $scope.apps = data.desktopApps;
-                    data.desktopApps.forEach(function(n, i){
-                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
-                    });
-                }else{
+            if($rootScope.user){
+                //如果用户已经登录
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '载入桌面应用...'
+                });
+
+                desktopCurd.getDesktopApps()
+                .success(function(data){
+                    if(data.desktopApps && data.desktopApps.length){
+                        $scope.apps = data.desktopApps;
+                        data.desktopApps.forEach(function(n, i){
+                            n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                        });
+                    }else{
+                        $scope.apps = [addButton];
+                    }
+                })
+                .error(function(){
                     $scope.apps = [addButton];
-                }
-            })
-            .error(function(){
+                });
+            }else{
                 $scope.apps = [addButton];
-            });
+            }
 
             $scope.$on('updateDesktop', function(){
                 desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
@@ -67,6 +77,24 @@ define(['js/app'], function(app){
                 $scope.apps.splice(i, 1);
                 $rootScope.$broadcast('updateDesktop');
             };
+        }
+    ])
+
+    .controller('ListCtrl',
+    ['$scope', 'appsCrud', '$sce',
+        function($scope,   appsCrud,   $sce){
+            $scope.apps = [];
+            
+            $scope.submit = function(e){
+                e.preventDefault();
+                appsCrud.getPublishedApps($scope.name)
+                .success(function(data){
+                    $scope.apps = data.apps;
+                    data.apps.forEach(function(n, i){
+                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                    });
+                });
+            }
         }
     ])
 
@@ -115,7 +143,7 @@ define(['js/app'], function(app){
             return {
                 position: function(item, point, containRect, contain){
                     return {
-                        left: Math.floor((contain.scrollLeft + point.x - containRect.left)/cell.x) * cell.x + 'px',
+                        left: Math.floor((contain.parentNode.scrollLeft + point.x)/cell.x) * cell.x + 'px',
                         top: Math.floor((contain.scrollTop + point.y - containRect.top)/cell.y) * cell.y + 'px',
                         width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
                         height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
@@ -136,8 +164,9 @@ define(['js/app'], function(app){
                     //预设位置不在包含框内
                     //预设位置与其他重叠
                     if(itemRect.left < 0 ||
-                        itemRect.top < 0 ||
-                        itemRect.right > containRect.width
+                        itemRect.top < 0
+//                          ||
+//                         itemRect.right > containRect.width
                         ){
                         return false;
                     }
@@ -177,6 +206,26 @@ define(['js/app'], function(app){
     .directive('dragItem', 
     ['utils', '$window', 'dragPlaceholder', '$timeout', '$rootScope', 'calcMethods', '$sce',
         function(utils, $window, dragPlaceholder, $timeout, $rootScope, calcMethods, $sce){
+            var eventsMap = {
+                web: {
+                    down: 'mousedown',
+                    up: 'mouseup',
+                    move: 'mousemove'
+                },
+                mobile: {
+                    down: 'touchstart',
+                    up: 'touchend',
+                    move: 'touchmove'
+                }
+            };
+            var device;
+
+            if($window.document.hasOwnProperty("ontouchstart")){
+                device = 'mobile';
+            }else{
+                device = 'web';
+            }
+
             return {
                 restrict: 'A',
                 compile: function(){
@@ -189,10 +238,14 @@ define(['js/app'], function(app){
                             scope.app.show = !scope.app.show;
                         });
 
-                        element.bind('mousedown touchstart', function(e){
+                        element.bind(eventsMap[device].down, elementDown);
+                        element.bind(eventsMap[device].up, elementUp);
+
+                        function elementDown(e){
                             if(!scope.allowDrag) return;
-                            if(e.target.tagName !== 'SELECT')
+                            if(device === 'web' && e.target.tagName !== 'SELECT'){
                                 e.preventDefault();
+                            }
 
                             if(timer){
                                 $timeout.cancel(timer);
@@ -201,13 +254,15 @@ define(['js/app'], function(app){
                             timer = $timeout(function(){
                                 startDrag(e);
                             }, 300);
-                        });
+                        }
 
-                        element.bind('mouseup touchend', function(){
+                        function elementUp(e){
+//                             if(e.target.tagName !== 'SELECT')
+//                                 e.preventDefault();
                             if(timer){
                                 $timeout.cancel(timer);
                             }
-                        });
+                        }
 
                         function startDrag(e){
                             var item = scope.getDrapData(scope.$index);
@@ -249,7 +304,7 @@ define(['js/app'], function(app){
                             $placeholder.html('');
                             $placeholder.addClass('drag-placeholder');
                             $contain.append($placeholder);
-                            $moveContain.append($overlay);
+                            $contain.parent().append($overlay);
 
                             position = calcMethods.position(item, point, containRect, $contain[0]);
                             positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
@@ -260,8 +315,9 @@ define(['js/app'], function(app){
                                 item.size.showIframe = 'false';
                             }
 
-                            $moveContain.bind('mousemove touchmove', function(e){
+                            $moveContain.bind(eventsMap[device].move, function(e){
                                 if(e.touches){
+                                    e.preventDefault();
                                     point = {
                                         x: e.touches[0].clientX,
                                         y: e.touches[0].clientY
@@ -290,9 +346,9 @@ define(['js/app'], function(app){
                                 }, 20);
                             });
 
-                            $moveContain.bind('mouseup touchend', function(e){
-                                $moveContain.off('mousemove touchmove');
-                                $moveContain.off('mouseup touchend');
+                            $moveContain.bind(eventsMap[device].up, function(e){
+                                $moveContain.off(eventsMap[device].move);
+                                $moveContain.off(eventsMap[device].up);
 
                                 if(moveTimer){
                                     $timeout.cancel(moveTimer);
@@ -303,8 +359,10 @@ define(['js/app'], function(app){
                                 $drag.remove();
 
                                 if(positionIsRight &&
-                                    point.x < containRect.left + containRect.width &&
-                                    point.y < containRect.top + containRect.height){
+                                    point.x < containRect.left + containRect.width
+//                                      &&
+//                                     point.y < containRect.top + containRect.height
+                                    ){
                                     item.position = position;
                                     if(scope.$parent !== $contain.scope()){
                                         $contain.scope().add(item);

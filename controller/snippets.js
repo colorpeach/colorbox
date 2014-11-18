@@ -27,16 +27,14 @@ _snippets.get = function(req, res){
 };
 
 _snippets.add = function(req, res){
-    snippets.query({name:req.body.name},function(list){
+    snippets.query({name:req.body.name}, function(list){
         if(list.length){
             res.end(baseRes({errorMsg:['代码片段已经存在']}));
         }else{
-            var data = {};
-            data.user = req.session.user.login;
-            data.name = req.body.name;
+            req.body.user = req.session.user.login;;
             
-            snippets.add(data,function(data){
-                res.end(baseRes(data));
+            snippets.add(req.body, function(data){
+                res.end(baseRes({snippet: data[0]}));
             });
         }
     });
@@ -60,4 +58,10 @@ _snippets.get_user_snippets = function(req, res){
     },{jade: 0, css: 0, js: 0});
 };
 
-module.exports = snippets;
+_snippets.get_snippets = function(req, res){
+    snippets.query({}, function(list){
+        res.end(baseRes({snippets: list}));
+    },{jade: 0, css: 0, js: 0});
+};
+
+module.exports = _snippets;

@@ -1,5 +1,6 @@
 require.config({
     baseUrl: '/',
+    waitSeconds: 60,
     paths: {
         'angular'                 : '/lib/angular/1.3.0/angular.min',
         'angular-route'           : '/lib/angular/1.3.0/angular-route.min',
@@ -27,6 +28,14 @@ require.config({
         {
             name: 'cm',
             location: '/lib/codemirror/4.7'
+        },
+        {
+            name: 'ace',
+            location: '/lib/ace'
+        },
+        {
+            name: 'directive',
+            location: '/public/directive'
         }
     ]
 });

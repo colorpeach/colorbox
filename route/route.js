@@ -33,8 +33,14 @@ module.exports = function(app){
                     return;
                 }
             }
-            
-            next();
+
+//             if(path.indexOf('.') < 0){
+//                 setTimeout(function(){
+//                     next();
+//                 }, 1000);
+//             }else{
+                next();
+//             }
         }else{
             res.render('template/not-found',{user:req.session.user});
         }
@@ -72,17 +78,19 @@ module.exports = function(app){
     app.get('/_get/published/apps', apps.get_published_apps);
     
     //片段预览页面
-//     app.get('/_snippets/preview/:id', snippets.snippets_preview);
-//     //添加片段
-//     app.post('/post/add/snippet', snippets.add);
-//     //更新片段
-//     app.post('/post/save/snippet', snippets.save);
-//     //删除片段
-//     app.post('/post/del/snippet', snippets.del);
-//     //获取片段
-//     app.get('/get/snippet', snippets.get);
-//     //获取用户的所有片段
-//     app.get('/_get/user/snippets', snippets.get_user_snippets);
+    app.get('/_snippets/preview/:id', snippets.snippets_preview);
+    //添加片段
+    app.post('/post/add/snippet', snippets.add);
+    //更新片段
+    app.post('/post/save/snippet', snippets.save);
+    //删除片段
+    app.post('/post/del/snippet', snippets.del);
+    //获取片段
+    app.get('/get/snippet', snippets.get);
+    //获取用户的所有片段
+    app.get('/_get/user/snippets', snippets.get_user_snippets);
+    //获取所有片段
+    app.get('/_get/snippets', snippets.get_snippets);
 
     //获取留言
     app.get('/_get/messages', messages.get_messages);
