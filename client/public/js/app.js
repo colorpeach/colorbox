@@ -61,7 +61,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '编辑代码片段',
                 templateUrl: 'edit-snippet.html',
                 controller: 'editSnippetCtrl',
-                dependencies: ['js/edit-snippet', 'js/dashboard-snippets', 'directive/resize']
+                dependencies: ['js/edit-snippet', 'js/dashboard-snippets', 'directive/resize', 'directive/dialog']
             },
             '/snippet/detail/:id': {
                 title: '代码片段',

@@ -31,6 +31,11 @@ li.dashboard-box(ng-show="status.page === 'detail'")
   div.dashboard-app-logo-wrap
     div.left.app-logo {{current.name}}
   form(ng-submit="submit($event)")
+    div.large-12.columns.dashboard-app-types
+      label 应用类型
+      span(ng-repeat="type in appTypeList")
+        input(type="radio", id="{{type.key}}", value="{{type.key}}", name="type", ng-model="current.type")
+        label.secondary.button.tiny(for="{{type.key}}", ng-bind="type.name")
     div.large-12.columns
       label 应用尺寸
         span.icon-plus.btn-icon(ng-click="switchAddSize()")

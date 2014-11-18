@@ -1,3 +1,6 @@
+/*angularjs*/
+[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}
+
 /*common*/
 .cm-tip{
     position: fixed;
@@ -321,7 +324,7 @@ body{
   top: 5px;
   right: 5px;
   color: #fff;
-  background-color: #ccc;
+  background-color: #ececec;
   overflow: hidden;
 }
 
@@ -740,6 +743,25 @@ body{
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
+}
+
+.dashboard-app-types{
+  margin-bottom: 20px;
+}
+
+.dashboard-app-types [type=radio]{
+  display: none;
+}
+
+.dashboard-app-types [type=radio]:checked + label{
+  background-color: #008cba!important;
+  border-color: #007095!important;
+  color: #fff!important;
+}
+
+.dashboard-app-types .button{
+  margin-left: 0;
+  margin-right: 10px;
 }
 
 .dashboard-box-app-size{

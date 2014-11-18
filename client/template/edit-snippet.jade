@@ -13,6 +13,7 @@ script(type='text/ng-template',id='html-editor')
   div
     span.box-name jade
     div.add-app-toolbar
+      span.icon-cog.btn-icon(ng-click="dialog.open()")
     div.add-app-box(code-editor="jade")
 script(type='text/ng-template',id='javascript-editor')
   div
@@ -30,3 +31,7 @@ script(type='text/ng-template',id='preview')
     div.add-app-toolbar
     div.add-app-box
       iframe(ng-src="{{previewUrl}}", frameBorder=0)
+script(type='text/ng-template', id="edit-snippet-dialog")
+  span(ng-repeat="type in typeList")
+    input(type="radio", id="{{type.key}}", value="{{type.key}}", name="type", ng-model="setting.type")
+    label.button.tiny(for="{{type.key}}", ng-bind="type.name", ng-class="{secondary: type.name !== setting.type}")

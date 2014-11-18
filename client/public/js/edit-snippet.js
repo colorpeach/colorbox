@@ -1,8 +1,8 @@
 define(['js/app', 'ace/ace'], function(app, ace){
     app
     .controller('editSnippetCtrl',
-    ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage',
-        function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage){
+    ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
+        function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
             $scope.setLoad({
                 loading: true,
                 loadMessage: '载入代码'
@@ -30,6 +30,18 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     $window.frames[0].location.reload();
                 });
             };
+
+            $scope.typeList = [
+                {key: 'jade', name: 'jade'},
+                {key: 'haml', name: 'haml'}
+            ];
+
+            $scope.dialog = dialog({
+                template: 'edit-snippet-dialog',
+                scope: $scope,
+                width: '400px',
+                height: '600px'
+            });
 
             $scope.jade = {
                 mode: 'jade',

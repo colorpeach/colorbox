@@ -44,6 +44,12 @@ define(['js/app'], function(app){
                 addSize: false,
                 page: 'list'
             };
+            $scope.appTypeList = [
+                {name: '工具', key: 'tool'},
+                {name: '游戏', key: 'game'},
+                {name: '控件', key: 'code'},
+                {name: '库', key: 'library'}
+            ];
 
             $scope.setLoad({
                 loading: true,

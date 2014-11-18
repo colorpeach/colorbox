@@ -14,13 +14,13 @@ nav.top-bar
     li
       a(tip, href="/_logs", title="网站更新日志")
         span.icon-bug
-    li(ng-show="user")
+    li(ng-show="user", ng-cloak)
       a(tip, href="/_logout", title="退出登录")
         span.icon-arrow-right2
-    li(ng-show="!user")
+    li(ng-show="!user", ng-cloak)
       a(href="/#/login") 登录
-    li(ng-show="!user")
+    li(ng-show="!user", ng-cloak)
       a(href="/#/register") 注册
-  a.top-bar-user(tip, href="/#/dashboard/apps", title="我的仪表盘", ng-show="user")
+  a.top-bar-user(tip, href="/#/dashboard/apps", title="我的仪表盘", ng-show="user", ng-cloak)
     img(src-element="http://identicon.relucks.org/{user.login}?size=30")
     span.top-bar-user-icon.icon-user

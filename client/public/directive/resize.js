@@ -18,6 +18,9 @@ define(['angular', 'js/app'], function(_, app){
     *       }
     *   }
     *
+    *   events
+    *   resizeUpdate
+    *
     */
     .directive('resizeBox',
     ['$templateCache', '$rootScope', '$compile',
@@ -62,8 +65,8 @@ define(['angular', 'js/app'], function(_, app){
                 });
                 
                 return {
-                    mainOffsets: mainOffsets,
-                    assistOffsetsList: assistOffsetsList,
+                    mainOffsets: mainOffsets, //每个group的偏移
+                    assistOffsetsList: assistOffsetsList, //对应group里每个item的偏移
                     groups: showGroupsCount, //显示的group个数
                     showItemsCountList: showItemsCountList, //显示的group下显示的item个数
                     showItemsReals: showItemsReals, //显示的group下对应的显示的item的real值的和
