@@ -4,9 +4,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
         function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
             $scope.data = {
-                html: {},
-                css: {},
-                javascript: {}
+                html: {type: 'html'},
+                css: {type: 'css'},
+                javascript: {type: 'javascript'}
             };
             var dialog = dialog({
                 template: 'edit-snippet-dialog',
@@ -70,8 +70,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 }
             };
 
-            function save(e){
-                $scope.submit(e, this.key);
+            function save(e, key){
+                $scope.submit(e, key);
             }
 
             $scope.boxs = ['css', 'html', 'js', 'preview'];
@@ -142,7 +142,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                                 userSave = true;
                                 //TODO
                                 scope.data[key].content = editor.getValue();
-                                config.save();
+                                config.save(null, key);
                             },
                             readOnly: false
                         });
