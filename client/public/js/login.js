@@ -15,15 +15,16 @@ define(['js/app'], function(app){
     ])
 
     .controller('loginCtrl', 
-    ['$scope', 'loginBox',
-        function($scope,   loginBox){
+    ['$scope', 'loginBox', '$rootScope', '$location',
+        function($scope,   loginBox,   $rootScope,   $location){
             $scope.errorMsgs = [];
             //提交表单
             $scope.submit = function(e){
                 e.preventDefault();
                 loginBox.enter($scope.data)
                 .success(function(data){
-                    location.href = '/';
+                    $rootScope.user = data.user;
+                    $location.path('/dashboard/snippets');
                 })
                 .error(function(data){
                     $scope.errorMsgs = data.errorMsg || [];
@@ -33,15 +34,16 @@ define(['js/app'], function(app){
     ])
 
     .controller('registerCtrl', 
-    ['$scope', 'loginBox',
-        function($scope,   loginBox){
+    ['$scope', 'loginBox', '$rootScope', '$location',
+        function($scope,   loginBox,   $rootScope,   $location){
             $scope.errorMsgs = [];
             //提交表单
             $scope.submit = function(e){
                 e.preventDefault();
                 loginBox.register($scope.data)
                 .success(function(data){
-                    location.href = '/';
+                    $rootScope.user = data.user;
+                    $location.path('/dashboard/snippets');
                 })
                 .error(function(data){
                     $scope.errorMsgs = data.errorMsg || [];

@@ -15,6 +15,12 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'desktopCtrl',
                 dependencies: ['js/index', 'js/dashboard-apps']
             },
+            '/logs':{
+                title: '网站更新日志',
+                templateUrl: 'logs.html',
+                controller: 'logsCtrl',
+                dependencies: ['js/logs']
+            },
             '/login': {
                 title: '登录',
                 templateUrl: 'login.html',
@@ -73,14 +79,23 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     };
 
     app.run(
-    ['$rootScope', '$sce',
-        function($rootScope,   $sce){
+    ['$rootScope', '$sce', '$http', '$location',
+        function($rootScope,   $sce,   $http,   $location){
             $rootScope.user = angular.user;
+            delete angular.user;
             $rootScope.$watch('user.login', function(val){
                 pathsMap.login = !!val;
                 $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
             });
-            delete angular.user;
+
+            $rootScope.logout = function(e){
+                e.preventDefault();
+                $http.get('/_logout')
+                .then(function(){
+                    $rootScope.user = null;
+                    $location.path('/');
+                });
+            }
         }
     ]);
 

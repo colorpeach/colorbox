@@ -17,7 +17,7 @@ define(['js/app'], function(app){
                     return $http.post('/post/save/snippet', data);
                 },
                 getSnippets: function(){
-                    return $http.get('/_get/user/snippets');
+                    return $http.get('/_get/user/snippets', {cache: true});
                 },
                 getAllSnippets: function(){
                     return $http.get('/_get/snippets');

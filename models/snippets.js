@@ -2,9 +2,9 @@ var dbClient = require('../database');
 var tidy = dbClient.column({
     name         : 'name',
     description  : 'description',
-    jade         : 'jade',
+    html         : 'html',
     css          : 'css',
-    js           : 'js',
+    javascript   : 'javascript',
     user         : 'user',
     comments     : 'comments',
     stars        : 'stars'

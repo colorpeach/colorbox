@@ -99,6 +99,8 @@ module.exports = function(app){
     //添加留言
     app.post('/post/add/message', messages.add);
 
+    //获取网站日志
+    app.get('/_get/logs', logs.get)
     //添加网站日志
     app.post('/post/add/log', logs.add);
 };

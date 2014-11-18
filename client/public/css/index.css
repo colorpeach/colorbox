@@ -304,19 +304,25 @@ body{
   left: 5px;
   right: 5px;
   bottom: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #999;
+}
+
+.app-name{
+  margin-top: 2px;
+  font-weight: bold;
 }
 
 .box-name{
-  display: block;
-  position: absolute;
+  display: inline-block;
   padding: 0 5px;
   top: 5px;
   right: 5px;
-  color: #333;
-  z-index: 10;
+  color: #ccc;
+  line-height: 20px;
+  vertical-align: top;
 }
 
+.add-app-top-toolbar,
 .add-app-toolbar{
   position: absolute;
   height: 30px;
@@ -324,20 +330,25 @@ body{
   top: 5px;
   right: 5px;
   color: #fff;
-  background-color: #ececec;
+  background-color: #333;
+  opacity: .8;
   overflow: hidden;
 }
 
-.add-app-toolbar .button-group .button{
+.add-app-toolbar{
+  padding: 5px;
+}
+
+.add-app-top-toolbar .button-group .button{
   background-color: #008cba!important;
 }
 
-.add-app-toolbar .button-group .active{
+.add-app-top-toolbar .button-group .active{
   background-color: #007095!important;
 }
 
-.add-app-toolbar select,
-.add-app-toolbar input {
+.add-app-top-toolbar select,
+.add-app-top-toolbar input {
   padding      : 0 20px 0 0;
   margin       : 0;
   height       : 30px;
@@ -346,11 +357,11 @@ body{
   width        : auto;
 }
 
-.add-app-toolbar .columns{
+.add-app-top-toolbar .columns{
   padding-right: 0;
 }
 
-.add-app-toolbar .button-group{
+.add-app-top-toolbar .button-group{
   padding-left: 10px;
   padding-right: 10px;
   background-color: #fff;
@@ -508,7 +519,7 @@ body{
   right: 0;
   width: 20px;
   height: 0;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #666;
   margin: auto;
 }
 
@@ -526,7 +537,7 @@ body{
   bottom: 0;
   height: 20px;
   width: 0;
-  border-left: 1px solid #ccc;
+  border-left: 1px solid #666;
   margin: auto;
 }
 

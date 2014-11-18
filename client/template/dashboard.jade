@@ -4,8 +4,8 @@ div.dashboard
       li(ng-class="{active: tab === 'account'}")
         a(href='#/dashboard/account')
           div.dashboard-avatar
-            img(src="http://identicon.relucks.org/#{user.login}?size=160")
-          div.dashboard-user-name #{user.login}
+            img(src-element="http://identicon.relucks.org/{user}?size=160")
+          div.dashboard-user-name {{user}}
       li(ng-class="{active: tab === 'apps'}")
         a(href='#/dashboard/apps') 我的应用
       li(ng-class="{active: tab === 'snippets'}")

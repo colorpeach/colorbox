@@ -10,14 +10,14 @@ define(['angular', 'js/app'], function(_, app){
                 top: 0,
                 left: 0,
                 right: 0,
-                bottom: 0,
                 display: 'none'
             };
             
 
             function Dialog(opts){
-                this.element = angular.element('<div></div>');
-                this.overlay = angular.element('<div></div>');
+                this.element = angular.element('<div class="reveal-modal"></div>');
+                this.overlay = angular.element('<div class="reveal-modal-bg"></div>');
+                this.$close = angular.element('<a class="close-reveal-modal">×</a>');
                 this.opts = opts;
                 
                 if(opts.target){
@@ -33,12 +33,16 @@ define(['angular', 'js/app'], function(_, app){
                 }
                 if(opts.width) this.element.css({width: opts.width});
                 if(opts.height) this.element.css({height: opts.height});
-                this.element.css(css).css({zIndex: 1500}).css({margin: 'auto'});
-                this.overlay.css(css).css({zIndex: 1499});
+                this.element.css(css).css({zIndex: 1500, margin: 'auto', visibility: 'visible', top: '10px'});
+                this.overlay.css(css).css({zIndex: 1499, bottom: 0});
 
                 if(!opts.target){
-                    angular.element($window.document.body).append(this.element).append(this.overlay);
+                    angular.element($window.document.body)
+                        .append(this.element.append(this.$close))
+                        .append(this.overlay);
                 }
+
+                this.$close.bind('click', angular.bind(this, this.close));
             }
 
             Dialog.prototype = {

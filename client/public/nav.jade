@@ -12,15 +12,15 @@ nav.top-bar
       a(tip, href="/#/message-board", title="留言板")
         span.icon-copy2
     li
-      a(tip, href="/_logs", title="网站更新日志")
+      a(tip, href="/#/logs", title="网站更新日志")
         span.icon-bug
-    li(ng-show="user", ng-cloak)
-      a(tip, href="/_logout", title="退出登录")
+    li.hide(ng-show="user")
+      a(tip, href="/_logout", title="退出登录", ng-click="logout($event)")
         span.icon-arrow-right2
-    li(ng-show="!user", ng-cloak)
+    li.hide(ng-show="!user")
       a(href="/#/login") 登录
-    li(ng-show="!user", ng-cloak)
+    li.hide(ng-show="!user")
       a(href="/#/register") 注册
-  a.top-bar-user(tip, href="/#/dashboard/apps", title="我的仪表盘", ng-show="user", ng-cloak)
+  a.top-bar-user.hide(tip, href="/#/dashboard/apps", title="我的仪表盘", ng-show="user")
     img(src-element="http://identicon.relucks.org/{user.login}?size=30")
     span.top-bar-user-icon.icon-user

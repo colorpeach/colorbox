@@ -17,7 +17,7 @@ define(['js/app'], function(app){
                     return $http.post('/post/save/app', data);
                 },
                 getUserApps: function(){
-                    return $http.get('/get/apps');
+                    return $http.get('/get/apps', {cache: true});
                 },
                 getPublishedApps: function(data){
                     return $http.get('/_get/published/apps', {params: data});

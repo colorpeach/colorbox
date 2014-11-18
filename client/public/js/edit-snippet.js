@@ -3,15 +3,24 @@ define(['js/app', 'ace/ace'], function(app, ace){
     .controller('editSnippetCtrl',
     ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
         function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
+            $scope.data = {
+                html: {},
+                css: {},
+                javascript: {}
+            };
+            var dialog = dialog({
+                template: 'edit-snippet-dialog',
+                scope: $scope,
+                width: '600px'
+            });
+            
             $scope.setLoad({
                 loading: true,
                 loadMessage: '载入代码'
             });
-
-            $scope.data = {};
             snippetsCrud.get($routeParams.id)
             .success(function(data){
-                $scope.data = data.snippet;
+                angular.extend($scope.data, data.snippet);
                 $scope.previewUrl = $sce.trustAsResourceUrl('/_snippets/preview/' + data.snippet._id);
             });
 
@@ -31,39 +40,41 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 });
             };
 
-            $scope.typeList = [
-                {key: 'jade', name: 'jade'},
-                {key: 'haml', name: 'haml'}
-            ];
-
-            $scope.dialog = dialog({
-                template: 'edit-snippet-dialog',
-                scope: $scope,
-                width: '400px',
-                height: '600px'
-            });
-
-            $scope.jade = {
-                mode: 'jade',
-                key: 'jade',
-                save: save
+            $scope.dialogOpen = function(mark){
+                $scope.current = $scope.settings[mark];
+                $scope.current.mark = mark;
+                dialog.open();
             };
-            $scope.css = {
-                mode: 'css',
-                key: 'css',
-                save: save
-            };
-            $scope.javascript = {
-                mode: 'javascript',
-                key: 'js',
-                save: save
+
+            $scope.settings = {
+                html: {
+                    typeList: [
+                        {key: 'html', name: 'None'},
+                        {key: 'jade', name: 'Jade'}
+                    ],
+                    save: save
+                },
+                css: {
+                    typeList: [
+                        {key: 'css', name: 'None'},
+//                         {key: 'less', name: 'Less'}
+                    ],
+                    save: save
+                },
+                javascript: {
+                    typeList: [
+                        {key: 'javascript', name: 'None'},
+//                         {key: 'coffeeScript', name: 'CoffeeScript'}
+                    ],
+                    save: save
+                }
             };
 
             function save(e){
                 $scope.submit(e, this.key);
             }
 
-            $scope.boxs = ['css', 'jade', 'js', 'preview'];
+            $scope.boxs = ['css', 'html', 'js', 'preview'];
 
             //使用localstorage存储编辑器设置
             storage.bind($scope, 'resizeBox', {
@@ -71,7 +82,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     resizeBarWidth: 10,
                     items: [
                         {template: 'css-editor', hide: false, name: 'css'},
-                        {template: 'html-editor', hide: false, name: 'jade'},
+                        {template: 'html-editor', hide: false, name: 'html'},
                         {template: 'javascript-editor', hide: false, name: 'js'},
                         {template: 'preview', hide: false, name: 'preview'}
                     ],
@@ -112,16 +123,16 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     return function(scope, element, attrs){
                         var editor = ace.edit(element[0]);
                         var userSave = false;
-                        var config = scope[attrs.codeEditor];
+                        var key = attrs.codeEditor;
+                        var config = scope.settings[key];
                         var resizeTimer = 0;
 
                         editor.setTheme("ace/theme/chrome");
-                        editor.getSession().setMode("ace/mode/" + config.mode);
 
                         editor.setKeyboardHandler();
 
                         editor.getSession().on('change', function(){
-                            scope.data[config.key] = editor.getValue();
+                            scope.data[key].content = editor.getValue();
                         });
 
                         editor.commands.addCommand({
@@ -130,13 +141,13 @@ define(['js/app', 'ace/ace'], function(app, ace){
                             exec: function(editor) {
                                 userSave = true;
                                 //TODO
-                                scope.data[config.key] = editor.getValue();
+                                scope.data[key].content = editor.getValue();
                                 config.save();
                             },
                             readOnly: false
                         });
 
-                        scope.$watch('data.' + config.key, function(newValue, oldValue){
+                        scope.$watch('data.' + key +'.content', function(newValue, oldValue){
                             if(!userSave){
                                 if(newValue && newValue !== oldValue){
                                     editor.setValue(newValue);
@@ -144,6 +155,12 @@ define(['js/app', 'ace/ace'], function(app, ace){
                                 }
                             }else{
                                 userSave = false;
+                            }
+                        });
+
+                        scope.$watch('data.' + key + '.type', function(newValue){
+                            if(newValue){
+                                editor.getSession().setMode("ace/mode/" + newValue);
                             }
                         });
 

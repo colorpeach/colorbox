@@ -1,18 +1,34 @@
 var snippets = require('../models/snippets');
 var baseRes = require('./baseResponse');
 var jade = require('jade');
+var less = require('less');
 var _snippets = {};
 
 _snippets.snippets_preview = function(req, res){
     snippets.query({_id: req.params.id}, function(data){
         try{
-            var appData = data[0];
+            var appData = extend({css: {}, html: {}, javascript: {}}, data[0]);
             var html = jade.renderFile('client/template/app-preview.jade', appData);
-            var body = appData.jade ? jade.render(appData.jade) : '';
 
-            html = html.replace('<style>', '<style>' + (appData.css || ''))
+            var css = appData.css.content || '';
+            var body = appData.html.content || '';
+            var js = appData.javascript.content || '';
+
+            if(appData.css.type === 'less'){
+                less.render(css, function(err, _css){
+                    if(err){
+                        res.end('error: \n' + err);
+                    }
+                    css = _css;
+                });
+            }
+            if(appData.html.type === 'jade'){
+                body = jade.render(body);
+            }
+
+            html = html.replace('<style>', '<style>' + (css || ''))
                         .replace('<body>', '<body>' + body)
-                        .replace('<script>', '<script>' + (appData.js || ''));
+                        .replace('<script>', '<script>' + (js || ''));
         }catch(e){
             var html = 'error: \n' + e.message;
         }
@@ -55,13 +71,20 @@ _snippets.del = function(req, res){
 _snippets.get_user_snippets = function(req, res){
     snippets.query({user: req.session.user.login}, function(list){
         res.end(baseRes({snippets: list}));
-    },{jade: 0, css: 0, js: 0});
+    },{html: 0, css: 0, js: 0});
 };
 
 _snippets.get_snippets = function(req, res){
     snippets.query({}, function(list){
         res.end(baseRes({snippets: list}));
-    },{jade: 0, css: 0, js: 0});
+    },{html: 0, css: 0, js: 0});
 };
+
+function extend(first, second){
+    for(var n in second){
+        first[n] = second[n];
+    }
+    return first;
+}
 
 module.exports = _snippets;

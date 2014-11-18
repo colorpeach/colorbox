@@ -100,6 +100,15 @@ define(['angular'], function(){
                         $rootScope.removeLoad();
                     }
                     return d;
+                },
+                responseError: function(rejection){
+                    if(rejection.status === 401){
+                        //session失效
+                        $rootScope.user = null;
+                    }
+                    $rootScope.removeLoad();
+
+                    return $q.reject(rejection);
                 }
             }
         }
@@ -404,25 +413,6 @@ define(['angular'], function(){
                     });
                 }
             };
-        }
-    ])
-
-    .directive('dialog',
-    ['utils',
-        function(utils){
-            return {
-                restrict: 'A',
-                scope: {},
-                template: utils.heredoc(function(){/*!
-                    <div class="reveal-modal-bg"></div>
-                        <div class="reveal-modal" ng-show="">
-                        </div>
-                    </div>
-                */}),
-                compile: function(){
-
-                }
-            }
         }
     ]);
     

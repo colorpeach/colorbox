@@ -2,8 +2,8 @@ div.add-app
   form.sidebar(ng-submit="submit($event)")
     input(type="hidden", name="_id", value="{{data._id}}")
     div.add-app-editor(resize-box="resizeBox")
-    div.add-app-toolbar
-      div.small-2.columns(ng-bind="data.name")
+    div.add-app-top-toolbar
+      div.app-name.small-2.columns(ng-bind="data.name")
       div.small-10.columns
         input.button.tiny.success.right(type="submit", value="保存")
         div.button-group.right
@@ -11,27 +11,33 @@ div.add-app
         select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div
-    span.box-name jade
     div.add-app-toolbar
-      span.icon-cog.btn-icon(ng-click="dialog.open()")
-    div.add-app-box(code-editor="jade")
+      span.icon-cog.btn-icon(ng-click="dialogOpen('html')", tip, title="设置")
+      span.box-name html 
+        span(ng-show="data.html.type !== 'html'") ({{data.html.type}})
+    div.add-app-box(code-editor="html")
 script(type='text/ng-template',id='javascript-editor')
   div
-    span.box-name js
     div.add-app-toolbar
+      span.icon-cog.btn-icon(ng-click="dialogOpen('javascript')", tip, title="设置")
+      span.box-name js 
+        span(ng-show="data.javascript.type !== 'javascript'") ({{data.javascript.type}})
     div.add-app-box(code-editor="javascript")
 script(type='text/ng-template',id='css-editor')
   div
-    span.box-name css
     div.add-app-toolbar
+      span.icon-cog.btn-icon(ng-click="dialogOpen('css')", tip, title="设置")
+      span.box-name css 
+        span(ng-show="data.css.type !== 'css'") ({{data.css.type}})
     div.add-app-box(code-editor="css")
 script(type='text/ng-template',id='preview')
   div
-    span.box-name preview
     div.add-app-toolbar
+      span.box-name preview
     div.add-app-box
       iframe(ng-src="{{previewUrl}}", frameBorder=0)
 script(type='text/ng-template', id="edit-snippet-dialog")
-  span(ng-repeat="type in typeList")
-    input(type="radio", id="{{type.key}}", value="{{type.key}}", name="type", ng-model="setting.type")
-    label.button.tiny(for="{{type.key}}", ng-bind="type.name", ng-class="{secondary: type.name !== setting.type}")
+  div
+    span(ng-repeat="t in current.typeList")
+      input.hide(type="radio", id="{{t.key}}", value="{{t.key}}", name="type", ng-model="data[current.mark].type")
+      label.button.tiny(for="{{t.key}}", ng-bind="t.name", ng-class="{secondary: t.key !== data[current.mark].type}")
