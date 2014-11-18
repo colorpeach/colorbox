@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   include ./nav.jade
-  div.main-box(ng-view)
+  div.main-box.animate-box(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting
       span.icon-spinner2.waiting-icon(ng-show="loading")
