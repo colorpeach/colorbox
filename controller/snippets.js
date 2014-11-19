@@ -7,7 +7,12 @@ var snippet = require('../utils/snippet');
 
 _snippets.snippets_preview = function(req, res){
     snippets.query({_id: req.params.id}, function(data){
-        var appData = extend({css: {}, html: {}, javascript: {}}, data[0]);
+        var defaultData = {
+                html: {type: 'html', heads: [""]},
+                css: {type: 'css', libs: [], externals: [""]},
+                javascript: {type: 'javascript', libs: [], externals: [""]}
+            }
+        var appData = extend(defaultData, data[0]);
         var html = snippet(appData);
 
         res.end(html, 'utf-8');
@@ -58,9 +63,15 @@ _snippets.get_snippets = function(req, res){
     },{html: 0, css: 0, js: 0});
 };
 
+function isObject(value){return value != null && typeof value == 'object';}
+
 function extend(first, second){
     for(var n in second){
-        first[n] = second[n];
+        if(isObject(second[n]) && isObject(first[n])){
+            extend(first[n], second[n]);
+        }else{
+            first[n] = second[n];
+        }
     }
     return first;
 }

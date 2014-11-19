@@ -9,22 +9,22 @@ var heredoc = function(f){
             .replace(docsuffix, '');
 };
 var template = heredoc(function(){/*!
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>{title}</title>
-            {heads}
-            {cssLibs}
-            {cssExternals}
-            {css}
-        <head>
-        <body>
-            {body}
-            {jsLibs}
-            {jsExternals}
-            {javascript}
-        </body>
-    </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>{title}</title>
+{heads}
+{cssLibs}
+{cssExternals}
+{css}
+<head>
+<body>
+{body}
+{jsLibs}
+{jsExternals}
+{javascript}
+</body>
+</html>
 */});
 
 function generateBody(html){
