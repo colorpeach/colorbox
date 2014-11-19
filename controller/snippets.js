@@ -3,35 +3,13 @@ var baseRes = require('./baseResponse');
 var jade = require('jade');
 var less = require('less');
 var _snippets = {};
+var snippet = require('../utils/snippet');
 
 _snippets.snippets_preview = function(req, res){
     snippets.query({_id: req.params.id}, function(data){
-        try{
-            var appData = extend({css: {}, html: {}, javascript: {}}, data[0]);
-            var html = jade.renderFile('client/template/app-preview.jade', appData);
+        var appData = extend({css: {}, html: {}, javascript: {}}, data[0]);
+        var html = snippet(appData);
 
-            var css = appData.css.content || '';
-            var body = appData.html.content || '';
-            var js = appData.javascript.content || '';
-
-            if(appData.css.type === 'less'){
-                less.render(css, function(err, _css){
-                    if(err){
-                        res.end('error: \n' + err);
-                    }
-                    css = _css;
-                });
-            }
-            if(appData.html.type === 'jade'){
-                body = jade.render(body);
-            }
-
-            html = html.replace('<style>', '<style>' + (css || ''))
-                        .replace('<body>', '<body>' + body)
-                        .replace('<script>', '<script>' + (js || ''));
-        }catch(e){
-            var html = 'error: \n' + e.message;
-        }
         res.end(html, 'utf-8');
     });
 };

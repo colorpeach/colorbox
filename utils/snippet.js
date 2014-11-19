@@ -1,4 +1,4 @@
-var source = require('./config/source.js');
+var source = require('../config/source');
 var jade = require('jade');
 var reg = /\{(.+)\}/g;
 var docprefix = /^[^\/]+\/\*!\s*/;
@@ -28,7 +28,7 @@ var template = heredoc(function(){/*!
 */});
 
 function generateBody(html){
-    var r = html.content;
+    var r = html.content || '';
 
     switch(html.type){
         case 'jade':
@@ -44,24 +44,31 @@ function generate(snippet){
 
     page.heads = snippet.html.heads.join('\n');
     page.cssLibs = snippet.css.libs.map(function(n, i){
-        return '<link rel="stylesheet" href="' + source('css', n, true) + '">';
+        return n ? '<link rel="stylesheet" href="' + source('css', n, true) + '">' : '';
     }).join('\n');
     page.cssExternals = snippet.css.externals.map(function(n, i){
-        return '<link rel="stylesheet" href="' + n + '">';
+        return n ? ('<link rel="stylesheet" href="' + n + '">') : '';
     }).join('\n');
-    page.css = ['<style>', '/style'].join(snippet.css.content);
+    page.css = ['<style>', '</style>'].join(snippet.css.content || '');
     page.body = generateBody(snippet.html);
+    page.jsLibs = snippet.javascript.libs.map(function(n, i){
+        return n ? '<script src="' + source('javascript', n, true) + '"></script>' : '';
+    }).join('\n');
+    page.jsExternals = snippet.javascript.externals.map(function(n, i){
+        return n ? ('<script src="' + n + '"></script>') : '';
+    }).join('\n');
+    page.javascript = ['<script>', '</script>'].join(snippet.javascript.content || '');
 
 
     return template.replace(reg, function(s, n){
-        return typeof d[n] === 'undefined' ? '' : d[n];
+        return typeof page[n] === 'undefined' ? '' : page[n];
     });
 }
 
 module.exports = function(snippet){
     try{
-        generate(snippet);
-    }catch(){
-
+        return generate(snippet);
+    }catch(e){
+        return 'error: \n' + e.message; 
     }
 };

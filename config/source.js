@@ -19,5 +19,5 @@ var suffix = {
 };
 
 module.exports = function(type, name, min){
-    return baseUrl + type + '/' + name + '/' + name + (min ? '.min') + suffix[type];
+    return baseUrl + type + '/' + name + '/' + name + (min ? '.min' : '') + suffix[type];
 };

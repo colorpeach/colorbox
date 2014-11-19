@@ -36,6 +36,7 @@ module.exports = {
     //静态文件路径
     staticPath:[
         "public",
-        "lib"
+        "lib",
+        "source"
     ]
 };
