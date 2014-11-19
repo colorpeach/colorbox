@@ -4,13 +4,13 @@ define(['angular', 'js/app'], function(_, app){
     ['$window', '$templateCache', '$compile',
         function($window,   $templateCache,   $compile){
             var $document = angular.element($window.document);
+            var cssList = ['maxWidth', 'minWidth', 'width', 'maxHeight', 'minHeight', 'height'];
             var template;
             var css = {
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                display: 'none'
+                position: 'absolute',
+                display: 'none',
+                zIndex: 1500,
+                visibility: 'visible'
             };
             
 
@@ -31,32 +31,43 @@ define(['angular', 'js/app'], function(_, app){
                 if(opts.template && opts.scope){
                     $compile(this.element)(opts.scope);
                 }
-                if(opts.width) this.element.css({width: opts.width});
-                if(opts.height) this.element.css({height: opts.height});
-                this.element.css(css).css({zIndex: 1500, margin: 'auto', visibility: 'visible', top: '10px'});
-                this.overlay.css(css).css({zIndex: 1499, bottom: 0});
+
+                addCss(opts, this.element);
+                this.element.css(css);
 
                 if(!opts.target){
                     angular.element($window.document.body)
-                        .append(this.element.append(this.$close))
-                        .append(this.overlay);
+                        .append(this.overlay.append(this.element.append(this.$close)));
                 }
 
-                this.$close.bind('click', angular.bind(this, this.close));
+                bindEvents.call(this);
             }
 
             Dialog.prototype = {
                 open: function(){
                     this.element.css({display: 'block'});
                     this.overlay.css({display: 'block'});
-                    bindEvents.call(this);
                 },
                 close: function(){
                     this.element.css({display: 'none'});
                     this.overlay.css({display: 'none'});
-                    removeEvents.call(this);
+                    this.opts.onClose && this.opts.onClose();
                 }
             };
+
+            function addCss(opts, element){
+                var css = {};
+                var prop = 0;
+
+                angular.forEach(cssList, function(n){
+                    if(opts[n]){
+                        css[n] = opts[n];
+                        prop++;
+                    }
+                });
+
+                element.css(css);
+            }
 
             function position(){
 
@@ -65,13 +76,17 @@ define(['angular', 'js/app'], function(_, app){
             function bindEvents(){
                 var self = this;
 
+                this.element.bind('mousedown', function(e){
+                    e.stopPropagation();
+                });
+
                 this.overlay.bind('mousedown', function(){
                      self.close();
                 });
-            }
 
-            function removeEvents(){
-                this.overlay.off('mousedown');
+                this.$close.bind('click', function(){
+                    self.close();
+                });
             }
 
             return function(opts){

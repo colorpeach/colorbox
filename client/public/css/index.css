@@ -367,6 +367,30 @@ body{
   background-color: #fff;
 }
 
+.label-buttons{
+  margin-bottom: 20px;
+}
+
+.label-buttons [type=radio],
+.label-buttons [type=checkbox]{
+  display: none;
+}
+
+.label-buttons .button{
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.add-app-remove-box{
+  position: relative;
+}
+
+.add-app-remove-box .btn-icon{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 .app-list{
   padding: 0 20px 20px;
 }
@@ -857,7 +881,6 @@ body{
 
 .app-all-head{
   padding: 5px 10px;
-  border: 1px solid #ccc;
   font-weight: bold;
 }
 
@@ -1088,7 +1111,7 @@ body{
 }
 
 .animate-box.ng-enter{
-  -webkit-animation-name: bounceInRight;
+  -webkit-animation-name: fadeIn;
           animation-name: bounceInRight;
   -webkit-animation-duration: 1s;
           animation-duration: 1s;

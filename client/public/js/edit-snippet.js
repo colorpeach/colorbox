@@ -3,49 +3,19 @@ define(['js/app', 'ace/ace'], function(app, ace){
     .controller('editSnippetCtrl',
     ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
         function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
-            $scope.data = {
-                html: {type: 'html'},
-                css: {type: 'css'},
-                javascript: {type: 'javascript'}
-            };
             var dialog = dialog({
                 template: 'edit-snippet-dialog',
                 scope: $scope,
-                width: '600px'
-            });
-            
-            $scope.setLoad({
-                loading: true,
-                loadMessage: '载入代码'
-            });
-            snippetsCrud.get($routeParams.id)
-            .success(function(data){
-                angular.extend($scope.data, data.snippet);
-                $scope.previewUrl = $sce.trustAsResourceUrl('/_snippets/preview/' + data.snippet._id);
-            });
-
-            $scope.submit = function(e, key){
-                e && e.preventDefault();
-                var data = {_id: $scope.data._id};
-
-                if(key){
-                    data[key] = $scope.data[key];
-                }else{
-                    data = $scope.data;
+                maxWidth: '600px',
+                onClose: function(){
+                    $scope.submit(null, $scope.current.mark, true);
                 }
-
-                snippetsCrud.save(data)
-                .success(function(){
-                    $window.frames[0].location.reload();
-                });
+            });
+            $scope.data = {
+                html: {type: 'html', heads: [""]},
+                css: {type: 'css', libs: [], externals: [""]},
+                javascript: {type: 'javascript', libs: [], externals: [""]}
             };
-
-            $scope.dialogOpen = function(mark){
-                $scope.current = $scope.settings[mark];
-                $scope.current.mark = mark;
-                dialog.open();
-            };
-
             $scope.settings = {
                 html: {
                     typeList: [
@@ -59,6 +29,12 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         {key: 'css', name: 'None'},
 //                         {key: 'less', name: 'Less'}
                     ],
+                    libs: [
+                        {key: 'reset', name: 'Reset'},
+                        {key: 'normalize', name: 'Normalize'},
+                        {key: 'foundation', name: 'Foundation'},
+                        {key: 'bootstrap', name: 'Bootstrap'}
+                    ],
                     save: save
                 },
                 javascript: {
@@ -66,7 +42,57 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         {key: 'javascript', name: 'None'},
 //                         {key: 'coffeeScript', name: 'CoffeeScript'}
                     ],
+                    libs: [
+                        {key: 'angular', name: 'Angular'},
+                        {key: 'jquery', name: 'Jquery'}
+                    ],
                     save: save
+                }
+            };
+            
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入代码'
+            });
+            snippetsCrud.get($routeParams.id)
+            .success(function(data){
+                extend($scope.data, data.snippet);
+                $scope.previewUrl = $sce.trustAsResourceUrl('/_snippets/preview/' + data.snippet._id);
+            });
+
+            $scope.submit = function(e, key, unload){
+                e && e.preventDefault();
+                var data = {_id: $scope.data._id};
+
+                if(key){
+                    data[key] = $scope.data[key];
+                }else{
+                    data = $scope.data;
+                }
+
+                snippetsCrud.save(data)
+                .success(function(){
+                    !unload && $window.frames[0].location.reload();
+                });
+            };
+
+            $scope.dialogOpen = function(mark){
+                $scope.current = $scope.settings[mark];
+                $scope.current.mark = mark;
+                dialog.open();
+            };
+            $scope.dialogClose = function(mark){
+                dialog.close();
+            };
+
+            $scope.toggleCheckbox = function(mark, value){
+                var libs = $scope.data[mark].libs;
+                var index = libs.indexOf(value);
+
+                if(index > -1){
+                    libs.splice(index, 1);
+                }else{
+                    libs.push(value);
                 }
             };
 
@@ -75,7 +101,6 @@ define(['js/app', 'ace/ace'], function(app, ace){
             }
 
             $scope.boxs = ['css', 'html', 'js', 'preview'];
-
             //使用localstorage存储编辑器设置
             storage.bind($scope, 'resizeBox', {
                 defaultValue: {
@@ -111,6 +136,17 @@ define(['js/app', 'ace/ace'], function(app, ace){
             $scope.$on('resizeUpdate', function(){
                 storage.update('resizeBox');
             });
+
+            function extend(first, second){
+                for(var n in second){
+                    if(angular.isObject(second[n]) && angular.isObject(first[n])){
+                        extend(first[n], second[n]);
+                    }else{
+                        first[n] = second[n];
+                    }
+                }
+                return first;
+            }
         }
     ])
 
