@@ -87,7 +87,7 @@ define(['js/app'], function(app){
             
             $scope.submit = function(e){
                 e.preventDefault();
-                appsCrud.getPublishedApps($scope.name)
+                appsCrud.getPublishedApps({name: $scope.name})
                 .success(function(data){
                     $scope.apps = data.apps;
                     data.apps.forEach(function(n, i){

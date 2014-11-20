@@ -150,7 +150,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
         }
     ])
 
-    .directive('codeEditor', 
+    .directive('snippetEditor', 
     ['$timeout',
         function($timeout){
             return {
@@ -159,7 +159,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     return function(scope, element, attrs){
                         var editor = ace.edit(element[0]);
                         var userSave = false;
-                        var key = attrs.codeEditor;
+                        var key = attrs.snippetEditor;
                         var config = scope.settings[key];
                         var resizeTimer = 0;
 

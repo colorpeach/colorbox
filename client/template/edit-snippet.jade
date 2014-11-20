@@ -15,21 +15,21 @@ script(type='text/ng-template',id='html-editor')
       span.icon-cog.btn-icon(ng-click="dialogOpen('html')", tip, title="设置")
       span.box-name html 
         span(ng-show="data.html.type !== 'html'") ({{data.html.type}})
-    div.add-app-box(code-editor="html")
+    div.add-app-box(snippet-editor="html")
 script(type='text/ng-template',id='javascript-editor')
   div
     div.add-app-toolbar
       span.icon-cog.btn-icon(ng-click="dialogOpen('javascript')", tip, title="设置")
       span.box-name js 
         span(ng-show="data.javascript.type !== 'javascript'") ({{data.javascript.type}})
-    div.add-app-box(code-editor="javascript")
+    div.add-app-box(snippet-editor="javascript")
 script(type='text/ng-template',id='css-editor')
   div
     div.add-app-toolbar
       span.icon-cog.btn-icon(ng-click="dialogOpen('css')", tip, title="设置")
       span.box-name css 
         span(ng-show="data.css.type !== 'css'") ({{data.css.type}})
-    div.add-app-box(code-editor="css")
+    div.add-app-box(snippet-editor="css")
 script(type='text/ng-template',id='preview')
   div
     div.add-app-toolbar
