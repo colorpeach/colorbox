@@ -684,9 +684,10 @@ body{
 
 /*message-board*/
 .messages-box-prompt{
-  margin: 20px 0 10px;
-  paddng: 10px;
-  border: 1px solid #444;
+  margin: 0 0 30px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .message-item{
