@@ -11,10 +11,13 @@ define(['js/app'], function(app){
         }
     ])
     .controller('logsCtrl', 
-    ['$scope', 'logsCrud',
-        function($scope,   logsCrud){
+    ['$scope', 'logsCrud', '$sce',
+        function($scope,   logsCrud,   $sce){
             logsCrud.get()
             .success(function(data){
+                angular.forEach(data.logs, function(n){
+                    n.content = $sce.trustAsHtml(n.content);
+                });
                 $scope.logs = data.logs;
             });
         }

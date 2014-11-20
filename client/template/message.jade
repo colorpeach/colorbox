@@ -19,14 +19,14 @@ div
       p
         if user
           a.right(ng-click="response(msg, msg.user)") 回复 
-        span {{msg.date}} 
+        span {{msg.date | date:'yyyy-MM-dd hh:mm:ss'}} 
         b {{msg.user}} 说：
       p {{msg.content}}
       div.small-11.columns.right.panel.callout(ng-repeat="m in msg.responses")
         p
           if user
             a.right(ng-click="response(msg, m.user)") 回复 
-          span {{m.date}} 
+          span {{m.date | date:'yyyy-MM-dd hh:mm:ss'}} 
           b {{m.user}} 
           | 回复： 
           b {{m.to}}
