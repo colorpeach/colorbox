@@ -2,7 +2,7 @@ div
   div.row.sidebar
     if !user
       div.messages-box-prompt
-        a(view-link, href="/login") 登陆 
+        a(view-link, href="/#/login") 登陆 
         | 后可留言
     if user
       form(ng-submit="submit()")
