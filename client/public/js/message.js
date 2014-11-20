@@ -22,7 +22,7 @@ define(['js/app'], function(app){
         function($scope,   messageCurd,   prompt,   $window){
             var $scrollBox = $window.document.querySelector('.main-box > div');
             var $content = $window.document.querySelector('#content');
-            $scope.label = '内容';
+            $scope.label = '留言';
             $scope.data = {};
             $scope.current = null;
 
@@ -47,7 +47,7 @@ define(['js/app'], function(app){
             $scope.cancel = function(){
                 $scope.current = null;
                 $scope.data = {};
-                $scope.label = '内容';
+                $scope.label = '留言';
             };
 
             $scope.submit = function(){
@@ -57,7 +57,7 @@ define(['js/app'], function(app){
                         $scope.messages.unshift(data.message);
                         $scope.current = null;
                         $scope.data = {};
-                        $scope.label = '内容';
+                        $scope.label = '留言';
                         prompt({
                             content: '留言成功'
                         });
@@ -74,7 +74,7 @@ define(['js/app'], function(app){
                         $scope.current.responses = data.responses;
                         $scope.current = null;
                         $scope.data = {};
-                        $scope.label = '内容';
+                        $scope.label = '留言';
                         prompt({
                             content: '回复成功'
                         });
