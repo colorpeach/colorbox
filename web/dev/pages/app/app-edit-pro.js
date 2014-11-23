@@ -11,18 +11,21 @@ define(['js/app', 'ace/ace'], function(app, ace){
         {
             name: '文件', 
             subNav: [
-                
+                {name: '新建'}
             ]
         },
         {
             name: '视图',
-            subNav: []
+            subNav: [
+                {name: '布局'}
+            ]
         }
     ])
 
     .controller('editAppProCtrl',
-    ['$scope',
-        function($scope){
+    ['$scope', 'editorNav',
+        function($scope,   editorNav){
+            $scope.editorNav = editorNav;
             $scope.layoutConfig = {
                 resizeBarWidth: 10,
                 items: [

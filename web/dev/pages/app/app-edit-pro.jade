@@ -1,5 +1,6 @@
 style.
-  .editor-box{
+  .editor-box,
+  .full-screen{
       position:fixed;top:0;left:0;right:0;bottom:0;background-color:#333;z-index:2000;
       font-size: 12px;
   }
@@ -67,22 +68,72 @@ style.
   }
 
   .aui-tree span{
-    margin-right: 5px;
     cursor: pointer;
   }
 
   .aui-tree a{
+    padding:0 5px;
+    margin-left: 3px;
+    border-radius: 4px;
     color: #efefef;
   }
 
   .aui-tree .aui-active{
+    background-color: #748512;
+  }
+
+  .editor-nav-item{
+    display: inline-block;
+    position: relative;
+    padding: 0 10px;
+    cursor: default;
+    line-height: 28px;
+    border: 1px solid transparent;
+  }
+
+  .editor-nav-item.active:before{
+    position: absolute;
+    content: '';
+    display: block;
+    top: 25px;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    background-color: #666;
+    z-index: 1;
+  }
+
+  .editor-nav-item.active{
+    z-index: 2001;
+    background-color: #666;
+    border: 1px solid #222;
+  }
+
+  .editor-nav-item ul{
+    position: absolute;
+    left: -1px;
+    top: 28px;
+    padding: 5px 0;
+    margin-left: 0;
+    font-size: 12px;
+    list-style: none;
+    background-color: #666;
+    border: 1px solid #222;
+    box-shadow: 0 2px 5px #222;
+  }
+
+  .editor-nav-item li{
+    min-width: 120px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .editor-nav-item li:hover{
     background-color: #444;
   }
 div.editor-box
-  div.editor-nav
-    span colorBox
-    span 文件
-    span 编辑
+  div.editor-nav(editor-nav="editorNav")
+    span(style="margin-right: 10px;") colorBox
   div.editor(resize-box="layoutConfig")
 script(type="text/ng-template", id="editor-tree")
   div

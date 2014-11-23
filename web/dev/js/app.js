@@ -71,7 +71,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/app/app-edit-pro', 
                     'pages/dashboard/dashboard-apps', 
                     'components/resize-box/resize-box', 
-                    'components/tree/tree'
+                    'components/tree/tree',
+                    'components/editor-nav/editor-nav'
                 ]
             },
             '/edit/snippet/:id': {
