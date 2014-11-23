@@ -1,5 +1,5 @@
 var user = require('../models/user');
-var userRule = require('../client/valid/user');
+var userRule = require('../web/validate/user');
 var baseRes = require('./baseResponse');
 var registerValid = require('./rules');
 var login = {};

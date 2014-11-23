@@ -1,0 +1,15 @@
+//Gradient
+//
+//渐变
+
+.gradient-v (@from, @to, @attr : background){
+    /* Firefox 3.6+ */
+    @{attr}: -moz-linear-gradient(top, @from, @to); 
+    /* Safari 4-5, Chrome 1-9 */ 
+    /* -webkit-gradient(,  [, ]?,  [, ]? [, ]*) */
+    @{attr}: -webkit-gradient(linear,top,from(@from),to(@to));
+    /* Safari 5.1+, Chrome 10+ */
+    @{attr}: -webkit-linear-gradient(top, @from, @to);
+    /* Opera 11.10+ */
+    @{attr}: -o-linear-gradient(top, @from, @to);
+}

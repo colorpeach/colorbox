@@ -1,0 +1,20 @@
+//Arrow
+//
+//CSS箭头
+
+.arrow (@top,@right,@bottom,@left,@color : currentcolor){
+    .border-every-color(top    , @top,   @color);
+    .border-every-color(right  , @right, @color);
+    .border-every-color(bottom , @bottom,@color);
+    .border-every-color(left   , @left  ,@color);
+    border-style:solid;
+    border-width:unit(@top,px) unit(@right,px) unit(@bottom,px) unit(@left,px);
+}
+
+.border-every-color(@dir,@a,@color) when not(ispixel(@a)){
+    border-@{dir}-color:transparent;
+}
+
+.border-every-color(@dir,@a,@color) when (ispixel(@a)){
+    border-@{dir}-color:@color;
+}

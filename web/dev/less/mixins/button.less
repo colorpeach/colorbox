@@ -1,0 +1,33 @@
+//Button
+
+.button-variant(@color; @background; @border) {
+    color: @color;
+    background-color: @background;
+    border-color: @border;
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+        color: @color;
+        background-color: darken(@background, 10%);
+            border-color: darken(@border, 12%);
+    }
+    &:active,
+    &.active {
+        background-image: none;
+    }
+    &.disabled,
+    &[disabled] {
+        &,
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active,
+        &.active {
+          background-color: @background;
+              border-color: @border;
+        }
+    }
+}

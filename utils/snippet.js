@@ -1,4 +1,4 @@
-var source = require('../config/source');
+var source = require('../config/sources');
 var jade = require('jade');
 var reg = /\{(.+)\}/g;
 var docprefix = /^[^\/]+\/\*!\s*/;

@@ -6,7 +6,7 @@ var messages = require('../controller/messages.js');
 var snippets = require('../controller/snippets.js');
 var logs = require('../controller/logs.js');
 
-var settings = require('../settings');
+var settings = require('../config/settings');
 var authPath = settings.authPath;
 var authAjaxPath = settings.authAjaxPath;
 var unauthAjaxPath = settings.unauthAjaxPath;
@@ -19,7 +19,7 @@ module.exports = function(app){
     app.all('*',function(req,res,next){
         var path = req._parsedUrl.pathname.split('/')[1];
 
-        if(validPath.indexOf(path) >= 0 || path.indexOf('.html') > 0){
+        if(validPath.indexOf(path) >= 0 || req.url.indexOf('.html') > 0){
             
             if(!req.session.user){
                 if(authAjaxPath.indexOf(path) >= 0){
@@ -35,7 +35,7 @@ module.exports = function(app){
             }
             next();
         }else{
-            res.render('template/not-found',{user:req.session.user});
+            res.render('views/not-found',{user:req.session.user});
         }
     });
     //首页
