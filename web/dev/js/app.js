@@ -65,9 +65,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/edit/app-pro': {
                 title: '编辑应用',
-                templateUrl: 'edit-app-pro.html',
+                templateUrl: 'app-edit-pro.html',
                 controller: 'editAppProCtrl',
-                dependencies: ['pages/edit-app-pro', 'pages/dashboard-apps', 'directive/resize']
+                dependencies: [
+                    'pages/app/app-edit-pro', 
+                    'pages/dashboard/dashboard-apps', 
+                    'components/resize-box/resize-box', 
+                    'components/tree/tree'
+                ]
             },
             '/edit/snippet/:id': {
                 title: '编辑代码片段',
@@ -121,6 +126,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             app.filter     = bind($filterProvider, 'register', app);
             app.factory    = bind($provide, 'factory', app);
             app.service    = bind($provide, 'service' ,app);
+            app.value    = bind($provide, 'value' ,app);
 
 //             $locationProvider.html5Mode(true);
 

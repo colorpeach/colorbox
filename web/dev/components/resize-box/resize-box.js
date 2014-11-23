@@ -13,9 +13,10 @@ define(['angular', 'js/app'], function(_, app){
     *       ],
     *       laoout: 1,
     *       layouts: {
-    *           1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]]},
+    *           1: {dir: 'v', items: [[{index: 0}, {index: 1}, {index: 2}], [{index: 3}]], groupReals: [20, 80]},
     *           2: {dir: 'h', items: [[{index: 0}, {index: 1}], [{index: 2}, {index: 3}]]}
     *       }
+    *       
     *   }
     *
     *   events

@@ -17,7 +17,7 @@ div
       div.message-item-avator
         img(src-element="http://identicon.relucks.org/{msg.user}?size=40")
         span.icon-user
-      div.message-head {{msg.date | date:'yyyy-MM-dd hh:mm:ss'}} 
+      div.message-head {{msg.date | date:'yyyy-MM-dd HH:mm:ss'}} 
       div.message-head 
         a {{msg.user}}
         |  说：
@@ -25,7 +25,7 @@ div
       div.message-item(ng-repeat="m in msg.responses")
         if user
           a.message-response(ng-click="response(msg, m.user)") 回复 
-        div.message-head {{m.date | date:'yyyy-MM-dd hh:mm:ss'}} 
+        div.message-head {{m.date | date:'yyyy-MM-dd HH:mm:ss'}} 
         div.message-head 
           a {{m.user}} 
           |  回复： 

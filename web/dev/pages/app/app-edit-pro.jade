@@ -1,0 +1,107 @@
+style.
+  .editor-box{
+      position:fixed;top:0;left:0;right:0;bottom:0;background-color:#333;z-index:2000;
+      font-size: 12px;
+  }
+  .editor-nav,
+  .editor-tree-nav,
+  .editor-main-nav{
+      position:absolute;top:0;left:0;right:0;height:30px;color:#fff;
+      padding: 0 10px;
+      border-bottom: 1px solid #222;
+      line-height: 30px;
+  }
+  .editor,
+  .editor-tree-area,
+  .editor-main-area{
+      position:absolute;top:30px;left:0;right:0;bottom:0;
+  }
+  .editor > div{
+      position: absolute;
+      border-left: 1px solid #444;
+      border-right: 1px solid #222;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+      transition: .16s all;
+  }
+  .editor > .resize-bar,
+  .editor > .resize-mark{
+      border: 0;
+  }
+  .editor > .resize-bar:before,
+  .editor > .resize-bar:after{
+        display: none;
+  }
+  .editor .btn-icon{
+      margin-left: 0;
+      margin-right: 10px;
+  }
+  .editor .editor-tab{
+      position: relative;
+      display: inline-block;
+      padding: 0 30px 0 10px;
+      margin-right: 10px;
+      background-color: #222;
+  }
+  .editor .editor-tab:before{
+      content: '×';
+        position: absolute;
+        top: 0;
+        right: 10px;
+        font-size: 14px;
+        cursor: pointer;
+  }
+  .editor .editor-tab:before:hover{
+      color: #f36050;
+  }
+
+  .aui-tree{
+    margin-left: 0;
+    padding: 10px;
+    overflow: auto;
+  }
+
+  .aui-tree li{
+    display: block;
+    font-size: 12px;
+    color: #efefef;
+  }
+
+  .aui-tree span{
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  .aui-tree a{
+    color: #efefef;
+  }
+
+  .aui-tree .aui-active{
+    background-color: #444;
+  }
+div.editor-box
+  div.editor-nav
+    span colorBox
+    span 文件
+    span 编辑
+  div.editor(resize-box="layoutConfig")
+script(type="text/ng-template", id="editor-tree")
+  div
+    div.editor-tree-nav
+      span.icon-plus.btn-icon
+    div.editor-tree-area
+      div(xtree="files")
+script(type="text/ng-template", id="editor-main")
+  div.editor-main
+    div.editor-main-nav
+      span.icon-tree.btn-icon
+      span.icon-console.btn-icon
+      span.editor-tab(ng-repeat="tab in tabs", ng-bind="tab.name")
+      span.icon-plus.btn-icon
+    div.editor-main-area(editor)
+script(type="text/ng-template", id="editor-assist")
+  div
+    div.editor-nav
+      span.icon-expand.btn-icon
+      span.editor-tab 数据源
+      span.editor-tab 路由
+    div.editor(style="background-color: #222;")

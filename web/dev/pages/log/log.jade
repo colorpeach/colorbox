@@ -12,5 +12,5 @@ div
     div.row(ng-repeat="log in logs")
       div.large-12.columns
         hr
-      div.large-12.columns {{log.date | date:'yyyy-MM-dd hh:mm:ss'}}
+      div.large-12.columns {{log.date | date:'yyyy-MM-dd HH:mm:ss'}}
       div.large-12.columns(ng-bind-html="log.content")
