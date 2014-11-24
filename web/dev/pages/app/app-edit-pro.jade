@@ -90,13 +90,13 @@ style.
 
   .aui-tree{
     margin-left: 0;
-    padding: 10px;
+    padding: 0 10px;
+    color: #efefef;
   }
 
   .aui-tree li{
     display: block;
     font-size: 12px;
-    color: #efefef;
   }
 
   .aui-tree span{
@@ -172,7 +172,10 @@ script(type="text/ng-template", id="editor-tree")
     div.editor-tree-nav
       span.icon-plus.btn-icon(ng-click="addFile()")
     div.editor-tree-area
-      div(xtree="files")
+      div.aui-tree(style="margin-top: 10px;")
+        span(ng-class="appOpen ? 'icon-folder-open' : 'icon-folder'", ng-click="appOpen = !appOpen")
+        a.aui-tree-node {{app.name}}
+      div(xtree="files", ng-show="appOpen", style="margin-left: 20px;")
 script(type="text/ng-template", id="editor-main")
   div.editor-main
     div.editor-main-nav

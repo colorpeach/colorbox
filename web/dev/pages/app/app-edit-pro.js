@@ -50,9 +50,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
 
                     if(node.isParent || node.children) return;
 
-                    if((tabIndex = $scope.tabs.indexOf(node.index)) < 0){
+                    if((tabIndex = $scope.tabs.indexOf(node.id)) < 0){
                         $scope.currentTab = $scope.tabs.length;
-                        $scope.tabs.push(node.index);
+                        $scope.tabs.push(node.id);
                     }else{
                         $scope.currentTab = tabIndex;
                     }
@@ -84,13 +84,13 @@ define(['js/app', 'ace/ace'], function(app, ace){
             });
             appProCrud.get($routeParams.id)
             .success(function(data){
-                data.app.files.unshift({id: 'app', name: data.app.name, isParent: true});
                 angular.forEach(data.app.files, function(n){
                     if(!angular.isDefined(n.parentId)){
                         n.parentId = 'app';
                     }
                 });
                 $scope.files = data.app.files;
+                $scope.app = data.app;
             });
 
             //关闭tab
