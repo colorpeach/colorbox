@@ -1,5 +1,6 @@
 var pages = require('../controller/pages.js');
 var apps = require('../controller/apps.js');
+var appPro = require('../controller/app-pro.js');
 var login = require('../controller/login.js');
 var user = require('../controller/user.js');
 var messages = require('../controller/messages.js');
@@ -96,4 +97,26 @@ module.exports = function(app){
     app.get('/_get/logs', logs.get)
     //添加网站日志
     app.post('/post/add/log', logs.add);
+
+
+    //添加应用
+    app.post('/post/add/app-pro', appPro.add);
+    //更新应用
+    app.post('/post/save/app-pro', appPro.save);
+    //删除应用
+    app.post('/post/del/app-pro', appPro.del);
+    //获取应用
+    app.get('/get/app-pro', appPro.get);
+    //获取用户的所有应用
+    app.get('/get/user/app-pro', appPro.get_user_apps);
+    //添加文件
+    app.post('/post/add/app-pro/item', appPro.post_add_app_item);
+    //添加更新
+    app.post('/post/save/app-pro/item', appPro.post_update_app_item);
+    //获取文件内容
+    app.get('/get/app-pro/item', appPro.get_app_item);
+    //获取文件
+    app.get('/get/app-pro/items', appPro.get_app_items);
+    //删除文件
+    app.post('/post/del/app-pro/item', appPro.post_del_app_item);
 };

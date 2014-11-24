@@ -13,7 +13,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '桌面',
                 templateUrl: '/index.html',
                 controller: 'desktopCtrl',
-                dependencies: ['pages/index/index', 'pages/dashboard/dashboard-apps']
+                dependencies: [
+                    'pages/index/index', 
+                    'pages/dashboard/dashboard-apps'
+                ]
             },
             '/log':{
                 title: '网站更新日志',
@@ -37,19 +40,30 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '所有应用',
                 templateUrl: 'app-square.html',
                 controller: 'appSquareCtrl',
-                dependencies: ['pages/app/app-square', 'pages/dashboard/dashboard-apps']
+                dependencies: [
+                    'pages/app/app-square', 
+                    'pages/dashboard/dashboard-apps'
+                ]
             },
             '/snippet-square': {
                 title: '代码广场',
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
-                dependencies: ['pages/snippet/snippet-square', 'pages/dashboard/dashboard-snippets']
+                dependencies: [
+                    'pages/snippet/snippet-square', 
+                    'pages/dashboard/dashboard-snippets'
+                ]
             },
             '/dashboard/:tab': {
                 title: '我的仪表盘',
                 templateUrl: 'dashboard.html',
                 controller: 'dashboardCtrl',
-                dependencies: ['pages/dashboard/dashboard', 'pages/dashboard/dashboard-apps', 'pages/dashboard/dashboard-snippets']
+                dependencies: [
+                    'pages/dashboard/dashboard', 
+                    'pages/dashboard/dashboard-apps', 
+                    'pages/dashboard/dashboard-snippets', 
+                    'pages/dashboard/dashboard-app-pro'
+                ]
             },
             '/message': {
                 title: '留言板',
@@ -61,15 +75,19 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '编辑应用',
                 templateUrl: 'app-edit.html',
                 controller: 'editAppCtrl',
-                dependencies: ['pages/app/app-edit', 'pages/dashboard/dashboard-apps', 'components/resize-box/resize-box']
+                dependencies: [
+                    'pages/app/app-edit', 
+                    'pages/dashboard/dashboard-apps', 
+                    'components/resize-box/resize-box'
+                ]
             },
-            '/edit/app-pro': {
+            '/edit/app-pro/:id': {
                 title: '编辑应用',
                 templateUrl: 'app-edit-pro.html',
                 controller: 'editAppProCtrl',
                 dependencies: [
                     'pages/app/app-edit-pro', 
-                    'pages/dashboard/dashboard-apps', 
+                    'pages/dashboard/dashboard-app-pro', 
                     'components/resize-box/resize-box', 
                     'components/tree/tree',
                     'components/editor-nav/editor-nav',
@@ -80,13 +98,21 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 title: '编辑代码片段',
                 templateUrl: 'snippet-edit.html',
                 controller: 'editSnippetCtrl',
-                dependencies: ['pages/snippet/snippet-edit', 'pages/dashboard/dashboard-snippets', 'components/resize-box/resize-box', 'components/dialog/dialog']
+                dependencies: [
+                    'pages/snippet/snippet-edit', 
+                    'pages/dashboard/dashboard-snippets', 
+                    'components/resize-box/resize-box', 
+                    'components/dialog/dialog'
+                ]
             },
             '/snippet/detail/:id': {
                 title: '代码片段',
                 templateUrl: 'snippet-detail.html',
                 controller: 'snippetDetailCtrl',
-                dependencies: ['pages/snippet/snippet-detail', 'pages/dashboard/dashboard-snippets']
+                dependencies: [
+                    'pages/snippet/snippet-detail', 
+                    'pages/dashboard/dashboard-snippets'
+                ]
             }
         }
     };

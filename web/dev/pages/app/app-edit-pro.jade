@@ -27,6 +27,19 @@ style.
     right: 0;
     bottom: 0;
   }
+  .editor-main-area:before{
+    position: absolute;
+    display: block;
+    content: 'colorBox';
+    top: 50%;
+    width: 100%;
+    margin-top: -20px;
+    font-weight: 700;
+    color: #222;
+    text-align: center;
+    font-size: 40px;
+    line-height: 40px;
+  }
   .editor > div{
       position: absolute;
       border-left: 1px solid #222;
@@ -104,7 +117,7 @@ style.
   .editor-nav-item{
     display: inline-block;
     position: relative;
-    padding: 0 10px;
+    padding: 0 5px;
     cursor: default;
     line-height: 28px;
     border: 1px solid transparent;
@@ -163,19 +176,19 @@ script(type="text/ng-template", id="editor-tree")
 script(type="text/ng-template", id="editor-main")
   div.editor-main
     div.editor-main-nav
-      span.icon-tree.btn-icon
-      span.icon-console.btn-icon
+      span.icon-tree.btn-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
+      span.icon-console.btn-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
       span.icon-plus.btn-icon(ng-click="addFile()")
-      span.editor-tab(ng-repeat='item in tabs track by $index', ng-class='{active: $parent.currentTab === $index}')
+      span.editor-tab(ng-repeat='item in tabs track by $index', ng-class='{active: $parent.currentTab === $index}', ng-click="$parent.currentTab = $index")
         | {{$parent.files[item].name}}
-        button(ng-click="close('tabs', $index)") ×
+        button(ng-click="closeTab('tabs', $index)") ×
     div.editor-main-area
       div(editor, ng-show="files[tabs[currentTab]].type === 'file'")
 script(type="text/ng-template", id="editor-assist")
   div
     div.editor-nav
       span.icon-expand.btn-icon
-      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === $index}')
-        | {{panels[item.index].name}}
-        button(ng-click="close('panels', $index)") ×
-    div.editor-main-area(style="background-color: #222;")
+      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === $index}', ng-click="$parent.currentPanel = $index")
+        | {{$parent.panels[item].name}}
+        button(ng-click="closeTab('panelTabs', $index)") ×
+    div.editor-main-area(style="background-color: #222;", editor-con-box)
