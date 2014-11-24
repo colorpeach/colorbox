@@ -1,21 +1,20 @@
 var snippets = require('../models/snippets');
 var baseRes = require('./baseResponse');
 var jade = require('jade');
+var less = require('less');
 var _snippets = {};
+var snippet = require('../utils/snippet');
 
 _snippets.snippets_preview = function(req, res){
     snippets.query({_id: req.params.id}, function(data){
-        try{
-            var appData = data[0];
-            var html = jade.renderFile('client/template/app-preview.jade', appData);
-            var body = appData.jade ? jade.render(appData.jade) : '';
+        var defaultData = {
+                html: {type: 'html', heads: [""]},
+                css: {type: 'css', libs: [], externals: [""]},
+                javascript: {type: 'javascript', libs: [], externals: [""]}
+            }
+        var appData = extend(defaultData, data[0]);
+        var html = snippet(appData);
 
-            html = html.replace('<style>', '<style>' + (appData.css || ''))
-                        .replace('<body>', '<body>' + body)
-                        .replace('<script>', '<script>' + (appData.js || ''));
-        }catch(e){
-            var html = 'error: \n' + e.message;
-        }
         res.end(html, 'utf-8');
     });
 };
@@ -55,13 +54,26 @@ _snippets.del = function(req, res){
 _snippets.get_user_snippets = function(req, res){
     snippets.query({user: req.session.user.login}, function(list){
         res.end(baseRes({snippets: list}));
-    },{jade: 0, css: 0, js: 0});
+    },{html: 0, css: 0, js: 0});
 };
 
 _snippets.get_snippets = function(req, res){
     snippets.query({}, function(list){
         res.end(baseRes({snippets: list}));
-    },{jade: 0, css: 0, js: 0});
+    },{html: 0, css: 0, js: 0});
 };
+
+function isObject(value){return value != null && typeof value == 'object';}
+
+function extend(first, second){
+    for(var n in second){
+        if(isObject(second[n]) && isObject(first[n])){
+            extend(first[n], second[n]);
+        }else{
+            first[n] = second[n];
+        }
+    }
+    return first;
+}
 
 module.exports = _snippets;

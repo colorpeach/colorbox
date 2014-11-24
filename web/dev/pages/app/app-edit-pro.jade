@@ -1,0 +1,181 @@
+style.
+  .editor-box,
+  .full-screen{
+      position:fixed;top:0;left:0;right:0;bottom:0;background-color:#333;z-index:2000;
+      font-size: 12px;
+  }
+  .editor-nav,
+  .editor-tree-nav,
+  .editor-main-nav{
+      position:absolute;top:0;left:0;right:0;height:30px;color:#fff;
+      padding: 0 10px;
+      border-bottom: 1px solid #222;
+      line-height: 30px;
+  }
+  .editor,
+  .editor-tree-area,
+  .editor-main-area{
+      position:absolute;top:30px;left:0;right:0;bottom:0;
+  }
+  .editor-tree-area{
+      overflow: auto;
+  }
+  .editor-main-area > div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .editor > div{
+      position: absolute;
+      border-left: 1px solid #222;
+      border-bottom: 1px solid #222;
+      transition: .3s all;
+  }
+  .editor > .resize-bar,
+  .editor > .resize-mark{
+      border: 0;
+  }
+  .editor > .resize-bar:before,
+  .editor > .resize-bar:after{
+        display: none;
+  }
+  .editor .btn-icon{
+      padding: 5px;
+      margin-left: 0;
+      margin-right: 5px;
+  }
+  .editor .btn-icon.active{
+      border: 1px solid #222;
+      box-shadow: 0 0 5px #222 inset;
+      border-radius: 4px;
+  }
+  .editor .editor-tab{
+      position: relative;
+      display: inline-block;
+      padding: 0 30px 0 10px;
+      line-height: 28px;
+      margin-right: 1px;
+      cursor: default;
+      background-color: #3a3a3a;
+  }
+  .editor .editor-tab.active{
+     background-color: #222;
+  }
+  .editor .editor-tab > button{
+      position: absolute;
+      top: 0;
+      right: 10px;
+      line-height: 28px;
+      padding: 0;
+      background-color: transparent;
+  }
+  .editor .editor-tab:before:hover{
+      color: #f36050;
+  }
+
+  .aui-tree{
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .aui-tree li{
+    display: block;
+    font-size: 12px;
+    color: #efefef;
+  }
+
+  .aui-tree span{
+    cursor: pointer;
+  }
+
+  .aui-tree a{
+    padding:0 5px;
+    margin-left: 3px;
+    border-radius: 4px;
+    color: #efefef;
+  }
+
+  .aui-tree .aui-active{
+    background-color: #748512;
+  }
+
+  .editor-nav-item{
+    display: inline-block;
+    position: relative;
+    padding: 0 10px;
+    cursor: default;
+    line-height: 28px;
+    border: 1px solid transparent;
+  }
+
+  .editor-nav-item.active:before{
+    position: absolute;
+    content: '';
+    display: block;
+    top: 25px;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    background-color: #666;
+    z-index: 1;
+  }
+
+  .editor-nav-item.active{
+    z-index: 2001;
+    background-color: #666;
+    border: 1px solid #222;
+  }
+
+  .editor-nav-item ul{
+    position: absolute;
+    left: -1px;
+    top: 28px;
+    padding: 5px 0;
+    margin-left: 0;
+    font-size: 12px;
+    list-style: none;
+    background-color: #666;
+    border: 1px solid #222;
+    box-shadow: 0 2px 5px #222;
+  }
+
+  .editor-nav-item li{
+    min-width: 120px;
+    padding: 2px 10px 2px 30px;
+    cursor: pointer;
+  }
+
+  .editor-nav-item li:hover{
+    background-color: #444;
+  }
+div.editor-box
+  div.editor-nav(editor-nav="editorNav")
+    span(style="margin-right: 10px;") colorBox
+  div.editor(resize-box="layoutConfig")
+script(type="text/ng-template", id="editor-tree")
+  div
+    div.editor-tree-nav
+      span.icon-plus.btn-icon(ng-click="addFile()")
+    div.editor-tree-area
+      div(xtree="files")
+script(type="text/ng-template", id="editor-main")
+  div.editor-main
+    div.editor-main-nav
+      span.icon-tree.btn-icon
+      span.icon-console.btn-icon
+      span.icon-plus.btn-icon(ng-click="addFile()")
+      span.editor-tab(ng-repeat='item in tabs track by $index', ng-class='{active: $parent.currentTab === $index}')
+        | {{$parent.files[item].name}}
+        button(ng-click="close('tabs', $index)") ×
+    div.editor-main-area
+      div(editor, ng-show="files[tabs[currentTab]].type === 'file'")
+script(type="text/ng-template", id="editor-assist")
+  div
+    div.editor-nav
+      span.icon-expand.btn-icon
+      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === $index}')
+        | {{panels[item.index].name}}
+        button(ng-click="close('panels', $index)") ×
+    div.editor-main-area(style="background-color: #222;")

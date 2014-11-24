@@ -1,8 +1,10 @@
 var path = require('path');
 var express = require("express");
 var app = express();
+var staticPath = path.join(__dirname, '/web/dev');
 
-app.set("views",__dirname+"/client");
+process.env.staticPath = staticPath;
+app.set("views", staticPath);
 app.set("view engine","jade");
 
 //压缩
@@ -24,7 +26,7 @@ app.use(require("express-session")({
 }));
 
 //静态文件路径
-app.use(require("serve-static")(path.join(__dirname,"client")));
+app.use(require("serve-static")(staticPath));
 
 app.listen(process.env.PORT || process.env.VMC_APP_PORT || 3000, function(){
     console.log('running colorbox');

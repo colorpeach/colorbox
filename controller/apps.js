@@ -2,12 +2,13 @@ var apps = require('../models/apps');
 var baseRes = require('./baseResponse');
 var jade = require('jade');
 var Apps = {};
+var path = require('path');
 
 Apps.apps_preview = function(req, res){
     apps.query({_id: req.params.id}, function(data){
         try{
             var appData = data[0];
-            var html = jade.renderFile('client/template/app-preview.jade', appData);
+            var html = jade.renderFile(path.join(process.env.staticPath, '/views/app-preview.jade'), appData);
             var body = appData.jade ? jade.render(appData.jade) : '';
 
             html = html.replace('<style>', '<style>' + (appData.css || ''))

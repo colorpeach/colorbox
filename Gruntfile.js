@@ -34,13 +34,25 @@ module.exports = function(grunt){
               ]
             }
           }
+        },
+        less: {
+            development: {
+                options: {
+                    paths: ['less']
+                },
+                files: {
+                    'web/dev/css/build.css': 'web/dev/less/export.less'
+                }
+            }
         }
     });
 
     //grunt.loadNpmTasks('grunt-contrib-uglify');
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.registerTask('default', ['cssmin']);
     grunt.registerTask('buildcss', ['cssmin']);
+    grunt.registerTask('css', ['less']);
 }

@@ -8,7 +8,8 @@ var tidy = dbClient.column({
     user         : 'user',
     sizes        : 'sizes',
     createDate   : 'createDate',
-    stars        : 'stars'
+    stars        : 'stars',
+    type         : 'type'
 });
 var apps = {};
 

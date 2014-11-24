@@ -1,5 +1,5 @@
 var user = require('../models/user');
-var userRule = require('../client/valid/user');
+var userRule = require('../web/validate/user');
 var baseRes = require('./baseResponse');
 var registerValid = require('./rules');
 var login = {};
@@ -9,7 +9,7 @@ login.enter = function(req,res){
     user.query(req.body,function(list){
         if(list.length){
             req.session.user = list[0];
-            res.end(baseRes());
+            res.end(baseRes({user: {login: req.session.user.login}}));
         }else{
             res.end(baseRes({errorMsg:['用户名或密码不正确']}));
         }
@@ -19,7 +19,7 @@ login.enter = function(req,res){
 //用户注销
 login.out = function(req,res){
     req.session.destroy(function(){
-        res.redirect(req.headers.referer||'/');
+        res.end(baseRes());
     });
 };
 
@@ -33,7 +33,7 @@ login.register = function(req,res){
             }else{
                 user.add(req.body,function(data){
                     req.session.user = data[0];
-                    res.end(baseRes());
+                    res.end(baseRes({user: {login: req.session.user.login}}));
                 });
             }
         });

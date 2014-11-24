@@ -6,7 +6,7 @@ var messages = require('../controller/messages.js');
 var snippets = require('../controller/snippets.js');
 var logs = require('../controller/logs.js');
 
-var settings = require('../settings');
+var settings = require('../config/settings');
 var authPath = settings.authPath;
 var authAjaxPath = settings.authAjaxPath;
 var unauthAjaxPath = settings.unauthAjaxPath;
@@ -19,7 +19,7 @@ module.exports = function(app){
     app.all('*',function(req,res,next){
         var path = req._parsedUrl.pathname.split('/')[1];
 
-        if(validPath.indexOf(path) >= 0 || path.indexOf('.html') > 0){
+        if(validPath.indexOf(path) >= 0 || req.url.indexOf('.html') > 0){
             
             if(!req.session.user){
                 if(authAjaxPath.indexOf(path) >= 0){
@@ -33,16 +33,9 @@ module.exports = function(app){
                     return;
                 }
             }
-
-//             if(path.indexOf('.') < 0){
-//                 setTimeout(function(){
-//                     next();
-//                 }, 1000);
-//             }else{
-                next();
-//             }
+            next();
         }else{
-            res.render('template/not-found',{user:req.session.user});
+            res.render('views/not-found',{user:req.session.user});
         }
     });
     //首页
@@ -99,6 +92,8 @@ module.exports = function(app){
     //添加留言
     app.post('/post/add/message', messages.add);
 
+    //获取网站日志
+    app.get('/_get/logs', logs.get)
     //添加网站日志
     app.post('/post/add/log', logs.add);
 };
