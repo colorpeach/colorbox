@@ -17,12 +17,21 @@ style.
   .editor-main-area{
       position:absolute;top:30px;left:0;right:0;bottom:0;
   }
+  .editor-tree-area{
+      overflow: auto;
+  }
+  .editor-main-area > div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
   .editor > div{
       position: absolute;
-      border-left: 1px solid #444;
-      border-right: 1px solid #222;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
-      transition: .16s all;
+      border-left: 1px solid #222;
+      border-bottom: 1px solid #222;
+      transition: .3s all;
   }
   .editor > .resize-bar,
   .editor > .resize-mark{
@@ -33,23 +42,34 @@ style.
         display: none;
   }
   .editor .btn-icon{
+      padding: 5px;
       margin-left: 0;
-      margin-right: 10px;
+      margin-right: 5px;
+  }
+  .editor .btn-icon.active{
+      border: 1px solid #222;
+      box-shadow: 0 0 5px #222 inset;
+      border-radius: 4px;
   }
   .editor .editor-tab{
       position: relative;
       display: inline-block;
       padding: 0 30px 0 10px;
-      margin-right: 10px;
-      background-color: #222;
+      line-height: 28px;
+      margin-right: 1px;
+      cursor: default;
+      background-color: #3a3a3a;
   }
-  .editor .editor-tab:before{
-      content: '×';
-        position: absolute;
-        top: 0;
-        right: 10px;
-        font-size: 14px;
-        cursor: pointer;
+  .editor .editor-tab.active{
+     background-color: #222;
+  }
+  .editor .editor-tab > button{
+      position: absolute;
+      top: 0;
+      right: 10px;
+      line-height: 28px;
+      padding: 0;
+      background-color: transparent;
   }
   .editor .editor-tab:before:hover{
       color: #f36050;
@@ -58,7 +78,6 @@ style.
   .aui-tree{
     margin-left: 0;
     padding: 10px;
-    overflow: auto;
   }
 
   .aui-tree li{
@@ -124,7 +143,7 @@ style.
 
   .editor-nav-item li{
     min-width: 120px;
-    padding: 5px 10px;
+    padding: 2px 10px 2px 30px;
     cursor: pointer;
   }
 
@@ -138,7 +157,7 @@ div.editor-box
 script(type="text/ng-template", id="editor-tree")
   div
     div.editor-tree-nav
-      span.icon-plus.btn-icon
+      span.icon-plus.btn-icon(ng-click="addFile()")
     div.editor-tree-area
       div(xtree="files")
 script(type="text/ng-template", id="editor-main")
@@ -146,13 +165,17 @@ script(type="text/ng-template", id="editor-main")
     div.editor-main-nav
       span.icon-tree.btn-icon
       span.icon-console.btn-icon
-      span.editor-tab(ng-repeat="tab in tabs", ng-bind="tab.name")
-      span.icon-plus.btn-icon
-    div.editor-main-area(editor)
+      span.icon-plus.btn-icon(ng-click="addFile()")
+      span.editor-tab(ng-repeat='item in tabs track by $index', ng-class='{active: $parent.currentTab === $index}')
+        | {{$parent.files[item].name}}
+        button(ng-click="close('tabs', $index)") ×
+    div.editor-main-area
+      div(editor, ng-show="files[tabs[currentTab]].type === 'file'")
 script(type="text/ng-template", id="editor-assist")
   div
     div.editor-nav
       span.icon-expand.btn-icon
-      span.editor-tab 数据源
-      span.editor-tab 路由
-    div.editor(style="background-color: #222;")
+      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === $index}')
+        | {{panels[item.index].name}}
+        button(ng-click="close('panels', $index)") ×
+    div.editor-main-area(style="background-color: #222;")

@@ -8,6 +8,22 @@ define(['angular'], function(){
         }
     ])
 
+    .factory('safeApply',
+    ['$rootScope',
+        function($rootScope){
+            return function(fn) {
+                var phase = $rootScope.$$phase;
+                if(phase == '$apply' || phase == '$digest') {
+                    if(fn && (typeof(fn) === 'function')) {
+                        fn();
+                    }
+                }else {
+                    this.$apply(fn);
+                }
+            };
+        }
+    ])
+
     .factory('storage',
     ['$window',
          function($window){

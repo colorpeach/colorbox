@@ -14,22 +14,6 @@ define(['js/app'], function(app){
         }
     ])
 
-    .factory('safeApply',
-    ['$rootScope',
-        function($rootScope){
-            return function(fn) {
-                var phase = $rootScope.$$phase;
-                if(phase == '$apply' || phase == '$digest') {
-                    if(fn && (typeof(fn) === 'function')) {
-                        fn();
-                    }
-                }else {
-                    this.$apply(fn);
-                }
-            };
-        }
-    ])
-
     .controller('desktopCtrl',
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){

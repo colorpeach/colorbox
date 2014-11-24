@@ -29,8 +29,8 @@ define(['js/app'], function(app){
     ])
 
     .directive('editorNavItem',
-    ['$window',
-        function($window){
+    ['$window', 'safeApply',
+        function($window,   safeApply){
             var $body = angular.element($window.document.body);
 
             return {
@@ -40,7 +40,7 @@ define(['js/app'], function(app){
 
                     element.bind('click', function(e){
                         if(!angular.isDefined($parent.active)){
-                            $parent.$apply(function(){
+                            safeApply.call($parent, function(){
                                 $parent.active = scope.$index;
                             });
                             e.stopPropagation();
@@ -50,7 +50,7 @@ define(['js/app'], function(app){
 
                     element.bind('mouseover', function(){
                         if(angular.isDefined($parent.active)){
-                            $parent.$apply(function(){
+                            safeApply.call($parent, function(){
                                 $parent.active = scope.$index;
                             });
                         }
@@ -58,7 +58,7 @@ define(['js/app'], function(app){
 
                     function hideActive(){
                         if(angular.isDefined($parent.active)){
-                            $parent.$apply(function(){
+                            safeApply.call($parent, function(){
                                 $parent.active = undefined;
                             });
                             $body.unbind('click', hideActive);

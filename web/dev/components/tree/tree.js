@@ -11,10 +11,11 @@ define(['js/app'], function(app){
         collapseClass: 'icon-folder',
         activeClass: 'aui-active',
         onclick: angular.noop,
+        ondblclick: angular.noop,
         oncollapse: angular.noop,
         nodeTemplate: function(){
-            return '<span ng-class="!node.children.length ? singleClass : _collapsed ? collapseClass : expandClass" ng-click="collapse($event)"></span>'
-                + '<a class="{{nodeClass}}" ng-class="{true:activeClass}[opera.activeNode === node]" ng-click="click($event)">{{node.name}}</a>'
+            return '<span ng-class="!node.children.length && !node.isParent ? singleClass : _collapsed ? collapseClass : expandClass" ng-click="collapse($event)"></span>'
+                + '<a class="{{nodeClass}}" ng-class="{true:activeClass}[opera.activeNode === node]" ng-click="click($event)" ng-dblclick="dblclick($event)">{{node.name}}</a>'
                 + '<ul ng-show="!_collapsed">'
                 + '<li ng-repeat="node in node.children" xtreenode></li>'
                 + '</ul>';
@@ -43,7 +44,11 @@ define(['js/app'], function(app){
             $scope.click = function($event){
                 $scope.opera.activeNode = this.node;
                 $scope.opera.scope = this;
-                config.onclick($event,this.node,this);
+                config.onclick($event, this.node, this);
+            };
+
+            $scope.dblclick = function($event){
+                config.ondblclick($event, this.node, this);
             };
         }
     ])
@@ -61,6 +66,7 @@ define(['js/app'], function(app){
                     }
 
                     for(i=0;i<len;i++){
+                        data[i].index = i;
                         if(map[data[i].parentId] && data[i].id != data[i].parentId){
 
                             if(!map[data[i].parentId].children){
@@ -126,7 +132,6 @@ define(['js/app'], function(app){
         }
     ])
 
-    //borrow from ngInclude ,but don't create a new childscope
     .directive('xtreenode',
     ['xtree.config', '$templateCache', '$compile',
         function(config,   $templateCache,   $compile){
@@ -140,6 +145,10 @@ define(['js/app'], function(app){
                         
                         $compile(node)(scope);
                         element.append(node);
+
+                        element.bind('dbclick', function(e){
+                            config.ondbclick(e, scope);
+                        });
                     };
                 }
             };
