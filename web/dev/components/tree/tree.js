@@ -25,11 +25,7 @@ define(['js/app'], function(app){
         }(),
     })
 
-    .value('xtree.exportProp', {
-        activeNode: {},
-        scope: {},
-        tree: []
-    })
+    .value('xtree.exportProp', {})
 
     .controller('xtreeController',
     ['$scope', 'xtree.config', '$timeout',
@@ -214,6 +210,9 @@ define(['js/app'], function(app){
                 },
                 editNode: function(node){
 
+                },
+                getScope: function(){
+                    return exportProp.scope;
                 }
             };
 

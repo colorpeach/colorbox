@@ -1,6 +1,5 @@
 style.
-  .editor-box,
-  .full-screen{
+  .editor-box{
       position:fixed;top:0;left:0;right:0;bottom:0;background-color:#333;z-index:2000;
       font-size: 12px;
   }
@@ -11,6 +10,7 @@ style.
       padding: 0 10px;
       border-bottom: 1px solid #222;
       line-height: 30px;
+      background-color: #333;
   }
   .editor,
   .editor-tree-area,
@@ -58,6 +58,7 @@ style.
       padding: 5px;
       margin-left: 0;
       margin-right: 5px;
+      border: 1px solid transparent;
   }
   .editor .btn-icon.active{
       border: 1px solid #222;
@@ -163,7 +164,18 @@ style.
     box-shadow: 0 2px 5px #222;
   }
 
+  .editor-nav-item li > ul{
+    display: none;
+    left: 100%;
+    top: -5px;
+  }
+
+  .editor-nav-item li:hover > ul{
+    display: block;
+  }
+
   .editor-nav-item li{
+    position: relative;
     min-width: 120px;
     padding: 2px 10px 2px 30px;
     cursor: pointer;
@@ -171,6 +183,35 @@ style.
 
   .editor-nav-item li:hover{
     background-color: #444;
+  }
+
+  .editor-nav-mark{
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    border: 3px solid;
+    border-radius: 50%;
+  }
+
+  .editor-nav-arrow{
+    position: absolute;
+    right: 5px;
+    top: 7px;
+    display: block;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+    border-width: 4px 0 4px 6px;
+  }
+
+  .full-screen{
+    position: fixed!important;
+    top: 0!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+    height: auto!important;
+    width: auto!important;
+    z-index: 1;
   }
 div.editor-box
   div.editor-nav(editor-nav="editorNav")
@@ -196,12 +237,12 @@ script(type="text/ng-template", id="editor-main")
         | {{getNode({unique: item}).name}}
         button(ng-click="closeTab('tabs', $index)") ×
     div.editor-main-area
-      div(editor, ng-show="getNode({unique: currentTab}).type === 'file'")
+      div(editor="currentFile", ng-show="getNode({unique: currentTab}).type === 'file'")
 script(type="text/ng-template", id="editor-assist")
-  div
+  div(ng-class="{'full-screen': fullScreen}")
     div.editor-nav
-      span.icon-expand.btn-icon
-      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === $index}', ng-click="$parent.currentPanel = $index")
-        | {{$parent.panels[item].name}}
+      span.icon-expand.btn-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
+      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
+        | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', $index)") ×
     div.editor-main-area(style="background-color: #222;", editor-con-box)
