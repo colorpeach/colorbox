@@ -46,20 +46,52 @@ define(['js/app', 'ace/ace'], function(app, ace){
             return function($scope){
 
                 treeConfig.ondblclick = function(e, node){
-                    var tabIndex;
-
                     if(node.isParent || node.children) return;
+                    $scope.openFile(node.unique);
+                };
 
-                    if((tabIndex = $scope.tabs.indexOf(node.id)) < 0){
-                        $scope.currentTab = $scope.tabs.length;
-                        $scope.tabs.push(node.id);
+                $scope.openFile =  function(unique){
+                    if($scope.tabs.indexOf(unique) < 0){
+                        $scope.currentTab = unique;
+                        $scope.tabs.push(unique);
                     }else{
-                        $scope.currentTab = tabIndex;
+                        $scope.currentTab = unique;
                     }
                 };
 
                 $scope.addFile = function(){
-                    tree.getData().push({name: '新建文件', type: 'file', parentId: 0});
+                    var node = {type: 'file'};
+                    tree.addNode(node);
+                    $scope.openFile(node.unique);
+                };
+
+                $scope.delFile = function(){
+                    var node = tree.getSelected();
+                    var tabIndex;
+                    if(node){
+                        tree.deleteSelected();
+                        if((tabIndex = $scope.tabs.indexOf(node.unique)) > -1){
+                            $scope.tabs.splice(tabIndex, 1);
+                        }
+                    }
+                };
+
+                //关闭tab
+                $scope.closeTab = function(type, index){
+                    var tabs = $scope[type];
+                    var current = type === 'tabs' ? 'currentTab' : 'currentPanel';
+
+                    tabs.splice(index, 1);
+                    if(!tabs.length){
+                        $scope[current] = null;
+                    }else if(index >= tabs.length){
+                        $scope[current] = tabs[tabs.length - 1];
+                    }
+                };
+
+                $scope.getNode = function(data){
+                    if(!$scope.files.length) return;
+                    return tree.getNode(data);
                 };
             }
         }
@@ -84,19 +116,12 @@ define(['js/app', 'ace/ace'], function(app, ace){
             });
             appProCrud.get($routeParams.id)
             .success(function(data){
-                angular.forEach(data.app.files, function(n){
-                    if(!angular.isDefined(n.parentId)){
-                        n.parentId = 'app';
-                    }
+                angular.forEach(data.app.files, function(n, i){
+                    n.index = i;
                 });
                 $scope.files = data.app.files;
                 $scope.app = data.app;
             });
-
-            //关闭tab
-            $scope.closeTab = function(type, index){
-                $scope[type].splice(index, 1);
-            };
             
             //隐藏显示区块
             $scope.toggleBlock = function(i){
