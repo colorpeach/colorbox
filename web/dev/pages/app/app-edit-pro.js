@@ -12,7 +12,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
             {
                 name: '视图',
                 subNav: [
-                    {name: '布局'}
+                    {name: '布局'},
+                    {name: '窗口'}
                 ]
             }
         ],
@@ -39,36 +40,67 @@ define(['js/app', 'ace/ace'], function(app, ace){
         }
     ])
 
+    .factory('appProMethod',
+    ['xtree.export', 'xtree.config', 
+        function(tree,   treeConfig){
+            return function($scope){
+
+                treeConfig.ondblclick = function(e, node){
+                    var tabIndex;
+
+                    if(node.isParent || node.children) return;
+
+                    if((tabIndex = $scope.tabs.indexOf(node.id)) < 0){
+                        $scope.currentTab = $scope.tabs.length;
+                        $scope.tabs.push(node.id);
+                    }else{
+                        $scope.currentTab = tabIndex;
+                    }
+                };
+
+                $scope.addFile = function(){
+                    tree.getData().push({name: '新建文件', type: 'file', parentId: 0});
+                };
+            }
+        }
+    ])
+
     .controller('editAppProCtrl',
-    ['$scope', 'editorNavConfig', 'layoutConfig', 'xtree.export', 'xtree.config',
-        function($scope,   editorNavConfig,   layoutConfig,   tree,   treeConfig){
+    ['$scope', 'editorNavConfig', 'layoutConfig', '$rootScope', 'appProCrud', '$routeParams', 'appProMethod',
+        function($scope,   editorNavConfig,   layoutConfig,   $rootScope,   appProCrud,   $routeParams,   appProMethod){
             $scope.editorNav = editorNavConfig.editorNav;
             $scope.layoutConfig = layoutConfig;
             $scope.panels = editorNavConfig.panels;
-            $scope.files = [
-                {id: 0, name: 'demo', type: 'folder'},
-                {id: 1, parentId: 0, name: 'app.js', type: 'file', content: 'var a=1;'}
-            ];
+            $scope.files = [];
             $scope.tabs = [];
-            $scope.consoleTabs = [];
+            $scope.panelTabs = [1];
+            $scope.currentPanel = 0;
 
-            $scope.addFile = function(){
-                tree.getData().push({name: '新建文件', type: 'file', parentId: 0});
-            };
+            appProMethod($scope);
 
-            treeConfig.ondblclick = function(e, node){
-                var tabIndex;
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '载入应用'
+            });
+            appProCrud.get($routeParams.id)
+            .success(function(data){
+                angular.forEach(data.app.files, function(n){
+                    if(!angular.isDefined(n.parentId)){
+                        n.parentId = 'app';
+                    }
+                });
+                $scope.files = data.app.files;
+                $scope.app = data.app;
+            });
 
-                if((tabIndex = $scope.tabs.indexOf(node.index)) < 0){
-                    $scope.currentTab = $scope.tabs.length;
-                    $scope.tabs.push(node.index);
-                }else{
-                    $scope.currentTab = tabIndex;
-                }
-            };
-
-            $scope.close = function(type, index){
+            //关闭tab
+            $scope.closeTab = function(type, index){
                 $scope[type].splice(index, 1);
+            };
+            
+            //隐藏显示区块
+            $scope.toggleBlock = function(i){
+                $rootScope.$broadcast('toggleResizeBox', i);
             };
         }
     ])
@@ -80,6 +112,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 restrict: 'A',
                 link: function(scope, element, attrs){
                     var editor = ace.edit(element[0]);
+
+                    scope.editor = editor;
                 }
             };
         }

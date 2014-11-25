@@ -11,6 +11,8 @@ div.dashboard
         a(href='#/dashboard/apps') 我的应用
       li(ng-class="{active: tab === 'snippets'}")
         a(href='#/dashboard/snippets') 我的代码片段
+      li(ng-class="{active: tab === 'appPros'}")
+        a(href='#/dashboard/appPros') 我的应用
 
   ul.dashboard-con(ng-show="tab === 'account'")
     include ./dashboard-account.jade
@@ -18,3 +20,5 @@ div.dashboard
     include ./dashboard-apps.jade
   ul.dashboard-con(ng-show="tab === 'snippets'", ng-controller="mySnippetsCtrl")
     include ./dashboard-snippets.jade
+  ul.dashboard-con(ng-show="tab === 'appPros'", ng-controller="myAppProsCtrl")
+    include ./dashboard-app-pro.jade
