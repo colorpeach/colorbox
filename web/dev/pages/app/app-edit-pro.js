@@ -72,6 +72,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         tree.deleteSelected();
                         if((tabIndex = $scope.tabs.indexOf(node.unique)) > -1){
                             $scope.tabs.splice(tabIndex, 1);
+                            node.unique === $scope.currentTab && fixCurrent($scope.tabs, 'currentTab', tabIndex);
                         }
                     }
                 };
@@ -82,17 +83,21 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     var current = type === 'tabs' ? 'currentTab' : 'currentPanel';
 
                     tabs.splice(index, 1);
-                    if(!tabs.length){
-                        $scope[current] = null;
-                    }else if(index >= tabs.length){
-                        $scope[current] = tabs[tabs.length - 1];
-                    }
+                    fixCurrent(tabs, current, index);
                 };
 
                 $scope.getNode = function(data){
                     if(!$scope.files.length) return;
                     return tree.getNode(data);
                 };
+
+                function fixCurrent(tabs, current, index){
+                    if(!tabs.length){
+                        $scope[current] = null;
+                    }else if(index >= tabs.length){
+                        $scope[current] = tabs[tabs.length - 1];
+                    }
+                }
             }
         }
     ])
