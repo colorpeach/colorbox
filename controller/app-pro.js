@@ -3,13 +3,13 @@ var baseRes = require('./baseResponse');
 var Apps = {};
 
 Apps.get = function(req, res){
-    apps.query(req.query, function(data){
+    apps.query(apps,req.query, function(data){
         res.end(baseRes({app: data[0]}));
     });
 };
 
 Apps.add = function(req, res){
-    apps.query({name: req.body.name},function(list){
+    apps.query(apps,{name: req.body.name},function(list){
         if(list.length){
             res.end(baseRes({errorMsg: ['应用已经存在']}));
         }else{
@@ -24,19 +24,19 @@ Apps.add = function(req, res){
 };
 
 Apps.save = function(req, res){
-    apps.update(req.body, function(){
+    apps.update(apps,req.body, function(){
         res.end(baseRes());
     });
 };
 
 Apps.del = function(req, res){
-    apps.del(req.body, function(){
+    apps.del(apps,req.body, function(){
         res.end(baseRes());
     });
 };
 
 Apps.get_user_apps = function(req, res){
-    apps.query({user: req.session.user.login}, function(list){
+    apps.query(apps,{user: req.session.user.login}, function(list){
         res.end(baseRes({apps: list}));
     },{jade: 0, css: 0, js: 0});
 };

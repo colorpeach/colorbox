@@ -1,5 +1,12 @@
-var dbClient = require('../database');
-var tidy = dbClient.column({
+var base = require('../models/base');
+var apps = {};
+
+for(var i in base){
+    apps[i] = base[i];
+}
+
+apps.collection = "apps";
+apps.column = {
     name         : 'name',
     description  : 'description',
     jade         : 'jade',
@@ -10,52 +17,15 @@ var tidy = dbClient.column({
     createDate   : 'createDate',
     stars        : 'stars',
     type         : 'type'
-});
-var apps = {};
-
-//新增app
-apps.add = function(data,fn){
-    var d = tidy(data);
-    dbClient.connect([
-        function(db,callback){
-            db.collection('apps').insert(d,function(err,data){
-                callback(err,data);
-            });
-        }
-    ],fn);
-}
-
-//更新app
-apps.update = function(data,fn){
-    var d = dbClient.split(tidy(data));
-    dbClient.connect([
-        function(db,callback){
-            db.collection('apps').update(d.search,{$set:d.data},function(err,data){
-                callback(err,data);
-            });
-        }
-    ],fn);
-}
-
-//查询
-apps.query = function(data,fn,filter){
-    var d = tidy(data);
-    dbClient.connect([
-        function(db,callback){
-            db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
-                callback(err,data);
-            });
-        }
-    ],fn);
-}
+};
 
 //查询
 apps.operaQuery = function(data, fn, filter, opera){
-    var d = tidy(data);
-    dbClient.connect([
+    var d = base.tidy(apps.column,data);
+    base.dbClient.connect([
         function(db,callback){
             if(opera){
-                var o = db.collection('apps').find(d,{fields:filter});
+                var o = db.collection(apps.collection).find(d,{fields:filter});
                 for(var n in opera){
                     o = o[n](opera[n]);
                 }
@@ -63,22 +33,10 @@ apps.operaQuery = function(data, fn, filter, opera){
                     callback(err,data);
                 });
             }else{
-                db.collection('apps').find(d,{fields:filter}).toArray(function(err,data){
+                db.collection(apps.collection).find(d,{fields:filter}).toArray(function(err,data){
                     callback(err,data);
                 });
             }
-        }
-    ],fn);
-}
-
-//删除app
-apps.del = function(data,fn){
-    var d = tidy(data);
-    dbClient.connect([
-        function(db,callback){
-            db.collection('apps').remove(d,function(err,data){
-                callback(err,data);
-            });
         }
     ],fn);
 }
