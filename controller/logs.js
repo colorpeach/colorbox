@@ -5,7 +5,7 @@ var converter = new Showdown.converter();
 var _logs = {};
 
 _logs.index = function(req, res){
-    logs.query(logs,{}, function(list){
+    logs.query({}, function(list){
         list.forEach(function(n, i){
             n.content = converter.makeHtml(n.content);
         });
@@ -17,7 +17,7 @@ _logs.index = function(req, res){
 };
 
 _logs.get = function(req, res){
-    logs.query(logs,{}, function(list){
+    logs.query({}, function(list){
         list.forEach(function(n, i){
             n.content = converter.makeHtml(n.content);
         });
@@ -29,7 +29,7 @@ _logs.add = function(req, res){
     if(req.session.user && req.session.user.admin){
         req.body.date = new Date();
 
-        logs.add(logs,req.body, function(){
+        logs.add(req.body, function(){
             res.end('修改成功');
         });
     }else{

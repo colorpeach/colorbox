@@ -2,7 +2,9 @@ var dbClient = require('../database');
 
 var base = {};
 
-base.add = function(data,fn,model){
+base.add = function(data,fn){
+    var model = this;
+    var d = base.tidy(model.column,data);
     dbClient.connect([
         function(db,callback){
             db.collection(model.collection).insert(d,function(err,data){
@@ -12,10 +14,11 @@ base.add = function(data,fn,model){
     ],fn);
 }
 
-base.update = function(data,fn,model){
-    var d = base.tidy(model.column,data);
+base.update = function(data,fn, searchKeys){
+    var model = this;
+    var d = base.dbClient.split(base.tidy(model.column,data),searchKeys);
     dbClient.connect([
-        function(db,callback,model){
+        function(db,callback){
             db.collection(model.collection).update(d.search,{$set:d.data},function(err,data){
                 callback(err,data);
             });
@@ -23,7 +26,8 @@ base.update = function(data,fn,model){
     ],fn);
 }
 
-base.query = function(model,data,fn,filter){
+base.query = function(data,fn,filter){
+    var model = this;
     var d = base.tidy(model.column,data);
     dbClient.connect([
         function(db,callback){
@@ -34,7 +38,8 @@ base.query = function(model,data,fn,filter){
     ],fn);
 }
 
-base.del = function(data,fn,model){
+base.del = function(data,fn){
+    var model = this;
     var d = base.tidy(model.column,data);
     dbClient.connect([
         function(db,callback){

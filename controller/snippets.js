@@ -6,7 +6,7 @@ var _snippets = {};
 var snippet = require('../utils/snippet');
 
 _snippets.snippets_preview = function(req, res){
-    snippets.query(snippets,{_id: req.params.id}, function(data){
+    snippets.query({_id: req.params.id}, function(data){
         var defaultData = {
                 html: {type: 'html', heads: [""]},
                 css: {type: 'css', libs: [], externals: [""]},
@@ -20,13 +20,13 @@ _snippets.snippets_preview = function(req, res){
 };
 
 _snippets.get = function(req, res){
-    snippets.query(snippets,req.query, function(data){
+    snippets.query(req.query, function(data){
         res.end(baseRes({snippet: data[0]}));
     });
 };
 
 _snippets.add = function(req, res){
-    snippets.query(snippets,{name:req.body.name}, function(list){
+    snippets.query({name:req.body.name}, function(list){
         if(list.length){
             res.end(baseRes({errorMsg:['代码片段已经存在']}));
         }else{
@@ -40,25 +40,25 @@ _snippets.add = function(req, res){
 };
 
 _snippets.save = function(req, res){
-    snippets.update(snippets,req.body, function(){
+    snippets.update(req.body, function(){
         res.end(baseRes());
     });
 };
 
 _snippets.del = function(req, res){
-    snippets.del(snippets,req.body, function(){
+    snippets.del(req.body, function(){
         res.end(baseRes());
     });
 };
 
 _snippets.get_user_snippets = function(req, res){
-    snippets.query(snippets,{user: req.session.user.login}, function(list){
+    snippets.query({user: req.session.user.login}, function(list){
         res.end(baseRes({snippets: list}));
     },{html: 0, css: 0, js: 0});
 };
 
 _snippets.get_snippets = function(req, res){
-    snippets.query(snippets,{}, function(list){
+    snippets.query({}, function(list){
         res.end(baseRes({snippets: list}));
     },{html: 0, css: 0, js: 0});
 };

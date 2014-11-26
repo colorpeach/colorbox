@@ -6,7 +6,7 @@ for(var i in base){
     appPros[i] = base[i];
 }
 appPros.collection = "appPros";
-appPros.tidy = {
+appPros.column = {
     name         : 'name',
     description  : 'description',
     user         : 'user',
