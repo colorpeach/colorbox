@@ -8,7 +8,15 @@ define(['js/app'], function(app){
                 <span class="editor-nav-item" ng-repeat="item in nav" editor-nav-item ng-class="{active: $parent.active == $index}">
                     {{item.name}}
                     <ul ng-show="$parent.active == $index">
-                        <li ng-repeat="sub in item.subNav">{{sub.name}}</li>
+                        <li ng-repeat="sub in item.subNav" ng-click="sub.command && exec(sub.command, sub.params)">
+                            <span ng-if="sub.key" class="right">{{sub.key}}</span>
+                            {{sub.name}}
+                            <span ng-if="sub.subNav" class="editor-nav-arrow"></span>
+                            <ul ng-if="sub.subNav">
+                                <li ng-repeat="sub in sub.subNav" ng-click="sub.command && exec(sub.command, sub.params)">
+                                    <span ng-if="sub.mark && mark(sub.mark)" class="editor-nav-mark"></span>{{sub.name}}</li>
+                            </ul>
+                        </li>
                     </ul>
                 </span>
             */});
@@ -23,6 +31,14 @@ define(['js/app'], function(app){
 
                     $compile(nav)(scope);
                     element.append(nav);
+
+                    scope.exec = function(command, params){
+                        scope.$parent[command].apply(scope.$parent, params);
+                    };
+
+                    scope.mark = function(mark){
+                        return scope.$parent.$eval(mark);
+                    }
                 }
             };
         }

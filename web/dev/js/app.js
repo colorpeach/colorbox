@@ -90,8 +90,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/dashboard/dashboard-app-pro', 
                     'components/resize-box/resize-box', 
                     'components/tree/tree',
-                    'components/editor-nav/editor-nav',
-                    'components/editor-tab/editor-tab'
+                    'components/editor-nav/editor-nav'
                 ]
             },
             '/edit/snippet/:id': {
