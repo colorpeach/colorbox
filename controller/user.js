@@ -10,7 +10,7 @@ userCtrl.updateDesktopApps = function(req,res){
 
     data.desktopApps = req.body.desktopApps || [];
 
-    user.update(data, function(){
+    user.update(user,data, function(){
         res.end(baseRes());
     });
 };
@@ -18,7 +18,7 @@ userCtrl.updateDesktopApps = function(req,res){
 userCtrl.getDesktopApps = function(req, res){
     var data = {username: req.session.user.login};
 
-    user.query(data, function(data){
+    user.query(user,data, function(data){
         res.end(baseRes(data[0]));
     }, {desktopApps: 1});
 };
