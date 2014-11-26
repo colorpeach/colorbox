@@ -82,14 +82,41 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .factory('appProMethod',
-    ['xtree.export', 'xtree.config', '$rootScope',
-        function(tree,   treeConfig,   $rootScope){
+    ['xtree.export', 'xtree.config', '$rootScope', 'appProCrud',
+        function(tree,   treeConfig,   $rootScope,   appProCrud){
             return function($scope){
 
                 treeConfig.ondblclick = function(e, node){
                     if(node.isParent || node.children) return;
                     $scope.openFile(node.unique);
                 };
+
+                treeConfig.onedit = function(e, node){
+                    var data = {
+                        _id: $scope._id,
+                        id: node.id,
+                        name: node.name,
+                        updateKey: 'name'
+                    };
+                    appProCrud.saveFile(data)
+                    .success(function(){
+
+                    })
+                };
+
+                $scope.$on('editorSaving', function(e, content){
+                    var data = {
+                        _id: $scope._id,
+                        id: $scope.currentFile.id,
+                        content: content,
+                        updateKey: 'content'
+                    };
+                    appProCrud.saveFile(data)
+                    .success(function(){
+                        $scope.currentFile.content = content;
+                        $scope.$broadcast('editorSaved');
+                    });
+                });
 
                 $scope.openFile =  function(unique){
                     if($scope.tabs.indexOf(unique) < 0){
@@ -103,18 +130,26 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 $scope.addFile = function(){
                     var node = {type: 'file'};
                     tree.addNode(node);
-                    $scope.openFile(node.unique);
+                    appProCrud.addFile(node)
+                    .success(function(data){
+                        node.id = data.id;
+                        $scope.openFile(node.unique);
+                    });
                 };
 
                 $scope.delFile = function(){
                     var node = tree.getSelected();
                     var tabIndex;
                     if(node){
-                        tree.deleteSelected();
-                        if((tabIndex = $scope.tabs.indexOf(node.unique)) > -1){
-                            $scope.tabs.splice(tabIndex, 1);
-                            node.unique === $scope.currentTab && fixCurrent($scope.tabs, 'currentTab', tabIndex);
-                        }
+                        if(!confirm('确认删除文件?')) return;
+                        appProCrud.delFile(node.id, $scope._id)
+                        .success(function(){
+                            tree.deleteSelected();
+                            if((tabIndex = $scope.tabs.indexOf(node.unique)) > -1){
+                                $scope.tabs.splice(tabIndex, 1);
+                                node.unique === $scope.currentTab && fixCurrent($scope.tabs, 'currentTab', tabIndex);
+                            }
+                        });
                     }
                 };
 
@@ -122,7 +157,21 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 $scope.closeTab = function(type, index){
                     var tabs = $scope[type];
                     var current = type === 'tabs' ? 'currentTab' : 'currentPanel';
-
+                    
+                    if(type === 'tabs'){
+                        //如果关闭的是文件
+                        var file = $scope.getNode({unique: $scope.currentTab});
+                        if(file.isChange){
+                            if(!confirm('文件还未保存，确认关闭?')){
+                                return;
+                            }else{
+                                var session = file.editSession;
+                                session.getUndoManager().reset();
+                                session.getDocument().setValue(file.content);
+                                file.isChange = false;
+                            }
+                        }
+                    }
                     tabs.splice(index, 1);
                     fixCurrent(tabs, current, index);
                 };
@@ -137,6 +186,12 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         $scope.currentFile = null;
                     }else{
                         $scope.currentFile = $scope.getNode({unique: $scope.currentTab});
+                    }
+                });
+
+                $scope.$watch('panelTabs.length', function(len, old){
+                    if(!!len === $scope.layoutConfig.items[2].hide){
+                        $scope.$broadcast('toggleResizeBox', 2);
                     }
                 });
 
@@ -183,14 +238,11 @@ define(['js/app', 'ace/ace'], function(app, ace){
             $scope.editorNav = editorNavConfig.editorNav;
             $scope.layoutConfig = layoutConfig;
             $scope.panels = editorNavConfig.panels;
-            $scope.files = [
-                {name: '文件1', type: 'file', content: 'var a = 1;'},
-                {name: '文件2', type: 'file', content: 'var b = 1;'},
-                {name: '文件3', type: 'file', content: 'var c = 1;'}
-            ];
+            $scope.files = [];
             $scope.tabs = [];
             $scope.panelTabs = ['source', 'route', 'preview'];
             $scope.currentPanel = $scope.panelTabs[0];
+            $scope._id = $routeParams.id;
 
             appProMethod($scope);
 
@@ -200,7 +252,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
             });
             appProCrud.get($routeParams.id)
             .success(function(data){
-//                 $scope.files = data.app.files;
+                $scope.files = data.app.files;
                 $scope.app = data.app;
             });
             
@@ -212,8 +264,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .directive('editor',
-    [
-        function(){
+    ['$timeout',
+        function($timeout){
             var modes = {
                 'js': 'javascript',
                 'html': 'html',
@@ -223,9 +275,38 @@ define(['js/app', 'ace/ace'], function(app, ace){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
+                    var resizeTimer;
+//                     ace.require("ace/ext/language_tools");
                     var editor = ace.edit(element[0]);
+//                     editor.setOptions({
+//                         enableBasicAutocompletion: true
+//                     });
 
                     scope.editor = editor;
+
+                    editor.on('input', function(){
+                        if(!scope[attrs.editor]) return;
+                        if(editor.session.getUndoManager().isClean()){
+                            scope[attrs.editor].isChange = false;
+                        }else{
+                            scope[attrs.editor].isChange = true;
+                        }
+                        scope.$apply();
+                    });
+
+                    editor.commands.addCommand({
+                        name: 'save',
+                        bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+                        exec: function(editor) {
+                            scope.$emit('editorSaving', editor.getValue());
+                        },
+                        readOnly: false
+                    });
+
+                    scope.$on('editorSaved', function(){
+                        editor.session.getUndoManager().markClean();
+                        scope[attrs.editor].isChange = false;
+                    });
 
                     scope.$watch(attrs.editor, function(file){
                         if(file){
@@ -233,6 +314,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                                 file.editSession = ace.createEditSession(file.content || '');
                             }
                             editor.setSession(file.editSession);
+                            editor.focus();
                         }else{
 
                         }
@@ -248,6 +330,17 @@ define(['js/app', 'ace/ace'], function(app, ace){
                             }
                         }
                     });
+
+                    scope.$on('resizeUpdate', resize);
+
+                    function resize(){
+                        if(resizeTimer){
+                            resizeTimer = $timeout.cancel(resizeTimer);
+                        }
+                        $timeout(function(){
+                            editor.resize();
+                        }, 300);
+                    }
                 }
             };
         }

@@ -32,8 +32,8 @@ define(['js/app'], function(app){
                 saveFile: function(data){
                     return $http.post('/post/save/app-pro/item', data);
                 },
-                delFile: function(id){
-                    return $http.post('/post/del/app-pro/item', {id: id});
+                delFile: function(id, _id){
+                    return $http.post('/post/del/app-pro/item', {id: id, _id: _id});
                 }
             };
         }

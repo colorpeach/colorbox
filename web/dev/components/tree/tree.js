@@ -16,10 +16,11 @@ define(['js/app'], function(app){
         oncollapse: angular.noop,
         treeTemplate: function(){
             return '<ul class="{{treeClass}}" >'
-                + '<li ng-repeat="node in sorted.tree" xtreenode  ng-class="{true:activeClass}[opera.activeNode === node]" ng-show="!_hide">'
-                + '<span style=\'width: {{node.level * 20 + "px"}}\'></span>'
+                + '<li ng-repeat="node in sorted.tree" xtreenode  ng-show="!_hide">'
+                + '<span style=\'padding-left: {{(node.level+1) * 20 + "px"}}\' ng-class="{true:activeClass}[opera.activeNode === node]" ng-dblclick="dblclick($event)" ng-click="click($event)">'
                 + '<span ng-class="!node.isParent ? singleClass : _collapsed ? collapseClass : expandClass" ng-click="collapse($event)"></span>'
-                + '<a class="{{nodeClass}}" ng-click="click($event)" ng-dblclick="dblclick($event)" ng-blur="blur($event)" ng-keydown="keydown($event)" contenteditable={{!!_editing}}>{{node.name}}</a>'
+                + '<a class="{{nodeClass}}" ng-blur="blur($event)" ng-keydown="keydown($event)" contenteditable={{!!_editing}}>{{node.name}}</a>'
+                + '</span>'
                 + '</li>'
                 + '</ul>';
         }(),
@@ -49,7 +50,7 @@ define(['js/app'], function(app){
             $scope.click = function($event){
                 var gap = time() - this.editDelay;
 
-                if(this.editDelay && gap < 1000 && gap > 300){
+                if(this.editDelay && gap < 800 && gap > 300){
                     this._editing = true;
                     $scope._editingScope = this;
                     $timeout(function(){
@@ -117,7 +118,7 @@ define(['js/app'], function(app){
                     var topList = [];
 
                     for(var i=0,l=list.length;i<l;i++){
-                        if(typeof list[i].parentId !== 'undefined'){
+                        if(typeof list[i].parentId !== 'undefined' && list[i].parentId !== null){
                             if(list[i].parentId in childrenMap){
                                 childrenMap[list[i].parentId].push(list[i]);
                             }else{
