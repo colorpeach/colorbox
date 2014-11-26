@@ -240,10 +240,10 @@ script(type="text/ng-template", id="editor-main")
       span.icon-tree.btn-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
       span.icon-console.btn-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
       span.icon-plus.btn-icon(ng-click="addFile()")
-      span.editor-tab(ng-repeat='item in tabs track by $index', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
+      span.editor-tab(ng-repeat='item in tabs', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
         | {{file.name}}
         span(ng-show="file.isChange") *
-        button(ng-click="closeTab('tabs', $index)") ×
+        button(ng-click="closeTab('tabs', item)") ×
     div.editor-main-area
       div(editor="currentFile", ng-show="currentTab")
 script(type="text/ng-template", id="editor-assist")
@@ -252,5 +252,5 @@ script(type="text/ng-template", id="editor-assist")
       span.icon-expand.btn-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
       span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
-        button(ng-click="closeTab('panelTabs', $index)") ×
+        button(ng-click="closeTab('panelTabs', item)") ×
     div.editor-main-area(style="background-color: #222;", editor-con-box)

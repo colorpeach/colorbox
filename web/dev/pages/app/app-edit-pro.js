@@ -130,7 +130,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 $scope.addFile = function(){
                     var node = {type: 'file'};
                     tree.addNode(node);
-                    appProCrud.addFile(node)
+                    var data = angular.copy(node);
+                    data._id = $scope._id;
+                    appProCrud.addFile(data)
                     .success(function(data){
                         node.id = data.id;
                         $scope.openFile(node.unique);
@@ -154,9 +156,10 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 };
 
                 //关闭tab
-                $scope.closeTab = function(type, index){
+                $scope.closeTab = function(type, item){
                     var tabs = $scope[type];
                     var current = type === 'tabs' ? 'currentTab' : 'currentPanel';
+                    var index = tabs.indexOf(item);
                     
                     if(type === 'tabs'){
                         //如果关闭的是文件
@@ -172,8 +175,11 @@ define(['js/app', 'ace/ace'], function(app, ace){
                             }
                         }
                     }
+                    
                     tabs.splice(index, 1);
-                    fixCurrent(tabs, current, index);
+                    if($scope[current] === item){
+                        fixCurrent(tabs, current, index);
+                    }
                 };
 
                 $scope.getNode = function(data){
@@ -192,7 +198,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 $scope.togglePanel = function(type){
                     var index = $scope.panelTabs.indexOf(type);
                     if(index > -1){
-                        $scope.closeTab('panelTabs', index);
+                        $scope.closeTab('panelTabs', type);
                         fixCurrent($scope.panelTabs, 'currentPanel', index);
                     }else{
                         $scope.panelTabs.push(type);
