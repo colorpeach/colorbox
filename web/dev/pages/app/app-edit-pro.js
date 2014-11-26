@@ -189,12 +189,6 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     }
                 });
 
-                $scope.$watch('panelTabs.length', function(len, old){
-                    if(!!len === $scope.layoutConfig.items[2].hide){
-                        $scope.$broadcast('toggleResizeBox', 2);
-                    }
-                });
-
                 $scope.togglePanel = function(type){
                     var index = $scope.panelTabs.indexOf(type);
                     if(index > -1){
