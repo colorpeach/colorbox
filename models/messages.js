@@ -1,4 +1,4 @@
-var base = require('../models/base');
+var base = require('./base');
 
 var message = {};
 for(var i in base){

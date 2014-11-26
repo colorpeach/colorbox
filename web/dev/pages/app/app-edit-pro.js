@@ -298,7 +298,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         name: 'save',
                         bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
                         exec: function(editor) {
-                            scope.$emit('editorSaving', editor.getValue());
+                            if(scope[attrs.editor].isChange){
+                                scope.$emit('editorSaving', editor.getValue());
+                            }
                         },
                         readOnly: false
                     });
