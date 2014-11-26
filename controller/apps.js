@@ -5,7 +5,7 @@ var Apps = {};
 var path = require('path');
 
 Apps.apps_preview = function(req, res){
-    apps.query(apps,{_id: req.params.id}, function(data){
+    apps.query({_id: req.params.id}, function(data){
         try{
             var appData = data[0];
             var html = jade.renderFile(path.join(process.env.staticPath, '/views/app-preview.jade'), appData);
@@ -22,13 +22,13 @@ Apps.apps_preview = function(req, res){
 };
 
 Apps.get = function(req, res){
-    apps.query(apps,req.query, function(data){
+    apps.query(req.query, function(data){
         res.end(baseRes({app: data[0]}));
     });
 };
 
 Apps.add = function(req, res){
-    apps.query(apps,{name: req.body.name},function(list){
+    apps.query({name: req.body.name},function(list){
         if(list.length){
             res.end(baseRes({errorMsg: ['应用已经存在']}));
         }else{
@@ -43,19 +43,19 @@ Apps.add = function(req, res){
 };
 
 Apps.save = function(req, res){
-    apps.update(apps,req.body, function(){
+    apps.update(req.body, function(){
         res.end(baseRes());
     });
 };
 
 Apps.del = function(req, res){
-    apps.del(apps,req.body, function(){
+    apps.del(req.body, function(){
         res.end(baseRes());
     });
 };
 
 Apps.get_apps = function(req, res){
-    apps.query(apps,{user: req.session.user.login}, function(list){
+    apps.query({user: req.session.user.login}, function(list){
         res.end(baseRes({apps: list}));
     },{jade: 0, css: 0, js: 0});
 };
