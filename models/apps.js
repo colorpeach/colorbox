@@ -1,4 +1,4 @@
-var base = require('./base');
+var base = require('./base-module');
 var apps = {};
 
 for(var i in base){

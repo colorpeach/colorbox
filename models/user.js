@@ -1,4 +1,4 @@
-var base = require('./base');
+var base = require('./base-module');
 var user = {};
 
 for(var i in base){
