@@ -71,7 +71,7 @@ Apps.get_published_apps = function(req, res){
     req.query.sort && (opera.sort[req.query.sort] = -1);
     req.query.skip && (opera.skip = req.query.skip * 8);
 
-    apps.operaQuery(param, function(list){
+    apps.query(param, function(list){
         res.end(baseRes({apps: list}));
     }, {jade: 0, css: 0, js: 0}, opera);
 };

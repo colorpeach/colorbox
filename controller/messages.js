@@ -26,7 +26,7 @@ _message.save = function(req, res){
 _message.get_messages = function(req, res){
     messages.query({}, function(list){
         res.end(baseRes({messages: list}));
-    });
+    },null,{sort:{"date":-1}});
 };
 
 module.exports = _message;

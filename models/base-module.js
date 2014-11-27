@@ -26,13 +26,16 @@ base.update = function(data,fn, searchKeys){
     ],fn);
 }
 
-base.query = function(data,fn,filter){
+base.query = function(data,fn,filter,opera){
     var model = this;
     var d = base.tidy(model.column,data);
     dbClient.connect([
         function(db,callback){
-            db.collection(model.collection).find(d,{fields:filter}).toArray(function(err,data){
-                callback(err,data);
+                db.collection(model.collection).find(d,{fields:filter})
+                    .sort(opera ? opera.sort : null)
+                    .limit(opera ? opera.limit : null)
+                    .skip(opera ? opera.skip : null).toArray(function(err,data){
+                    callback(err,data);
             });
         }
     ],fn);
