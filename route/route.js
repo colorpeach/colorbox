@@ -119,4 +119,6 @@ module.exports = function(app){
     app.get('/get/app-pro/items', appPro.get_app_items);
     //删除文件
     app.post('/post/del/app-pro/item', appPro.post_del_app_item);
+    //应用文件页
+    app.get('/application/:user/:app/*', appPro.static_file);
 };

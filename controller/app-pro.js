@@ -93,4 +93,25 @@ Apps.post_del_app_item = function(req,res){
     });
 };
 
+Apps.static_file = function(req, res){
+    var data = {
+        user: req.params.user,
+        name: req.params.app
+    };
+    var filePath = req.url.replace('/application/' + data.user + '/' + data.name, '');
+
+    data.search = {
+        'files.url': filePath
+    };
+
+    apps.queryItem(data, function(data){
+        if(data.length){
+            res.end(data[0].files.content);
+        }else{
+            res.statusCode = 401;
+            res.render('views/not-found',{user:req.session.user});
+        }
+    });
+};
+
 module.exports = Apps;

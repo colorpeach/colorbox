@@ -59,7 +59,17 @@ define(['js/app', 'ace/ace'], function(app, ace){
             {name: '数据源', type: 'source'},
             {name: '路由', type: 'route'},
             {name: '预览', type: 'preview'}
-        ]
+        ],
+        menuConfig: {
+            main: [
+                {
+                    name: '新建文件'
+                },
+                {
+                    name: '新建文件夹'
+                }
+            ]
+        }
     })
 
     .factory('layoutConfig',
@@ -96,7 +106,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         _id: $scope._id,
                         id: node.id,
                         name: node.name,
-                        updateKey: 'name'
+                        url: node.url,
+                        updateKeys: ['name', 'url']
                     };
                     appProCrud.saveFile(data)
                     .success(function(){
@@ -109,7 +120,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         _id: $scope._id,
                         id: $scope.currentFile.id,
                         content: content,
-                        updateKey: 'content'
+                        updateKeys: ['content']
                     };
                     appProCrud.saveFile(data)
                     .success(function(){
@@ -237,6 +248,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
         function($scope,   editorNavConfig,   layoutConfig,   $rootScope,   appProCrud,   $routeParams,   appProMethod){
             $scope.editorNav = editorNavConfig.editorNav;
             $scope.layoutConfig = layoutConfig;
+            $scope.menuConfig = editorNavConfig.menuConfig;
             $scope.panels = editorNavConfig.panels;
             $scope.files = [];
             $scope.tabs = [];
@@ -254,6 +266,10 @@ define(['js/app', 'ace/ace'], function(app, ace){
             .success(function(data){
                 $scope.files = data.app.files;
                 $scope.app = data.app;
+
+                $scope.$watch('app.entrance', function(entrance){
+                    appProCrud.save({_id: $scope._id, entrance: entrance});
+                });
             });
             
             //隐藏显示区块

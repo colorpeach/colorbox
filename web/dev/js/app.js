@@ -2,7 +2,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
     var pathsMap = {
         noAuthPaths: ['/login', '/register'],
-        authPaths: ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id'],
+        authPaths: ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id', '/edit/app-pro/:id'],
         login: false
     };
 
@@ -90,7 +90,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/dashboard/dashboard-app-pro', 
                     'components/resize-box/resize-box', 
                     'components/tree/tree',
-                    'components/editor-nav/editor-nav'
+                    'components/editor-nav/editor-nav',
+                    'components/context-menu/context-menu'
                 ]
             },
             '/edit/snippet/:id': {

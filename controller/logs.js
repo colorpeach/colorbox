@@ -22,7 +22,7 @@ _logs.get = function(req, res){
             n.content = converter.makeHtml(n.content);
         });
         res.end(baseRes({logs: list}));
-    })
+    }, null, {sort:{"date":-1}})
 };
 
 _logs.add = function(req, res){
