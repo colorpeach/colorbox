@@ -26,12 +26,12 @@ base.update = function(data,fn, searchKeys){
     ],fn);
 }
 
-base.query = function(data,fn,filter){
+base.query = function(data,fn,filter,sort){
     var model = this;
     var d = base.tidy(model.column,data);
     dbClient.connect([
         function(db,callback){
-            db.collection(model.collection).find(d,{fields:filter}).toArray(function(err,data){
+            db.collection(model.collection).find(d,{fields:filter}).sort(sort).toArray(function(err,data){
                 callback(err,data);
             });
         }
