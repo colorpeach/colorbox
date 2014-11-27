@@ -268,7 +268,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 $scope.app = data.app;
 
                 $scope.$watch('app.entrance', function(entrance){
-                    appProCrud.save({_id: $scope._id, entrance: entrance});
+                    entrance && appProCrud.save({_id: $scope._id, entrance: entrance});
                 });
             });
             
