@@ -1,4 +1,4 @@
-var base = require('../models/base');
+var base = require('./base-module');
 var user = {};
 
 for(var i in base){

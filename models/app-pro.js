@@ -1,4 +1,4 @@
-var base = require('../models/base');
+var base = require('./base-module');
 
 var appPros = {};
 
@@ -29,7 +29,7 @@ appPros.subTidy ={
 //新增app
 appPros.add = function(data,fn){
     if(!data.files) data.files = [];
-    var d = base.tidy(appPros.tidy,data);
+    var d = base.tidy(appPros.column,data);
 
     base.dbClient.connect([
         function(db,callback){
@@ -42,7 +42,7 @@ appPros.add = function(data,fn){
 
 //查询
 appPros.operaQuery = function(data, fn, filter, opera){
-    var d = base.tidy(appPros.tidy,data);
+    var d = base.tidy(appPros.column,data);
     base.dbClient.connect([
         function(db,callback){
             if(opera){
@@ -64,7 +64,7 @@ appPros.operaQuery = function(data, fn, filter, opera){
 
 //查询接口文档
 appPros.queryItem = function(data,fn,filter){
-    var d = base.tidy(appPros.tidy,data);
+    var d = base.tidy(appPros.column,data);
     base.dbClient.connect([
         function(db,callback){
             db.collection(appPros.collection).aggregate(
@@ -83,7 +83,7 @@ appPros.queryItem = function(data,fn,filter){
 //新增接口文档
 appPros.addItem = function(data,fn){
     var parentId = data.parentId;
-    var d = base.dbClient.split(base.tidy(appPros.tidy,data));
+    var d = base.dbClient.split(base.tidy(appPros.column,data));
     d.data.parentId = parentId;
     base.dbClient.connect([
         function(db,callback){
@@ -110,14 +110,21 @@ appPros.addItem = function(data,fn){
 //更新接口文档
 appPros.updateItem = function(data,fn){
     var list = base.tidy(appPros.subTidy,data);
-    var d = base.dbClient.split(base.tidy(appPros.tidy,data));
-    d.search['list.id'] = data.id;
+    var d = base.dbClient.split(base.tidy(appPros.column,data));
+    var set = {};
+    d.search['files.id'] = data.id;
 
     delete list._id;
 
+    if(data.updateKey){
+        set['files.$.' + data.updateKey] = list[data.updateKey];
+    }else{
+        set['files.$'] = list;
+    }
+
     base.dbClient.connect([
         function(db,callback){
-            db.collection(appPros.collection).update(d.search, {$set: {'files.$': list}},function(err,data){
+            db.collection(appPros.collection).update(d.search, {$set: set},function(err,data){
                 callback(err,data);
             });
         }
@@ -126,13 +133,13 @@ appPros.updateItem = function(data,fn){
 
 //删除接口文档
 appPros.deleteItem = function(data,fn){
-    data.list = {
+    data.files = {
         $or:[
             {id: data.id},
             {parentId: data.id}
         ]
     };
-    var d = base.dbClient.split(tidy(data));
+    var d = base.dbClient.split(base.tidy(appPros.column,data));
     
     base.dbClient.connect([
         function(db,callback){

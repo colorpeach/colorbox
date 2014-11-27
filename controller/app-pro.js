@@ -3,7 +3,7 @@ var baseRes = require('./baseResponse');
 var Apps = {};
 
 Apps.get = function(req, res){
-    apps.query(apps,req.query, function(data){
+    apps.query(req.query, function(data){
         res.end(baseRes({app: data[0]}));
     });
 };
@@ -64,31 +64,31 @@ Apps.get_app_item = function(req, res){
         'files.id': +data.id
     };
 
-    mock.queryItem(data,function(data){
+    apps.queryItem(data,function(data){
         res.end(baseRes({node:data[0].list}));
     });
 };
 
 Apps.get_app_items = function(req,res){
-    mock.query(req.query,function(list){
+    apps.query(req.query,function(list){
         res.end(baseRes({nodes:list[0]}));
     },{'files.content':0});
 };
 
 Apps.post_add_app_item = function(req,res){
-    mock.addItem(req.body,function(data){
+    apps.addItem(req.body,function(data){
         res.end(baseRes(data));
     });
 };
 
 Apps.post_update_app_item = function(req,res){
-    mock.updateItem(req.body,function(data){
-        res.end(baseRes({mock:data[0]}));
+    apps.updateItem(req.body,function(data){
+        res.end(baseRes({node:data[0]}));
     });
 };
 
 Apps.post_del_app_item = function(req,res){
-    mock.deleteItem(req.body,function(){
+    apps.deleteItem(req.body,function(){
         res.end(baseRes({}));
     });
 };
