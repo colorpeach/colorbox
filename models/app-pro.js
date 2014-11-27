@@ -112,22 +112,22 @@ appPros.addItem = function(data,fn){
 appPros.updateItem = function(data,fn){
     var list = base.tidy(appPros.subTidy,data);
     var d = base.dbClient.split(base.tidy(appPros.column,data));
-    var set = {};
+    var setMap = {};
     d.search['files.id'] = data.id;
 
     delete list._id;
 
     if(data.updateKeys){
         for(var n in data.updateKeys){
-            set['files.$.' + data.updateKeys[n]] = list[data.updateKeys[n]];
+            setMap['files.$.' + data.updateKeys[n]] = list[data.updateKeys[n]];
         }
     }else{
-        set['files.$'] = list;
+        setMap['files.$'] = list;
     }
 
     base.dbClient.connect([
         function(db,callback){
-            db.collection(appPros.collection).update(d.search, {$set: set},function(err,data){
+            db.collection(appPros.collection).update(d.search, {$set: setMap},function(err,data){
                 callback(err,data);
             });
         }
