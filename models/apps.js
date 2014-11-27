@@ -19,26 +19,4 @@ apps.column = {
     type         : 'type'
 };
 
-//查询
-apps.operaQuery = function(data, fn, filter, opera){
-    var d = base.tidy(apps.column,data);
-    base.dbClient.connect([
-        function(db,callback){
-            if(opera){
-                var o = db.collection(apps.collection).find(d,{fields:filter});
-                for(var n in opera){
-                    o = o[n](opera[n]);
-                }
-                o.toArray(function(err,data){
-                    callback(err,data);
-                });
-            }else{
-                db.collection(apps.collection).find(d,{fields:filter}).toArray(function(err,data){
-                    callback(err,data);
-                });
-            }
-        }
-    ],fn);
-}
-
 module.exports = apps;
