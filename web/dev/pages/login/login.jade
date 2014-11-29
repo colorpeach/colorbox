@@ -1,5 +1,6 @@
 form(name="loginForm", action="/login", method="post", ng-submit="submit($event)")
   div.row.medium-6.large-4.small-10
+    div.alert.alert-box 由于后台bug，导致所有用户无法正常登陆，请在2014-11-29之前注册的用户，用之前的用户名重新注册，之前添加的应用和代码片段不会丢失
     fieldset
       legend  登录 
       div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")

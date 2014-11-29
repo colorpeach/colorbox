@@ -1,4 +1,5 @@
 var user = require('../models/user');
+var desktopApps = require('../models/desktop-app');
 var userRule = require('../web/validate/user');
 var baseRes = require('./baseResponse');
 var registerValid = require('./rules');
@@ -32,8 +33,10 @@ login.register = function(req,res){
                 res.end(baseRes({errorMsg:['用户已存在']}));
             }else{
                 user.add(req.body,function(data){
-                    req.session.user = data[0];
-                    res.end(baseRes({user: {login: data[0].login}}));
+                    desktopApps.add({user: data[0].login}, function(){
+                        req.session.user = data[0];
+                        res.end(baseRes({user: {login: data[0].login}}));
+                    });
                 });
             }
         });

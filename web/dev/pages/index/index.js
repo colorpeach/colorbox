@@ -31,9 +31,9 @@ define(['js/app'], function(app){
 
                 desktopCurd.getDesktopApps()
                 .success(function(data){
-                    if(data.desktopApps && data.desktopApps.length){
-                        $scope.apps = data.desktopApps;
-                        data.desktopApps.forEach(function(n, i){
+                    if(data.apps && data.apps.length){
+                        $scope.apps = data.apps;
+                        data.apps.forEach(function(n, i){
                             n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                         });
                     }else{
@@ -48,7 +48,7 @@ define(['js/app'], function(app){
             }
 
             $scope.$on('updateDesktop', function(){
-                desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
+                desktopCurd.updateDesktopApps({apps: $scope.apps});
             });
 
             $scope.switchStatus = function(type){
