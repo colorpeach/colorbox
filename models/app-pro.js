@@ -15,7 +15,8 @@ appPros.column = {
     stars        : 'stars',
     type         : 'type',
     files        : 'files',
-    route        : 'route'
+    route        : 'route',
+    entrance      : 'entrance'
 };
 appPros.subTidy ={
     id:'id',
@@ -64,7 +65,7 @@ appPros.operaQuery = function(data, fn, filter, opera){
 
 //查询接口文档
 appPros.queryItem = function(data,fn,filter){
-    var d = base.tidy(appPros.column,data);
+    var d = base.tidy(appPros.column, data);
     base.dbClient.connect([
         function(db,callback){
             db.collection(appPros.collection).aggregate(
@@ -111,20 +112,22 @@ appPros.addItem = function(data,fn){
 appPros.updateItem = function(data,fn){
     var list = base.tidy(appPros.subTidy,data);
     var d = base.dbClient.split(base.tidy(appPros.column,data));
-    var set = {};
+    var setMap = {};
     d.search['files.id'] = data.id;
 
     delete list._id;
 
-    if(data.updateKey){
-        set['files.$.' + data.updateKey] = list[data.updateKey];
+    if(data.updateKeys){
+        for(var n in data.updateKeys){
+            setMap['files.$.' + data.updateKeys[n]] = list[data.updateKeys[n]];
+        }
     }else{
-        set['files.$'] = list;
+        setMap['files.$'] = list;
     }
 
     base.dbClient.connect([
         function(db,callback){
-            db.collection(appPros.collection).update(d.search, {$set: set},function(err,data){
+            db.collection(appPros.collection).update(d.search, {$set: setMap},function(err,data){
                 callback(err,data);
             });
         }

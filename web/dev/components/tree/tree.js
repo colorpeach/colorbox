@@ -17,7 +17,7 @@ define(['js/app'], function(app){
         treeTemplate: function(){
             return '<ul class="{{treeClass}}" >'
                 + '<li ng-repeat="node in sorted.tree" xtreenode  ng-show="!_hide">'
-                + '<span style=\'padding-left: {{(node.level+1) * 20 + "px"}}\' ng-class="{true:activeClass}[opera.activeNode === node]" ng-dblclick="dblclick($event)" ng-click="click($event)">'
+                + '<span style=\'padding-left: {{(node.level+1) * 20 + "px"}}\' ng-class="{true:activeClass}[opera.activeNode === node]" ng-dblclick="dblclick($event)" ng-click="click($event)" ng-mousedown="mousedown($event)">'
                 + '<span ng-class="!node.isParent ? singleClass : _collapsed ? collapseClass : expandClass" ng-click="collapse($event)"></span>'
                 + '<a class="{{nodeClass}}" ng-blur="blur($event)" ng-keydown="keydown($event)" contenteditable={{!!_editing}}>{{node.name}}</a>'
                 + '</span>'
@@ -59,19 +59,23 @@ define(['js/app'], function(app){
                 }
                 
                 this.editDelay = time();
-                
-                $scope.opera.activeNode = this.node;
-                $scope.opera.activeScope = this;
                 config.onclick($event, this.node, this);
             };
+
+            $scope.mousedown = function($event){
+                $scope.opera.activeNode = this.node;
+                $scope.opera.activeScope = this;
+            }
 
             $scope.dblclick = function($event){
                 config.ondblclick($event, this.node, this);
             };
 
             $scope.blur = function($event){
+                var oldName = this.node.name;
                 this._editing = false;
                 this.node.name = $event.target.textContent;
+                this.node.url = this.node.url.replace(new RegExp(oldName + '$'), this.node.name);
                 $scope._editingScope = null;
                 config.onedit($event, this.node, this);
             };
@@ -126,6 +130,7 @@ define(['js/app'], function(app){
                             }
                         }else{
                             topList.push(list[i]);
+                            list[i].url = '/' + list[i].name;
                         }
                     }
 
@@ -138,9 +143,10 @@ define(['js/app'], function(app){
 
             return utils;
 
-            function sort(list, map, r, level, parent){
+            function sort(list, map, r, level, parent, pP){
                 var rList = r || [];
                 var lev = level || 0;
+                var parentPath = pP || '/';
 
                 for(var i=0, l=list.length; i<l; i++){
 
@@ -150,7 +156,8 @@ define(['js/app'], function(app){
 
                     if(list[i].id in map){
                         list[i].isParent = true;
-                        sort(map[list[i].id], map, rList, lev + 1, list[i]);
+                        list[i].url = parentPath + '/' + list[i].name;
+                        sort(map[list[i].id], map, rList, lev + 1, list[i], list[i].url);
                     }
                 }
                 return rList;

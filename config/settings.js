@@ -31,10 +31,11 @@ module.exports = {
         "_logout",
         "_apps",
         "_user",
-        '_snippets',
-        '_logs',
-        '_logs',
-        "_template"
+        "_snippets",
+        "_logs",
+        "_logs",
+        "_template",
+        "application"
     ],
     //静态文件路径
     staticPath:[
