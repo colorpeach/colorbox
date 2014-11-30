@@ -1,0 +1,33 @@
+//Component
+//Prompt
+
+/*
+*@name prompt
+*@require alert
+*/
+.prompt-box{
+  position: fixed;
+  width: 400px;
+  top:30px;
+  left:0;
+  right:0;
+  z-index: 1050;
+  margin: auto;
+  text-align:center;
+}
+
+.prompt-box .alert-box{
+  padding: 5px 40px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.prompt-box .alert-box.ng-enter{
+  -webkit-animation-name: fadeInUp;
+          animation-name: fadeInUp;
+}
+
+.prompt-box .alert-box.ng-leave{
+  -webkit-animation-name: fadeOutUp;
+          animation-name: fadeOutUp;
+}

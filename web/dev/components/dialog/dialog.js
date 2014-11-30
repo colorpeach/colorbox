@@ -15,9 +15,9 @@ define(['angular', 'js/app'], function(_, app){
             
 
             function Dialog(opts){
-                this.element = angular.element('<div class="reveal-modal"></div>');
-                this.overlay = angular.element('<div class="reveal-modal-bg"></div>');
-                this.$close = angular.element('<a class="close-reveal-modal">×</a>');
+                this.element = angular.element('<div class="dialog"></div>');
+                this.overlay = angular.element('<div class="dialog--bg"></div>');
+                this.$close = angular.element('<a class="dialog--close">×</a>');
                 this.opts = opts;
                 
                 if(opts.target){

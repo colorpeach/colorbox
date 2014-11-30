@@ -3,11 +3,11 @@ div.add-app
     input(type="hidden", name="_id", value="{{data._id}}")
     div.add-app-editor(resize-box="resizeBox")
     div.add-app-top-toolbar
-      div.app-name.small-2.columns(ng-bind="data.name")
+      div.app-name.left.columns(ng-bind="data.name")
       div.small-10.columns
-        input.button.tiny.success.right(type="submit", value="保存")
-        div.button-group.right
-          input.button.tiny(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
+        input.btn.tiny.success.right(type="submit", value="保存")
+        div.btn-group.right
+          input.btn(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
         select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div
@@ -40,7 +40,7 @@ script(type='text/ng-template', id="edit-snippet-dialog")
   div.label-buttons
     span(ng-repeat="t in current.typeList")
       input.hide(type="radio", id="{{t.key}}", value="{{t.key}}", name="type", ng-model="data[current.mark].type")
-      label.button.tiny(for="{{t.key}}", ng-bind="t.name", ng-class="{secondary: t.key !== data[current.mark].type}")
+      label.btn(for="{{t.key}}", ng-bind="t.name", ng-class="{secondary: t.key !== data[current.mark].type}")
   div(ng-if="current.mark === 'html'")
     label 头信息
       span.icon-plus.btn-icon(ng-click="data[current.mark].heads.push('')")
@@ -52,7 +52,7 @@ script(type='text/ng-template', id="edit-snippet-dialog")
     div.label-buttons
       span(ng-repeat="lib in current.libs")
         input(type="checkbox", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
-        label.button.tiny(for="{{lib.key}}", ng-bind="lib.name", ng-class="{secondary: data[current.mark].libs.indexOf(lib.key) < 0}")
+        label.tiny.btn(for="{lib.key}}", ng-bind="lib.name", ng-class="{secondary: data[current.mark].libs.indexOf(lib.key) < 0}")
     label 外部css
       span.icon-plus.btn-icon(ng-click="data[current.mark].externals.push('')")
     div.add-app-remove-box(ng-repeat="external in data[current.mark].externals track by $index")
@@ -63,7 +63,7 @@ script(type='text/ng-template', id="edit-snippet-dialog")
     div.label-buttons
       span(ng-repeat="lib in current.libs")
         input(type="radio", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
-        label.button.tiny(for="{{lib.key}}", ng-bind="lib.name", ng-class="{secondary: data[current.mark].libs.indexOf(lib.key) < 0}")
+        label.btn.tiny(for="{{lib.key}}", ng-bind="lib.name", ng-class="{secondary: data[current.mark].libs.indexOf(lib.key) < 0}")
     label 外部scripts
       span.icon-plus.btn-icon(ng-click="data[current.mark].externals.push('')")
     div.add-app-remove-box(ng-repeat="external in data[current.mark].externals track by $index")

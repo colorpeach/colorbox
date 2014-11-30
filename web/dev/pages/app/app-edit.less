@@ -1,0 +1,120 @@
+//Page
+//App-edit
+
+.add-app,
+.my-apps{
+  position: relative;
+}
+
+.my-apps-header{
+  padding-top: 55px;
+}
+
+.add-app-editor{
+  position: absolute;
+  top: 35px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.add-app-editor > div{
+  position: absolute;
+  overflow: hidden;
+  padding: 5px;
+  transition: 0.3s all;
+}
+
+.add-app-editor textarea,
+.add-app-editor iframe{
+  height: 100%;
+  width: 100%;
+}
+
+.add-app-box{
+  position: absolute!important;
+  top: 35px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid #999;
+}
+
+.app-name{
+  margin-top: 2px;
+  font-weight: bold;
+}
+
+.box-name{
+  display: inline-block;
+  padding: 0 5px;
+  top: 5px;
+  right: 5px;
+  color: #ccc;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.add-app-top-toolbar,
+.add-app-toolbar{
+  position: absolute;
+  height: 30px;
+  left: 5px;
+  top: 5px;
+  right: 5px;
+  color: #fff;
+  background-color: #333;
+  opacity: .8;
+  overflow: hidden;
+}
+
+.add-app-toolbar{
+  padding: 5px;
+}
+
+.add-app-top-toolbar .button-group .button{
+  background-color: #008cba!important;
+}
+
+.add-app-top-toolbar .button-group .active{
+  background-color: #007095!important;
+}
+
+.add-app-top-toolbar select,
+.add-app-top-toolbar input {
+  padding      : 0 20px 0 0;
+  margin       : 0;
+  height       : 30px;
+  line-height  : 12px;
+  font-size    : 12px;
+  width        : auto;
+}
+
+.add-app-top-toolbar .columns{
+  padding-right: 0;
+}
+
+.add-app-top-toolbar .button-group{
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
+}
+
+.label-buttons{
+  margin-bottom: 20px;
+}
+
+.label-buttons [type=radio],
+.label-buttons [type=checkbox]{
+  display: none;
+}
+
+.label-buttons .button{
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.my-apps .app-logo{
+  height: 100px;
+  width: 100px;
+}

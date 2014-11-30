@@ -2,7 +2,7 @@
 //
 //圆角
 
-.border-every-radius(@dir,@a) when (isunit(@a)){
+.border-every-radius(@dir, @a) when (isunit(@a)){
     -webkit-border-@{dir}-radius:@a;
        -moz-border-@{dir}-radius:@a;
          -o-border-@{dir}-radius:@a;
@@ -16,7 +16,7 @@
             border-radius: @radius;
 }
 
-.border-radius-part (@top-left,@top-right,@bottom-right,@bottom-left){
+.border-radius-part (@top-left, @top-right, @bottom-right, @bottom-left){
     .border-every-radius(top-left    ,@top-left);
     .border-every-radius(top-right   ,@top-right);
     .border-every-radius(bottom-right,@bottom-right);

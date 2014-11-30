@@ -21,7 +21,7 @@ li.dashboard-box(ng-show="status.page === 'add'")
       label(for="app-description") 应用描述
       textarea#app-description(name="description", ng-model="data.description")
     div.large-12.columns
-      input.button.small(type="submit", value="提交")
+      input.btn.small(type="submit", value="提交")
 
 li.dashboard-box(ng-show="status.page === 'detail'")
   div.dashboard-box-head
@@ -35,7 +35,7 @@ li.dashboard-box(ng-show="status.page === 'detail'")
       label 应用类型
       span(ng-repeat="type in appTypeList")
         input(type="radio", id="{{type.key}}", value="{{type.key}}", name="type", ng-model="current.type")
-        label.secondary.button.tiny(for="{{type.key}}", ng-bind="type.name")
+        label.btn(for="{{type.key}}", ng-bind="type.name")
     div.large-12.columns
       label 应用尺寸
         span.icon-plus.btn-icon(ng-click="switchAddSize()")
@@ -46,13 +46,13 @@ li.dashboard-box(ng-show="status.page === 'detail'")
         | × 
         select(ng-model="currentSize.y", ng-options = "o as o for o in sizeOptions")
         select(ng-model="currentSize.showIframe", ng-options="key as o for (key, o) in showOptions")
-        input.button.tiny(type="button", value="添加", ng-click="addSize()")
+        input.btn(type="button", value="添加", ng-click="addSize()")
     div.large-12.columns
       label(for="description") 应用描述
       textarea(id="description", name="description", ng-model="current.description")
     div.large-12.columns
-      input.button.small(type="submit", value="保存修改")
-      input.button.success.small(type="button", value="申请发布")
+      input.btn(type="submit", value="保存修改")
+      input.btn(type="button", value="申请发布")
   div.large-12.columns
     label() 删除应用
-    input.button.alert.small(type="button", value="删除应用", ng-click="del()")
+    input.btn.alert.small(type="button", value="删除应用", ng-click="del()")

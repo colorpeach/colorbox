@@ -1,0 +1,42 @@
+//Component
+//Dialog
+
+.dialog{
+    visibility: hidden;
+    display: none;
+    position: absolute;
+    z-index: 1005;
+    width: 100vw;
+    top: 0;
+    border-radius: 3px;
+    left: 0;
+    background-color: white;
+    padding: 1.25rem;
+    border: solid 1px #666666;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    padding: 1.875rem;
+}
+
+.dialog--bg{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: black;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1004;
+    display: none;
+    left: 0;
+}
+
+.dialog--close{
+    font-size: 2.5rem;
+    line-height: 1;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6875rem;
+    color: #aaaaaa;
+    font-weight: bold;
+    cursor: pointer;
+}
