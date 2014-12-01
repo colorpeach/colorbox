@@ -35,7 +35,7 @@ Apps.add = function(req, res){
             req.body.user = req.session.user.login;
             req.body.createDate = new Date();
             
-            apps.add(apps,req.body, function(data){
+            apps.add(req.body, function(data){
                 res.end(baseRes({app: data[0]}));
             });
         }

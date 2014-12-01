@@ -21,7 +21,7 @@ li.dashboard-box(ng-show="status.page === 'add'")
       label(for="app-description") 描述
       textarea#app-description(name="description", ng-model="data.description")
     div.large-12.columns
-      input.button.small(type="submit", value="提交")
+      input.btn.small(type="submit", value="提交")
 
 li.dashboard-box(ng-show="status.page === 'detail'")
   div.dashboard-box-head
@@ -38,7 +38,7 @@ li.dashboard-box(ng-show="status.page === 'detail'")
       label(for="description") 描述
       textarea(id="description", name="description", ng-model="current.description")
     div.large-12.columns
-      input.button.small(type="submit", value="保存修改")
+      input.bu.btnall(type="submit", value="保存修改")
   div.large-12.columns
     label() 删除
     input.button.alert.small(type="button", value="删除", ng-click="del()")

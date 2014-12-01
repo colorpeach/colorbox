@@ -85,8 +85,9 @@ style.
       position: absolute;
       top: 0;
       right: 10px;
-      line-height: 28px;
       padding: 0;
+      border: 0;
+      line-height: 28px;
       background-color: transparent;
   }
   .editor .editor-tab > button:hover{
@@ -187,7 +188,7 @@ style.
     left: -1px;
     top: 28px;
     padding: 5px 0;
-    margin-left: 0;
+    margin: 0;
     font-size: 12px;
     list-style: none;
     background-color: #666;
@@ -210,6 +211,7 @@ style.
     position: relative;
     min-width: 120px;
     padding: 2px 10px 2px 30px;
+    line-height: 20px;
     cursor: pointer;
   }
 
@@ -268,6 +270,47 @@ style.
   .context-menu li:hover{
     background-color: #555;
   }
+
+  .row--gray{
+    color: #fff;
+    line-height: 30px;
+  }
+
+  .table{
+    width: 100%;
+  }
+
+  .table__th--gray,
+  .table__td--gray{
+    border: 1px solid #222;
+    background-color: #444;
+  }
+
+  .table__th--gray:hover,
+  .table__td--gray:hover{
+    background-color: #555;
+  }
+
+  .table__cell-text{
+    display: block;
+    padding: 5px 10px;
+    color: #fff;
+    text-align: left;
+  }
+
+  .table__input-text--gray{
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    border: 0;
+    color: #fff;
+    background-color: #444;
+  }
+
+  .table__input-text--gray:hover,
+  .table__input-text--gray:focus{
+    background-color: #555;
+  }
 div.editor-box
   div.editor-nav(editor-nav="editorNav")
   div.editor(resize-box="layoutConfig")
@@ -276,8 +319,6 @@ script(type="text/ng-template", id="editor-tree")
     div.editor-tree-nav
       span.icon-plus.btn-icon(ng-click="addFile()")
       span.icon-remove.btn-icon(ng-click="delFile()")
-      span 应用入口：
-      select.editor-now-entrance(ng-model="app.entrance", ng-options="file.url as file.url for file in files")
     div.editor-tree-area(context-menu="menuConfig", has-context-menu="main")
       div.aui-tree(style="margin-top: 10px;")
         span.icon-briefcase
@@ -302,4 +343,22 @@ script(type="text/ng-template", id="editor-assist")
       span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
-    div.editor-main-area(style="background-color: #222;", editor-con-box)
+    div.editor-main-area(style="background-color: #222;", panels="panels")
+script(type="text/ng-template", id="editor-route")
+  div(style="padding: 10px;")
+    div.row--gray
+      span 应用入口：
+      select.editor-now-entrance(ng-model="app.entrance", ng-options="file.url as file.url for file in files")
+    table.table
+      thead
+        tr
+          th.table__th--gray
+            span.table__cell-text 链接
+          th.table__th--gray
+            span.table__cell-text 文件
+      tbody
+        tr(ng-repeat="file in files")
+          td.table__td--gray
+            input.table__input-text--gray(type="text", ng-model="file.url")
+          td.table__td--gray
+            span.table__cell-text {{file.name}}

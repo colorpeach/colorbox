@@ -122,6 +122,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         function($rootScope,   $sce,   $http,   $location){
             $rootScope.user = angular.user;
             delete angular.user;
+
             $rootScope.$watch('user.login', function(val){
                 pathsMap.login = !!val;
                 $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
@@ -134,7 +135,11 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     $rootScope.user = null;
                     $location.path('/');
                 });
-            }
+            };
+
+            $rootScope.search = function(){
+                $rootScope.searchText;
+            };
         }
     ]);
 

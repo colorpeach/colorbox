@@ -1,0 +1,75 @@
+//Component
+//Route-waiting
+
+.route-overlay{
+  position: fixed;
+  top: 35px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  opacity: .3;
+  z-index: 1000;
+}
+
+.route-overlay.ng-enter{
+  -webkit-animation-name: fadeIn;
+          animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+
+.route-overlay.ng-leave{
+  -webkit-animation-name: fadeOut;
+          animation-name: fadeOut;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}
+
+.route-waiting{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 30px;
+  margin-top: -15px;
+  text-align: center;
+  color: #000;
+  line-height: 30px;
+}
+
+.route-waiting .waiting-icon{
+  display: inline-block;
+  height: 30px;
+  font-size: 30px;
+  vertical-align: top;
+  -webkit-animation: waiting 1s infinite linear;
+  animation: waiting 1s infinite linear;
+}
+
+.route-waiting .waiting-msg{
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+@-webkit-keyframes waiting{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waiting{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}

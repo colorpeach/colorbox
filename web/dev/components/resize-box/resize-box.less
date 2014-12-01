@@ -1,0 +1,71 @@
+//Component
+//Resize-box
+
+.resize-bar{
+  position: absolute!important;
+  overflow: hidden;
+  display: none;
+}
+
+.resize-bar.dir-h{
+  cursor: s-resize;
+  display: block;
+}
+
+.resize-bar.dir-h:before,
+.resize-bar.dir-h:after{
+  content: '';
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  width: 20px;
+  height: 0;
+  border-top: 1px solid #666;
+  margin: auto;
+}
+
+.resize-bar.dir-h:after{
+  top: 6px;
+}
+
+.resize-bar.dir-v:before,
+.resize-bar.dir-v:after{
+  content: '';
+  display: block;
+  position: absolute;
+  left: 3px;
+  top: 0;
+  bottom: 0;
+  height: 20px;
+  width: 0;
+  border-left: 1px solid #666;
+  margin: auto;
+}
+
+.resize-bar.dir-v:after{
+  left: 6px;
+}
+
+.resize-bar.dir-v{
+  cursor: w-resize;
+  display: block;
+}
+
+.resize-mark{
+  background-color: #999;
+  position: absolute!important;
+  padding: 0!important;
+  transition: none!important;
+  z-index: 10;
+}
+
+.resize-overlay{
+  position: absolute!important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1011;
+}

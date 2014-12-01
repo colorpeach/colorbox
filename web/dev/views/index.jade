@@ -1,7 +1,7 @@
 extends ./layout
 
 block content
-  include ./nav.jade
+  include ./nav
   div.main-box.animate-box(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting

@@ -1,8 +1,8 @@
 div.desktop-box(ng-class='{adding: status.adding}')
   ul.desktop-added-list(drag-contain='apps', drag-box='apps')
     li(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
-      span.icon-plus.desktop-drag-btn(ng-if="app.isButton && app.addButton",ng-click="switchStatus('add')", title="添加桌面应用")
-      a.app-logo(ng-if="!app.isButton && app.size.showIframe === 'false'", ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
+      a(ng-if="app.icon", title="{{app.name}}", href="{{app.link}}", class="app-system {{app.icon}}")
+      a.app-logo(ng-if="!app.icon && app.size.showIframe === 'false'", ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
       iframe(ng-if="app.size.showIframe === 'true'", ng-src="{{app.url}}", border=0, frameBorder=0, width="100%", height="100%")
       div.app-side-btns
         span.app-side-btn.icon-minus(ng-if="app.size.showIframe === 'true'", title="拖拽应用")
@@ -13,7 +13,7 @@ div.desktop-all-list.app-list(ng-show="status.adding", ng-controller="ListCtrl")
       div.small-8.columns
         input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
       div.small-4.columns
-        input.button.postfix.small(type="submit", value="搜索")
+        input.btn.postfix.small(type="submit", value="搜索")
     div.row
       ul.clearing-thumbs(drag-box='apps')
         li.relative(drag-item, ng-repeat="app in apps")

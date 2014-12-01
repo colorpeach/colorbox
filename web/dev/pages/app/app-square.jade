@@ -5,7 +5,7 @@ div.relative(scroll-load="load")
         div.small-8.columns
           input(type="text", placeholder="输入应用名称", ng-model="query.name")
         div.small-4.columns
-          a.button.postfix.small(href="#/app-list?name={{query.name}}&type={{query.type}}") 搜索
+          a.btn.postfix.small(href="#/app-list?name={{query.name}}&type={{query.type}}") 搜索
       ul.app-type-list
         li(ng-repeat="type in appTypeList", ng-class="{active: query.type === type.key}")
           a(href="#/app-list?name={{query.name}}&type={{type.key}}", ng-bind="type.name")
@@ -27,5 +27,5 @@ div.relative(scroll-load="load")
               div.app-stars(star-bar)
               div.app-description(ng-bind="app.description || '无描述'")
               div.app-buttons
-                button.button.tiny() 添加到桌面
+                button.btn.tiny() 添加到桌面
         div(ng-bind="block.message", ng-show="block.message")

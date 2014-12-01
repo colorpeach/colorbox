@@ -57,7 +57,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
         ],
         panels: [
             {name: '数据源', type: 'source'},
-            {name: '路由', type: 'route'},
+            {name: '路由', type: 'route', template: 'editor-route'},
             {name: '预览', type: 'preview'}
         ],
         menuConfig: {
@@ -279,6 +279,27 @@ define(['js/app', 'ace/ace'], function(app, ace){
         }
     ])
 
+    .directive('panels',
+    ['$compile', '$templateCache',
+        function($compile,   $templateCache){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var panels = scope[attrs.panels];
+
+                    angular.forEach(panels, function(panel, index){
+                        var $div = angular.element('<div ng-show="currentPanel === \''+ panel.type +'\'"></div>');
+                        if(panel.template){
+                            $div.html($templateCache.get(panel.template));
+                        }
+                        $compile($div)(scope);
+                        element.append($div);
+                    });
+                }
+            };
+        }
+    ])
+
     .directive('editor',
     ['$timeout',
         function($timeout){
@@ -292,11 +313,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 restrict: 'A',
                 link: function(scope, element, attrs){
                     var resizeTimer;
-//                     ace.require("ace/ext/language_tools");
                     var editor = ace.edit(element[0]);
-//                     editor.setOptions({
-//                         enableBasicAutocompletion: true
-//                     });
 
                     scope.editor = editor;
 

@@ -17,8 +17,20 @@ define(['js/app'], function(app){
     .controller('desktopCtrl',
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
-            var addButton = {isButton: true, addButton: true, position: {left: 0, top: 0}};
-
+            var systemApps = [
+                {
+                    name: '所有应用',
+                    link: '/#/app-square',
+                    icon: 'icon-stack',
+                    position: {left: 0, top: 0, width: '100px', height: '100px'}
+                },
+                {
+                    name: '代码广场',
+                    link: '/#/snippet-square',
+                    icon: 'icon-code',
+                    position: {left: '120px', top: 0, width: '100px', height: '100px'}
+                }
+            ];
             $scope.status = {};
             $scope.allowDrag = true;
 
@@ -31,24 +43,24 @@ define(['js/app'], function(app){
 
                 desktopCurd.getDesktopApps()
                 .success(function(data){
-                    if(data.desktopApps && data.desktopApps.length){
-                        $scope.apps = data.desktopApps;
-                        data.desktopApps.forEach(function(n, i){
+                    if(data.apps && data.apps.length){
+                        $scope.apps = data.apps;
+                        data.apps.forEach(function(n, i){
                             n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                         });
                     }else{
-                        $scope.apps = [addButton];
+                        $scope.apps = systemApps;
                     }
                 })
                 .error(function(){
-                    $scope.apps = [addButton];
+                    $scope.apps = systemApps;
                 });
             }else{
-                $scope.apps = [addButton];
+                $scope.apps = systemApps;
             }
 
             $scope.$on('updateDesktop', function(){
-                desktopCurd.updateDesktopApps({desktopApps: $scope.apps});
+                desktopCurd.updateDesktopApps({apps: $scope.apps});
             });
 
             $scope.switchStatus = function(type){
