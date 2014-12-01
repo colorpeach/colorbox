@@ -19,7 +19,8 @@
     &--warning{
         display: inline-block;
         padding: .25em 1em;
-        border: 2px solid currentcolor;
+        border: 1px solid currentcolor;
+        line-height: 1.4;
         background-color: transparent;
         vertical-align: middle;
         cursor: pointer;
@@ -28,7 +29,7 @@
 
     &:hover,
     &.active{
-        .button-hover;
+        .button-hover(#999);
     }
 
     &--success{

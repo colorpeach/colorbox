@@ -4362,7 +4362,7 @@ Copyright (c) 2014 Daniel Eden
 .button--warning {
   display: inline-block;
   padding: .25em 1em;
-  border: 2px solid currentcolor;
+  border: 1px solid currentcolor;
   line-height: 1.4;
   background-color: transparent;
   vertical-align: middle;
@@ -4371,8 +4371,8 @@ Copyright (c) 2014 Daniel Eden
 }
 .button:hover,
 .button.active {
-  border-color: #333333;
-  background-color: #333333;
+  border-color: #999999;
+  background-color: #999999;
   color: #fff;
 }
 .button--success {
