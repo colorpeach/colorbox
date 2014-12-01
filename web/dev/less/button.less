@@ -1,16 +1,74 @@
 //Button
 
-.btn{
-    display: inline-block;
-    border-width: 2px;
-    border-style: solid;
-    border-color: currentcolor;
-    background-color: transparent;
-    vertical-align: middle;
-    cursor: pointer;
+/*
+*@name Button
+*@require Var
+*/
+
+.button-hover(@color: @base-color){
+    border-color: @color;
+    background-color: @color;
+    color: #fff;
 }
 
-.btn-icon{
+.button{
+    &,
+    &--success,
+    &--alert,
+    &--primary,
+    &--warning{
+        display: inline-block;
+        padding: .25em 1em;
+        border: 2px solid currentcolor;
+        background-color: transparent;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: .3s all;
+    }
+
+    &:hover,
+    &.active{
+        .button-hover;
+    }
+
+    &--success{
+        color: @success-color;
+
+        &:hover,
+        &.active{
+            .button-hover(@success-color);
+        }
+    }
+
+    &--primary{
+        color: @primary-color;
+
+        &:hover,
+        &.active{
+            .button-hover(@primary-color);
+        }
+    }
+
+    &--warning{
+        color: @warning-color;
+
+        &:hover,
+        &.active{
+            .button-hover(@warning-color);
+        }
+    }
+
+    &--alert{
+        color: @alert-color;
+
+        &:hover,
+        &.active{
+            .button-hover(@alert-color);
+        }
+    }
+}
+
+.button-icon{
     display: inline-block;
     border: 0;
     background-color: transparent;

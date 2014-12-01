@@ -1,14 +1,15 @@
-form(name="loginForm", action="/login", method="post", ng-submit="submit($event)")
-  div.row.medium-6.large-4.small-10
-    div.alert.alert-box 由于后台bug，导致所有用户无法正常登陆，请在2014-11-29之前注册的用户，用之前的用户名重新注册，之前添加的应用和代码片段不会丢失
-    fieldset
-      legend  登录 
-      div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
-      div.large-12.columns
-        label(for="username") 用户名
-        input(id="username", type="text", name="username", ng-model="data.username")
-      div.large-12.columns
-        label(for="password") 密码
-        input(id="password", type="password", name="password", ng-model="data.password")
-      div.large-12.columns
-        input.btn.expand(type="submit", value="登录")
+form.text--center(name="loginForm", action="/login", method="post", ng-submit="submit($event)")
+  div.alert.alert-box 由于后台bug，导致所有用户无法正常登陆，请在2014-11-29之前注册的用户，用之前的用户名重新注册，之前添加的应用和代码片段不会丢失
+  fieldset.form.text--left
+    legend  登录 
+    div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+    div.form__row
+      label.form__label(for="username") 用户名
+      input.form__input(id="username", type="text", name="username", ng-model="data.username")
+    div.form__row
+      label.form__label(for="password") 密码
+      input.form__input(id="password", type="password", name="password", ng-model="data.password")
+    div.form__row
+      span.form__cell
+      span.form__cell
+        input.form__button.button(type="submit", value="登录")

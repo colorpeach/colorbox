@@ -1,19 +1,20 @@
-form(name="loginForm", action="/register", method="post", ng-submit="submit($event)")
-  div.row.medium-6.large-4.small-10
-    fieldset
-      legend  注册 
-      div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
-      div.large-12.columns
-        label(for="email") 邮箱
-        input(id="email", type="email", name="email", ng-model="data.email")
-      div.large-12.columns
-        label(for="username") 用户名
-        input(id="username", type="text", name="username", ng-model="data.username")
-      div.large-12.columns
-        label(for="password") 密码
-        input(id="password", type="password", name="password", ng-model="data.password")
-      div.large-12.columns
-        label(for="confirm-password") 确认密码
-        input(id="confirm-password", type="password", name="confirm-password", ng-model="data.confirmPassword")
-      div.large-12.columns
-        input.btn.expand(type="submit", value="注册")
+form.text--center(name="loginForm", action="/register", method="post", ng-submit="submit($event)")
+  fieldset.form.text--left
+    legend  注册 
+    div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+    div.form__row
+      label.form__label(for="email") 邮箱
+      input.form__input(id="email", type="email", name="email", ng-model="data.email")
+    div.form__row
+      label.form__label(for="username") 用户名
+      input.form__input(id="username", type="text", name="username", ng-model="data.username")
+    div.form__row
+      label.form__label(for="password") 密码
+      input.form__input(id="password", type="password", name="password", ng-model="data.password")
+    div.form__row
+      label.form__label(for="confirm-password") 确认密码
+      input.form__input(id="confirm-password", type="password", name="confirm-password", ng-model="data.confirmPassword")
+    div.form__row
+      span.form__cell
+      span.form__cell
+        input.form__button.button--primary(type="submit", value="注册")
