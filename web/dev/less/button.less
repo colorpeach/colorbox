@@ -5,67 +5,104 @@
 *@require Var
 */
 
-.button-hover(@color: @base-color){
+.generate-button(@color: @base-color, @background: #ddd){
+    color: @color;
+    background-color: @background;
+    border-color: darken(@background, 5%);
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active{
+        background-color: darken(@background, 10%);
+        border-color: darken(@background, 15%);
+    }
+    &.disabled,
+    &[disabled]{
+        pointer-events: none;
+        background-color: @background;
+        border-color: @background;
+        .opacity(.5);
+    }
+}
+
+.generate-button-hollow(@color: @base-color, @background: @white-color){
+    color: @color;
+    background-color: @background;
     border-color: @color;
-    background-color: @color;
-    color: #fff;
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active{
+        background-color: @color;
+        color: @background;
+    }
+    &.disabled,
+    &[disabled]{
+        pointer-events: none;
+        background-color: @color;
+        color: @background;
+        .opacity(.5);
+    }
 }
 
 .button{
-    &,
-    &--success,
-    &--alert,
-    &--primary,
-    &--warning{
-        display: inline-block;
-        padding: .25em 1em;
-        border: 1px solid currentcolor;
-        line-height: 1.4;
-        background-color: transparent;
-        vertical-align: middle;
-        cursor: pointer;
-        transition: .3s all;
-    }
-
-    &:hover,
-    &.active{
-        .button-hover(#999);
-    }
-
+    display: inline-block;
+    padding: .25em 1em;
+    border-width: 1px;
+    border-style: solid;
+    line-height: 1.4;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: .3s all;
+    .generate-button;
+    
     &--success{
-        color: @success-color;
-
-        &:hover,
-        &.active{
-            .button-hover(@success-color);
-        }
-    }
-
-    &--primary{
-        color: @primary-color;
-
-        &:hover,
-        &.active{
-            .button-hover(@primary-color);
-        }
-    }
-
-    &--warning{
-        color: @warning-color;
-
-        &:hover,
-        &.active{
-            .button-hover(@warning-color);
-        }
+        &:extend(.button);
+        .generate-button(@white-color, @success-color);
     }
 
     &--alert{
-        color: @alert-color;
+        &:extend(.button);
+        .generate-button(@white-color, @alert-color);
+    }
 
-        &:hover,
-        &.active{
-            .button-hover(@alert-color);
-        }
+    &--primary{
+        &:extend(.button);
+        .generate-button(@white-color, @primary-color);
+    }
+
+    &--warning{
+        &:extend(.button);
+        .generate-button(@white-color, @warning-color);
+    }
+}
+
+.button-hollow{
+    &:extend(.button);
+    .generate-button-hollow;
+
+    &--success{
+        &:extend(.button);
+        .generate-button-hollow(@success-color, @white-color);
+    }
+
+    &--alert{
+        &:extend(.button);
+        .generate-button-hollow(@alert-color, @white-color);
+    }
+
+    &--primary{
+        &:extend(.button);
+        .generate-button-hollow(@primary-color, @white-color);
+    }
+
+    &--warning{
+        &:extend(.button);
+        .generate-button-hollow(@warning-color, @white-color);
     }
 }
 

@@ -1,6 +1,6 @@
 form.text--center(name="loginForm", action="/register", method="post", ng-submit="submit($event)")
-  fieldset.form.text--left
-    legend  注册 
+  div.form.text--left
+    h3 注册 
     div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
     div.form__row
       label.form__label(for="email") 邮箱
