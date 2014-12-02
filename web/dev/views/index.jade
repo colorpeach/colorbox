@@ -1,8 +1,9 @@
 extends ./layout
 
 block content
-  include ./nav
-  div.main-box.animate-box(ng-view)
+  div.main.table
+    include ./aside
+    div.main__content.table__cell.animate-box(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting
       span.icon-spinner2.waiting-icon(ng-show="loading")

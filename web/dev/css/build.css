@@ -4674,15 +4674,16 @@ Copyright (c) 2014 Daniel Eden
 }
 .table {
   display: table;
+  width: 100%;
 }
-.table-cell {
+.table__cell {
   display: table-cell;
 }
-.table-row {
+.table__row {
   display: table-row;
   height: 1px;
 }
-.table-row-group {
+.table__row-group {
   display: table-row-group;
 }
 .text--left {
@@ -4957,10 +4958,6 @@ Copyright (c) 2014 Daniel Eden
   font-weight: bold;
   cursor: pointer;
 }
-.add-app,
-.my-apps {
-  position: relative;
-}
 .my-apps-header {
   padding-top: 55px;
 }
@@ -5162,73 +5159,13 @@ Copyright (c) 2014 Daniel Eden
   padding-left: 0;
   padding-right: 0;
 }
-.dashboard {
-  height: 100%;
-  position: relative;
-}
-.dashboard-slidebar {
-  position: absolute;
-  width: 160px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #333;
-  border-top: 1px solid #333;
-}
-.dashboard-slidebar ul {
-  margin: 0;
-  padding: 0;
-}
-.dashboard-slidebar li {
-  display: block;
-  border-bottom: 1px solid #444;
-  padding: 10px 20px;
-  text-align: center;
-  color: #fff;
-  cursor: pointer;
-}
-.dashboard-slidebar li.active {
-  background-color: #444;
-}
-.dashboard-slidebar a {
-  color: #fff;
-}
-.dashboard-avatar {
-  position: relative;
-  overflow: hidden;
-  width: 120px;
-  height: 120px;
-  margin: 30px auto 0;
-  padding-top: 10px;
-  background-color: #444;
-  border-radius: 50%;
-  color: #fff;
-}
-.dashboard-avatar img {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.dashboard-avatar span {
-  font-size: 120px;
-  line-height: 120px;
-}
-.dashboard-user-name {
-  text-align: center;
-  padding: 10px 0;
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-}
 .dashboard-con {
   overflow: auto;
-  height: 100%;
   margin: 0;
   padding: 0;
 }
 .dashboard-box {
   display: block;
-  margin-left: 160px;
   padding: 0 10px;
   height: 100%;
   background-color: #fafafa;
@@ -5300,79 +5237,50 @@ Copyright (c) 2014 Daniel Eden
 .dashboard-box-item-btns span:hover {
   color: #999;
 }
-.top-bar {
+.main {
+  height: 100%;
+}
+.main__aside {
   position: relative;
-  height: 36px;
-  background-color: #333;
-  z-index: 1000;
+  width: 4rem;
 }
-.top-bar .name {
-  height: 36px;
-  display: inline-block;
-  float: left;
-  padding: 0 10px;
-  color: #fff;
-}
-.top-bar a {
-  display: inline-block;
-  padding: 0 10px;
-  height: 36px;
-  line-height: 36px;
-}
-.top-bar-search {
-  float: left;
-  padding: 0;
-  vertical-align: top;
-  color: #fff;
-  white-space: nowrap;
-}
-.top-bar-search input {
-  display: inline-block;
-  max-width: 200px;
-  font-size: 12px;
-  top: 0;
-  border: 0;
-  border-bottom: 1px solid #fff;
-  vertical-align: top;
-  background-color: transparent!important;
-}
-a.top-bar-user {
-  float: right;
-  position: relative;
-  padding: 3px;
-}
-.top-bar-user-icon {
-  overflow: hidden;
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  background-color: #444;
-  color: #fff;
-  font-size: 30px;
-  line-height: 34px;
-  border-radius: 50%;
-}
-.top-bar-user img {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  border-radius: 50%;
-}
-.top-bar-right {
-  float: right;
+.main__aside > ul {
+  overflow: auto;
   margin: 0;
   padding: 0;
+  list-style: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
-.top-bar-right li {
-  display: inline-block;
-  font-size: 16px;
-  border-left: 1px solid #444;
+.main__aside-item {
+  display: block;
+  height: 4rem;
+  width: 100%;
+  border: 0;
+  line-height: 4rem;
+  font-size: 2rem;
+  text-align: center;
+  color: #333333;
+  background-color: transparent;
 }
-.top-bar-right li:hover {
-  background-color: #444;
+.main__aside-item:hover,
+.main__aside-item.active {
+  color: #008cba;
 }
-.top-bar-right a {
-  color: #fff;
+.main__content {
+  position: relative;
+  height: 100%;
+}
+.main__content > div {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .drag-temp {
   position: absolute;
@@ -5388,217 +5296,6 @@ a.top-bar-user {
 }
 .drag-placeholder.wrong {
   background-color: #f00 !important;
-}
-.add-app-remove-box {
-  position: relative;
-}
-.add-app-remove-box .btn-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-.app-list {
-  padding: 0 20px 20px;
-}
-.app-list ul,
-.desktop-added-list {
-  min-height: 100px;
-}
-.app-list ul a,
-.desktop-added-list a,
-.app-logo,
-.app-system {
-  display: block;
-  height: 100px;
-  width: 100px;
-  line-height: 100px;
-  text-align: center;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #43ac6a;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.app-system {
-  font-size: 40px!important;
-}
-.size-option {
-  position: absolute;
-  bottom: 0;
-  padding: 0;
-  height: 20px;
-  margin: 0;
-}
-.desktop-added-list a,
-.app-logo {
-  width: 100%;
-  height: 100%;
-}
-.desktop-added-list iframe {
-  height: 100%;
-  width: 100%;
-}
-.app-side-btns {
-  position: absolute;
-  left: -20px;
-  top: 0;
-  width: 20px;
-  opacity: 0;
-  font-size: 16px;
-  text-align: center;
-}
-.app-side-btn {
-  display: block;
-  height: 20px;
-  width: 20px;
-  background-color: #ccc;
-  margin-bottom: 1px;
-  line-height: 20px;
-}
-.app-side-btn.icon-minus {
-  cursor: move;
-}
-.desktop-added-list li:hover .app-side-btns {
-  opacity: .2;
-}
-.app-side-btns:hover {
-  opacity: .6!important;
-}
-.desktop-added-list li {
-  display: block;
-  position: absolute;
-  margin-top: 10px;
-  margin-left: 10px;
-  transition: all 0.3s ease-out;
-  opacity: 1;
-}
-.desktop-added-list li.draging {
-  opacity: .4;
-  z-index: 1010;
-}
-.desktop-added-list li.ng-enter {
-  -webkit-animation-name: flipInX;
-  animation-name: flipInX;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-.desktop-added-list li.ng-leave {
-  -webkit-animation-name: zoomOut;
-  animation-name: zoomOut;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-.app-logo {
-  max-width: 100%;
-  transition: all 200ms ease-out;
-}
-.app-list ul li.ng-enter {
-  -webkit-animation-name: flipInX;
-  animation-name: flipInX;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-.main-box,
-.add-app,
-.my-apps {
-  height: 100%;
-}
-body {
-  overflow: hidden;
-}
-.main-box {
-  margin-top: -36px;
-  padding-top: 36px;
-  position: relative;
-}
-.main-box > div {
-  height: 100%;
-  overflow: auto;
-}
-.desktop-box {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 35px;
-  height: auto!important;
-  overflow-y: auto;
-}
-.desktop-box.adding {
-  bottom: 197px;
-}
-.desktop-added-list {
-  height: 100%;
-  width: 1441px;
-  margin: 0 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-/*.desktop-all-list.draging{
-  background-image: -webkit-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
-                    -webkit-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -moz-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
-                    -moz-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -o-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%), 
-                    -o-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%),
-                    linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%);
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: 120px 120px;
-}*/
-.desktop-all-list {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  height: auto!important;
-  background-color: #333;
-}
-.desktop-drag-btn {
-  font-size: 80px;
-  color: #ccc;
-  cursor: pointer;
-  line-height: 100px;
-  margin-left: 10px;
-}
-.desktop-drag-btn:hover {
-  color: #ddd;
-}
-.animate-box.ng-enter {
-  -webkit-animation-name: fadeIn;
-  animation-name: bounceInRight;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-.animate-box.ng-leave {
-  -webkit-animation-name: fadeOut;
-  animation-name: fadeOut;
-  -webkit-animation-duration: .2s;
-  animation-duration: .2s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-.sidebar {
-  padding: 20px 0 0;
-  min-width: 420px;
-}
-.sidebar li.ng-leave {
-  -webkit-animation-name: fadeOutLeft;
-  animation-name: fadeOutLeft;
-}
-.sidebar li.active {
-  background-color: #eee;
 }
 .messages-box-prompt {
   margin: 0 0 30px;

@@ -1,0 +1,11 @@
+div.main__aside.table__cell
+  ul
+    li
+      button.main__aside-item
+        span.icon-search
+    li(ng-repeat="item in navs")
+      a.main__aside-item(href="{{item.href}}", title="{{item.title}}", ng-class="{active: $parent.href === item.href}")
+        span(class="{{item.icon}}")
+    li(ng-show="user")
+      a.main__aside-item(href="/_logout", title="退出登录", ng-click="logout($event)")
+        span.icon-arrow-right2
