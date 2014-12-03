@@ -200,7 +200,9 @@ body {
   font-family: '微软雅黑';
 }
 a {
+  color: #008cba;
   text-decoration: none;
+  cursor: pointer;
 }
 @font-face {
   font-family: 'icomoon';
@@ -5423,7 +5425,7 @@ Copyright (c) 2014 Daniel Eden
   display: block;
   padding: 0 10px;
   height: 100%;
-  background-color: #fafafa;
+  background-color: #f3f3f3;
 }
 .dashboard-box-head {
   padding: 10px 0;
@@ -5516,13 +5518,16 @@ Copyright (c) 2014 Daniel Eden
   text-align: center;
   color: #333333;
   background-color: transparent;
+  transition: .3s all;
 }
 .main__aside-item:hover,
 .main__aside-item.active {
   color: #008cba;
+  background-color: #f3f3f3;
 }
 .main__content {
   left: 4rem;
+  background-color: #f3f3f3;
 }
 .main__content > div {
   overflow: auto;
@@ -5547,6 +5552,9 @@ Copyright (c) 2014 Daniel Eden
 .drag-placeholder.wrong {
   background-color: #f00 !important;
 }
+.message {
+  padding: 20px 10px;
+}
 .messages-box-prompt {
   margin: 0 0 30px;
   padding: 10px;
@@ -5560,9 +5568,6 @@ Copyright (c) 2014 Daniel Eden
 }
 .message-item .message-item {
   margin-left: 50px;
-}
-.message-item .message-item:hover {
-  background-color: #fefefe;
 }
 .message-item-avator {
   float: left;
