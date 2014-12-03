@@ -4608,15 +4608,16 @@ Copyright (c) 2014 Daniel Eden
 .form__label {
   padding-right: 1em;
   padding-bottom: 1em;
-  vertical-align: middle;
+  padding-top: .25em;
+  line-height: 1.4;
+  vertical-align: top;
 }
 .form__input,
 .form__button {
-  margin-right: 1em;
   margin-bottom: 1em;
 }
 .form__input {
-  width: 20em;
+  width: 100%;
   padding: .25em .5em;
   border-width: 1px;
   border-style: solid;
@@ -4636,41 +4637,269 @@ Copyright (c) 2014 Daniel Eden
 .form__input[readonly] {
   cursor: default;
 }
-.column-1 {
-  width: 8.33333333%;
+.grid {
+  margin: 0;
+  padding: 0;
 }
-.column-2 {
-  width: 16.66666667%;
+.grid__item {
+  display: inline-block;
+  vertical-align: top;
 }
-.column-3 {
-  width: 25%;
-}
-.column-4 {
-  width: 33.33333333%;
-}
-.column-5 {
-  width: 41.66666667%;
-}
-.column-6 {
+.grid__1-2 {
   width: 50%;
 }
-.column-7 {
-  width: 58.33333333%;
+.grid__2-2 {
+  width: 100%;
 }
-.column-8 {
-  width: 66.66666667%;
+.grid__1-4 {
+  width: 25%;
 }
-.column-9 {
+.grid__2-4 {
+  width: 50%;
+}
+.grid__3-4 {
   width: 75%;
 }
-.column-10 {
+.grid__4-4 {
+  width: 100%;
+}
+.grid__1-6 {
+  width: 16.66666667%;
+}
+.grid__2-6 {
+  width: 33.33333333%;
+}
+.grid__3-6 {
+  width: 50%;
+}
+.grid__4-6 {
+  width: 66.66666667%;
+}
+.grid__5-6 {
   width: 83.33333333%;
 }
-.column-11 {
+.grid__6-6 {
+  width: 100%;
+}
+.grid__1-8 {
+  width: 12.5%;
+}
+.grid__2-8 {
+  width: 25%;
+}
+.grid__3-8 {
+  width: 37.5%;
+}
+.grid__4-8 {
+  width: 50%;
+}
+.grid__5-8 {
+  width: 62.5%;
+}
+.grid__6-8 {
+  width: 75%;
+}
+.grid__7-8 {
+  width: 87.5%;
+}
+.grid__8-8 {
+  width: 100%;
+}
+.grid__1-10 {
+  width: 10%;
+}
+.grid__2-10 {
+  width: 20%;
+}
+.grid__3-10 {
+  width: 30%;
+}
+.grid__4-10 {
+  width: 40%;
+}
+.grid__5-10 {
+  width: 50%;
+}
+.grid__6-10 {
+  width: 60%;
+}
+.grid__7-10 {
+  width: 70%;
+}
+.grid__8-10 {
+  width: 80%;
+}
+.grid__9-10 {
+  width: 90%;
+}
+.grid__10-10 {
+  width: 100%;
+}
+.grid__1-12 {
+  width: 8.33333333%;
+}
+.grid__2-12 {
+  width: 16.66666667%;
+}
+.grid__3-12 {
+  width: 25%;
+}
+.grid__4-12 {
+  width: 33.33333333%;
+}
+.grid__5-12 {
+  width: 41.66666667%;
+}
+.grid__6-12 {
+  width: 50%;
+}
+.grid__7-12 {
+  width: 58.33333333%;
+}
+.grid__8-12 {
+  width: 66.66666667%;
+}
+.grid__9-12 {
+  width: 75%;
+}
+.grid__10-12 {
+  width: 83.33333333%;
+}
+.grid__11-12 {
   width: 91.66666667%;
 }
-.column-12 {
+.grid__12-12 {
   width: 100%;
+}
+[class^='offset__'],
+[class*=' offset__'] {
+  position: relative;
+}
+.offset__1-2 {
+  left: 50%;
+}
+.offset__2-2 {
+  left: 100%;
+}
+.offset__1-4 {
+  left: 25%;
+}
+.offset__2-4 {
+  left: 50%;
+}
+.offset__3-4 {
+  left: 75%;
+}
+.offset__4-4 {
+  left: 100%;
+}
+.offset__1-6 {
+  left: 16.66666667%;
+}
+.offset__2-6 {
+  left: 33.33333333%;
+}
+.offset__3-6 {
+  left: 50%;
+}
+.offset__4-6 {
+  left: 66.66666667%;
+}
+.offset__5-6 {
+  left: 83.33333333%;
+}
+.offset__6-6 {
+  left: 100%;
+}
+.offset__1-8 {
+  left: 12.5%;
+}
+.offset__2-8 {
+  left: 25%;
+}
+.offset__3-8 {
+  left: 37.5%;
+}
+.offset__4-8 {
+  left: 50%;
+}
+.offset__5-8 {
+  left: 62.5%;
+}
+.offset__6-8 {
+  left: 75%;
+}
+.offset__7-8 {
+  left: 87.5%;
+}
+.offset__8-8 {
+  left: 100%;
+}
+.offset__1-10 {
+  left: 10%;
+}
+.offset__2-10 {
+  left: 20%;
+}
+.offset__3-10 {
+  left: 30%;
+}
+.offset__4-10 {
+  left: 40%;
+}
+.offset__5-10 {
+  left: 50%;
+}
+.offset__6-10 {
+  left: 60%;
+}
+.offset__7-10 {
+  left: 70%;
+}
+.offset__8-10 {
+  left: 80%;
+}
+.offset__9-10 {
+  left: 90%;
+}
+.offset__10-10 {
+  left: 100%;
+}
+.offset__1-12 {
+  left: 8.33333333%;
+}
+.offset__2-12 {
+  left: 16.66666667%;
+}
+.offset__3-12 {
+  left: 25%;
+}
+.offset__4-12 {
+  left: 33.33333333%;
+}
+.offset__5-12 {
+  left: 41.66666667%;
+}
+.offset__6-12 {
+  left: 50%;
+}
+.offset__7-12 {
+  left: 58.33333333%;
+}
+.offset__8-12 {
+  left: 66.66666667%;
+}
+.offset__9-12 {
+  left: 75%;
+}
+.offset__10-12 {
+  left: 83.33333333%;
+}
+.offset__11-12 {
+  left: 91.66666667%;
+}
+.offset__12-12 {
+  left: 100%;
 }
 .table {
   display: table;
@@ -4694,6 +4923,32 @@ Copyright (c) 2014 Daniel Eden
 }
 .text--center {
   text-align: center;
+}
+.position__full,
+.position__top,
+.position__left,
+.position__right,
+.position__bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.position {
+  position: relative;
+}
+.position__top {
+  bottom: auto;
+}
+.position__bottom {
+  top: auto;
+}
+.position__left {
+  right: auto;
+}
+.position__right {
+  left: auto;
 }
 .clearfix:before,
 .clearfix:after {
@@ -5237,11 +5492,7 @@ Copyright (c) 2014 Daniel Eden
 .dashboard-box-item-btns span:hover {
   color: #999;
 }
-.main {
-  height: 100%;
-}
 .main__aside {
-  position: relative;
   width: 4rem;
 }
 .main__aside > ul {
@@ -5271,8 +5522,7 @@ Copyright (c) 2014 Daniel Eden
   color: #008cba;
 }
 .main__content {
-  position: relative;
-  height: 100%;
+  left: 4rem;
 }
 .main__content > div {
   overflow: auto;

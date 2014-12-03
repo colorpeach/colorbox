@@ -126,27 +126,43 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         {
             href: '/#/dashboard/apps',
             title: '我的应用',
-            icon: 'icon-stack'
+            icon: 'icon-stack',
+            auth: 2
         },
         {
             href: '/#/dashboard/snippets',
             title: '我的代码',
-            icon: 'icon-code'
+            icon: 'icon-code',
+            auth: 2
         },
 //         {
 //             href: '/#/dashboard/docs',
 //             title: '我的文档',
-//             icon: 'icon-file'
+//             icon: 'icon-file',
+//             auth: 2
 //         },
         {
             href: '/#/dashboard/account',
             title: '我的信息',
-            icon: 'icon-user'
+            icon: 'icon-user',
+            auth: 2
         },
         {
             href: '/#/message',
             title: '本站信息',
             icon: 'icon-info'
+        },
+        {
+            href: '/#/login',
+            title: '登录',
+            icon: 'icon-enter',
+            auth: 1
+        },
+        {
+            href: '/#/register',
+            title: '注册',
+            icon: 'icon-signup',
+            auth: 1
         }
     ];
 
