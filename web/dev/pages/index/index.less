@@ -42,7 +42,48 @@
   }
 }
 
-.drag-temp{
+.desktop__apps{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desktop__app{
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  transition: .3s all;
+
+  &:hover .desktop__app-aside{
+    display: block;
+  }
+}
+
+.desktop__app a{
+  display: block;
+  height: 100%;
+  width: 100%;
+  font-size: 3em;
+  line-height: 100px;
+  text-align: center;
+  background-color: @success-color;
+  color: @white-color;
+  transition: .3s all;
+
+  &:hover{
+    background-color: darken(@success-color, 10%);
+    box-shadow: 0 0 5px #ccc;
+  }
+}
+
+.desktop__app-aside{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -1em;
+}
+
+.drag__temp{
   position: absolute;
   display: block;
   pointer-events: none;
@@ -51,11 +92,11 @@
   cursor: move;
 }
 
-.drag-placeholder{
+.drag__placeholder{
   background-color:#47a447 !important;
   border-width:0 !important;
 }
 
-.drag-placeholder.wrong{
+.drag__placeholder.wrong{
   background-color:#f00 !important;
 }

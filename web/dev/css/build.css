@@ -5537,7 +5537,42 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
 }
-.drag-temp {
+.desktop__apps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.desktop__app {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  transition: .3s all;
+}
+.desktop__app:hover .desktop__app-aside {
+  display: block;
+}
+.desktop__app a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  font-size: 3em;
+  line-height: 100px;
+  text-align: center;
+  background-color: #43ac6a;
+  color: #ffffff;
+  transition: .3s all;
+}
+.desktop__app a:hover {
+  background-color: #358753;
+  box-shadow: 0 0 5px #ccc;
+}
+.desktop__app-aside {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -1em;
+}
+.drag__temp {
   position: absolute;
   display: block;
   pointer-events: none;
@@ -5545,31 +5580,31 @@ Copyright (c) 2014 Daniel Eden
   z-index: 1000;
   cursor: move;
 }
-.drag-placeholder {
+.drag__placeholder {
   background-color: #47a447 !important;
   border-width: 0 !important;
 }
-.drag-placeholder.wrong {
+.drag__placeholder.wrong {
   background-color: #f00 !important;
 }
 .message {
   padding: 20px 10px;
 }
-.messages-box-prompt {
+.messages__prompt {
   margin: 0 0 30px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.message-item {
+.message__item {
   border-top: 1px solid #eee;
   padding: 10px 0;
   line-height: 20px;
 }
-.message-item .message-item {
+.message__item .message__item {
   margin-left: 50px;
 }
-.message-item-avator {
+.message__avator {
   float: left;
   position: relative;
   overflow: hidden;
@@ -5581,26 +5616,26 @@ Copyright (c) 2014 Daniel Eden
   background-color: #333;
   color: #fff;
 }
-.message-item-avator span {
+.message__avator span {
   font-size: 40px;
 }
-.message-item-avator img {
+.message__avator img {
   position: absolute;
   top: 0;
   left: 0;
 }
-.message-head {
+.message__head {
   color: #aaa;
   font-size: 14px;
 }
-.message-response {
+.message__response {
   float: right;
   margin-right: 10px;
 }
-.message-item-content {
+.message__content {
   padding: 10px 0 10px 50px;
 }
-.message-item .message-item .message-item-content {
+.message__item .message__item .message__content {
   padding: 10px 0;
 }
 .snippet-detail {
