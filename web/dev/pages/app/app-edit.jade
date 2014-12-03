@@ -3,9 +3,9 @@ div.add-app
   div.add-app-top-toolbar
     div.left.columns(ng-bind="data.name")
     div.small-10.columns
-      button.btn.tiny.success.right(ng-click="submit()") 保存
-      div.btn-group.right
-        input.btn.tiny(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
+      button.button--success.right(ng-click="submit()") 保存
+      div.button-group.right
+        input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
       select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div

@@ -117,11 +117,45 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     };
 
+    var navs = [
+        {
+            href: '/#/',
+            title: '桌面',
+            icon: 'icon-home'
+        },
+        {
+            href: '/#/dashboard/apps',
+            title: '我的应用',
+            icon: 'icon-stack'
+        },
+        {
+            href: '/#/dashboard/snippets',
+            title: '我的代码',
+            icon: 'icon-code'
+        },
+//         {
+//             href: '/#/dashboard/docs',
+//             title: '我的文档',
+//             icon: 'icon-file'
+//         },
+        {
+            href: '/#/dashboard/account',
+            title: '我的信息',
+            icon: 'icon-user'
+        },
+        {
+            href: '/#/message',
+            title: '本站信息',
+            icon: 'icon-info'
+        }
+    ];
+
     app.run(
     ['$rootScope', '$sce', '$http', '$location',
         function($rootScope,   $sce,   $http,   $location){
             $rootScope.user = angular.user;
             delete angular.user;
+            $rootScope.navs = navs;
 
             $rootScope.$watch('user.login', function(val){
                 pathsMap.login = !!val;
@@ -196,13 +230,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             function dependencyResolverFor(route, path){
                 var definition = {
                     resolver: [
-                        '$q','$rootScope', '$window',
-                        function($q,   $rootScope,   $window){
+                        '$q','$rootScope', '$window', '$location',
+                        function($q,   $rootScope,   $window,   $location){
                             var deferred = $q.defer();
 
                             require(route.dependencies, function(){
 
                                 $rootScope.title = route.title;
+                                $rootScope.href = '/#' + $location.path();
                                 $window.document.title = 'colorBox-' + route.title;
 
                                 $rootScope.$apply(function(){

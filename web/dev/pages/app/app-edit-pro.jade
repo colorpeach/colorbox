@@ -55,13 +55,13 @@ style.
   .editor > .resize-bar:after{
         display: none;
   }
-  .editor .btn-icon{
+  .editor .button-icon{
       padding: 5px;
       margin-left: 0;
       margin-right: 5px;
       border: 1px solid transparent;
   }
-  .editor .btn-icon.active{
+  .editor .button-icon.active{
       border: 1px solid #222;
       box-shadow: 0 0 5px #222 inset;
       border-radius: 4px;
@@ -317,8 +317,8 @@ div.editor-box
 script(type="text/ng-template", id="editor-tree")
   div
     div.editor-tree-nav
-      span.icon-plus.btn-icon(ng-click="addFile()")
-      span.icon-remove.btn-icon(ng-click="delFile()")
+      span.icon-plus.button-icon(ng-click="addFile()")
+      span.icon-remove.button-icon(ng-click="delFile()")
     div.editor-tree-area(context-menu="menuConfig", has-context-menu="main")
       div.aui-tree(style="margin-top: 10px;")
         span.icon-briefcase
@@ -327,9 +327,9 @@ script(type="text/ng-template", id="editor-tree")
 script(type="text/ng-template", id="editor-main")
   div.editor-main
     div.editor-main-nav
-      span.icon-tree.btn-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
-      span.icon-console.btn-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
-      span.icon-plus.btn-icon(ng-click="addFile()")
+      span.icon-tree.button-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
+      span.icon-console.button-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
+      span.icon-plus.button-icon(ng-click="addFile()")
       span.editor-tab(ng-repeat='item in tabs', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
         | {{file.name}}
         span(ng-show="file.isChange") *
@@ -339,7 +339,7 @@ script(type="text/ng-template", id="editor-main")
 script(type="text/ng-template", id="editor-assist")
   div(ng-class="{'full-screen': fullScreen}")
     div.editor-nav
-      span.icon-expand.btn-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
+      span.icon-expand.button-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
       span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×

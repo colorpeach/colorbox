@@ -1,19 +1,4 @@
-div.dashboard
-  div.dashboard-slidebar
-    ul
-      li(ng-class="{active: tab === 'account'}")
-        a(href='#/dashboard/account')
-          div.dashboard-avatar
-            span.icon-user
-            img(src-element="http://identicon.relucks.org/{user}?size=120")
-          div.dashboard-user-name {{user}}
-      li(ng-class="{active: tab === 'apps'}")
-        a(href='#/dashboard/apps') 我的应用
-      li(ng-class="{active: tab === 'snippets'}")
-        a(href='#/dashboard/snippets') 我的代码片段
-      li(ng-class="{active: tab === 'appPros'}")
-        a(href='#/dashboard/appPros') 我的应用
-
+div
   ul.dashboard-con(ng-show="tab === 'account'")
     include ./dashboard-account.jade
   ul.dashboard-con(ng-show="tab === 'apps'", ng-controller="myAppsCtrl")

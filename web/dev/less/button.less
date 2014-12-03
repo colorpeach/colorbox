@@ -1,16 +1,112 @@
 //Button
 
-.btn{
-    display: inline-block;
-    border-width: 2px;
-    border-style: solid;
-    border-color: currentcolor;
-    background-color: transparent;
-    vertical-align: middle;
-    cursor: pointer;
+/*
+*@name Button
+*@require Var
+*/
+
+.generate-button(@color: @base-color, @background: #ddd){
+    color: @color;
+    background-color: @background;
+    border-color: darken(@background, 5%);
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active{
+        background-color: darken(@background, 10%);
+        border-color: darken(@background, 15%);
+    }
+    &.disabled,
+    &[disabled]{
+        pointer-events: none;
+        background-color: @background;
+        border-color: @background;
+        .opacity(.5);
+    }
 }
 
-.btn-icon{
+.generate-button-hollow(@color: @base-color, @background: @white-color){
+    color: @color;
+    background-color: @background;
+    border-color: @color;
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active{
+        background-color: @color;
+        color: @background;
+    }
+    &.disabled,
+    &[disabled]{
+        pointer-events: none;
+        background-color: @color;
+        color: @background;
+        .opacity(.5);
+    }
+}
+
+.button{
+    display: inline-block;
+    padding: .25em 1em;
+    border-width: 1px;
+    border-style: solid;
+    line-height: 1.4;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: .3s all;
+    .generate-button;
+    
+    &--success{
+        &:extend(.button);
+        .generate-button(@white-color, @success-color);
+    }
+
+    &--alert{
+        &:extend(.button);
+        .generate-button(@white-color, @alert-color);
+    }
+
+    &--primary{
+        &:extend(.button);
+        .generate-button(@white-color, @primary-color);
+    }
+
+    &--warning{
+        &:extend(.button);
+        .generate-button(@white-color, @warning-color);
+    }
+}
+
+.button-hollow{
+    &:extend(.button);
+    .generate-button-hollow;
+
+    &--success{
+        &:extend(.button);
+        .generate-button-hollow(@success-color, @white-color);
+    }
+
+    &--alert{
+        &:extend(.button);
+        .generate-button-hollow(@alert-color, @white-color);
+    }
+
+    &--primary{
+        &:extend(.button);
+        .generate-button-hollow(@primary-color, @white-color);
+    }
+
+    &--warning{
+        &:extend(.button);
+        .generate-button-hollow(@warning-color, @white-color);
+    }
+}
+
+.button-icon{
     display: inline-block;
     border: 0;
     background-color: transparent;

@@ -13,7 +13,7 @@ div.desktop-all-list.app-list(ng-show="status.adding", ng-controller="ListCtrl")
       div.small-8.columns
         input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
       div.small-4.columns
-        input.btn.postfix.small(type="submit", value="搜索")
+        input.button-success(type="submit", value="搜索")
     div.row
       ul.clearing-thumbs(drag-box='apps')
         li.relative(drag-item, ng-repeat="app in apps")

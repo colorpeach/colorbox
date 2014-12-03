@@ -1,7 +1,7 @@
 li.dashboard-box(ng-show="status.page === 'list'")
   div.dashboard-box-head
     span 代码片段列表
-    span.right.icon-plus.btn-icon(title="新建代码片段", ng-click="switch($event, 'add')")
+    span.right.icon-plus.button-icon(title="新建代码片段", ng-click="switch($event, 'add')")
   div.dashboard-box-list
     a.dashboard-box-item(href="#/edit/snippet/{{snippet._id}}", ng-repeat="snippet in snippets")
       span {{snippet.name}}
@@ -10,7 +10,7 @@ li.dashboard-box(ng-show="status.page === 'list'")
 
 li.dashboard-box(ng-show="status.page === 'add'")
   div.dashboard-box-head
-    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
     span 新建代码片段
   form(ng-submit="add()")
     div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
@@ -21,11 +21,11 @@ li.dashboard-box(ng-show="status.page === 'add'")
       label(for="app-description") 描述
       textarea#app-description(name="description", ng-model="data.description")
     div.large-12.columns
-      input.btn.small(type="submit", value="提交")
+      input.button--success(type="submit", value="提交")
 
 li.dashboard-box(ng-show="status.page === 'detail'")
   div.dashboard-box-head
-    span.icon-arrow-left2.btn-icon(ng-click="switch($event, 'list')", title="返回")
+    span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
     a(href="/_snippets/preview/{{current._id}}", target="_blank", ng-bind="current.name")
     a.right.icon-code(href="#/edit/snippet/{{current._id}}", title="开发代码")
   div.dashboard-app-logo-wrap
@@ -38,7 +38,7 @@ li.dashboard-box(ng-show="status.page === 'detail'")
       label(for="description") 描述
       textarea(id="description", name="description", ng-model="current.description")
     div.large-12.columns
-      input.bu.btnall(type="submit", value="保存修改")
+      input.button--success(type="submit", value="保存修改")
   div.large-12.columns
     label() 删除
-    input.button.alert.small(type="button", value="删除", ng-click="del()")
+    input.button--alert(type="button", value="删除", ng-click="del()")

@@ -1,90 +1,48 @@
 //Page
 //Index
 
-.top-bar{
+.main{
+  height: 100%;
+}
+
+.main__aside{
   position: relative;
-  height: 36px;
-  background-color: #333;
-  z-index: 1000;
+  width: 4rem;
+
+  & > ul{
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    .fill-full;
+  }
 }
 
-.top-bar .name{
-  height: 36px;
-  display: inline-block;
-  float: left;
-  padding: 0 10px;
-  color: #fff;
-}
-
-.top-bar a{
-  display: inline-block;
-  padding: 0 10px;
-  height: 36px;
-  line-height: 36px;
-}
-
-.top-bar-search{
-  float: left;
-  padding: 0;
-  vertical-align: top;
-  color: #fff;
-  white-space: nowrap;
-}
-
-.top-bar-search input{
-  display: inline-block;
-  max-width: 200px;
-  font-size: 12px;
-  top: 0;
+.main__aside-item{
+  display: block;
+  height: 4rem;
+  width: 100%;
   border: 0;
-  border-bottom: 1px solid #fff;
-  vertical-align: top;
-  background-color: transparent!important;
+  line-height: 4rem;
+  font-size: 2rem;
+  text-align: center;
+  color: @base-color;
+  background-color: transparent;
+
+  &:hover,
+  &.active{
+    color: @primary-color;
+  }
 }
 
-a.top-bar-user{
-  float: right;
+.main__content{
   position: relative;
-  padding: 3px;
-}
+  height: 100%;
 
-.top-bar-user-icon{
-  overflow: hidden;
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  background-color: #444;
-  color: #fff;
-  font-size: 30px;
-  line-height: 34px;
-  border-radius: 50%;
-}
-
-.top-bar-user img{
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  border-radius: 50%;
-}
-
-.top-bar-right{
-  float: right;
-  margin: 0;
-  padding: 0;
-}
-
-.top-bar-right li{
-  display: inline-block;
-  font-size: 16px;
-  border-left: 1px solid #444;
-}
-
-.top-bar-right li:hover{
-  background-color: #444;
-}
-
-.top-bar-right a{
-  color: #fff;
+  & > div{
+    overflow: auto;
+    .fill-full;
+  }
 }
 
 .drag-temp{
@@ -103,251 +61,4 @@ a.top-bar-user{
 
 .drag-placeholder.wrong{
   background-color:#f00 !important;
-}
-
-.add-app-remove-box{
-  position: relative;
-}
-
-.add-app-remove-box .btn-icon{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.app-list{
-  padding: 0 20px 20px;
-}
-
-.app-list ul,
-.desktop-added-list{
-  min-height: 100px;
-}
-
-.app-list ul a,
-.desktop-added-list a,
-.app-logo,
-.app-system{
-  display: block;
-  height: 100px;
-  width: 100px;
-  line-height: 100px;
-  text-align: center;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #43ac6a;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.app-system{
-  font-size: 40px!important;
-}
-
-.size-option{
-  position: absolute;
-  bottom: 0;
-  padding: 0;
-  height: 20px;
-  margin: 0;
-}
-
-.desktop-added-list a,
-.app-logo{
-  width: 100%;
-  height: 100%;
-}
-
-.desktop-added-list iframe{
-  height: 100%;
-  width: 100%;
-}
-
-.app-side-btns{
-  position: absolute;
-  left: -20px;
-  top: 0;
-  width: 20px;
-  opacity: 0;
-  font-size: 16px;
-  text-align: center;
-}
-
-.app-side-btn{
-  display: block;
-  height: 20px;
-  width: 20px;
-  background-color: #ccc;
-  margin-bottom: 1px;
-  line-height: 20px;
-}
-
-.app-side-btn.icon-minus{
-  cursor: move;
-}
-
-.desktop-added-list li:hover .app-side-btns{
-  opacity: .2;
-}
-
-.app-side-btns:hover{
-  opacity: .6!important;
-}
-
-.desktop-added-list li{
-  display: block;
-  position: absolute;
-  margin-top: 10px;
-  margin-left: 10px;
-  transition: all .3s ease-out;
-  opacity: 1;
-}
-
-.desktop-added-list li.draging{
-  opacity: .4;
-  z-index: 1010;
-}
-
-.desktop-added-list li.ng-enter{
-  -webkit-animation-name: flipInX;
-          animation-name: flipInX;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-
-.desktop-added-list li.ng-leave{
-  -webkit-animation-name: zoomOut;
-          animation-name: zoomOut;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-
-.app-logo{
-  max-width: 100%;
-  transition: all 200ms ease-out;
-}
-
-.app-list ul li.ng-enter{
-  -webkit-animation-name: flipInX;
-          animation-name: flipInX;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-
-.main-box,
-.add-app,
-.my-apps{
-  height: 100%;
-}
-
-body{
-  overflow: hidden;
-}
-
-.main-box{
-  margin-top: -36px;
-  padding-top: 36px;
-  position: relative;
-}
-
-.main-box > div{
-  height: 100%;
-  overflow: auto;
-}
-
-.desktop-box{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 35px;
-  height: auto!important;
-  overflow-y: auto;
-}
-
-.desktop-box.adding{
-  bottom: 197px;
-}
-
-.desktop-added-list{
-  height: 100%;
-  width: 1441px;
-  margin: 0 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/*.desktop-all-list.draging{
-  background-image: -webkit-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
-                    -webkit-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -moz-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%),
-                    -moz-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: -o-linear-gradient(to bottom, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%), 
-                    -o-linear-gradient(to right, rgba(0,0,0,.15) 0%, transparent 1%, transparent 100%);
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%),
-                    linear-gradient(to right, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 100%);
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: 120px 120px;
-}*/
-
-.desktop-all-list{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  height: auto!important;
-  background-color: #333;
-}
-
-.desktop-drag-btn{
-  font-size: 80px;
-  color: #ccc;
-  cursor: pointer;
-  line-height: 100px;
-  margin-left: 10px;
-}
-
-.desktop-drag-btn:hover{
-  color: #ddd;
-}
-
-.animate-box.ng-enter{
-  -webkit-animation-name: fadeIn;
-          animation-name: bounceInRight;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-
-.animate-box.ng-leave{
-  -webkit-animation-name: fadeOut;
-          animation-name: fadeOut;
-  -webkit-animation-duration: .2s;
-          animation-duration: .2s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-}
-
-.sidebar{
-  padding: 20px 0 0;
-  min-width: 420px;
-}
-
-.sidebar li.ng-leave{
-  -webkit-animation-name: fadeOutLeft;
-          animation-name: fadeOutLeft;
-}
-
-.sidebar li.active{
-  background-color: #eee;
 }
