@@ -1,11 +1,19 @@
 //Page
 //Index
 
+.main{
+  max-width: 1000px;
+  position: relative;
+  height: 100%;
+  margin: 0 auto;
+  box-shadow: 0 0 4px #ccc;
+}
+
 .main__aside{
   width: 4rem;
+  z-index: 1000;
 
   & > ul{
-    overflow: auto;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -30,6 +38,31 @@
     color: @primary-color;
     background-color: #f3f3f3;
   }
+
+  &:hover .main__sub-aside{
+    display: block;
+  }
+}
+
+.main__sub-aside{
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 4rem;
+  padding: 0;
+  line-height: 2rem;
+  font-size: 1rem;
+  list-style: none;
+  background-color: @white-color;
+
+  li{
+    cursor: pointer;
+
+    &:hover{
+      background-color: #f3f3f3;
+    }
+  }
 }
 
 .main__content{
@@ -40,6 +73,12 @@
     overflow: auto;
     .position__full;
   }
+}
+
+.main__overlay{
+  left: 4rem;
+  background-color: fade(@white-color, 50%);
+  z-index: 1500;
 }
 
 .desktop__apps{

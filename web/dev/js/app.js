@@ -301,5 +301,16 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     ]);
 
+    app.controller('indexCtrl',
+    ['$scope',
+        function($scope){
+            $scope.searchShow = false;
+
+            $scope.toggoleSearch = function(){
+                $scope.searchShow = !$scope.searchShow;
+            };
+        }
+    ]);
+
     return app;
 });

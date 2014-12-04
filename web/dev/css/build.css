@@ -4374,10 +4374,10 @@ Copyright (c) 2014 Daniel Eden
   line-height: 1.4;
   vertical-align: middle;
   cursor: pointer;
-  transition: .3s all;
+  transition: .2s all;
   color: #333333;
   background-color: #dddddd;
-  border-color: #d0d0d0;
+  border-color: #dddddd;
 }
 .button:hover,
 .button:focus,
@@ -4385,20 +4385,19 @@ Copyright (c) 2014 Daniel Eden
 .button:active,
 .button.active {
   background-color: #c4c4c4;
-  border-color: #b7b7b7;
+  border-color: #c4c4c4;
 }
 .button.disabled,
 .button[disabled] {
   pointer-events: none;
   background-color: #dddddd;
-  border-color: #dddddd;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--success {
   color: #ffffff;
   background-color: #43ac6a;
-  border-color: #3c9a5f;
+  border-color: #43ac6a;
 }
 .button--success:hover,
 .button--success:focus,
@@ -4406,20 +4405,19 @@ Copyright (c) 2014 Daniel Eden
 .button--success:active,
 .button--success.active {
   background-color: #358753;
-  border-color: #2e7548;
+  border-color: #358753;
 }
 .button--success.disabled,
 .button--success[disabled] {
   pointer-events: none;
   background-color: #43ac6a;
-  border-color: #43ac6a;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--alert {
   color: #ffffff;
   background-color: #f04124;
-  border-color: #ea2f10;
+  border-color: #f04124;
 }
 .button--alert:hover,
 .button--alert:focus,
@@ -4427,20 +4425,19 @@ Copyright (c) 2014 Daniel Eden
 .button--alert:active,
 .button--alert.active {
   background-color: #d32a0e;
-  border-color: #bb260d;
+  border-color: #d32a0e;
 }
 .button--alert.disabled,
 .button--alert[disabled] {
   pointer-events: none;
   background-color: #f04124;
-  border-color: #f04124;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--primary {
   color: #ffffff;
   background-color: #008cba;
-  border-color: #0079a1;
+  border-color: #008cba;
 }
 .button--primary:hover,
 .button--primary:focus,
@@ -4448,20 +4445,19 @@ Copyright (c) 2014 Daniel Eden
 .button--primary:active,
 .button--primary.active {
   background-color: #006687;
-  border-color: #00526e;
+  border-color: #006687;
 }
 .button--primary.disabled,
 .button--primary[disabled] {
   pointer-events: none;
   background-color: #008cba;
-  border-color: #008cba;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--warning {
   color: #ffffff;
   background-color: #f08a24;
-  border-color: #ea7d10;
+  border-color: #f08a24;
 }
 .button--warning:hover,
 .button--warning:focus,
@@ -4469,13 +4465,12 @@ Copyright (c) 2014 Daniel Eden
 .button--warning:active,
 .button--warning.active {
   background-color: #d3710e;
-  border-color: #bb640d;
+  border-color: #d3710e;
 }
 .button--warning.disabled,
 .button--warning[disabled] {
   pointer-events: none;
   background-color: #f08a24;
-  border-color: #f08a24;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
@@ -4619,7 +4614,6 @@ Copyright (c) 2014 Daniel Eden
   margin-bottom: 1em;
 }
 .form__input {
-  width: 100%;
   padding: .25em .5em;
   border-width: 1px;
   border-style: solid;
@@ -4638,6 +4632,25 @@ Copyright (c) 2014 Daniel Eden
 .form__input[disabled],
 .form__input[readonly] {
   cursor: default;
+}
+.form__full {
+  padding: 1em 0;
+}
+.form__full .form__label,
+.form__full .form__input,
+.form__full .form__cell {
+  display: block;
+}
+.form__full .form__label {
+  padding: 0;
+}
+.form__full .form__input,
+.form__full .form__button,
+.form__full .form__cell {
+  margin-bottom: 1em;
+}
+.form__full .form__input {
+  width: 100%;
 }
 .grid {
   margin: 0;
@@ -4972,6 +4985,10 @@ Copyright (c) 2014 Daniel Eden
 .right {
   float: right;
 }
+.blur {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
 .cm-tip {
   position: fixed;
   border-radius: 4px;
@@ -5084,6 +5101,9 @@ Copyright (c) 2014 Daniel Eden
     transform: rotate(360deg);
   }
 }
+.resize-box > div {
+  position: absolute;
+}
 .resize-bar {
   position: absolute!important;
   overflow: hidden;
@@ -5182,19 +5202,18 @@ Copyright (c) 2014 Daniel Eden
 .dialog {
   visibility: hidden;
   display: none;
-  position: absolute;
-  z-index: 1005;
+  position: relative;
   width: 100vw;
-  top: 0;
-  border-radius: 3px;
-  left: 0;
-  background-color: white;
-  padding: 1.25rem;
+  margin: 20px auto;
+  padding: 1.5rem;
   border: solid 1px #666666;
+  background-color: white;
+  border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  padding: 1.875rem;
+  z-index: 1005;
 }
-.dialog--bg {
+.dialog__bg {
+  overflow: auto;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -5205,7 +5224,7 @@ Copyright (c) 2014 Daniel Eden
   display: none;
   left: 0;
 }
-.dialog--close {
+.dialog__close {
   font-size: 2.5rem;
   line-height: 1;
   position: absolute;
@@ -5215,100 +5234,8 @@ Copyright (c) 2014 Daniel Eden
   font-weight: bold;
   cursor: pointer;
 }
-.my-apps-header {
-  padding-top: 55px;
-}
-.add-app-editor {
-  position: absolute;
-  top: 35px;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-.add-app-editor > div {
-  position: absolute;
-  overflow: hidden;
-  padding: 5px;
-  transition: 0.3s all;
-}
-.add-app-editor textarea,
-.add-app-editor iframe {
-  height: 100%;
-  width: 100%;
-}
-.add-app-box {
-  position: absolute!important;
-  top: 35px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border: 1px solid #999;
-}
-.app-name {
-  margin-top: 2px;
-  font-weight: bold;
-}
-.box-name {
-  display: inline-block;
-  padding: 0 5px;
-  top: 5px;
-  right: 5px;
-  color: #ccc;
-  line-height: 20px;
-  vertical-align: top;
-}
-.add-app-top-toolbar,
-.add-app-toolbar {
-  position: absolute;
-  height: 30px;
-  left: 5px;
-  top: 5px;
-  right: 5px;
-  color: #fff;
-  background-color: #333;
-  opacity: .8;
-  overflow: hidden;
-}
-.add-app-toolbar {
-  padding: 5px;
-}
-.add-app-top-toolbar .button-group .button {
-  background-color: #008cba!important;
-}
-.add-app-top-toolbar .button-group .active {
-  background-color: #007095!important;
-}
-.add-app-top-toolbar select,
-.add-app-top-toolbar input {
-  padding: 0 20px 0 0;
-  margin: 0;
-  height: 30px;
-  line-height: 12px;
-  font-size: 12px;
-  width: auto;
-}
-.add-app-top-toolbar .columns {
-  padding-right: 0;
-}
-.add-app-top-toolbar .button-group {
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #fff;
-}
-.label-buttons {
-  margin-bottom: 20px;
-}
-.label-buttons [type=radio],
-.label-buttons [type=checkbox] {
-  display: none;
-}
-.label-buttons .button {
-  margin-left: 0;
-  margin-right: 10px;
-}
-.my-apps .app-logo {
-  height: 100px;
-  width: 100px;
+.dialog__close:hover {
+  color: #919191;
 }
 .app-all-left {
   position: absolute;
@@ -5416,61 +5343,27 @@ Copyright (c) 2014 Daniel Eden
   padding-left: 0;
   padding-right: 0;
 }
-.dashboard-con {
-  overflow: auto;
+.dashboard__boxs {
   margin: 0;
   padding: 0;
 }
-.dashboard-box {
+.dashboard__box {
   display: block;
-  padding: 0 10px;
-  height: 100%;
+  padding: 0 20px;
   background-color: #f3f3f3;
 }
-.dashboard-box-head {
+.dashboard__head {
   padding: 10px 0;
-  margin-bottom: 20px;
   border-bottom: 1px solid #ccc;
   font-weight: bold;
 }
-.dashboard-box-head span {
+.dashboard__head span {
   margin-right: 10px;
 }
-.dashboard-app-logo-wrap {
-  width: 100px;
-  height: 100px;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-.dashboard-app-types {
-  margin-bottom: 20px;
-}
-.dashboard-app-types [type=radio] {
-  display: none;
-}
-.dashboard-app-types [type=radio]:checked + label {
-  background-color: #008cba!important;
-  border-color: #007095!important;
-  color: #fff!important;
-}
-.dashboard-app-types .button {
-  margin-left: 0;
-  margin-right: 10px;
-}
-.dashboard-box-app-size {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-.dashboard-app-size-form select {
-  width: auto;
-  margin-right: 10px;
-  margin-left: 5px;
-}
-.dashboard-box-list {
+.dashboard__list {
   margin-left: 0;
 }
-.dashboard-box-item {
+.dashboard__item {
   display: block;
   padding: 10px;
   margin: 10px 0;
@@ -5480,25 +5373,21 @@ Copyright (c) 2014 Daniel Eden
   color: #666;
   cursor: pointer;
 }
-.dashboard-box-item:hover {
+.dashboard__item:hover {
   background-color: #eee;
 }
-.dashboard-box-item-btns {
-  float: right;
-}
-.dashboard-box-item-btns span {
-  display: inline-block;
-  margin-left: 10px;
-  color: #ccc;
-}
-.dashboard-box-item-btns span:hover {
-  color: #999;
+.main {
+  max-width: 1000px;
+  position: relative;
+  height: 100%;
+  margin: 0 auto;
+  box-shadow: 0 0 4px #ccc;
 }
 .main__aside {
   width: 4rem;
+  z-index: 1000;
 }
 .main__aside > ul {
-  overflow: auto;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -5525,6 +5414,27 @@ Copyright (c) 2014 Daniel Eden
   color: #008cba;
   background-color: #f3f3f3;
 }
+.main__aside-item:hover .main__sub-aside {
+  display: block;
+}
+.main__sub-aside {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 4rem;
+  padding: 0;
+  line-height: 2rem;
+  font-size: 1rem;
+  list-style: none;
+  background-color: #ffffff;
+}
+.main__sub-aside li {
+  cursor: pointer;
+}
+.main__sub-aside li:hover {
+  background-color: #f3f3f3;
+}
 .main__content {
   left: 4rem;
   background-color: #f3f3f3;
@@ -5536,6 +5446,11 @@ Copyright (c) 2014 Daniel Eden
   left: 0;
   right: 0;
   bottom: 0;
+}
+.main__overlay {
+  left: 4rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 1500;
 }
 .desktop__apps {
   margin: 0;
@@ -5588,7 +5503,7 @@ Copyright (c) 2014 Daniel Eden
   background-color: #f00 !important;
 }
 .message {
-  padding: 20px 10px;
+  padding: 0 20px;
 }
 .messages__prompt {
   margin: 0 0 30px;
@@ -5637,6 +5552,77 @@ Copyright (c) 2014 Daniel Eden
 }
 .message__item .message__item .message__content {
   padding: 10px 0;
+}
+.snippet__editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 25px;
+}
+.snippet__editor > div {
+  padding: 5px;
+  transition: .3s all;
+}
+.snippet__toolbar {
+  padding: 0 10px;
+  background-color: #333;
+  font-size: 13px;
+}
+.snippet__toolbar:before,
+.snippet__toolbar:after {
+  content: " ";
+  display: table;
+}
+.snippet__toolbar:after {
+  clear: both;
+}
+.snippet__toolbar:before,
+.snippet__toolbar:after {
+  content: " ";
+  display: table;
+}
+.snippet__toolbar:after {
+  clear: both;
+}
+.snippet__toolbar > select {
+  padding: .24em 0;
+}
+.snippet__title {
+  color: #ffffff;
+  line-height: 2em;
+}
+.snippet__bar {
+  height: 24px;
+  padding: 0 10px;
+  background-color: #999999;
+}
+.snippet__box {
+  position: absolute!important;
+  top: 30px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid #999999;
+}
+.snippet__box > iframe {
+  width: 100%;
+  height: 100%;
+}
+.snippet__add {
+  margin-left: 5px;
+}
+.snippet__remove {
+  position: absolute;
+  top: 50%;
+  right: .5rem;
+  margin-top: -0.4rem;
+  color: #999999;
+  font-size: .8rem;
+}
+.snippet__remove:hover {
+  color: #808080;
 }
 .snippet-detail {
   padding-bottom: 100px;

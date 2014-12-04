@@ -1,30 +1,29 @@
 div.add-app
-  div.add-app-editor(resize-box="resizeBox")
-  div.add-app-top-toolbar
-    div.left.columns(ng-bind="data.name")
-    div.small-10.columns
-      button.button--success.right(ng-click="submit()") 保存
-      div.button-group.right
-        input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
-      select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
+  div.snippet__editor(resize-box="resizeBox")
+  div.snippet__toolbar
+    div.snippet__title.left(ng-bind="data.name")
+    input.button--success.right(type="submit", value="保存")
+    div.button-group.right
+      input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{'button--primary': !box.hide}")
+    select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.box-name jade
-    div.add-app-box(code-editor="jade")
+    div.snippet__box(code-editor="jade")
 script(type='text/ng-template',id='javascript-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.box-name js
-    div.add-app-box(code-editor="javascript")
+    div.snippet__box(code-editor="javascript")
 script(type='text/ng-template',id='css-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.box-name css
-    div.add-app-box(code-editor="css")
+    div.snippet__box(code-editor="css")
 script(type='text/ng-template',id='preview')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.box-name preview
-    div.add-app-box
+    div.snippet__box
       iframe(ng-src="{{previewUrl}}", frameBorder=0)

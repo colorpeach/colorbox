@@ -1,8 +1,10 @@
 div.main__aside.position__left
   ul
-    li
-      button.main__aside-item
-        span.icon-search
+    li.main__aside-item
+      span.icon-search
+      ul.main__sub-aside(ng-click="toggoleSearch()")
+        li 应用
+        li 片段
     li(ng-repeat="item in navs", ng-show="!item.auth || (user && item.auth === 2) || (!user && item.auth === 1)")
       a.main__aside-item(href="{{item.href}}", title="{{item.title}}", ng-class="{active: $parent.href === item.href}")
         span(class="{{item.icon}}")

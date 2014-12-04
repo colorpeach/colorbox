@@ -59,7 +59,32 @@
     }
 
     &__input{
-        width: 100%;
         .generate-input;
+    }
+}
+
+.form__full{
+    padding: 1em 0;
+    
+    .form{
+        &__label,
+        &__input,
+        &__cell{
+            display: block;
+        }
+
+        &__label{
+            padding: 0;
+        }
+
+        &__input,
+        &__button,
+        &__cell{
+            margin-bottom: 1em;
+        }
+
+        &__input{
+            width: 100%;
+        }
     }
 }
