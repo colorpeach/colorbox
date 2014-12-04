@@ -1,13 +1,14 @@
-div.main__aside.position__left
+div.main__aside.position__left(ng-class="{active: showAside}")
   ul
-    li.main__aside-item
-      span.icon-search
-      ul.main__sub-aside(ng-click="toggoleSearch()")
-        li 应用
-        li 片段
+    li
+      a.main__aside-item
+        span.icon-search
+        span.main__aside-text 搜索
     li(ng-repeat="item in navs", ng-show="!item.auth || (user && item.auth === 2) || (!user && item.auth === 1)")
       a.main__aside-item(href="{{item.href}}", title="{{item.title}}", ng-class="{active: $parent.href === item.href}")
         span(class="{{item.icon}}")
+        span.main__aside-text(ng-bind="item.title")
     li(ng-show="user")
       a.main__aside-item(href="/_logout", title="退出登录", ng-click="logout($event)")
         span.icon-exit
+        span.main__aside-text 退出登录

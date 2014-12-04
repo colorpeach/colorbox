@@ -1,11 +1,12 @@
-div.add-app
-  div.snippet__editor(resize-box="resizeBox")
-  div.snippet__toolbar
-    div.snippet__title.left(ng-bind="data.name")
-    input.button--success.right(type="submit", value="保存")
-    div.button-group.right
-      input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{'button--primary': !box.hide}")
-    select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
+div
+  form(ng-submit="submit($event)")
+    div.snippet__editor(resize-box="resizeBox")
+    div.snippet__toolbar
+      div.snippet__title.left(ng-bind="data.name")
+      input.button--success.right(type="submit", value="保存")
+      div.button-group.right
+        input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{'button--primary': !box.hide}")
+      select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div
     div.snippet__bar

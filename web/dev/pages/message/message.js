@@ -37,6 +37,10 @@ define(['js/app'], function(app){
                 $scope.messages = data.messages;
             });
 
+            $scope.passed = function(){
+                return !!$rootScope.user;
+            };
+
             $scope.response = function(msg, user){
                 $scope.current = msg;
                 $scope.label = '回复 ' + user;

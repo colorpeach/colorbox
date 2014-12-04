@@ -72,6 +72,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 dependencies: ['pages/message/message']
             },
             '/edit/app/:id': {
+                full: true,
                 title: '编辑应用',
                 templateUrl: 'app-edit.html',
                 controller: 'editAppCtrl',
@@ -82,6 +83,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/app-pro/:id': {
+                full: true,
                 title: '编辑应用',
                 templateUrl: 'app-edit-pro.html',
                 controller: 'editAppProCtrl',
@@ -95,6 +97,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/snippet/:id': {
+                full: true,
                 title: '编辑代码片段',
                 templateUrl: 'snippet-edit.html',
                 controller: 'editSnippetCtrl',
@@ -127,6 +130,12 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             href: '/#/dashboard/apps',
             title: '我的应用',
             icon: 'icon-stack',
+            auth: 2
+        },
+        {
+            href: '/#/dashboard/appPros',
+            title: '我的应用',
+            icon: 'icon-windows8',
             auth: 2
         },
         {
@@ -254,6 +263,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
                                 $rootScope.title = route.title;
                                 $rootScope.href = '/#' + $location.path();
+                                $rootScope.full = !!route.full;
                                 $window.document.title = 'colorBox-' + route.title;
 
                                 $rootScope.$apply(function(){
@@ -305,10 +315,19 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ['$scope',
         function($scope){
             $scope.searchShow = false;
+            $scope.showAside = false;
 
             $scope.toggoleSearch = function(){
                 $scope.searchShow = !$scope.searchShow;
             };
+
+            $scope.toggleAside = function(){
+                $scope.showAside = !$scope.showAside;
+            };
+            
+            $scope.$on('$routeChangeSuccess', function(){
+                $scope.showAside = false;
+            });
         }
     ]);
 

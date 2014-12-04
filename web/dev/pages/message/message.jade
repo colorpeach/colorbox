@@ -8,8 +8,7 @@ div.js-message.message
     input.button.form__button(type="button", value="取消", ng-click="cancel()", ng-show="current")
     input.button--primary.form__button(type="submit", value="发布")
   div.message__item(ng-repeat="msg in messages")
-    if user
-      a.message__response(ng-click="response(msg, msg.user)") 回复 
+    a.message__response(ng-click="response(msg, msg.user)", ng-if="passed()") 回复 
     div.message__avator
       img(src-element="http://identicon.relucks.org/{msg.user}?size=40")
       span.icon-user
@@ -19,8 +18,7 @@ div.js-message.message
       |  说：
     div.message__content {{msg.content}}
     div.message__item(ng-repeat="m in msg.responses")
-      if user
-        a.message__response(ng-click="response(msg, m.user)") 回复 
+      a.message__response(ng-click="response(msg, m.user)", ng-if="passed()") 回复 
       div.message__head {{m.date | date:'yyyy-MM-dd HH:mm:ss'}} 
       div.message__head 
         a {{m.user}} 

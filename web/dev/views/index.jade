@@ -3,8 +3,12 @@ extends ./layout
 block content
   div.main(ng-controller="indexCtrl")
     include ./aside
-    div.main__content.position__right.animate-box(ng-view, ng-class="{blur: searchShow}")
-    div.main__overlay.position__right(ng-show="searchShow")
+    div.main__top.position__top(ng-class="{active: showAside}")
+      a.main__top-item(ng-click="toggleAside()", ng-class="{active: showAside}")
+        span.icon-menu2
+      b(ng-bind="title")
+    div.main__content.position__right.animate-box(ng-view, ng-class="{blur: searchShow, main__full: $parent.full, active: showAside}")
+    div.main__overlay.position__right.hide(ng-show="searchShow")
       div.form
         div.form__row
           input.form__input

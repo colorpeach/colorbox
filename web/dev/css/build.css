@@ -4989,6 +4989,12 @@ Copyright (c) 2014 Daniel Eden
   -webkit-filter: blur(5px);
   filter: blur(5px);
 }
+.radius {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
 .cm-tip {
   position: fixed;
   border-radius: 4px;
@@ -4996,7 +5002,7 @@ Copyright (c) 2014 Daniel Eden
   color: #333;
   background-color: #fff;
   font-size: 12px;
-  z-index: 1050;
+  z-index: 1100;
 }
 .cm-tip-arrow {
   position: absolute;
@@ -5043,8 +5049,8 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
   background-color: transparent;
-  opacity: .3;
-  z-index: 1000;
+  opacity: .7;
+  z-index: 1200;
 }
 .route-overlay.ng-enter {
   -webkit-animation-name: fadeIn;
@@ -5070,7 +5076,7 @@ Copyright (c) 2014 Daniel Eden
   height: 30px;
   margin-top: -15px;
   text-align: center;
-  color: #000;
+  color: #ccc;
   line-height: 30px;
 }
 .route-waiting .waiting-icon {
@@ -5210,7 +5216,7 @@ Copyright (c) 2014 Daniel Eden
   background-color: white;
   border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  z-index: 1005;
+  z-index: 1000;
 }
 .dialog__bg {
   overflow: auto;
@@ -5220,7 +5226,7 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   background: black;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 1004;
+  z-index: 900;
   display: none;
   left: 0;
 }
@@ -5350,7 +5356,6 @@ Copyright (c) 2014 Daniel Eden
 .dashboard__box {
   display: block;
   padding: 0 20px;
-  background-color: #f3f3f3;
 }
 .dashboard__head {
   padding: 10px 0;
@@ -5377,15 +5382,36 @@ Copyright (c) 2014 Daniel Eden
   background-color: #eee;
 }
 .main {
-  max-width: 1000px;
-  position: relative;
   height: 100%;
   margin: 0 auto;
+  max-width: 1024px;
+  position: relative;
   box-shadow: 0 0 4px #ccc;
 }
+.main__top {
+  top: -100%;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: #f3f3f3;
+  transition: .3s all;
+}
+.main__top.active {
+  left: 4rem;
+  right: -4rem;
+}
+.main__top-item {
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: #333333;
+}
+.main__top-item.active {
+  color: #008cba;
+}
 .main__aside {
+  overflow-y: auto;
   width: 4rem;
-  z-index: 1000;
+  background-color: #f3f3f3;
+  z-index: 100;
 }
 .main__aside > ul {
   margin: 0;
@@ -5397,47 +5423,40 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
 }
+.main__aside.active {
+  left: 0;
+}
 .main__aside-item {
+  overflow: hidden;
   display: block;
   height: 4rem;
   width: 100%;
   border: 0;
   line-height: 4rem;
   font-size: 2rem;
-  text-align: center;
+  padding: 0 1rem;
   color: #333333;
   background-color: transparent;
+  white-space: nowrap;
   transition: .3s all;
 }
 .main__aside-item:hover,
 .main__aside-item.active {
   color: #008cba;
-  background-color: #f3f3f3;
+  background-color: #ffffff;
 }
 .main__aside-item:hover .main__sub-aside {
   display: block;
 }
-.main__sub-aside {
-  display: none;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  width: 4rem;
-  padding: 0;
-  line-height: 2rem;
+.main__aside-text {
+  margin-left: 1rem;
   font-size: 1rem;
-  list-style: none;
-  background-color: #ffffff;
-}
-.main__sub-aside li {
-  cursor: pointer;
-}
-.main__sub-aside li:hover {
-  background-color: #f3f3f3;
+  vertical-align: top;
 }
 .main__content {
   left: 4rem;
-  background-color: #f3f3f3;
+  background-color: #ffffff;
+  transition: .3s all;
 }
 .main__content > div {
   overflow: auto;
@@ -5447,10 +5466,40 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
 }
+.main__content.active {
+  left: 4rem;
+  right: -4rem;
+}
+.main__full {
+  left: 0!important;
+  top: 0!important;
+  position: fixed;
+  z-index: 200;
+}
 .main__overlay {
   left: 4rem;
   background-color: rgba(255, 255, 255, 0.5);
-  z-index: 1500;
+  z-index: 800;
+}
+@media screen and (min-width: 1024px) {
+  .main__aside {
+    width: 10rem;
+  }
+  .main__content {
+    left: 10rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .main__top {
+    top: 0;
+  }
+  .main__aside {
+    left: -4rem;
+  }
+  .main__content {
+    left: 0;
+    top: 4rem;
+  }
 }
 .desktop__apps {
   margin: 0;
@@ -5492,7 +5541,7 @@ Copyright (c) 2014 Daniel Eden
   display: block;
   pointer-events: none;
   opacity: .5 !important;
-  z-index: 1000;
+  z-index: 300;
   cursor: move;
 }
 .drag__placeholder {
@@ -5506,7 +5555,7 @@ Copyright (c) 2014 Daniel Eden
   padding: 0 20px;
 }
 .messages__prompt {
-  margin: 0 0 30px;
+  margin: 20px 0 30px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;

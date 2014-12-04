@@ -1,15 +1,14 @@
-li.dashboard-box(ng-show="status.page === 'list'")
-  div.dashboard-box-head
+li.dashboard__box(ng-show="status.page === 'list'")
+  div.dashboard__head
     span 应用列表
     span.icon-plus.button-icon(title="新建应用", ng-click="switch($event, 'add')")
-  div.dashboard-box-list
-    a.dashboard-box-item(href="#/edit/app-pro/{{app._id}}", ng-repeat="app in apps")
+  div.dashboard__list
+    a.dashboard__item(href="#/edit/app-pro/{{app._id}}", ng-repeat="app in apps")
       span {{app.name}}
-      div.dashboard-box-item-btns
-        span.icon-cog(title="应用设置", ng-click="switch($event, 'detail', app, $index)")
+      span.right.icon-cog(title="应用设置", ng-click="switch($event, 'detail', app, $index)")
 
-li.dashboard-box(ng-show="status.page === 'add'")
-  div.dashboard-box-head
+li.dashboard__box(ng-show="status.page === 'add'")
+  div.dashboard__head
     span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
     span 新建应用
   form.form(ng-submit="add()")
@@ -25,12 +24,10 @@ li.dashboard-box(ng-show="status.page === 'add'")
       span.form__cell
         input.button--success(type="submit", value="提交")
 
-li.dashboard-box(ng-show="status.page === 'detail'")
-  div.dashboard-box-head.hide
+li.dashboard__box(ng-show="status.page === 'detail'")
+  div.dashboard__head
     span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
     a(href="/_apps/preview/{{current._id}}", target="_blank", ng-bind="current.name")
-  div.dashboard-app-logo-wrap
-    div.left.app-logo {{current.name}}
   form.form__full(ng-submit="submit($event)")
     label.form__label 应用类型
     span.form__cell
@@ -40,7 +37,7 @@ li.dashboard-box(ng-show="status.page === 'detail'")
     label.form__label 应用尺寸
       span.icon-plus.button-icon(ng-click="switchAddSize()")
     span.form__cell
-      span.dashboard-box-app-size.label(ng-repeat="size in current.sizes") {{size.x}} × {{size.y}}
+      span.dashboard__box-app-size.label(ng-repeat="size in current.sizes") {{size.x}} × {{size.y}}
         span.icon-close.button-icon(ng-if="$index", ng-click="delSize($index)")
     div.form__cell.dashboard-app-size-form(ng-show="status.addSize")
       select(ng-model="currentSize.x", ng-options = "o as o for o in sizeOptions")
@@ -53,6 +50,6 @@ li.dashboard-box(ng-show="status.page === 'detail'")
     input.form__button.button--success(type="submit", value="保存修改")
     input.form__button.button--primary(type="button", value="申请发布")
     label.form__label 编辑代码
-    a.form__button.button--primary(href="#/edit/app/{{current._id}}") 编辑代码
+    a.form__button.button--primary(href="#/edit/app-pro/{{current._id}}") 编辑代码
     label.form__label 删除应用
     input.form__button.button--alert(type="button", value="删除应用", ng-click="del()")

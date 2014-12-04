@@ -1,5 +1,5 @@
 div
-  form.sidebar(ng-submit="submit($event)")
+  form(ng-submit="submit($event)")
     input(type="hidden", name="_id", value="{{data._id}}")
     div.snippet__editor(resize-box="resizeBox")
     div.snippet__toolbar
