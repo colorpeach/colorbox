@@ -1,17 +1,16 @@
 extends ./layout
 
 block content
-  div.main(ng-controller="indexCtrl")
+  div.main(ng-controller="indexCtrl", ng-class="{active: showAside}")
     include ./aside
-    div.main__top.position__top(ng-class="{active: showAside}")
+    div.main__top.position__top
       a.main__top-item(ng-click="toggleAside()", ng-class="{active: showAside}")
         span.icon-menu2
       b(ng-bind="title")
-    div.main__content.position__right.animate-box(ng-view, ng-class="{blur: searchShow, main__full: $parent.full, active: showAside}")
-    div.main__overlay.position__right.hide(ng-show="searchShow")
-      div.form
-        div.form__row
-          input.form__input
+    div.main__content.position__right(ng-view, ng-class="{blur: searchShow, main__full: $parent.full}")
+    div.main__overlay.position__right(ng-show="searchShow")
+      div.table
+        input.form__input
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting
       span.icon-spinner2.waiting-icon(ng-show="loading")

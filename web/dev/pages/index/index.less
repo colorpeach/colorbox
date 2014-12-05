@@ -12,6 +12,30 @@
   max-width: @bigWidth;
   position: relative;
   box-shadow: 0 0 4px #ccc;
+
+  &.active{
+    .main__top,
+    .main__content{
+      left: 4rem;
+      right: -4rem;
+    }
+
+    .main__aside{
+      left: 0;
+    }
+  }
+
+  &--minimal{
+    .main__top,
+    .main__content{
+      left: 4rem;
+      right: -4rem;
+    }
+
+    .main__aside{
+      left: 0;
+    }
+  }
 }
 
 .main__top{
@@ -20,11 +44,6 @@
   line-height: 4rem;
   background-color: @main-aside-color;
   transition: .3s all;
-
-  &.active{
-    left: 4rem;
-    right: -4rem;
-  }
 }
 
 .main__top-item{
@@ -48,10 +67,6 @@
     padding: 0;
     list-style: none;
     .position__full;
-  }
-
-  &.active{
-    left: 0;
   }
 }
 
@@ -90,15 +105,18 @@
   left: 4rem;
   background-color: @main-content-color;
   transition: .3s all;
+  .animated;
 
   & > div{
     overflow: auto;
     .position__full;
   }
 
-  &.active{
-    left: 4rem;
-    right: -4rem;
+  &.ng-enter{
+    .fadeIn;
+  }
+  &.ng-leave{
+    .fadeOut;
   }
 }
 
@@ -113,6 +131,14 @@
   left: 4rem;
   background-color: fade(@white-color, 50%);
   z-index: @overlay-index;
+  .animated;
+
+  &.ng-enter{
+    .fadeIn;
+  }
+  &.ng-leave{
+    .fadeOut;
+  }
 }
 
 @media screen and (min-width: @bigWidth){

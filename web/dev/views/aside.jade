@@ -1,7 +1,7 @@
-div.main__aside.position__left(ng-class="{active: showAside}")
+div.main__aside.position__left(ng-class="{blur: searchShow}")
   ul
     li
-      a.main__aside-item
+      a.main__aside-item(ng-click="toggoleSearch()")
         span.icon-search
         span.main__aside-text 搜索
     li(ng-repeat="item in navs", ng-show="!item.auth || (user && item.auth === 2) || (!user && item.auth === 1)")

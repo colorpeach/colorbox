@@ -5243,6 +5243,340 @@ Copyright (c) 2014 Daniel Eden
 .dialog__close:hover {
   color: #919191;
 }
+.aui-tree {
+  margin-left: 0;
+  padding: 0 10px;
+  color: #efefef;
+  white-space: nowrap;
+}
+.aui-tree li {
+  display: block;
+}
+.aui-tree li > span {
+  min-width: 100%;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.aui-tree span {
+  display: inline-block;
+  cursor: pointer;
+}
+.aui-tree a {
+  padding: 0 5px;
+  margin-left: 3px;
+  color: #efefef;
+}
+.aui-tree a:focus {
+  outline: 1px solid #0078a0;
+  cursor: auto;
+  background-color: transparent;
+}
+.aui-tree .aui-active {
+  background-color: #748512;
+}
+.editor {
+  background-color: #333333;
+  color: #ffffff;
+  border-top: 1px solid #444;
+  font-size: 12px;
+}
+.editor__nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  bottom: auto;
+  padding: 0 10px;
+  height: 30px;
+  border-bottom: 1px solid #222222;
+  line-height: 30px;
+  white-space: nowrap;
+}
+.editor__nav-item {
+  display: inline-block;
+  position: relative;
+  padding: 0 5px;
+  cursor: default;
+  line-height: 28px;
+  border: 1px solid transparent;
+}
+.editor__nav-item.active {
+  z-index: 5;
+  background-color: #666666;
+  border: 1px solid #222222;
+}
+.editor__nav-item.active:before {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 25px;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  background-color: #666666;
+  z-index: 5;
+}
+.editor__nav-item ul {
+  position: absolute;
+  left: -1px;
+  top: 28px;
+  padding: 5px 0;
+  margin: 0;
+  font-size: 12px;
+  list-style: none;
+  background-color: #666666;
+  color: #ffffff;
+  border: 1px solid #222222;
+  box-shadow: 0 2px 5px #222222;
+}
+.editor__nav-item ul li {
+  position: relative;
+  min-width: 120px;
+  padding: 2px 10px 2px 30px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.editor__nav-item ul li:hover {
+  background-color: #555555;
+}
+.editor__nav-item ul li > ul {
+  display: none;
+  left: 100%;
+  top: -6px;
+  margin-left: -5px;
+}
+.editor__nav-item ul li:hover > ul {
+  display: block;
+}
+.editor__nav-mark {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  border: 3px solid;
+  border-radius: 50%;
+}
+.editor__nav-arrow {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+  display: block;
+  border-style: solid;
+  border-color: transparent transparent transparent #ffffff;
+  border-width: 4px 0 4px 6px;
+}
+.editor__boxs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__boxs > div {
+  position: absolute;
+  border-left: 1px solid #222;
+  border-bottom: 1px solid #222;
+  transition: .3s all;
+}
+.editor__boxs > .resize-bar,
+.editor__boxs > .resize-mark {
+  border: 0;
+}
+.editor__boxs > .resize-bar:before,
+.editor__boxs > .resize-mark:before,
+.editor__boxs > .resize-bar:after,
+.editor__boxs > .resize-mark:after {
+  display: none;
+}
+.editor__tabs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  bottom: auto;
+  padding: 0 10px;
+  height: 30px;
+  border-bottom: 1px solid #222222;
+  line-height: 30px;
+  background-color: #333333;
+  white-space: nowrap;
+}
+.editor__tabs .button-icon {
+  padding: 5px;
+  margin-left: 0;
+  margin-right: 5px;
+  border: 1px solid transparent;
+  vertical-align: baseline;
+}
+.editor__tabs .button-icon.active {
+  border: 1px solid #222222;
+  box-shadow: 0 0 5px #222222 inset;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.editor__contents {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__contents > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.editor__back-logo:before {
+  position: absolute;
+  display: block;
+  content: 'colorBox';
+  top: 50%;
+  width: 100%;
+  margin-top: -1.5em;
+  font-weight: 700;
+  color: #222222;
+  text-align: center;
+  font-size: 3em;
+  line-height: 3em;
+}
+.editor__tab {
+  position: relative;
+  display: inline-block;
+  padding: 0 2em 0 .5em;
+  line-height: 28px;
+  margin-right: 1px;
+  cursor: default;
+  background-color: #4d4d4d;
+}
+.editor__tab:hover {
+  background-color: #666666;
+}
+.editor__tab.active {
+  background-color: #222222;
+}
+.editor__tab > button {
+  position: absolute;
+  top: 0;
+  right: .5em;
+  padding: 0;
+  border: 0;
+  line-height: 28px;
+  background-color: transparent;
+}
+.editor__tab > button:hover {
+  color: #f04124;
+}
+.editor__tree {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__select {
+  display: inline-block;
+  background-color: #444;
+  height: 28px;
+  width: auto;
+  vertical-align: top;
+  min-width: 80px;
+  border: 4px solid #333;
+  padding: 0;
+  margin-bottom: 0;
+  color: #fff;
+}
+.editor__select:hover,
+.editor__select:focus {
+  background-color: #555555;
+  color: #fff;
+  border-color: #333;
+}
+.full-screen {
+  position: fixed!important;
+  top: 0!important;
+  left: 0!important;
+  right: 0!important;
+  bottom: 0!important;
+  height: auto!important;
+  width: auto!important;
+  z-index: 10;
+}
+.context-menu {
+  position: fixed;
+  padding: 5px 0;
+  margin: 0;
+  font-size: 12px;
+  list-style: none;
+  background-color: #666666;
+  color: #ffffff;
+  border: 1px solid #222222;
+  box-shadow: 0 2px 5px #222222;
+  z-index: 700;
+}
+.context-menu li {
+  position: relative;
+  min-width: 120px;
+  padding: 2px 10px 2px 30px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.context-menu li:hover {
+  background-color: #555555;
+}
+.context-menu li > ul {
+  display: none;
+  left: 100%;
+  top: -6px;
+  margin-left: -5px;
+}
+.context-menu li:hover > ul {
+  display: block;
+}
+.row--gray {
+  color: #ffffff;
+  line-height: 30px;
+}
+.table {
+  width: 100%;
+}
+.table__th--gray,
+.table__td--gray {
+  border: 1px solid #222;
+  background-color: #444;
+}
+.table__th--gray:hover,
+.table__td--gray:hover {
+  background-color: #555555;
+}
+.table__cell-text {
+  display: block;
+  padding: 5px 10px;
+  color: #fff;
+  text-align: left;
+}
+.table__input-text--gray {
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  color: #fff;
+  background-color: #444;
+}
+.table__input-text--gray:hover,
+.table__input-text--gray:focus {
+  background-color: #555555;
+}
 .app-all-left {
   position: absolute;
   width: 180px;
@@ -5388,16 +5722,28 @@ Copyright (c) 2014 Daniel Eden
   position: relative;
   box-shadow: 0 0 4px #ccc;
 }
+.main.active .main__top,
+.main.active .main__content {
+  left: 4rem;
+  right: -4rem;
+}
+.main.active .main__aside {
+  left: 0;
+}
+.main--minimal .main__top,
+.main--minimal .main__content {
+  left: 4rem;
+  right: -4rem;
+}
+.main--minimal .main__aside {
+  left: 0;
+}
 .main__top {
   top: -100%;
   height: 4rem;
   line-height: 4rem;
   background-color: #f3f3f3;
   transition: .3s all;
-}
-.main__top.active {
-  left: 4rem;
-  right: -4rem;
 }
 .main__top-item {
   padding: 0 1rem;
@@ -5422,9 +5768,6 @@ Copyright (c) 2014 Daniel Eden
   left: 0;
   right: 0;
   bottom: 0;
-}
-.main__aside.active {
-  left: 0;
 }
 .main__aside-item {
   overflow: hidden;
@@ -5457,6 +5800,10 @@ Copyright (c) 2014 Daniel Eden
   left: 4rem;
   background-color: #ffffff;
   transition: .3s all;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 .main__content > div {
   overflow: auto;
@@ -5466,9 +5813,13 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
 }
-.main__content.active {
-  left: 4rem;
-  right: -4rem;
+.main__content.ng-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+.main__content.ng-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
 }
 .main__full {
   left: 0!important;
@@ -5480,6 +5831,18 @@ Copyright (c) 2014 Daniel Eden
   left: 4rem;
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 800;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.main__overlay.ng-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+.main__overlay.ng-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
 }
 @media screen and (min-width: 1024px) {
   .main__aside {
