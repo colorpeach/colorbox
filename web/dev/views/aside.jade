@@ -1,11 +1,7 @@
 div.main__aside.position__left(ng-class="{blur: searchShow}")
   ul
-    li
-      a.main__aside-item(ng-click="toggoleSearch()")
-        span.icon-search
-        span.main__aside-text 搜索
-    li(ng-repeat="item in navs", ng-show="!item.auth || (user && item.auth === 2) || (!user && item.auth === 1)")
-      a.main__aside-item(href="{{item.href}}", title="{{item.title}}", ng-class="{active: $parent.href === item.href}")
+    li(ng-if="item.icon", ng-repeat="(href, item) in navs", ng-show="!item.auth || (user && item.auth === 'yes') || (!user && item.auth === 'no')")
+      a.main__aside-item(href="{{'/#' + href}}", title="{{item.title}}", ng-class="{active: $parent.$parent.href === href}")
         span(class="{{item.icon}}")
         span.main__aside-text(ng-bind="item.title")
     li(ng-show="user")

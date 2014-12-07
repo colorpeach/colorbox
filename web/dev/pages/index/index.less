@@ -5,6 +5,7 @@
 @smallWidth: 480px;
 @main-content-color: @white-color;
 @main-aside-color: #f3f3f3;
+@desktop-icon-color: #aaa;
 
 .main{
   height: 100%;
@@ -163,6 +164,29 @@
   .main__content{
     left: 0;
     top: 4rem;
+  }
+}
+
+.desktop__bar{
+  padding: .5rem 0;
+}
+
+.desktop__bar-item{
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  margin: 0 .5rem;
+  font-size: 2rem;
+  line-height: 3rem;
+  vertical-align: middle;
+  color: @desktop-icon-color;
+  transition: .3s all;
+  cursor: pointer;
+
+  &:hover{
+    color: darken(@desktop-icon-color, 20%);
+    border: 1px solid;
+    .border-radius();
   }
 }
 

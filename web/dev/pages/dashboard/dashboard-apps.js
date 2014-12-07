@@ -29,10 +29,6 @@ define(['js/app'], function(app){
     .controller('myAppsCtrl',
     ['$scope', 'appsCrud', 'prompt',
         function($scope,   appsCrud, prompt){
-            if($scope.tab !== 'apps'){
-                return;
-            }
-
             $scope.currentSize = {};
             $scope.current = {};
             $scope.sizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

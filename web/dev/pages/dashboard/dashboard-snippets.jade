@@ -1,40 +1,41 @@
-li.dashboard__box(ng-show="status.page === 'list'")
-  div.dashboard__head
-    span 代码片段列表
-    span.icon-plus.button-icon(title="新建代码片段", ng-click="switch($event, 'add')")
-  div.dashboard__list
-    a.dashboard__item(href="#/edit/snippet/{{snippet._id}}", ng-repeat="snippet in snippets")
-      span {{snippet.name}}
-      span.right.icon-cog(title="应用设置", ng-click="switch($event, 'detail', snippet, $index)")
+ul.dashboard__boxs
+  li.dashboard__box(ng-show="status.page === 'list'")
+    div.dashboard__head
+      span 代码片段列表
+      span.icon-plus.button-icon(title="新建代码片段", ng-click="switch($event, 'add')")
+    div.dashboard__list
+      a.dashboard__item(href="#/edit/snippet/{{snippet._id}}", ng-repeat="snippet in snippets")
+        span {{snippet.name}}
+        span.right.icon-cog(title="应用设置", ng-click="switch($event, 'detail', snippet, $index)")
 
-li.dashboard__box(ng-show="status.page === 'add'")
-  div.dashboard__head
-    span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
-    span 新建代码片段
-  form.form(ng-submit="add()")
-    div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
-    div.form__row
-      label.form__label(for="app-name") 名称
-      input#app-name.form__input(type="text", name="name", ng-model="data.name", required)
-    div.form__row
-      label.form__label(for="app-description") 描述
-      textarea#app-description.form__input(name="description", ng-model="data.description")
-    div.form__row
-      span.form__cell
-      span.form__cell
-        input.button--success(type="submit", value="提交")
+  li.dashboard__box(ng-show="status.page === 'add'")
+    div.dashboard__head
+      span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
+      span 新建代码片段
+    form.form(ng-submit="add()")
+      div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
+      div.form__row
+        label.form__label(for="app-name") 名称
+        input#app-name.form__input(type="text", name="name", ng-model="data.name", required)
+      div.form__row
+        label.form__label(for="app-description") 描述
+        textarea#app-description.form__input(name="description", ng-model="data.description")
+      div.form__row
+        span.form__cell
+        span.form__cell
+          input.button--success(type="submit", value="提交")
 
-li.dashboard__box(ng-show="status.page === 'detail'")
-  div.dashboard__head
-    span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
-    a(href="/_snippets/preview/{{current._id}}", target="_blank", ng-bind="current.name")
-  form.form__full(ng-submit="submit($event)")
-    label.form__label(for="opensource") 开放源代码
-    input(type="checkbox", id="opensource", name="opensource", ng-model="current.opensource", tip="r", title="开放源代码后，代码将出现在代码广场")
-    label.form__label(for="description") 描述
-    textarea.form__input(id="description", name="description", ng-model="current.description")
-    input.form__button.button--success(type="submit", value="保存修改")
-    label.form__label 编辑代码
-    a.form__button.button--primary(href="#/edit/snippet/{{current._id}}") 编辑代码
-    label.form__label 删除片段
-    input.form__button.button--alert(type="button", value="删除片段", ng-click="del()")
+  li.dashboard__box(ng-show="status.page === 'detail'")
+    div.dashboard__head
+      span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
+      a(href="/_snippets/preview/{{current._id}}", target="_blank", ng-bind="current.name")
+    form.form__full(ng-submit="submit($event)")
+      label.form__label(for="opensource") 开放源代码
+      input(type="checkbox", id="opensource", name="opensource", ng-model="current.opensource", tip="r", title="开放源代码后，代码将出现在代码广场")
+      label.form__label(for="description") 描述
+      textarea.form__input(id="description", name="description", ng-model="current.description")
+      input.form__button.button--success(type="submit", value="保存修改")
+      label.form__label 编辑代码
+      a.form__button.button--primary(href="#/edit/snippet/{{current._id}}") 编辑代码
+      label.form__label 删除片段
+      input.form__button.button--alert(type="button", value="删除片段", ng-click="del()")

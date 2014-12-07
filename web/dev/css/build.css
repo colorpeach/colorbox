@@ -5864,6 +5864,29 @@ Copyright (c) 2014 Daniel Eden
     top: 4rem;
   }
 }
+.desktop__bar {
+  padding: .5rem 0;
+}
+.desktop__bar-item {
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  margin: 0 .5rem;
+  font-size: 2rem;
+  line-height: 3rem;
+  vertical-align: middle;
+  color: #aaaaaa;
+  transition: .3s all;
+  cursor: pointer;
+}
+.desktop__bar-item:hover {
+  color: #777777;
+  border: 1px solid;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+}
 .desktop__apps {
   margin: 0;
   padding: 0;

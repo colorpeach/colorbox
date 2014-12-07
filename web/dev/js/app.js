@@ -1,16 +1,14 @@
 define(['angular-route', 'angular-animate', 'js/common'], function(){
     var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
-    var pathsMap = {
-        noAuthPaths: ['/login', '/register'],
-        authPaths: ['/dashboard/:tab', '/edit/app/:id', '/edit/snippet/:id', '/edit/app-pro/:id'],
-        login: false
-    };
+    var login = false;
 
     var config = {
         defaultRoutePath: '/',
         routes: {
             '/': {
+                full: true,
                 title: '桌面',
+                icon: 'icon-home',
                 templateUrl: '/index.html',
                 controller: 'desktopCtrl',
                 dependencies: [
@@ -26,15 +24,64 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/login': {
                 title: '登录',
+                icon: 'icon-enter',
+                auth: 'no',
                 templateUrl: 'login.html',
                 controller: 'loginCtrl',
                 dependencies: ['pages/login/login']
             },
             '/register': {
                 title: '注册',
+                icon: 'icon-signup',
+                auth: 'no',
                 templateUrl: 'login-register.html',
                 controller: 'registerCtrl',
                 dependencies: ['pages/login/login']
+            },
+            '/dashboard/apps': {
+                title: '我的应用',
+                icon: 'icon-stack',
+                auth: 'yes',
+                templateUrl: 'dashboard-apps.html',
+                controller: 'myAppsCtrl',
+                dependencies: [
+                    'pages/dashboard/dashboard-apps'
+                ]
+            },
+            '/dashboard/appPros': {
+                title: '我的应用',
+                icon: 'icon-windows8',
+                auth: 'yes',
+                templateUrl: 'dashboard-app-pro.html',
+                controller: 'myAppProsCtrl',
+                dependencies: [
+                    'pages/dashboard/dashboard-app-pro'
+                ]
+            },
+            '/dashboard/snippets': {
+                title: '我的代码',
+                icon: 'icon-code',
+                auth: 'yes',
+                templateUrl: 'dashboard-snippets.html',
+                controller: 'mySnippetsCtrl',
+                dependencies: [ 
+                    'pages/dashboard/dashboard-snippets'
+                ]
+            },
+            '/dashboard/account': {
+                title: '我的信息',
+                icon: 'icon-user',
+                auth: 'yes',
+                templateUrl: 'dashboard-account.html',
+                dependencies: [
+                ]
+            },
+            '/message': {
+                title: '留言板',
+                icon: 'icon-info',
+                templateUrl: 'message.html',
+                controller: 'messageCtrl',
+                dependencies: ['pages/message/message']
             },
             '/app-square': {
                 title: '所有应用',
@@ -47,6 +94,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/snippet-square': {
                 title: '代码广场',
+                icon: 'icon-code',
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
                 dependencies: [
@@ -54,26 +102,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/dashboard/dashboard-snippets'
                 ]
             },
-            '/dashboard/:tab': {
-                title: '我的仪表盘',
-                templateUrl: 'dashboard.html',
-                controller: 'dashboardCtrl',
-                dependencies: [
-                    'pages/dashboard/dashboard', 
-                    'pages/dashboard/dashboard-apps', 
-                    'pages/dashboard/dashboard-snippets', 
-                    'pages/dashboard/dashboard-app-pro'
-                ]
-            },
-            '/message': {
-                title: '留言板',
-                templateUrl: 'message.html',
-                controller: 'messageCtrl',
-                dependencies: ['pages/message/message']
-            },
             '/edit/app/:id': {
                 full: true,
                 title: '编辑应用',
+                auth: 'yes',
                 templateUrl: 'app-edit.html',
                 controller: 'editAppCtrl',
                 dependencies: [
@@ -85,6 +117,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/edit/app-pro/:id': {
                 full: true,
                 title: '编辑应用',
+                auth: 'yes',
                 templateUrl: 'app-edit-pro.html',
                 controller: 'editAppProCtrl',
                 dependencies: [
@@ -99,6 +132,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/edit/snippet/:id': {
                 full: true,
                 title: '编辑代码片段',
+                auth: 'yes',
                 templateUrl: 'snippet-edit.html',
                 controller: 'editSnippetCtrl',
                 dependencies: [
@@ -119,88 +153,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             }
         }
     };
-
-    var navs = [
-        {
-            href: '/#/',
-            title: '桌面',
-            icon: 'icon-home'
-        },
-        {
-            href: '/#/dashboard/apps',
-            title: '我的应用',
-            icon: 'icon-stack',
-            auth: 2
-        },
-        {
-            href: '/#/dashboard/appPros',
-            title: '我的应用',
-            icon: 'icon-windows8',
-            auth: 2
-        },
-        {
-            href: '/#/dashboard/snippets',
-            title: '我的代码',
-            icon: 'icon-code',
-            auth: 2
-        },
-//         {
-//             href: '/#/dashboard/docs',
-//             title: '我的文档',
-//             icon: 'icon-file',
-//             auth: 2
-//         },
-        {
-            href: '/#/dashboard/account',
-            title: '我的信息',
-            icon: 'icon-user',
-            auth: 2
-        },
-        {
-            href: '/#/message',
-            title: '本站信息',
-            icon: 'icon-info'
-        },
-        {
-            href: '/#/login',
-            title: '登录',
-            icon: 'icon-enter',
-            auth: 1
-        },
-        {
-            href: '/#/register',
-            title: '注册',
-            icon: 'icon-signup',
-            auth: 1
-        }
-    ];
-
-    app.run(
-    ['$rootScope', '$sce', '$http', '$location',
-        function($rootScope,   $sce,   $http,   $location){
-            $rootScope.user = angular.user;
-            delete angular.user;
-            $rootScope.navs = navs;
-
-            $rootScope.$watch('user.login', function(val){
-                pathsMap.login = !!val;
-                $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
-            });
-
-            $rootScope.logout = function(e){
-                e.preventDefault();
-                $http.get('/_logout')
-                .then(function(){
-                    $rootScope.user = null;
-                    $location.path('/');
-                });
-            };
-
-            $rootScope.search = function(){
-                $rootScope.searchText;
-            };
-        }
-    ]);
 
     app.config(
     [
@@ -231,9 +183,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                         title: route.title,
                         redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
-                            if(pathsMap.noAuthPaths.indexOf(path) > -1 && pathsMap.login){
+                            if(route.path === 'no' && login){
                                 return '/';
-                            }else if(pathsMap.authPaths.indexOf(path) > -1 && !pathsMap.login){
+                            }else if(route.auth === 'yes' && !login){
                                 return '/login';
                             }
                         }
@@ -262,7 +214,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                             require(route.dependencies, function(){
 
                                 $rootScope.title = route.title;
-                                $rootScope.href = '/#' + $location.path();
+                                $rootScope.href = $location.path();
                                 $rootScope.full = !!route.full;
                                 $window.document.title = 'colorBox-' + route.title;
 
@@ -280,6 +232,29 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
                 return definition;
             }
+        }
+    ]);
+
+    app.run(
+    ['$rootScope', '$sce', '$http', '$location',
+        function($rootScope,   $sce,   $http,   $location){
+            $rootScope.user = angular.user;
+            delete angular.user;
+            $rootScope.navs = config.routes;
+
+            $rootScope.$watch('user.login', function(val){
+                login = !!val;
+                $rootScope.avator = $sce.trustAsResourceUrl( 'http://identicon.relucks.org/' + val + '?size=36');
+            });
+
+            $rootScope.logout = function(e){
+                e.preventDefault();
+                $http.get('/_logout')
+                .then(function(){
+                    $rootScope.user = null;
+                    $location.path('/');
+                });
+            };
         }
     ]);
 
@@ -314,12 +289,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     app.controller('indexCtrl',
     ['$scope',
         function($scope){
-            $scope.searchShow = false;
             $scope.showAside = false;
-
-            $scope.toggoleSearch = function(){
-                $scope.searchShow = !$scope.searchShow;
-            };
 
             $scope.toggleAside = function(){
                 $scope.showAside = !$scope.showAside;

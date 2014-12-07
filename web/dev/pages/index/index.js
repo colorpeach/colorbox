@@ -14,6 +14,22 @@ define(['js/app'], function(app){
         }
     ])
 
+    .filter('desktopTab', 
+    [
+        function(){
+            var showTabs = ['/', '/snippet-square', '/dashboard/account'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
     .controller('desktopCtrl',
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
