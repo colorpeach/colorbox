@@ -1,0 +1,36 @@
+//Position
+
+.position__full{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.position{
+    position: relative;
+
+    &__top,
+    &__left,
+    &__right,
+    &__bottom{
+        &:extend(.position__full);
+    }
+
+    &__top{
+        bottom: auto;
+    }
+
+    &__bottom{
+        top: auto;
+    }
+
+    &__left{
+        right: auto;
+    }
+
+    &__right{
+        left: auto;
+    }
+}

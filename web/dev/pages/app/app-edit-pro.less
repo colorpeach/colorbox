@@ -1,0 +1,306 @@
+//Pages
+//Editor
+
+@editor-background-color: #333;
+@editor-border-color: #222;
+@editor-color: #fff;
+@editor-tab-height: 30px;
+@editor-nav-height: 30px;
+@editor-row-height: 30px;
+@editor-nav-hover-backcolor: #555;
+@editor-nav-backcolor: #666;
+@editor-nav-index: 5;
+@editor-full-screen-index: 10;
+@editor-index: 10;
+
+.editor{
+    background-color: @editor-background-color;
+    color: @editor-color;
+    border-top: 1px solid #444;
+    font-size: 12px;
+}
+
+.editor__nav{
+    .position__full;
+    bottom: auto;
+    padding: 0 10px;
+    height: @editor-nav-height;
+    border-bottom: 1px solid @editor-border-color;
+    line-height: @editor-nav-height;
+    white-space: nowrap;
+}
+
+.editor__nav-item{
+    display: inline-block;
+    position: relative;
+    padding: 0 5px;
+    cursor: default;
+    line-height: 28px;
+    border: 1px solid transparent;
+
+    &.active{
+        z-index: @editor-nav-index;
+        background-color: @editor-nav-backcolor;
+        border: 1px solid @editor-border-color;
+    }
+
+    &.active:before{
+        position: absolute;
+        content: '';
+        display: block;
+        top: 25px;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        background-color: @editor-nav-backcolor;
+        z-index: @editor-nav-index;
+    }
+
+    ul{
+        position: absolute;
+        left: -1px;
+        top: @editor-nav-height - 2;
+        .editor-position-menu;
+    }
+}
+
+//生成目录
+.editor-position-menu(@font-size: 12px;){
+    padding: 5px 0;
+    margin: 0;
+    font-size: @font-size;
+    list-style: none;
+    background-color: @editor-nav-backcolor;
+    color: @editor-color;
+    border: 1px solid @editor-border-color;
+    box-shadow: 0 2px 5px @editor-border-color;
+
+    li{
+        position: relative;
+        min-width: 120px;
+        padding: 2px 10px 2px 30px;
+        line-height: 20px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: @editor-nav-hover-backcolor;
+        }
+
+        > ul{
+            display: none;
+            left: 100%;
+            top: -6px;
+            margin-left: -5px;
+        }
+
+        &:hover > ul{
+            display: block;
+        }
+    }
+}
+
+.editor__nav-mark{
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    border: 3px solid;
+    border-radius: 50%;
+}
+
+.editor__nav-arrow{
+    position: absolute;
+    right: 5px;
+    top: 7px;
+    display: block;
+    border-style: solid;
+    border-color: transparent transparent transparent @editor-color;
+    border-width: 4px 0 4px 6px;
+}
+
+
+.editor__boxs{
+    .position__full;
+    top: @editor-nav-height;
+
+    & > div{
+        position: absolute;
+        border-left: 1px solid #222;
+        border-bottom: 1px solid #222;
+        transition: .3s all;
+    }
+  
+    & > .resize-bar,
+    & > .resize-mark{
+        border: 0;
+  
+        &:before,
+        &:after{
+            display: none;
+        }
+    }
+}
+
+.editor__tabs{
+    .position__full;
+    bottom: auto;
+    padding: 0 10px;
+    height: @editor-tab-height;
+    border-bottom: 1px solid @editor-border-color;
+    line-height: @editor-tab-height;
+    background-color: @editor-background-color;
+    white-space: nowrap;
+  
+    .button-icon{
+        padding: 5px;
+        margin-left: 0;
+        margin-right: 5px;
+        border: 1px solid transparent;
+        vertical-align: baseline;
+  
+        &.active{
+            border: 1px solid @editor-border-color;
+            box-shadow: 0 0 5px @editor-border-color inset;
+            .border-radius(4px);
+        }
+    }
+}
+
+.editor__contents{
+    .position__full;
+    top: @editor-tab-height;
+}
+
+.editor__contents > div{
+    .position__full;
+}
+
+.editor__back-logo:before{
+    position: absolute;
+    display: block;
+    content: 'colorBox';
+    top: 50%;
+    width: 100%;
+    margin-top: -1.5em;
+    font-weight: 700;
+    color: @editor-border-color;
+    text-align: center;
+    font-size: 3em;
+    line-height: 3em;
+}
+
+.editor__tab{
+    position: relative;
+    display: inline-block;
+    padding: 0 2em 0 .5em;
+    line-height: @editor-tab-height - 2;
+    margin-right: 1px;
+    cursor: default;
+    background-color: darken(@editor-background-color, -10%);
+
+    &:hover{
+        background-color: darken(@editor-background-color, -20%);
+    }
+
+    &.active{
+        background-color: @editor-border-color;
+    }
+
+    & > button{
+        position: absolute;
+        top: 0;
+        right: .5em;
+        padding: 0;
+        border: 0;
+        line-height: @editor-tab-height - 2;
+        background-color: transparent;
+
+        &:hover{
+            color: @alert-color;
+        }
+    }
+}
+
+.editor__tree{
+    overflow: auto;
+    .position__full;
+    top: @editor-tab-height;
+}
+
+.editor__select{
+    display: inline-block;
+    background-color: #444;
+    height: 28px;
+    width: auto;
+    vertical-align: top;
+    min-width: 80px;
+    border: 4px solid #333;
+    padding: 0;
+    margin-bottom: 0;
+    color: #fff;
+}
+
+.editor__select:hover,
+.editor__select:focus{
+    background-color: @editor-nav-hover-backcolor;
+    color: #fff;
+    border-color: #333;
+}
+
+.full-screen{
+    position: fixed!important;
+    top: 0!important;
+    left: 0!important;
+    right: 0!important;
+    bottom: 0!important;
+    height: auto!important;
+    width: auto!important;
+    z-index: @editor-full-screen-index;
+}
+
+.context-menu{
+    position: fixed;
+    padding: 5px 0;
+    .editor-position-menu;
+    z-index: @context-menu-index;
+}
+
+.row--gray{
+    color: @editor-color;
+    line-height: @editor-row-height;
+}
+
+.table{
+    width: 100%;
+}
+
+.table__th--gray,
+.table__td--gray{
+    border: 1px solid #222;
+    background-color: #444;
+}
+
+.table__th--gray:hover,
+.table__td--gray:hover{
+    background-color: @editor-nav-hover-backcolor;
+}
+
+.table__cell-text{
+    display: block;
+    padding: 5px 10px;
+    color: #fff;
+    text-align: left;
+}
+
+.table__input-text--gray{
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    border: 0;
+    color: #fff;
+    background-color: #444;
+}
+
+.table__input-text--gray:hover,
+.table__input-text--gray:focus{
+    background-color: @editor-nav-hover-backcolor;
+}

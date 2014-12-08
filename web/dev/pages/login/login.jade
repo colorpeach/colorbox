@@ -1,5 +1,5 @@
 form.text--center(name="loginForm", action="/login", method="post", ng-submit="submit($event)")
-  div.alert.alert-box 由于后台bug，导致所有用户无法正常登陆，请在2014-11-29之前注册的用户，用之前的用户名重新注册，之前添加的应用和代码片段不会丢失
+  div.alert.alert-box 由于后台bug，导致所有用户无法正常登录，请在2014-11-29之前注册的用户，用之前的用户名重新注册，之前添加的应用和代码片段不会丢失
   div.form.text--left
     h3  登录 
     div.alert-box.alert.animated(ng-repeat="error in errorMsgs", ng-bind="error")
@@ -9,4 +9,7 @@ form.text--center(name="loginForm", action="/login", method="post", ng-submit="s
     div.form__row
       label.form__label(for="password") 密码
       input.form__input(id="password", type="password", name="password", ng-model="data.password")
-    input.table-row-group.form__button.button--primary(type="submit", value="登录")
+    div.form__row
+      span.form__cell
+      span.form__cell
+        input.form__button.button--primary.grid__2-2(type="submit", value="登录")

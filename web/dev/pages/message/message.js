@@ -20,7 +20,7 @@ define(['js/app'], function(app){
     .controller('messageCtrl',
     ['$scope', 'messageCurd', 'prompt', '$window', '$rootScope',
         function($scope,   messageCurd,   prompt,   $window,   $rootScope){
-            var $scrollBox = $window.document.querySelector('.main-box > div');
+            var $scrollBox = $window.document.querySelector('.js-message');
             var $content = $window.document.querySelector('#content');
             $scope.label = '留言';
             $scope.data = {};
@@ -36,6 +36,10 @@ define(['js/app'], function(app){
             .success(function(data){
                 $scope.messages = data.messages;
             });
+
+            $scope.passed = function(){
+                return !!$rootScope.user;
+            };
 
             $scope.response = function(msg, user){
                 $scope.current = msg;

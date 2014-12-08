@@ -29,9 +29,9 @@ define(['js/app'], function(app){
     .controller('mySnippetsCtrl',
     ['$scope', 'snippetsCrud', 'prompt',
         function($scope, snippetsCrud, prompt){
-            if($scope.tab !== 'snippets'){
-                return;
-            }
+//             if($scope.tab !== 'snippets'){
+//                 return;
+//             }
             
             $scope.current = {};
             $scope.status = {

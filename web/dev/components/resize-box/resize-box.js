@@ -133,6 +133,8 @@ define(['angular', 'js/app'], function(_, app){
                                 return $templateCache.get(n.template) || n.template;
                             }).join(''));
 
+                        element.addClass('resize-box');
+                        
                         //填充html
                         $compile($items)(scope);
                         $compile($resizeBars)(scope);

@@ -32,7 +32,7 @@ _snippets.add = function(req, res){
         }else{
             req.body.user = req.session.user.login;;
             
-            snippets.add(snippets,req.body, function(data){
+            snippets.add(req.body, function(data){
                 res.end(baseRes({snippet: data[0]}));
             });
         }

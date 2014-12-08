@@ -5,16 +5,16 @@ define(['js/app'], function(app){
     ['$compile', 'utils',
         function($compile, utils){
             var template = utils.heredoc(function(){/*!
-                <span class="editor-nav-item" ng-repeat="item in nav" editor-nav-item ng-class="{active: $parent.active == $index}">
+                <span class="editor__nav-item" ng-repeat="item in nav" editor-nav-item ng-class="{active: $parent.active == $index}">
                     {{item.name}}
                     <ul ng-show="$parent.active == $index">
                         <li ng-repeat="sub in item.subNav" ng-click="sub.command && exec(sub.command, sub.params)">
                             <span ng-if="sub.key" class="right">{{sub.key}}</span>
                             {{sub.name}}
-                            <span ng-if="sub.subNav" class="editor-nav-arrow"></span>
+                            <span ng-if="sub.subNav" class="editor__nav-arrow"></span>
                             <ul ng-if="sub.subNav">
                                 <li ng-repeat="sub in sub.subNav" ng-click="sub.command && exec(sub.command, sub.params)">
-                                    <span ng-if="sub.mark && mark(sub.mark)" class="editor-nav-mark"></span>{{sub.name}}</li>
+                                    <span ng-if="sub.mark && mark(sub.mark)" class="editor__nav-mark"></span>{{sub.name}}</li>
                             </ul>
                         </li>
                     </ul>

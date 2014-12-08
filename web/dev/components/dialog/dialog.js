@@ -7,17 +7,14 @@ define(['angular', 'js/app'], function(_, app){
             var cssList = ['maxWidth', 'minWidth', 'width', 'maxHeight', 'minHeight', 'height'];
             var template;
             var css = {
-                position: 'absolute',
-                display: 'none',
-                zIndex: 1500,
                 visibility: 'visible'
             };
             
 
             function Dialog(opts){
                 this.element = angular.element('<div class="dialog"></div>');
-                this.overlay = angular.element('<div class="dialog--bg"></div>');
-                this.$close = angular.element('<a class="dialog--close">×</a>');
+                this.overlay = angular.element('<div class="dialog__bg"></div>');
+                this.$close = angular.element('<a class="dialog__close">×</a>');
                 this.opts = opts;
                 
                 if(opts.target){

@@ -42,9 +42,9 @@ define(['js/app'], function(app){
     .controller('myAppProsCtrl',
     ['$scope', 'appProCrud', 'prompt',
         function($scope,   appProCrud, prompt){
-            if($scope.tab !== 'appPros'){
-                return;
-            }
+//             if($scope.tab !== 'appPros'){
+//                 return;
+//             }
 
             $scope.currentSize = {};
             $scope.current = {};

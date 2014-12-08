@@ -1,0 +1,42 @@
+//Components
+//Tree
+
+@component-tree-color: #efefef;
+@component-tree-background-color: #748512;
+
+.aui-tree{
+    margin-left: 0;
+    padding: 0 10px;
+    color: @component-tree-color;
+    white-space: nowrap;
+}
+
+.aui-tree li{
+    display: block;
+}
+
+.aui-tree li>span{
+    min-width: 100%;
+    .border-radius(4px);
+}
+
+.aui-tree span{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.aui-tree a{
+    padding:0 5px;
+    margin-left: 3px;
+    color: @component-tree-color;
+}
+
+.aui-tree a:focus{
+    outline: 1px solid #0078a0;
+    cursor: auto;
+    background-color: transparent;
+}
+
+.aui-tree .aui-active{
+    background-color: @component-tree-background-color;
+}

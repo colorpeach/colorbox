@@ -1,10 +1,33 @@
 //Grid
+//参考: http://csswizardry.com/csswizardry-grids
 
-.generate-columns(12);
-
-.generate-columns(@n, @i: 1) when (@i =< @n) {
-  .column-@{i} {
-    width: (@i * 100% / @n);
+.generate-columns(@n, @i: 1, @prefix, @prop) when (@i =< @n) {
+  .@{prefix}__@{i}-@{n} {
+    @{prop}: (@i * 100% / @n);
   }
-  .generate-columns(@n, (@i + 1));
+  .generate-columns(@n, (@i + 1), @prefix, @prop);
 }
+
+.generate-columns-group(@g, @j: 2, @prefix: grid, @prop: width) when (@j =< @g) {
+    .generate-columns(@j, 1, @prefix, @prop);
+    .generate-columns-group(@g, (@j + 2), @prefix, @prop);
+}
+
+.grid{
+    margin: 0;
+    padding: 0;
+}
+
+.grid__item{
+    display: inline-block;
+    vertical-align: top;
+}
+
+.generate-columns-group(12);
+
+[class^='offset__'],
+[class*=' offset__']{
+    position: relative;
+}
+
+.generate-columns-group(12, 2, offset, left);

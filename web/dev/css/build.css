@@ -200,7 +200,9 @@ body {
   font-family: '微软雅黑';
 }
 a {
+  color: #008cba;
   text-decoration: none;
+  cursor: pointer;
 }
 @font-face {
   font-family: 'icomoon';
@@ -4372,10 +4374,10 @@ Copyright (c) 2014 Daniel Eden
   line-height: 1.4;
   vertical-align: middle;
   cursor: pointer;
-  transition: .3s all;
+  transition: .2s all;
   color: #333333;
   background-color: #dddddd;
-  border-color: #d0d0d0;
+  border-color: #dddddd;
 }
 .button:hover,
 .button:focus,
@@ -4383,20 +4385,19 @@ Copyright (c) 2014 Daniel Eden
 .button:active,
 .button.active {
   background-color: #c4c4c4;
-  border-color: #b7b7b7;
+  border-color: #c4c4c4;
 }
 .button.disabled,
 .button[disabled] {
   pointer-events: none;
   background-color: #dddddd;
-  border-color: #dddddd;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--success {
   color: #ffffff;
   background-color: #43ac6a;
-  border-color: #3c9a5f;
+  border-color: #43ac6a;
 }
 .button--success:hover,
 .button--success:focus,
@@ -4404,20 +4405,19 @@ Copyright (c) 2014 Daniel Eden
 .button--success:active,
 .button--success.active {
   background-color: #358753;
-  border-color: #2e7548;
+  border-color: #358753;
 }
 .button--success.disabled,
 .button--success[disabled] {
   pointer-events: none;
   background-color: #43ac6a;
-  border-color: #43ac6a;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--alert {
   color: #ffffff;
   background-color: #f04124;
-  border-color: #ea2f10;
+  border-color: #f04124;
 }
 .button--alert:hover,
 .button--alert:focus,
@@ -4425,20 +4425,19 @@ Copyright (c) 2014 Daniel Eden
 .button--alert:active,
 .button--alert.active {
   background-color: #d32a0e;
-  border-color: #bb260d;
+  border-color: #d32a0e;
 }
 .button--alert.disabled,
 .button--alert[disabled] {
   pointer-events: none;
   background-color: #f04124;
-  border-color: #f04124;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--primary {
   color: #ffffff;
   background-color: #008cba;
-  border-color: #0079a1;
+  border-color: #008cba;
 }
 .button--primary:hover,
 .button--primary:focus,
@@ -4446,20 +4445,19 @@ Copyright (c) 2014 Daniel Eden
 .button--primary:active,
 .button--primary.active {
   background-color: #006687;
-  border-color: #00526e;
+  border-color: #006687;
 }
 .button--primary.disabled,
 .button--primary[disabled] {
   pointer-events: none;
   background-color: #008cba;
-  border-color: #008cba;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 .button--warning {
   color: #ffffff;
   background-color: #f08a24;
-  border-color: #ea7d10;
+  border-color: #f08a24;
 }
 .button--warning:hover,
 .button--warning:focus,
@@ -4467,13 +4465,12 @@ Copyright (c) 2014 Daniel Eden
 .button--warning:active,
 .button--warning.active {
   background-color: #d3710e;
-  border-color: #bb640d;
+  border-color: #d3710e;
 }
 .button--warning.disabled,
 .button--warning[disabled] {
   pointer-events: none;
   background-color: #f08a24;
-  border-color: #f08a24;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
@@ -4608,15 +4605,15 @@ Copyright (c) 2014 Daniel Eden
 .form__label {
   padding-right: 1em;
   padding-bottom: 1em;
-  vertical-align: middle;
+  padding-top: .25em;
+  line-height: 1.4;
+  vertical-align: top;
 }
 .form__input,
 .form__button {
-  margin-right: 1em;
   margin-bottom: 1em;
 }
 .form__input {
-  width: 20em;
   padding: .25em .5em;
   border-width: 1px;
   border-style: solid;
@@ -4636,41 +4633,288 @@ Copyright (c) 2014 Daniel Eden
 .form__input[readonly] {
   cursor: default;
 }
-.column-1 {
-  width: 8.33333333%;
+.form__full {
+  padding: 1em 0;
 }
-.column-2 {
-  width: 16.66666667%;
+.form__full .form__label,
+.form__full .form__input,
+.form__full .form__cell {
+  display: block;
 }
-.column-3 {
-  width: 25%;
+.form__full .form__label {
+  padding: 0;
 }
-.column-4 {
-  width: 33.33333333%;
+.form__full .form__input,
+.form__full .form__button,
+.form__full .form__cell {
+  margin-bottom: 1em;
 }
-.column-5 {
-  width: 41.66666667%;
+.form__full .form__input {
+  width: 100%;
 }
-.column-6 {
+.grid {
+  margin: 0;
+  padding: 0;
+}
+.grid__item {
+  display: inline-block;
+  vertical-align: top;
+}
+.grid__1-2 {
   width: 50%;
 }
-.column-7 {
-  width: 58.33333333%;
+.grid__2-2 {
+  width: 100%;
 }
-.column-8 {
-  width: 66.66666667%;
+.grid__1-4 {
+  width: 25%;
 }
-.column-9 {
+.grid__2-4 {
+  width: 50%;
+}
+.grid__3-4 {
   width: 75%;
 }
-.column-10 {
+.grid__4-4 {
+  width: 100%;
+}
+.grid__1-6 {
+  width: 16.66666667%;
+}
+.grid__2-6 {
+  width: 33.33333333%;
+}
+.grid__3-6 {
+  width: 50%;
+}
+.grid__4-6 {
+  width: 66.66666667%;
+}
+.grid__5-6 {
   width: 83.33333333%;
 }
-.column-11 {
+.grid__6-6 {
+  width: 100%;
+}
+.grid__1-8 {
+  width: 12.5%;
+}
+.grid__2-8 {
+  width: 25%;
+}
+.grid__3-8 {
+  width: 37.5%;
+}
+.grid__4-8 {
+  width: 50%;
+}
+.grid__5-8 {
+  width: 62.5%;
+}
+.grid__6-8 {
+  width: 75%;
+}
+.grid__7-8 {
+  width: 87.5%;
+}
+.grid__8-8 {
+  width: 100%;
+}
+.grid__1-10 {
+  width: 10%;
+}
+.grid__2-10 {
+  width: 20%;
+}
+.grid__3-10 {
+  width: 30%;
+}
+.grid__4-10 {
+  width: 40%;
+}
+.grid__5-10 {
+  width: 50%;
+}
+.grid__6-10 {
+  width: 60%;
+}
+.grid__7-10 {
+  width: 70%;
+}
+.grid__8-10 {
+  width: 80%;
+}
+.grid__9-10 {
+  width: 90%;
+}
+.grid__10-10 {
+  width: 100%;
+}
+.grid__1-12 {
+  width: 8.33333333%;
+}
+.grid__2-12 {
+  width: 16.66666667%;
+}
+.grid__3-12 {
+  width: 25%;
+}
+.grid__4-12 {
+  width: 33.33333333%;
+}
+.grid__5-12 {
+  width: 41.66666667%;
+}
+.grid__6-12 {
+  width: 50%;
+}
+.grid__7-12 {
+  width: 58.33333333%;
+}
+.grid__8-12 {
+  width: 66.66666667%;
+}
+.grid__9-12 {
+  width: 75%;
+}
+.grid__10-12 {
+  width: 83.33333333%;
+}
+.grid__11-12 {
   width: 91.66666667%;
 }
-.column-12 {
+.grid__12-12 {
   width: 100%;
+}
+[class^='offset__'],
+[class*=' offset__'] {
+  position: relative;
+}
+.offset__1-2 {
+  left: 50%;
+}
+.offset__2-2 {
+  left: 100%;
+}
+.offset__1-4 {
+  left: 25%;
+}
+.offset__2-4 {
+  left: 50%;
+}
+.offset__3-4 {
+  left: 75%;
+}
+.offset__4-4 {
+  left: 100%;
+}
+.offset__1-6 {
+  left: 16.66666667%;
+}
+.offset__2-6 {
+  left: 33.33333333%;
+}
+.offset__3-6 {
+  left: 50%;
+}
+.offset__4-6 {
+  left: 66.66666667%;
+}
+.offset__5-6 {
+  left: 83.33333333%;
+}
+.offset__6-6 {
+  left: 100%;
+}
+.offset__1-8 {
+  left: 12.5%;
+}
+.offset__2-8 {
+  left: 25%;
+}
+.offset__3-8 {
+  left: 37.5%;
+}
+.offset__4-8 {
+  left: 50%;
+}
+.offset__5-8 {
+  left: 62.5%;
+}
+.offset__6-8 {
+  left: 75%;
+}
+.offset__7-8 {
+  left: 87.5%;
+}
+.offset__8-8 {
+  left: 100%;
+}
+.offset__1-10 {
+  left: 10%;
+}
+.offset__2-10 {
+  left: 20%;
+}
+.offset__3-10 {
+  left: 30%;
+}
+.offset__4-10 {
+  left: 40%;
+}
+.offset__5-10 {
+  left: 50%;
+}
+.offset__6-10 {
+  left: 60%;
+}
+.offset__7-10 {
+  left: 70%;
+}
+.offset__8-10 {
+  left: 80%;
+}
+.offset__9-10 {
+  left: 90%;
+}
+.offset__10-10 {
+  left: 100%;
+}
+.offset__1-12 {
+  left: 8.33333333%;
+}
+.offset__2-12 {
+  left: 16.66666667%;
+}
+.offset__3-12 {
+  left: 25%;
+}
+.offset__4-12 {
+  left: 33.33333333%;
+}
+.offset__5-12 {
+  left: 41.66666667%;
+}
+.offset__6-12 {
+  left: 50%;
+}
+.offset__7-12 {
+  left: 58.33333333%;
+}
+.offset__8-12 {
+  left: 66.66666667%;
+}
+.offset__9-12 {
+  left: 75%;
+}
+.offset__10-12 {
+  left: 83.33333333%;
+}
+.offset__11-12 {
+  left: 91.66666667%;
+}
+.offset__12-12 {
+  left: 100%;
 }
 .table {
   display: table;
@@ -4695,6 +4939,32 @@ Copyright (c) 2014 Daniel Eden
 .text--center {
   text-align: center;
 }
+.position__full,
+.position__top,
+.position__left,
+.position__right,
+.position__bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.position {
+  position: relative;
+}
+.position__top {
+  bottom: auto;
+}
+.position__bottom {
+  top: auto;
+}
+.position__left {
+  right: auto;
+}
+.position__right {
+  left: auto;
+}
 .clearfix:before,
 .clearfix:after {
   content: " ";
@@ -4715,6 +4985,16 @@ Copyright (c) 2014 Daniel Eden
 .right {
   float: right;
 }
+.blur {
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+.radius {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
 .cm-tip {
   position: fixed;
   border-radius: 4px;
@@ -4722,7 +5002,7 @@ Copyright (c) 2014 Daniel Eden
   color: #333;
   background-color: #fff;
   font-size: 12px;
-  z-index: 1050;
+  z-index: 1100;
 }
 .cm-tip-arrow {
   position: absolute;
@@ -4769,8 +5049,8 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
   background-color: transparent;
-  opacity: .3;
-  z-index: 1000;
+  opacity: .7;
+  z-index: 1200;
 }
 .route-overlay.ng-enter {
   -webkit-animation-name: fadeIn;
@@ -4796,7 +5076,7 @@ Copyright (c) 2014 Daniel Eden
   height: 30px;
   margin-top: -15px;
   text-align: center;
-  color: #000;
+  color: #ccc;
   line-height: 30px;
 }
 .route-waiting .waiting-icon {
@@ -4826,6 +5106,9 @@ Copyright (c) 2014 Daniel Eden
   100% {
     transform: rotate(360deg);
   }
+}
+.resize-box > div {
+  position: absolute;
 }
 .resize-bar {
   position: absolute!important;
@@ -4925,30 +5208,29 @@ Copyright (c) 2014 Daniel Eden
 .dialog {
   visibility: hidden;
   display: none;
-  position: absolute;
-  z-index: 1005;
+  position: relative;
   width: 100vw;
-  top: 0;
-  border-radius: 3px;
-  left: 0;
-  background-color: white;
-  padding: 1.25rem;
+  margin: 20px auto;
+  padding: 1.5rem;
   border: solid 1px #666666;
+  background-color: white;
+  border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  padding: 1.875rem;
+  z-index: 1000;
 }
-.dialog--bg {
+.dialog__bg {
+  overflow: auto;
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   background: black;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 1004;
+  z-index: 900;
   display: none;
   left: 0;
 }
-.dialog--close {
+.dialog__close {
   font-size: 2.5rem;
   line-height: 1;
   position: absolute;
@@ -4958,100 +5240,342 @@ Copyright (c) 2014 Daniel Eden
   font-weight: bold;
   cursor: pointer;
 }
-.my-apps-header {
-  padding-top: 55px;
+.dialog__close:hover {
+  color: #919191;
 }
-.add-app-editor {
-  position: absolute;
-  top: 35px;
-  left: 0;
-  bottom: 0;
-  right: 0;
+.aui-tree {
+  margin-left: 0;
+  padding: 0 10px;
+  color: #efefef;
+  white-space: nowrap;
 }
-.add-app-editor > div {
-  position: absolute;
-  overflow: hidden;
-  padding: 5px;
-  transition: 0.3s all;
+.aui-tree li {
+  display: block;
 }
-.add-app-editor textarea,
-.add-app-editor iframe {
-  height: 100%;
-  width: 100%;
+.aui-tree li > span {
+  min-width: 100%;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
 }
-.add-app-box {
-  position: absolute!important;
-  top: 35px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border: 1px solid #999;
-}
-.app-name {
-  margin-top: 2px;
-  font-weight: bold;
-}
-.box-name {
+.aui-tree span {
   display: inline-block;
+  cursor: pointer;
+}
+.aui-tree a {
   padding: 0 5px;
-  top: 5px;
-  right: 5px;
-  color: #ccc;
-  line-height: 20px;
-  vertical-align: top;
+  margin-left: 3px;
+  color: #efefef;
 }
-.add-app-top-toolbar,
-.add-app-toolbar {
-  position: absolute;
-  height: 30px;
-  left: 5px;
-  top: 5px;
-  right: 5px;
-  color: #fff;
-  background-color: #333;
-  opacity: .8;
-  overflow: hidden;
+.aui-tree a:focus {
+  outline: 1px solid #0078a0;
+  cursor: auto;
+  background-color: transparent;
 }
-.add-app-toolbar {
-  padding: 5px;
+.aui-tree .aui-active {
+  background-color: #748512;
 }
-.add-app-top-toolbar .button-group .button {
-  background-color: #008cba!important;
-}
-.add-app-top-toolbar .button-group .active {
-  background-color: #007095!important;
-}
-.add-app-top-toolbar select,
-.add-app-top-toolbar input {
-  padding: 0 20px 0 0;
-  margin: 0;
-  height: 30px;
-  line-height: 12px;
+.editor {
+  background-color: #333333;
+  color: #ffffff;
+  border-top: 1px solid #444;
   font-size: 12px;
-  width: auto;
 }
-.add-app-top-toolbar .columns {
-  padding-right: 0;
+.editor__nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  bottom: auto;
+  padding: 0 10px;
+  height: 30px;
+  border-bottom: 1px solid #222222;
+  line-height: 30px;
+  white-space: nowrap;
 }
-.add-app-top-toolbar .button-group {
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #fff;
+.editor__nav-item {
+  display: inline-block;
+  position: relative;
+  padding: 0 5px;
+  cursor: default;
+  line-height: 28px;
+  border: 1px solid transparent;
 }
-.label-buttons {
-  margin-bottom: 20px;
+.editor__nav-item.active {
+  z-index: 5;
+  background-color: #666666;
+  border: 1px solid #222222;
 }
-.label-buttons [type=radio],
-.label-buttons [type=checkbox] {
+.editor__nav-item.active:before {
+  position: absolute;
+  content: '';
+  display: block;
+  top: 25px;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  background-color: #666666;
+  z-index: 5;
+}
+.editor__nav-item ul {
+  position: absolute;
+  left: -1px;
+  top: 28px;
+  padding: 5px 0;
+  margin: 0;
+  font-size: 12px;
+  list-style: none;
+  background-color: #666666;
+  color: #ffffff;
+  border: 1px solid #222222;
+  box-shadow: 0 2px 5px #222222;
+}
+.editor__nav-item ul li {
+  position: relative;
+  min-width: 120px;
+  padding: 2px 10px 2px 30px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.editor__nav-item ul li:hover {
+  background-color: #555555;
+}
+.editor__nav-item ul li > ul {
+  display: none;
+  left: 100%;
+  top: -6px;
+  margin-left: -5px;
+}
+.editor__nav-item ul li:hover > ul {
+  display: block;
+}
+.editor__nav-mark {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  border: 3px solid;
+  border-radius: 50%;
+}
+.editor__nav-arrow {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+  display: block;
+  border-style: solid;
+  border-color: transparent transparent transparent #ffffff;
+  border-width: 4px 0 4px 6px;
+}
+.editor__boxs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__boxs > div {
+  position: absolute;
+  border-left: 1px solid #222;
+  border-bottom: 1px solid #222;
+  transition: .3s all;
+}
+.editor__boxs > .resize-bar,
+.editor__boxs > .resize-mark {
+  border: 0;
+}
+.editor__boxs > .resize-bar:before,
+.editor__boxs > .resize-mark:before,
+.editor__boxs > .resize-bar:after,
+.editor__boxs > .resize-mark:after {
   display: none;
 }
-.label-buttons .button {
-  margin-left: 0;
-  margin-right: 10px;
+.editor__tabs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  bottom: auto;
+  padding: 0 10px;
+  height: 30px;
+  border-bottom: 1px solid #222222;
+  line-height: 30px;
+  background-color: #333333;
+  white-space: nowrap;
 }
-.my-apps .app-logo {
-  height: 100px;
-  width: 100px;
+.editor__tabs .button-icon {
+  padding: 5px;
+  margin-left: 0;
+  margin-right: 5px;
+  border: 1px solid transparent;
+  vertical-align: baseline;
+}
+.editor__tabs .button-icon.active {
+  border: 1px solid #222222;
+  box-shadow: 0 0 5px #222222 inset;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.editor__contents {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__contents > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.editor__back-logo:before {
+  position: absolute;
+  display: block;
+  content: 'colorBox';
+  top: 50%;
+  width: 100%;
+  margin-top: -1.5em;
+  font-weight: 700;
+  color: #222222;
+  text-align: center;
+  font-size: 3em;
+  line-height: 3em;
+}
+.editor__tab {
+  position: relative;
+  display: inline-block;
+  padding: 0 2em 0 .5em;
+  line-height: 28px;
+  margin-right: 1px;
+  cursor: default;
+  background-color: #4d4d4d;
+}
+.editor__tab:hover {
+  background-color: #666666;
+}
+.editor__tab.active {
+  background-color: #222222;
+}
+.editor__tab > button {
+  position: absolute;
+  top: 0;
+  right: .5em;
+  padding: 0;
+  border: 0;
+  line-height: 28px;
+  background-color: transparent;
+}
+.editor__tab > button:hover {
+  color: #f04124;
+}
+.editor__tree {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 30px;
+}
+.editor__select {
+  display: inline-block;
+  background-color: #444;
+  height: 28px;
+  width: auto;
+  vertical-align: top;
+  min-width: 80px;
+  border: 4px solid #333;
+  padding: 0;
+  margin-bottom: 0;
+  color: #fff;
+}
+.editor__select:hover,
+.editor__select:focus {
+  background-color: #555555;
+  color: #fff;
+  border-color: #333;
+}
+.full-screen {
+  position: fixed!important;
+  top: 0!important;
+  left: 0!important;
+  right: 0!important;
+  bottom: 0!important;
+  height: auto!important;
+  width: auto!important;
+  z-index: 10;
+}
+.context-menu {
+  position: fixed;
+  padding: 5px 0;
+  margin: 0;
+  font-size: 12px;
+  list-style: none;
+  background-color: #666666;
+  color: #ffffff;
+  border: 1px solid #222222;
+  box-shadow: 0 2px 5px #222222;
+  z-index: 700;
+}
+.context-menu li {
+  position: relative;
+  min-width: 120px;
+  padding: 2px 10px 2px 30px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.context-menu li:hover {
+  background-color: #555555;
+}
+.context-menu li > ul {
+  display: none;
+  left: 100%;
+  top: -6px;
+  margin-left: -5px;
+}
+.context-menu li:hover > ul {
+  display: block;
+}
+.row--gray {
+  color: #ffffff;
+  line-height: 30px;
+}
+.table {
+  width: 100%;
+}
+.table__th--gray,
+.table__td--gray {
+  border: 1px solid #222;
+  background-color: #444;
+}
+.table__th--gray:hover,
+.table__td--gray:hover {
+  background-color: #555555;
+}
+.table__cell-text {
+  display: block;
+  padding: 5px 10px;
+  color: #fff;
+  text-align: left;
+}
+.table__input-text--gray {
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  color: #fff;
+  background-color: #444;
+}
+.table__input-text--gray:hover,
+.table__input-text--gray:focus {
+  background-color: #555555;
 }
 .app-all-left {
   position: absolute;
@@ -5159,61 +5683,26 @@ Copyright (c) 2014 Daniel Eden
   padding-left: 0;
   padding-right: 0;
 }
-.dashboard-con {
-  overflow: auto;
+.dashboard__boxs {
   margin: 0;
   padding: 0;
 }
-.dashboard-box {
+.dashboard__box {
   display: block;
-  padding: 0 10px;
-  height: 100%;
-  background-color: #fafafa;
+  padding: 0 20px;
 }
-.dashboard-box-head {
+.dashboard__head {
   padding: 10px 0;
-  margin-bottom: 20px;
   border-bottom: 1px solid #ccc;
   font-weight: bold;
 }
-.dashboard-box-head span {
+.dashboard__head span {
   margin-right: 10px;
 }
-.dashboard-app-logo-wrap {
-  width: 100px;
-  height: 100px;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-.dashboard-app-types {
-  margin-bottom: 20px;
-}
-.dashboard-app-types [type=radio] {
-  display: none;
-}
-.dashboard-app-types [type=radio]:checked + label {
-  background-color: #008cba!important;
-  border-color: #007095!important;
-  color: #fff!important;
-}
-.dashboard-app-types .button {
-  margin-left: 0;
-  margin-right: 10px;
-}
-.dashboard-box-app-size {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-.dashboard-app-size-form select {
-  width: auto;
-  margin-right: 10px;
-  margin-left: 5px;
-}
-.dashboard-box-list {
+.dashboard__list {
   margin-left: 0;
 }
-.dashboard-box-item {
+.dashboard__item {
   display: block;
   padding: 10px;
   margin: 10px 0;
@@ -5223,29 +5712,54 @@ Copyright (c) 2014 Daniel Eden
   color: #666;
   cursor: pointer;
 }
-.dashboard-box-item:hover {
+.dashboard__item:hover {
   background-color: #eee;
-}
-.dashboard-box-item-btns {
-  float: right;
-}
-.dashboard-box-item-btns span {
-  display: inline-block;
-  margin-left: 10px;
-  color: #ccc;
-}
-.dashboard-box-item-btns span:hover {
-  color: #999;
 }
 .main {
   height: 100%;
+  margin: 0 auto;
+  max-width: 1024px;
+  position: relative;
+  box-shadow: 0 0 4px #ccc;
+}
+.main.active .main__top,
+.main.active .main__content {
+  left: 4rem;
+  right: -4rem;
+}
+.main.active .main__aside {
+  left: 0;
+}
+.main--minimal .main__top,
+.main--minimal .main__content {
+  left: 4rem;
+  right: -4rem;
+}
+.main--minimal .main__aside {
+  left: 0;
+}
+.main__top {
+  top: -100%;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: #f3f3f3;
+  transition: .3s all;
+}
+.main__top-item {
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: #333333;
+}
+.main__top-item.active {
+  color: #008cba;
 }
 .main__aside {
-  position: relative;
+  overflow-y: auto;
   width: 4rem;
+  background-color: #f3f3f3;
+  z-index: 100;
 }
 .main__aside > ul {
-  overflow: auto;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -5256,23 +5770,40 @@ Copyright (c) 2014 Daniel Eden
   bottom: 0;
 }
 .main__aside-item {
+  overflow: hidden;
   display: block;
   height: 4rem;
   width: 100%;
   border: 0;
   line-height: 4rem;
   font-size: 2rem;
-  text-align: center;
+  padding: 0 1rem;
   color: #333333;
   background-color: transparent;
+  white-space: nowrap;
+  transition: .3s all;
 }
 .main__aside-item:hover,
 .main__aside-item.active {
   color: #008cba;
+  background-color: #ffffff;
+}
+.main__aside-item:hover .main__sub-aside {
+  display: block;
+}
+.main__aside-text {
+  margin-left: 1rem;
+  font-size: 1rem;
+  vertical-align: top;
 }
 .main__content {
-  position: relative;
-  height: 100%;
+  left: 4rem;
+  background-color: #ffffff;
+  transition: .3s all;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 .main__content > div {
   overflow: auto;
@@ -5282,39 +5813,148 @@ Copyright (c) 2014 Daniel Eden
   right: 0;
   bottom: 0;
 }
-.drag-temp {
+.main__content.ng-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+.main__content.ng-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+.main__full {
+  left: 0!important;
+  top: 0!important;
+  position: fixed;
+  z-index: 200;
+}
+.main__overlay {
+  left: 4rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 800;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.main__overlay.ng-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+.main__overlay.ng-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+@media screen and (min-width: 1024px) {
+  .main__aside {
+    width: 10rem;
+  }
+  .main__content {
+    left: 10rem;
+  }
+}
+@media screen and (max-width: 480px) {
+  .main__top {
+    top: 0;
+  }
+  .main__aside {
+    left: -4rem;
+  }
+  .main__content {
+    left: 0;
+    top: 4rem;
+  }
+}
+.desktop__bar {
+  padding: .5rem 0;
+}
+.desktop__bar-item {
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  margin: 0 .5rem;
+  font-size: 2rem;
+  line-height: 3rem;
+  vertical-align: middle;
+  color: #aaaaaa;
+  transition: .3s all;
+  cursor: pointer;
+}
+.desktop__bar-item:hover {
+  color: #777777;
+  border: 1px solid;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+}
+.desktop__apps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.desktop__app {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  transition: .3s all;
+}
+.desktop__app:hover .desktop__app-aside {
+  display: block;
+}
+.desktop__app a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  font-size: 3em;
+  line-height: 100px;
+  text-align: center;
+  background-color: #43ac6a;
+  color: #ffffff;
+  transition: .3s all;
+}
+.desktop__app a:hover {
+  background-color: #358753;
+  box-shadow: 0 0 5px #ccc;
+}
+.desktop__app-aside {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -1em;
+}
+.drag__temp {
   position: absolute;
   display: block;
   pointer-events: none;
   opacity: .5 !important;
-  z-index: 1000;
+  z-index: 300;
   cursor: move;
 }
-.drag-placeholder {
+.drag__placeholder {
   background-color: #47a447 !important;
   border-width: 0 !important;
 }
-.drag-placeholder.wrong {
+.drag__placeholder.wrong {
   background-color: #f00 !important;
 }
-.messages-box-prompt {
-  margin: 0 0 30px;
+.message {
+  padding: 0 20px;
+}
+.messages__prompt {
+  margin: 20px 0 30px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.message-item {
+.message__item {
   border-top: 1px solid #eee;
   padding: 10px 0;
   line-height: 20px;
 }
-.message-item .message-item {
+.message__item .message__item {
   margin-left: 50px;
 }
-.message-item .message-item:hover {
-  background-color: #fefefe;
-}
-.message-item-avator {
+.message__avator {
   float: left;
   position: relative;
   overflow: hidden;
@@ -5326,27 +5966,98 @@ Copyright (c) 2014 Daniel Eden
   background-color: #333;
   color: #fff;
 }
-.message-item-avator span {
+.message__avator span {
   font-size: 40px;
 }
-.message-item-avator img {
+.message__avator img {
   position: absolute;
   top: 0;
   left: 0;
 }
-.message-head {
+.message__head {
   color: #aaa;
   font-size: 14px;
 }
-.message-response {
+.message__response {
   float: right;
   margin-right: 10px;
 }
-.message-item-content {
+.message__content {
   padding: 10px 0 10px 50px;
 }
-.message-item .message-item .message-item-content {
+.message__item .message__item .message__content {
   padding: 10px 0;
+}
+.snippet__editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 25px;
+}
+.snippet__editor > div {
+  padding: 5px;
+  transition: .3s all;
+}
+.snippet__toolbar {
+  padding: 0 10px;
+  background-color: #333;
+  font-size: 13px;
+}
+.snippet__toolbar:before,
+.snippet__toolbar:after {
+  content: " ";
+  display: table;
+}
+.snippet__toolbar:after {
+  clear: both;
+}
+.snippet__toolbar:before,
+.snippet__toolbar:after {
+  content: " ";
+  display: table;
+}
+.snippet__toolbar:after {
+  clear: both;
+}
+.snippet__toolbar > select {
+  padding: .24em 0;
+}
+.snippet__title {
+  color: #ffffff;
+  line-height: 2em;
+}
+.snippet__bar {
+  height: 24px;
+  padding: 0 10px;
+  background-color: #999999;
+}
+.snippet__box {
+  position: absolute!important;
+  top: 30px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 1px solid #999999;
+}
+.snippet__box > iframe {
+  width: 100%;
+  height: 100%;
+}
+.snippet__add {
+  margin-left: 5px;
+}
+.snippet__remove {
+  position: absolute;
+  top: 50%;
+  right: .5rem;
+  margin-top: -0.4rem;
+  color: #999999;
+  font-size: .8rem;
+}
+.snippet__remove:hover {
+  color: #808080;
 }
 .snippet-detail {
   padding-bottom: 100px;

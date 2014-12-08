@@ -21,6 +21,11 @@ define(['js/app'], function(app){
             //提交表单
             $scope.submit = function(e){
                 e.preventDefault();
+
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '登陆中...'
+                });
                 loginBox.enter($scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;
@@ -40,6 +45,11 @@ define(['js/app'], function(app){
             //提交表单
             $scope.submit = function(e){
                 e.preventDefault();
+
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '注册中...'
+                });
                 loginBox.register($scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;

@@ -1,0 +1,67 @@
+//Pages
+//Snippet
+
+@snippet-color: #999;
+
+.snippet__editor{
+    .position__full;
+    top: 25px;
+
+    & > div{
+        padding: 5px;
+        transition: .3s all;
+    }
+}
+
+.snippet__toolbar{
+    .clearfix;
+    padding: 0 10px;
+    background-color: #333;
+    font-size: 13px;
+
+    > select{
+        padding: .24em 0;
+    }
+}
+
+.snippet__title{
+    color: @white-color;
+    line-height: 2em;
+}
+
+.snippet__bar{
+    height: 24px;
+    padding: 0 10px;
+    background-color: @snippet-color;
+}
+
+.snippet__box{
+    position: absolute!important;
+    top: 30px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid @snippet-color;
+
+    > iframe{
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.snippet__add{
+    margin-left: 5px;
+}
+
+.snippet__remove{
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    margin-top: -.4rem;
+    color: @snippet-color;
+    font-size: .8rem;
+
+    &:hover{
+        color: darken(@snippet-color, 10%);
+    }
+}

@@ -1,64 +1,250 @@
 //Page
 //Index
 
+@bigWidth: 1024px;
+@smallWidth: 480px;
+@main-content-color: @white-color;
+@main-aside-color: #f3f3f3;
+@desktop-icon-color: #aaa;
+
 .main{
   height: 100%;
+  margin: 0 auto;
+  max-width: @bigWidth;
+  position: relative;
+  box-shadow: 0 0 4px #ccc;
+
+  &.active{
+    .main__top,
+    .main__content{
+      left: 4rem;
+      right: -4rem;
+    }
+
+    .main__aside{
+      left: 0;
+    }
+  }
+
+  &--minimal{
+    .main__top,
+    .main__content{
+      left: 4rem;
+      right: -4rem;
+    }
+
+    .main__aside{
+      left: 0;
+    }
+  }
+}
+
+.main__top{
+  top: -100%;
+  height: 4rem;
+  line-height: 4rem;
+  background-color: @main-aside-color;
+  transition: .3s all;
+}
+
+.main__top-item{
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: @base-color;
+
+  &.active{
+    color: @primary-color;
+  }
 }
 
 .main__aside{
-  position: relative;
+  overflow-y: auto;
   width: 4rem;
+  background-color: @main-aside-color;
+  z-index: @aside-index;
 
   & > ul{
-    overflow: auto;
     margin: 0;
     padding: 0;
     list-style: none;
-    .fill-full;
+    .position__full;
   }
 }
 
 .main__aside-item{
+  overflow: hidden;
   display: block;
   height: 4rem;
   width: 100%;
   border: 0;
   line-height: 4rem;
   font-size: 2rem;
-  text-align: center;
+  padding: 0 1rem;
   color: @base-color;
   background-color: transparent;
+  white-space: nowrap;
+  transition: .3s all;
 
   &:hover,
   &.active{
     color: @primary-color;
+    background-color: @main-content-color;
   }
+
+  &:hover .main__sub-aside{
+    display: block;
+  }
+}
+
+.main__aside-text{
+  margin-left: 1rem;
+  font-size: 1rem;
+  vertical-align: top;
 }
 
 .main__content{
-  position: relative;
-  height: 100%;
+  left: 4rem;
+  background-color: @main-content-color;
+  transition: .3s all;
+  .animated;
 
   & > div{
     overflow: auto;
-    .fill-full;
+    .position__full;
+  }
+
+  &.ng-enter{
+    .fadeIn;
+  }
+  &.ng-leave{
+    .fadeOut;
   }
 }
 
-.drag-temp{
+.main__full{
+  left: 0!important;
+  top: 0!important;
+  position: fixed;
+  z-index: @main-index;
+}
+
+.main__overlay{
+  left: 4rem;
+  background-color: fade(@white-color, 50%);
+  z-index: @overlay-index;
+  .animated;
+
+  &.ng-enter{
+    .fadeIn;
+  }
+  &.ng-leave{
+    .fadeOut;
+  }
+}
+
+@media screen and (min-width: @bigWidth){
+  .main__aside{
+    width: 10rem;
+  }
+
+  .main__content{
+    left: 10rem;
+  }
+}
+
+@media screen and (max-width: @smallWidth){
+  .main__top{
+    top: 0;
+  }
+
+  .main__aside{
+    left: -4rem;
+  }
+
+  .main__content{
+    left: 0;
+    top: 4rem;
+  }
+}
+
+.desktop__bar{
+  padding: .5rem 0;
+}
+
+.desktop__bar-item{
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  margin: 0 .5rem;
+  font-size: 2rem;
+  line-height: 3rem;
+  vertical-align: middle;
+  color: @desktop-icon-color;
+  transition: .3s all;
+  cursor: pointer;
+
+  &:hover{
+    color: darken(@desktop-icon-color, 20%);
+    border: 1px solid;
+    .border-radius();
+  }
+}
+
+.desktop__apps{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desktop__app{
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  transition: .3s all;
+
+  &:hover .desktop__app-aside{
+    display: block;
+  }
+}
+
+.desktop__app a{
+  display: block;
+  height: 100%;
+  width: 100%;
+  font-size: 3em;
+  line-height: 100px;
+  text-align: center;
+  background-color: @success-color;
+  color: @white-color;
+  transition: .3s all;
+
+  &:hover{
+    background-color: darken(@success-color, 10%);
+    box-shadow: 0 0 5px #ccc;
+  }
+}
+
+.desktop__app-aside{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -1em;
+}
+
+.drag__temp{
   position: absolute;
   display: block;
   pointer-events: none;
   opacity:.5 !important;
-  z-index: 1000;
+  z-index: @drag-index;
   cursor: move;
 }
 
-.drag-placeholder{
+.drag__placeholder{
   background-color:#47a447 !important;
   border-width:0 !important;
 }
 
-.drag-placeholder.wrong{
+.drag__placeholder.wrong{
   background-color:#f00 !important;
 }

@@ -1,354 +1,41 @@
-style.
-  .editor-box{
-      position:absolute;top:36px;left:0;right:0;bottom:0;background-color:#333;
-      border-top: 1px solid #444;
-      font-size: 12px;
-  }
-  .editor-nav,
-  .editor-tree-nav,
-  .editor-main-nav{
-      position:absolute;top:0;left:0;right:0;height:30px;color:#fff;
-      padding: 0 10px;
-      border-bottom: 1px solid #222;
-      line-height: 30px;
-      background-color: #333;
-  }
-  .editor,
-  .editor-tree-area,
-  .editor-main-area{
-      position:absolute;top:30px;left:0;right:0;bottom:0;
-  }
-  .editor-tree-area{
-      overflow: auto;
-  }
-  .editor-main-area > div{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .editor-main-area:before{
-    position: absolute;
-    display: block;
-    content: 'colorBox';
-    top: 50%;
-    width: 100%;
-    margin-top: -20px;
-    font-weight: 700;
-    color: #222;
-    text-align: center;
-    font-size: 40px;
-    line-height: 40px;
-  }
-  .editor > div{
-      position: absolute;
-      border-left: 1px solid #222;
-      border-bottom: 1px solid #222;
-      transition: .3s all;
-  }
-  .editor > .resize-bar,
-  .editor > .resize-mark{
-      border: 0;
-  }
-  .editor > .resize-bar:before,
-  .editor > .resize-bar:after{
-        display: none;
-  }
-  .editor .button-icon{
-      padding: 5px;
-      margin-left: 0;
-      margin-right: 5px;
-      border: 1px solid transparent;
-  }
-  .editor .button-icon.active{
-      border: 1px solid #222;
-      box-shadow: 0 0 5px #222 inset;
-      border-radius: 4px;
-  }
-  .editor .editor-tab{
-      position: relative;
-      display: inline-block;
-      padding: 0 30px 0 10px;
-      line-height: 28px;
-      margin-right: 1px;
-      cursor: default;
-      background-color: #3a3a3a;
-  }
-  .editor .editor-tab:hover{
-      background-color: #444;
-  }
-  .editor .editor-tab.active{
-     background-color: #222;
-  }
-  .editor .editor-tab > button{
-      position: absolute;
-      top: 0;
-      right: 10px;
-      padding: 0;
-      border: 0;
-      line-height: 28px;
-      background-color: transparent;
-  }
-  .editor .editor-tab > button:hover{
-      color: #f36050;
-  }
-
-  .editor-tree-nav{
-    white-space: nowrap;
-  }
-
-  .editor-now-entrance{
-    display: inline-block;
-    background-color: #444;
-    height: 28px;
-    width: auto;
-    vertical-align: top;
-    min-width: 80px;
-    border: 4px solid #333;
-    padding: 0;
-    margin-bottom: 0;
-    color: #fff;
-  }
-
-  .editor-now-entrance:hover,
-  .editor-now-entrance:focus{
-    background-color: #555;
-    color: #fff;
-    border-color: #333;
-  }
-
-  .aui-tree{
-    margin-left: 0;
-    padding: 0 10px;
-    color: #efefef;
-    white-space: nowrap;
-  }
-
-  .aui-tree li{
-    display: block;
-    font-size: 12px;
-  }
-
-  .aui-tree li>span{
-    min-width: 100%;
-    border-radius: 4px;
-  }
-
-  .aui-tree span{
-    display: inline-block;
-    cursor: pointer;
-  }
-
-  .aui-tree a{
-    padding:0 5px;
-    margin-left: 3px;
-    color: #efefef;
-  }
-
-  .aui-tree a:focus{
-    outline: 1px solid #0078a0;
-    cursor: auto;
-    background-color: #333;
-  }
-
-  .aui-tree .aui-active{
-    background-color: #748512;
-  }
-
-  .editor-nav-item{
-    display: inline-block;
-    position: relative;
-    padding: 0 5px;
-    cursor: default;
-    line-height: 28px;
-    border: 1px solid transparent;
-  }
-
-  .editor-nav-item.active:before{
-    position: absolute;
-    content: '';
-    display: block;
-    top: 25px;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    background-color: #666;
-    z-index: 5;
-  }
-
-  .editor-nav-item.active{
-    z-index: 5;
-    background-color: #666;
-    border: 1px solid #222;
-  }
-
-  .editor-nav-item ul{
-    position: absolute;
-    left: -1px;
-    top: 28px;
-    padding: 5px 0;
-    margin: 0;
-    font-size: 12px;
-    list-style: none;
-    background-color: #666;
-    border: 1px solid #222;
-    box-shadow: 0 2px 5px #222;
-  }
-
-  .editor-nav-item li > ul{
-    display: none;
-    left: 100%;
-    top: -6px;
-    margin-left: -5px;
-  }
-
-  .editor-nav-item li:hover > ul{
-    display: block;
-  }
-
-  .editor-nav-item li{
-    position: relative;
-    min-width: 120px;
-    padding: 2px 10px 2px 30px;
-    line-height: 20px;
-    cursor: pointer;
-  }
-
-  .editor-nav-item li:hover{
-    background-color: #555;
-  }
-
-  .editor-nav-mark{
-    position: absolute;
-    left: 10px;
-    top: 8px;
-    border: 3px solid;
-    border-radius: 50%;
-  }
-
-  .editor-nav-arrow{
-    position: absolute;
-    right: 5px;
-    top: 7px;
-    display: block;
-    border-style: solid;
-    border-color: transparent transparent transparent #fff;
-    border-width: 4px 0 4px 6px;
-  }
-
-  .full-screen{
-    position: fixed!important;
-    top: 0!important;
-    left: 0!important;
-    right: 0!important;
-    bottom: 0!important;
-    height: auto!important;
-    width: auto!important;
-    z-index: 2000;
-  }
-
-  .context-menu{
-    position: fixed;
-    padding: 5px 0;
-    margin-left: 0;
-    margin-bottom: 0;
-    font-size: 12px;
-    list-style: none;
-    color: #fff;
-    background-color: #666;
-    border: 1px solid #222;
-    box-shadow: 0 2px 5px #222;
-    z-index: 2002;
-  }
-  .context-menu li{
-    position: relative;
-    min-width: 120px;
-    padding: 2px 10px 2px 30px;
-    cursor: pointer;
-  }
-  .context-menu li:hover{
-    background-color: #555;
-  }
-
-  .row--gray{
-    color: #fff;
-    line-height: 30px;
-  }
-
-  .table{
-    width: 100%;
-  }
-
-  .table__th--gray,
-  .table__td--gray{
-    border: 1px solid #222;
-    background-color: #444;
-  }
-
-  .table__th--gray:hover,
-  .table__td--gray:hover{
-    background-color: #555;
-  }
-
-  .table__cell-text{
-    display: block;
-    padding: 5px 10px;
-    color: #fff;
-    text-align: left;
-  }
-
-  .table__input-text--gray{
-    width: 100%;
-    height: 100%;
-    padding: 0 10px;
-    border: 0;
-    color: #fff;
-    background-color: #444;
-  }
-
-  .table__input-text--gray:hover,
-  .table__input-text--gray:focus{
-    background-color: #555;
-  }
-div.editor-box
-  div.editor-nav(editor-nav="editorNav")
-  div.editor(resize-box="layoutConfig")
+div.editor
+  div.editor__nav(editor-nav="editorNav")
+  div.editor__boxs(resize-box="layoutConfig")
 script(type="text/ng-template", id="editor-tree")
   div
-    div.editor-tree-nav
+    div.editor__tabs
       span.icon-plus.button-icon(ng-click="addFile()")
       span.icon-remove.button-icon(ng-click="delFile()")
-    div.editor-tree-area(context-menu="menuConfig", has-context-menu="main")
+    div.editor__tree(context-menu="menuConfig", has-context-menu="main")
       div.aui-tree(style="margin-top: 10px;")
         span.icon-briefcase
         a(href="/application/{{app.user}}/{{app.name}}{{app.entrance}}", target="_blank").aui-tree-node {{app.name}}
       div(xtree="files")
 script(type="text/ng-template", id="editor-main")
-  div.editor-main
-    div.editor-main-nav
+  div
+    div.editor__tabs
       span.icon-tree.button-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
       span.icon-console.button-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
       span.icon-plus.button-icon(ng-click="addFile()")
-      span.editor-tab(ng-repeat='item in tabs', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
+      span.editor__tab(ng-repeat='item in tabs', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
         | {{file.name}}
         span(ng-show="file.isChange") *
         button(ng-click="closeTab('tabs', item)") ×
-    div.editor-main-area
+    div.editor__contents.editor__back-logo
       div(editor="currentFile", ng-show="currentTab")
 script(type="text/ng-template", id="editor-assist")
   div(ng-class="{'full-screen': fullScreen}")
-    div.editor-nav
+    div.editor__tabs
       span.icon-expand.button-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
-      span.editor-tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
+      span.editor__tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
-    div.editor-main-area(style="background-color: #222;", panels="panels")
+    div.editor__contents(style="background-color: #222;", panels="panels")
 script(type="text/ng-template", id="editor-route")
   div(style="padding: 10px;")
     div.row--gray
       span 应用入口：
-      select.editor-now-entrance(ng-model="app.entrance", ng-options="file.url as file.url for file in files")
+      select.editor__select(ng-model="app.entrance", ng-options="file.url as file.url for file in files")
     table.table
       thead
         tr

@@ -14,6 +14,22 @@ define(['js/app'], function(app){
         }
     ])
 
+    .filter('desktopTab', 
+    [
+        function(){
+            var showTabs = ['/', '/snippet-square', '/dashboard/account'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
     .controller('desktopCtrl',
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
@@ -22,13 +38,13 @@ define(['js/app'], function(app){
                     name: '所有应用',
                     link: '/#/app-square',
                     icon: 'icon-stack',
-                    position: {left: 0, top: 0, width: '100px', height: '100px'}
+                    position: {left: '10px', top: 0, width: '100px', height: '100px'}
                 },
                 {
                     name: '代码广场',
                     link: '/#/snippet-square',
                     icon: 'icon-code',
-                    position: {left: '120px', top: 0, width: '100px', height: '100px'}
+                    position: {left: '130px', top: 0, width: '100px', height: '100px'}
                 }
             ];
             $scope.status = {};
@@ -117,7 +133,7 @@ define(['js/app'], function(app){
                 css.height = rect.bottom - rect.top +'px';
                 css.marginTop = css.marginLeft = '10px';
 
-                div.addClass('drag-temp');
+                div.addClass('drag__temp');
                 div.css(css);
 
                 contain.append(div);
@@ -139,7 +155,7 @@ define(['js/app'], function(app){
             return {
                 position: function(item, point, containRect, contain){
                     return {
-                        left: Math.floor((contain.parentNode.scrollLeft + point.x)/cell.x) * cell.x + 'px',
+                        left: Math.floor((contain.scrollLeft + point.x - containRect.left)/cell.x) * cell.x + 10 + 'px',
                         top: Math.floor((contain.scrollTop + point.y - containRect.top)/cell.y) * cell.y + 'px',
                         width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
                         height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
@@ -267,7 +283,7 @@ define(['js/app'], function(app){
                             var $moveContain = angular.element($window.document.body);
                             var $drag = dragPlaceholder(element, $moveContain, true);
                             //TODO 使用了queryselector，待改进
-                            var $contain = angular.element($moveContain[0].querySelector('.desktop-added-list'));
+                            var $contain = angular.element($moveContain[0].querySelector('.desktop__apps'));
                             var containRect = $contain[0].getBoundingClientRect();
                             var $placeholder = dragPlaceholder(element, $contain);
                             var rect = element[0].getBoundingClientRect();
@@ -292,13 +308,13 @@ define(['js/app'], function(app){
                             }
 
                             $drag.css({
-                                left: rect.left + 'px',
-                                top: rect.top + 'px'
+                                left: rect.left - 10 + 'px',
+                                top: rect.top - 10 + 'px'
                             });
 
                             $placeholder.css(position);
                             $placeholder.html('');
-                            $placeholder.addClass('drag-placeholder');
+                            $placeholder.addClass('drag__placeholder');
                             $contain.append($placeholder);
                             $contain.parent().append($overlay);
 

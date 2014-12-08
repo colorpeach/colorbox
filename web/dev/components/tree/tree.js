@@ -17,7 +17,7 @@ define(['js/app'], function(app){
         treeTemplate: function(){
             return '<ul class="{{treeClass}}" >'
                 + '<li ng-repeat="node in sorted.tree" xtreenode  ng-show="!_hide">'
-                + '<span style=\'padding-left: {{(node.level+1) * 20 + "px"}}\' ng-class="{true:activeClass}[opera.activeNode === node]" ng-dblclick="dblclick($event)" ng-click="click($event)" ng-mousedown="mousedown($event)">'
+                + '<span ng-style="paddingLeft()" ng-class="{true:activeClass}[opera.activeNode === node]" ng-dblclick="dblclick($event)" ng-click="click($event)" ng-mousedown="mousedown($event)">'
                 + '<span ng-class="!node.isParent ? singleClass : _collapsed ? collapseClass : expandClass" ng-click="collapse($event)"></span>'
                 + '<a class="{{nodeClass}}" ng-blur="blur($event)" ng-keydown="keydown($event)" contenteditable={{!!_editing}}>{{node.name}}</a>'
                 + '</span>'
@@ -84,6 +84,12 @@ define(['js/app'], function(app){
                 if($event.keyCode === 13){
                     $event.preventDefault();
                     $scope.blur.call(this, $event);
+                }
+            };
+
+            $scope.paddingLeft = function(){
+                return {
+                    paddingLeft: (this.node.level + 1)*20 + 'px'
                 }
             };
         }

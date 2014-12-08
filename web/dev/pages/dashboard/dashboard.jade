@@ -1,9 +1,9 @@
 div
-  ul.dashboard-con(ng-show="tab === 'account'")
+  ul.dashboard__boxs(ng-show="tab === 'account'")
     include ./dashboard-account.jade
-  ul.dashboard-con(ng-show="tab === 'apps'", ng-controller="myAppsCtrl")
+  ul.dashboard__boxs(ng-show="tab === 'apps'", ng-controller="myAppsCtrl")
     include ./dashboard-apps.jade
-  ul.dashboard-con(ng-show="tab === 'snippets'", ng-controller="mySnippetsCtrl")
+  ul.dashboard__boxs(ng-show="tab === 'snippets'", ng-controller="mySnippetsCtrl")
     include ./dashboard-snippets.jade
-  ul.dashboard-con(ng-show="tab === 'appPros'", ng-controller="myAppProsCtrl")
+  ul.dashboard__boxs(ng-show="tab === 'appPros'", ng-controller="myAppProsCtrl")
     include ./dashboard-app-pro.jade

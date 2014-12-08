@@ -1,71 +1,70 @@
-div.add-app
-  form.sidebar(ng-submit="submit($event)")
+div
+  form(ng-submit="submit($event)")
     input(type="hidden", name="_id", value="{{data._id}}")
-    div.add-app-editor(resize-box="resizeBox")
-    div.add-app-top-toolbar
-      div.app-name.left.columns(ng-bind="data.name")
-      div.small-10.columns
-        input.button--success.right(type="submit", value="保存")
-        div.button-group.right
-          input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{active: !box.hide}")
-        select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
+    div.snippet__editor(resize-box="resizeBox")
+    div.snippet__toolbar
+      div.snippet__title.left(ng-bind="data.name")
+      input.button--success.right(type="submit", value="保存")
+      div.button-group.right
+        input.button(type="button", ng-repeat="box in resizeBox.items", value="{{box.name}}", ng-click="toggle($index)", ng-class="{'button--primary': !box.hide}")
+      select.right(ng-options="key as ('布局' + key) for (key, layout) in resizeBox.layouts", ng-model="layout")
 script(type='text/ng-template',id='html-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('html')", tip, title="设置")
       span.box-name html 
         span(ng-show="data.html.type !== 'html'") ({{data.html.type}})
-    div.add-app-box(snippet-editor="html")
+    div.snippet__box(snippet-editor="html")
 script(type='text/ng-template',id='javascript-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('javascript')", tip, title="设置")
       span.box-name js 
         span(ng-show="data.javascript.type !== 'javascript'") ({{data.javascript.type}})
-    div.add-app-box(snippet-editor="javascript")
+    div.snippet__box(snippet-editor="javascript")
 script(type='text/ng-template',id='css-editor')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('css')", tip, title="设置")
       span.box-name css 
         span(ng-show="data.css.type !== 'css'") ({{data.css.type}})
-    div.add-app-box(snippet-editor="css")
+    div.snippet__box(snippet-editor="css")
 script(type='text/ng-template',id='preview')
   div
-    div.add-app-toolbar
+    div.snippet__bar
       span.box-name preview
-    div.add-app-box
+    div.snippet__box
       iframe(ng-src="{{previewUrl}}", frameBorder=0)
 script(type='text/ng-template', id="edit-snippet-dialog")
-  div.label-buttons
+  div.form__full
     span(ng-repeat="t in current.typeList")
       input.hide(type="radio", id="{{t.key}}", value="{{t.key}}", name="type", ng-model="data[current.mark].type")
-      label.button(for="{{t.key}}", ng-bind="t.name", ng-class="{active: t.key === data[current.mark].type}")
-  div(ng-if="current.mark === 'html'")
-    label 头信息
-      span.icon-plus.button-icon(ng-click="data[current.mark].heads.push('')")
-    div.add-app-remove-box(ng-repeat="head in data[current.mark].heads track by $index")
-      span.icon-close.button-icon(ng-click="data[current.mark].heads.splice($index, 1)")
-      input(type="text", placeholder="例如：<meta name='viewport' content='width=device-width'>", ng-model="data[current.mark].heads[$index]")
-  div(ng-if="current.mark === 'css'")
-    label 基础css
-    div.label-buttons
-      span(ng-repeat="lib in current.libs")
-        input(type="checkbox", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
-        label.button(for="{lib.key}}", ng-bind="lib.name", ng-class="{active: data[current.mark].libs.indexOf(lib.key) >= 0}")
-    label 外部css
-      span.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
-    div.add-app-remove-box(ng-repeat="external in data[current.mark].externals track by $index")
-      span.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
-      input(type="text", placeholder="例如：http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.css", ng-model="data[current.mark].externals[$index]")
-  div(ng-if="current.mark === 'javascript'")
-    label 基础scripts
-    div.label-buttons
-      span(ng-repeat="lib in current.libs")
-        input(type="radio", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
-        label.button(for="{{lib.key}}", ng-bind="lib.name", ng-class="{active: data[current.mark].libs.indexOf(lib.key) >= 0}")
-    label 外部scripts
-      span.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
-    div.add-app-remove-box(ng-repeat="external in data[current.mark].externals track by $index")
-      span.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
-      input(type="text", placeholder="例如：http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js", ng-model="data[current.mark].externals[$index]")
+      label.button.form__button(for="{{t.key}}", ng-bind="t.name", ng-class="{'button--primary': t.key === data[current.mark].type}")
+    div(ng-if="current.mark === 'html'")
+      label.form__label 头信息
+        span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].heads.push('')")
+      div.relative(ng-repeat="head in data[current.mark].heads track by $index")
+        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].heads.splice($index, 1)")
+        input.form__input(type="text", placeholder="例如：<meta name='viewport' content='width=device-width'>", ng-model="data[current.mark].heads[$index]")
+    div(ng-if="current.mark === 'css'")
+      label 基础css
+      div.form__cell
+        span(ng-repeat="lib in current.libs")
+          input.hide(type="checkbox", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
+          label.button(for="{{lib.key}}", ng-bind="lib.name", ng-class="{'button--primary': data[current.mark].libs.indexOf(lib.key) >= 0}")
+      label.form__label 外部css
+        span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
+      div.relative(ng-repeat="external in data[current.mark].externals track by $index")
+        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
+        input.form__input(type="text", placeholder="例如：http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.css", ng-model="data[current.mark].externals[$index]")
+    div(ng-if="current.mark === 'javascript'")
+      label 基础scripts
+      div.form__cell
+        span(ng-repeat="lib in current.libs")
+          input.hide(type="checkbox", id="{{lib.key}}", value="{{lib.key}}", ng-click="toggleCheckbox(current.mark, lib.key)")
+          label.button(for="{{lib.key}}", ng-bind="lib.name", ng-class="{'button--primary': data[current.mark].libs.indexOf(lib.key) >= 0}")
+      label.form__label 外部scripts
+        span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
+      div.relative(ng-repeat="external in data[current.mark].externals track by $index")
+        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
+        input.form__input(type="text", placeholder="例如：http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js", ng-model="data[current.mark].externals[$index]")
