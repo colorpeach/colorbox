@@ -168,7 +168,8 @@
 }
 
 .desktop__bar{
-  padding: .5rem 0;
+/*   padding: .5rem 0; */
+  border-bottom: .3rem solid darken(@desktop-icon-color, -50%);
 }
 
 .desktop__bar-item{
@@ -176,17 +177,34 @@
   height: 3rem;
   width: 3rem;
   margin: 0 .5rem;
+  border: 1px solid @white-color;
   font-size: 2rem;
   line-height: 3rem;
   vertical-align: middle;
   color: @desktop-icon-color;
   transition: .3s all;
   cursor: pointer;
+  text-align: center;
 
   &:hover{
     color: darken(@desktop-icon-color, 20%);
-    border: 1px solid;
+    border-color: currentcolor;
     .border-radius();
+  }
+}
+
+.desktop__bar-tab{
+  display: inline-block;
+  height: 3rem;
+  width: 6rem;
+  border-bottom: .3rem solid @white-color;
+  line-height: 3rem;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover,
+  &.active{
+    border-color: currentcolor;
   }
 }
 
