@@ -301,5 +301,54 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     ]);
 
+    app
+    .filter('desktopNavs', 
+    [
+        function(){
+            var showTabs = ['/dashboard/account'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
+    .filter('desktopTabs', 
+    [
+        function(){
+            var showTabs = ['/', '/snippet-square'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
+    .filter('assistItems', 
+    [
+        function(){
+            var showTabs = ['/', '/snippet-square', '/dashboard/account'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
     return app;
 });

@@ -5580,7 +5580,7 @@ Copyright (c) 2014 Daniel Eden
 .table__input-text--gray:focus {
   background-color: #555555;
 }
-.app-all-left {
+.app-square__aside {
   position: absolute;
   width: 180px;
 }
@@ -5741,6 +5741,69 @@ Copyright (c) 2014 Daniel Eden
 .main--minimal .main__aside {
   left: 0;
 }
+.main__assist {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 400;
+  -webkit-border-bottom-right-radius: 100%;
+  -moz-border-bottom-right-radius: 100%;
+  -o-border-bottom-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+}
+.main__assist:hover {
+  height: 6rem;
+  width: 6rem;
+}
+.main__assist:hover .rotate-icon0 {
+  top: 1.29409523rem;
+  left: 4.82962913rem;
+}
+.main__assist:hover .rotate-icon1 {
+  top: 3.53553391rem;
+  left: 3.53553391rem;
+}
+.main__assist:hover .rotate-icon2 {
+  top: 4.82962913rem;
+  left: 1.29409523rem;
+}
+.main__assist:hover .main__assist-item {
+  display: block;
+}
+.main__assist-menu {
+  position: relative;
+  height: 3rem;
+  width: 3rem;
+  font-size: 1.4rem;
+  line-height: 2.6rem;
+  padding-left: .3rem;
+  color: #ffffff;
+  background-color: #1D365D;
+  -webkit-border-bottom-right-radius: 100%;
+  -moz-border-bottom-right-radius: 100%;
+  -o-border-bottom-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+  z-index: 1;
+}
+.main__assist-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2rem;
+  width: 2rem;
+  margin-top: -1rem;
+  margin-left: -1rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  color: #ffffff;
+  background-color: #1D365D;
+  text-align: center;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+  transition: .3s all;
+}
 .main__top {
   top: -100%;
   height: 4rem;
@@ -5867,43 +5930,8 @@ Copyright (c) 2014 Daniel Eden
     top: 4rem;
   }
 }
-.desktop__bar {
-  /*   padding: .5rem 0; */
-}
-.desktop__bar-item {
-  display: inline-block;
-  height: 3rem;
-  width: 3rem;
-  margin: 0 .5rem;
-  border: 1px solid #ffffff;
-  font-size: 2rem;
-  line-height: 3rem;
-  vertical-align: middle;
-  color: #aaaaaa;
-  transition: .3s all;
-  cursor: pointer;
-  text-align: center;
-}
-.desktop__bar-item:hover {
-  color: #777777;
-  border-color: currentcolor;
-  -webkit-border-radius: 100%;
-  -moz-border-radius: 100%;
-  -o-border-radius: 100%;
-  border-radius: 100%;
-}
-.desktop__bar-tab {
-  display: inline-block;
-  height: 3rem;
-  width: 6rem;
-  border-top: 0.3rem solid #ffffff;
-  line-height: 3rem;
-  cursor: pointer;
-  text-align: center;
-}
-.desktop__bar-tab:hover,
-.desktop__bar-tab.active {
-  border-color: currentcolor;
+.desktop {
+  top: 40px!important;
 }
 .desktop__apps {
   margin: 0;
