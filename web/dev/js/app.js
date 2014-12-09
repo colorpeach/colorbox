@@ -318,17 +318,23 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     ])
 
-    .filter('desktopTabs', 
+    .filter('logoNavs', 
     [
         function(){
-            var showTabs = ['/', '/snippet-square'];
+            var showTabs = ['/dashboard/appPros', '/snippet-square', '/dashboard/account', '/dashboard/apps', '/'];
             return function(navs){
-                var r = {};
+                var r = [];
                 angular.forEach(navs, function(n, i){
                     if(showTabs.indexOf(i) > -1){
-                        r[i] = n;
+                        n.href = i;
+                        r.push(n);
                     }
                 });
+
+                r.sort(function(a, b){
+                    return showTabs.indexOf(a.href) - showTabs.indexOf(b.href);
+                });
+
                 return r;
             }
         }

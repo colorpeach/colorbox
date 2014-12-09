@@ -1,6 +1,9 @@
 extends ./layout
 
 block content
+  div.logo
+    a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}")
+      span(class="{{item.icon}}")
   div.main(ng-controller="indexCtrl", ng-class="{active: showAside}")
     div.main__assist
       div.main__assist-menu
