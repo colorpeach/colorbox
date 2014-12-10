@@ -1,19 +1,18 @@
 extends ./layout
 
 block content
-  div.logo
+  div.logo(drag)
+    span.logo__item
     a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}")
       span(class="{{item.icon}}")
-  div.main(ng-controller="indexCtrl", ng-class="{active: showAside}")
-    div.main__assist
-      div.main__assist-menu
-        span.icon-menu2
-      a.main__assist-item(ng-repeat="(href, item) in navs | assistItems track by $index", title="{{item.title}}", href="{{'/#' + href}}", ng-class="{true: 'rotate-icon' + $index}[true]")
-        span(class="{{item.icon}}")
-    include ./top
-    include ./aside
-    div.main__content.position__right(ng-view, ng-class="{blur: searchShow, main__full: $parent.full}")
-    div.main__overlay.position__right(ng-show="searchShow")
+  div.hide.assist
+    div.assist-menu
+      span.icon-menu2
+    a.assist-item(ng-repeat="(href, item) in navs | assistItems track by $index", title="{{item.title}}", href="{{'/#' + href}}", ng-class="{true: 'rotate-icon' + $index}[true]")
+      span(class="{{item.icon}}")
+  div.main
+    div.main__content.position__full(ng-view)
+    div.main__overlay.hide.position__right(ng-show="searchShow")
       div.table
         input.form__input
   div.route-overlay(ng-show="loading || loadMessage")
