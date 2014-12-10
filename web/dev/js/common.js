@@ -97,6 +97,10 @@ define(['angular'], function(){
         function($q,   prompt,   $rootScope){
             return {
                 response: function success(d){
+                    if(!(angular.isString(d.data) && d.data[0] === '<')){
+                        //请求非模板数据返回时，去除loading
+                        $rootScope.removeLoad();
+                    }
                     if(d.data.error){
     //                      prompt({
     //                         type:'danger',
@@ -110,10 +114,6 @@ define(['angular'], function(){
     //                             content: d.data.successMsg.map(function(n){return '<div>'+n+'</div>';})
     //                         })
                         }
-                    }
-                    if(!(angular.isString(d.data) && d.data[0] === '<')){
-                        //请求非模板数据返回时，去除loading
-                        $rootScope.removeLoad();
                     }
                     return d;
                 },

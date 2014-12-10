@@ -4382,21 +4382,21 @@ Copyright (c) 2014 Daniel Eden
   -ms-user-select: none;
   user-select: none;
   color: #333333;
-  background-color: #dddddd;
-  border-color: #dddddd;
+  background-color: #b3b3b3;
+  border-color: #b3b3b3;
 }
 .button:hover,
 .button:focus,
 .button.focus,
 .button:active,
 .button.active {
-  background-color: #c4c4c4;
-  border-color: #c4c4c4;
+  background-color: #999999;
+  border-color: #999999;
 }
 .button.disabled,
 .button[disabled] {
   pointer-events: none;
-  background-color: #dddddd;
+  background-color: #b3b3b3;
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
@@ -4976,8 +4976,34 @@ Copyright (c) 2014 Daniel Eden
 }
 .panel {
   display: inline-block;
-  width: 200px;
-  min-height: 100px;
+  width: 15rem;
+  margin: .1rem;
+  border: 1px solid;
+  background-color: #ffffff;
+  cursor: pointer;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+  color: #43ac6a;
+}
+.panel:hover {
+  -webkit-box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+  background-color: #43ac6a;
+  color: #ffffff;
+}
+.panel__header {
+  padding: .5rem .5rem 0;
+  text-align: left;
+}
+.panel__body {
+  padding: .5rem;
+  height: 6rem;
+  text-align: left;
+}
+.panel__footer {
+  padding: 0 .5rem .5rem;
+  text-align: right;
 }
 .clearfix:before,
 .clearfix:after {
@@ -5008,6 +5034,11 @@ Copyright (c) 2014 Daniel Eden
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
+}
+.content {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .cm-tip {
   position: fixed;
@@ -5697,37 +5728,57 @@ Copyright (c) 2014 Daniel Eden
   padding-left: 0;
   padding-right: 0;
 }
+.dashboard__top {
+  margin-bottom: 1rem;
+  padding: 3rem 0 1rem;
+  background-color: #43ac6a;
+  color: #ffffff;
+  text-align: center;
+}
+.dashboard__avator {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  height: 160px;
+  width: 160px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+  background-color: #333333;
+}
+.dashboard__avator img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.dashboard__avator span {
+  font-size: 160px;
+  line-height: 180px;
+  color: #ffffff;
+}
 .dashboard__boxs {
-  margin: 0;
+  margin: 1rem 0 0;
   padding: 0;
 }
 .dashboard__box {
   display: block;
-  padding: 0 20px;
+  padding: 0 1rem;
+  text-align: center;
 }
 .dashboard__head {
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
   font-weight: bold;
 }
 .dashboard__head span {
-  margin-right: 10px;
+  margin-right: .5rem;
 }
 .dashboard__list {
-  margin-left: 0;
+  text-align: center;
 }
-.dashboard__item {
-  display: block;
-  padding: 10px;
-  margin: 10px 0;
-  border-left: 3px solid #f08a24;
-  background-color: #fff;
-  box-shadow: 1px 1px 3px #ccc;
-  color: #666;
-  cursor: pointer;
-}
-.dashboard__item:hover {
-  background-color: #eee;
+.dashboard__form {
+  display: inline-block;
+  max-width: 40rem;
 }
 .main {
   height: 100%;
@@ -5735,62 +5786,82 @@ Copyright (c) 2014 Daniel Eden
   position: relative;
   box-shadow: 0 0 4px #ccc;
 }
+.main__login {
+  position: fixed;
+  top: .5rem;
+  right: 1rem;
+  z-index: 400;
+}
 .assist {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 400;
-  -webkit-border-bottom-right-radius: 100%;
-  -moz-border-bottom-right-radius: 100%;
-  -o-border-bottom-right-radius: 100%;
-  border-bottom-right-radius: 100%;
-}
-.assist:hover {
-  height: 6rem;
-  width: 6rem;
-}
-.assist:hover .rotate-icon0 {
-  top: 1.29409523rem;
-  left: 4.82962913rem;
-}
-.assist:hover .rotate-icon1 {
-  top: 3.53553391rem;
-  left: 3.53553391rem;
-}
-.assist:hover .rotate-icon2 {
-  top: 4.82962913rem;
-  left: 1.29409523rem;
-}
-.assist:hover .assist-item {
-  display: block;
-}
-.assist-menu {
-  position: relative;
+  top: .5rem;
+  right: 1rem;
   height: 3rem;
   width: 3rem;
-  font-size: 1.4rem;
-  line-height: 2.6rem;
-  padding-left: .3rem;
-  color: #ffffff;
-  background-color: #1D365D;
-  -webkit-border-bottom-right-radius: 100%;
-  -moz-border-bottom-right-radius: 100%;
-  -o-border-bottom-right-radius: 100%;
-  border-bottom-right-radius: 100%;
-  z-index: 1;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+  z-index: 400;
 }
-.assist__item {
+.assist:hover .assist__overlay {
+  height: 8rem;
+  width: 8rem;
+  margin-top: -2.5rem;
+  margin-left: -2.5rem;
+}
+.assist:hover .rotate-icon0 {
+  top: 0.5rem;
+  left: -2.5rem;
+}
+.assist:hover .rotate-icon1 {
+  top: 2.62132034rem;
+  left: -1.62132034rem;
+}
+.assist:hover .rotate-icon2 {
+  top: 3.5rem;
+  left: 0.5rem;
+}
+.assist__menu,
+.assist__overlay {
   position: absolute;
   top: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+}
+.assist__menu {
+  overflow: hidden;
+  position: relative;
+  font-size: 3rem;
+  line-height: 3.8rem;
+  text-align: center;
+  color: #ffffff;
+  background-color: #333333;
+  z-index: 2;
+}
+.assist__menu img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.assist__overlay {
+  z-index: 0;
+}
+.assist__item {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
   height: 2rem;
   width: 2rem;
-  margin-top: -1rem;
-  margin-left: -1rem;
   font-size: 1rem;
   line-height: 2rem;
   color: #ffffff;
-  background-color: #1D365D;
+  background-color: #43ac6a;
   text-align: center;
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
@@ -5799,6 +5870,7 @@ Copyright (c) 2014 Daniel Eden
   -webkit-transition: 0.3s all;
   -o-transition: 0.3s all;
   transition: 0.3s all;
+  z-index: 1;
 }
 .main__content {
   background-color: #ffffff;
@@ -5849,7 +5921,39 @@ Copyright (c) 2014 Daniel Eden
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+.desktop__search {
+  position: relative;
+  display: inline-block;
+  margin: 2rem 1rem 1rem;
+  color: #b3b3b3;
+  font-size: 1rem;
+}
+.desktop__search input {
+  border: 0;
+  border-bottom: 1px solid;
+  outline: 0;
+  max-width: 100%;
+  padding-left: 3rem;
+  padding-bottom: .1rem;
+}
+.desktop__search input:focus {
+  border-color: #008cba;
+}
+.desktop__search-button {
+  position: absolute;
+  top: .1rem;
+  left: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.desktop__search-button:hover {
+  color: #808080;
+}
+.desktop__search-button:nth-child(2) {
+  left: 1.5rem;
+}
 .desktop__apps {
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;

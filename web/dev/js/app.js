@@ -8,6 +8,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/': {
                 title: '桌面',
                 icon: 'icon-home',
+                user: true,
                 templateUrl: '/index.html',
                 controller: 'desktopCtrl',
                 dependencies: [
@@ -94,6 +95,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/snippet-square': {
                 title: '代码广场',
                 icon: 'icon-code',
+                user: true,
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
                 dependencies: [
@@ -211,6 +213,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
                                 $rootScope.title = route.title;
                                 $rootScope.href = $location.path();
+                                $rootScope.showUser = route.user;
                                 $window.document.title = 'colorBox-' + route.title;
 
                                 $rootScope.$apply(function(){
@@ -282,10 +285,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ]);
 
     app
-    .filter('desktopNavs', 
+    .filter('dashboardNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/account'];
+            var showTabs = ['/dashboard/account', '/dashboard/snippets', '/dashboard/apps', '/dashboard/appPros'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){
@@ -323,7 +326,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('assistItems', 
     [
         function(){
-            var showTabs = ['/', '/snippet-square', '/dashboard/account'];
+            var showTabs = ['/dashboard/apps', '/dashboard/snippets'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){

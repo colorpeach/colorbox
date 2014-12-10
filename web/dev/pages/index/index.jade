@@ -1,4 +1,11 @@
 div.desktop(ng-class='{adding: status.adding}')
+  div.text--center
+    div.desktop__search
+      input.desktop__input(type="text", placeholder="输入应用名称")
+      span.desktop__search-button(title="搜索")
+        span.icon-search
+      a.desktop__search-button(href="/#/dashboard/apps", title="添加应用")
+        span.icon-plus
   ul.desktop__apps(drag-contain='apps', drag-box='apps')
     li.desktop__app(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
       a(ng-if="app.icon", title="{{app.name}}", href="{{app.link}}", class="desktop__app-system {{app.icon}}")

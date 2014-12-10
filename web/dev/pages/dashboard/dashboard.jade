@@ -1,9 +1,11 @@
-div
-  ul.dashboard__boxs(ng-show="tab === 'account'")
-    include ./dashboard-account.jade
-  ul.dashboard__boxs(ng-show="tab === 'apps'", ng-controller="myAppsCtrl")
-    include ./dashboard-apps.jade
-  ul.dashboard__boxs(ng-show="tab === 'snippets'", ng-controller="mySnippetsCtrl")
-    include ./dashboard-snippets.jade
-  ul.dashboard__boxs(ng-show="tab === 'appPros'", ng-controller="myAppProsCtrl")
-    include ./dashboard-app-pro.jade
+div.dashboard
+  div.dashboard__top
+    div.dashboard__avator
+      span.icon-user
+      img(src-element="http://identicon.relucks.org/{$parent.user.login}?size=160")
+    p(ng-bind="$parent.user.login")
+  div.text--center
+    a.button--success(ng-repeat="(href, item) in navs | dashboardNavs", href="{{'/#' + href}}", ng-class="{active: href === $parent.href}")
+      span(class="{{item.icon}}")
+      |  {{item.title}}
+  block content

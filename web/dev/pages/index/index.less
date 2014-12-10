@@ -12,59 +12,87 @@
   box-shadow: 0 0 4px #ccc;
 }
 
+.main__login{
+  position: fixed;
+  top: .5rem;
+  right: 1rem;
+  z-index: @assist-index;
+}
+
 .assist{
   position: fixed;
-  top: 0;
-  left: 0;
+  top: .5rem;
+  right: 1rem;
+  height: 3rem;
+  width: 3rem;
+  .border-radius(100%);
   z-index: @assist-index;
-  .border-every-radius(bottom-right, 100%);
 
   &:hover{
-    height: 6rem;
-    width: 6rem;
-    .assist-item-rotate(2, 0);
-    .assist-item{
-      display: block;
+    .assist__overlay{
+      height: 8rem;
+      width: 8rem;
+      margin-top: -2.5rem;
+      margin-left: -2.5rem;
     }
+
+    .assist-item-rotate(2, 0);
   }
 }
 
-.assist-menu{
+.assist__menu,
+.assist__overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  .border-radius(100%);
+}
+
+.assist__menu{
+  overflow: hidden;
   position: relative;
-  height: 3rem;
-  width: 3rem;
-  font-size: 1.4rem;
-  line-height: 2.6rem;
-  padding-left: .3rem;
+  font-size: 3rem;
+  line-height: 3.8rem;
+  text-align: center;
   color: @white-color;
-  background-color: #1D365D;
-  .border-every-radius(bottom-right, 100%);
-  z-index: 1;
+  background-color: @base-color;
+  z-index: 2;
+
+  img{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.assist__overlay{
+  z-index: 0;
 }
 
 .assist-item-rotate(@n, @i) when(@i <= @n){
   .rotate-icon@{i}{
-    top: 5rem * sin(30deg * @i + 15deg);
-    left: 5rem * cos(30deg * @i + 15deg);
+    top: 3rem * sin(45deg * @i) + .5rem;
+    left: -3rem * cos(45deg * @i) + .5rem;
   }
   .assist-item-rotate(@n, @i+1);
 }
 
 .assist__item{
   position: absolute;
-  top: 0;
-  left: 0;
+  top: .5rem;
+  left: .5rem;
   height: 2rem;
   width: 2rem;
-  margin-top: -1rem;
-  margin-left: -1rem;
   font-size: 1rem;
   line-height: 2rem;
   color: @white-color;
-  background-color: #1D365D;
+  background-color: @success-color;
   text-align: center;
   .border-radius(100%);
   .transition(.3s all);
+  z-index: 1;
 }
 
 .main__content{
@@ -106,7 +134,45 @@
   }
 }
 
+.desktop__search{
+  position: relative;
+  display: inline-block;
+  margin: 2rem 1rem 1rem;
+  color: darken(@base-color, -50%);
+  font-size: 1rem;
+
+  input{
+    border: 0;
+    border-bottom: 1px solid;
+    outline: 0;
+    max-width: 100%;
+    padding-left: 3rem;
+    padding-bottom: .1rem;
+
+    &:focus{
+      border-color: @primary-color;
+    }
+  }
+}
+
+.desktop__search-button{
+  position: absolute;
+  top: .1rem;
+  left: 0;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover{
+    color: darken(@base-color, -30%);
+  }
+
+  &:nth-child(2){
+    left: 1.5rem;
+  }
+}
+
 .desktop__apps{
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
