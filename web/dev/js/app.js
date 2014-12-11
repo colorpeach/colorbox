@@ -13,11 +13,13 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'desktopCtrl',
                 dependencies: [
                     'pages/index/index', 
+                    'pages/app/app-square', 
                     'pages/dashboard/dashboard-apps'
                 ]
             },
             '/log':{
                 title: '网站更新日志',
+                icon: 'icon-file',
                 templateUrl: 'log.html',
                 controller: 'logsCtrl',
                 dependencies: ['pages/log/log']
@@ -304,7 +306,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('logoNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/appPros', '/snippet-square', '/message', '/'];
+            var showTabs = ['/log', '/snippet-square', '/message', '/'];
             return function(navs){
                 var r = [];
                 angular.forEach(navs, function(n, i){

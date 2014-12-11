@@ -4,18 +4,19 @@ define(['js/app'], function(app){
     ['$scope', 'snippetsCrud', '$location',
         function($scope,   snippetsCrud,   $location){
             $scope.snippets = [];
-//             $scope.query = $location.search();
-            $scope.labels = {
-                success: 'css3',
-                alert: 'html5',
-                '': '3d',
-                warning: 'js'
+
+            $scope.submit = function(){
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '载入代码片段'
+                });
+                snippetsCrud.getAllSnippets().
+                success(function(data){
+                    $scope.snippets = data.snippets;
+                });
             };
 
-            snippetsCrud.getAllSnippets().
-            success(function(data){
-                $scope.snippets = data.snippets;
-            });
+            $scope.submit();
         }
     ]);
 });

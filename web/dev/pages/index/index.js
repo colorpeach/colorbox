@@ -22,13 +22,13 @@ define(['js/app'], function(app){
                     name: '所有应用',
                     link: '/#/app-square',
                     icon: 'icon-stack',
-                    position: {left: '2px', top: 0, width: '100px', height: '100px'}
+                    position: {left: '10px', top: 0, width: '100px', height: '100px'}
                 },
                 {
                     name: '代码广场',
                     link: '/#/snippet-square',
                     icon: 'icon-code',
-                    position: {left: '104px', top: 0, width: '100px', height: '100px'}
+                    position: {left: '114px', top: 0, width: '100px', height: '100px'}
                 }
             ];
             $scope.status = {};
@@ -76,25 +76,6 @@ define(['js/app'], function(app){
         }
     ])
 
-    .controller('ListCtrl',
-    ['$scope', 'appsCrud', '$sce',
-        function($scope,   appsCrud,   $sce){
-            $scope.apps = [];
-            
-            $scope.submit = function(e){
-                e.preventDefault();
-                appsCrud.getPublishedApps({name: $scope.name})
-                .success(function(data){
-                    $scope.apps = data.apps;
-                    data.apps.forEach(function(n, i){
-                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
-                    });
-                });
-            }
-        }
-    ])
-
-
     .factory('dragPlaceholder',
     [
         function(){
@@ -131,8 +112,8 @@ define(['js/app'], function(app){
     [
         function(){
             var cell = {
-                x: 120,
-                y: 120
+                x: 104,
+                y: 104
             };
             var offset = 4;
 

@@ -102,7 +102,7 @@
 
   & > div{
     overflow: auto;
-    .position__full;
+    .position--full;
   }
 
   &.ng-enter{
@@ -142,23 +142,30 @@
   font-size: 1rem;
 
   input{
+    .generate-input;
     border: 0;
     border-bottom: 1px solid;
     outline: 0;
     max-width: 100%;
-    padding-left: 3rem;
-    padding-bottom: .1rem;
+    padding-right: 2rem;
+    box-shadow: none;
 
     &:focus{
-      border-color: @primary-color;
+      border-color: @success-color;
+      box-shadow: none;
     }
   }
 }
 
-.desktop__search-button{
+.desktop__search-button,
+.desktop__add-button{
   position: absolute;
   top: .1rem;
-  left: 0;
+  right: .5rem;
+  border: 0;
+  background: none;
+  outline: 0;
+  font-size: 1.5rem;
   color: inherit;
   cursor: pointer;
 
@@ -166,8 +173,33 @@
     color: darken(@base-color, -30%);
   }
 
-  &:nth-child(2){
-    left: 1.5rem;
+  &:focus{
+    color: @success-color;
+  }
+}
+
+.desktop__add-button{
+  left: -2rem;
+  right: auto;
+}
+
+.desktop__search-box{
+  overflow-y: auto;
+  .position--full;
+  position: fixed;
+  bottom: auto;
+  top: 100%;
+  padding-top: 1.5rem;
+  background-color: rgba(0, 0, 0, .2);
+  .opacity(0);
+  .transition(.3s opacity);
+  .box-shadow(inset 0 1px 5px 0 rgba(0, 0, 0, 0.2));
+
+  &.active{
+    top: 5rem;
+    bottom: 0;
+    .opacity(1);
+    z-index: @app-search-index;
   }
 }
 
@@ -176,6 +208,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  .transition(.3s all);
 }
 
 .desktop__app{
@@ -233,17 +266,19 @@
 
 .logo{
   position: fixed;
-  top: 3rem;
+  top: 80%;
   left: 3rem;
   transform-style: preserve-3d;
   height: 3rem;
   width: 3rem;
   z-index: @logo-index;
+  .opacity(.5);
   .perspective(1000px);
   .transform(rotateX(-45deg) rotateY(45deg));
-  .transition(.3s transform);
+  .transition(.2s transform);
 
   &:hover{
+    .opacity(1);
     .perspective(100000px);
     .transform(rotateX(0deg) rotateY(0deg));
 
@@ -278,11 +313,11 @@
   font-size: 20px;
   line-height: 3rem;
   text-align: center;
-  .transition(.3s all);
+  .transition(.2s all);
 
   span{
     .opacity(0);
-    .transition(.3s all);
+    .transition(.2s all);
   }
 
   &:nth-child(1){

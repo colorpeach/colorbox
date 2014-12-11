@@ -3,9 +3,9 @@ extends ./layout
 block content
   div.logo(drag)
     span.logo__item
-    a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}")
+    a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}", title="{{item.title}}")
       span(class="{{item.icon}}")
-  div.assist(ng-show="user && showUser", title="{{user.login}}")
+  div.assist.hide(ng-class="{hide: !user || !showUser}", title="{{user.login}}")
     div.assist__menu
       span.icon-user
       img(src-element="http://identicon.relucks.org/{user.login}?size=48px")
@@ -14,12 +14,12 @@ block content
       span(class="{{item.icon}}")
     a.assist__item.rotate-icon2(href="/_logout", title="退出登录")
       span.icon-exit
-  div.main__login(ng-show="!user && showUser")
+  div.main__login.hide(ng-class="{hide: user || !showUser}")
     a(href="/#/login") 登录
     |  | 
     a(href="/#/register") 注册
   div.main
-    div.main__content.position__full(ng-view)
+    div.main__content.position--full(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting
       span.icon-spinner2.waiting-icon(ng-show="loading")
