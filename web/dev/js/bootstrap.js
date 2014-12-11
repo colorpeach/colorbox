@@ -36,6 +36,6 @@ require.config({
     ]
 });
 
-require(['js/app'], function(app){
+require(['js/app', 'js/value'], function(app){
     angular.bootstrap(document, [app.name]);
 });

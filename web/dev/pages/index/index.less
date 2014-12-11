@@ -165,7 +165,7 @@
   border: 0;
   background: none;
   outline: 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: inherit;
   cursor: pointer;
 
@@ -193,7 +193,6 @@
   background-color: rgba(0, 0, 0, .2);
   .opacity(0);
   .transition(.3s opacity);
-  .box-shadow(inset 0 1px 5px 0 rgba(0, 0, 0, 0.2));
 
   &.active{
     top: 5rem;
@@ -201,6 +200,16 @@
     .opacity(1);
     z-index: @app-search-index;
   }
+}
+
+.desktop__search-shadow{
+  .position--full;
+  position: fixed;
+  top: 5rem;
+  bottom: auto;
+  .box-shadow(0 1px 5px 0 rgba(0, 0, 0, 0.2));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: @app-search-index;
 }
 
 .desktop__apps{
@@ -216,9 +225,18 @@
   margin-top: 10px;
   margin-left: 10px;
   .transition(.3s all);
+  .user-select(none);
+  .animated;
 
   &:hover .desktop__app-aside{
     display: block;
+  }
+
+  &.ng-enter{
+    .zoomIn;
+  }
+  &.ng-leave{
+    .zoomOut;
   }
 }
 
@@ -226,12 +244,13 @@
   display: block;
   height: 100%;
   width: 100%;
-  font-size: 3em;
+  font-size: 1em;
   line-height: 100px;
   text-align: center;
   background-color: @success-color;
   color: @white-color;
   .transition(.3s all);
+  .text-overflow;
 
   &:hover{
     background-color: darken(@success-color, 10%);
@@ -268,19 +287,18 @@
   position: fixed;
   top: 80%;
   left: 3rem;
-  transform-style: preserve-3d;
-  height: 3rem;
-  width: 3rem;
   z-index: @logo-index;
-  .opacity(.5);
-  .perspective(1000px);
-  .transform(rotateX(-45deg) rotateY(45deg));
-  .transition(.2s transform);
 
   &:hover{
-    .opacity(1);
-    .perspective(100000px);
-    .transform(rotateX(0deg) rotateY(0deg));
+    .logo__container{
+      .opacity(1);
+      .perspective(100000px);
+      .transform(rotateX(0deg) rotateY(0deg));
+    }
+
+    .logo__overlay{
+      display: none;
+    }
 
     .logo__item:nth-child(2){
       .rotateX(0deg);
@@ -302,6 +320,25 @@
       .opacity(1);
     }
   }
+}
+
+.logo__overlay{
+  position: absolute;
+  top: -10%;
+  left: 15%;
+  width: 150%;
+  height: 175%;
+  z-index: 1;
+}
+
+.logo__container{
+  height: 3rem;
+  width: 3rem;
+  transform-style: preserve-3d;
+  .opacity(.5);
+  .perspective(1000px);
+  .transform(rotateX(-45deg) rotateY(45deg));
+  .transition(.2s transform);
 }
 
 .logo__item{

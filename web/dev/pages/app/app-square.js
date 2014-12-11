@@ -13,6 +13,7 @@ define(['js/app'], function(app){
                 $scope.isShow = true;
                 skip = 0;
                 last = false;
+                $scope.hasAddedApps = $scope.apps.map(function(n){ return n._id});
 
                 $scope.setLoad({
                     loading: true,
@@ -30,7 +31,7 @@ define(['js/app'], function(app){
             };
 
             $scope.cancelSearch = function($event){
-                $event.preventDefault();
+                $event && $event.preventDefault();
                 $scope.searchName = '';
                 $scope.isShow = false;
                 $scope.displayApps = [];
@@ -57,6 +58,15 @@ define(['js/app'], function(app){
                 .then(function(){
                     $scope.message = '';
                 });
+            };
+
+            $scope.addToDesktop = function(app){
+                var data = {
+                    name: app.name,
+                    _id: app._id
+                };
+                $scope.$emit('addDesktopApp', data);
+                $scope.cancelSearch();
             };
         }
     ]);

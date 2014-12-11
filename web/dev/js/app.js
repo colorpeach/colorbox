@@ -255,6 +255,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     $location.path('/');
                 });
             };
+
+            $rootScope.logined = function(){
+                return !!$rootScope.user;
+            };
         }
     ]);
 

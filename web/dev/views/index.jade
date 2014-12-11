@@ -2,9 +2,11 @@ extends ./layout
 
 block content
   div.logo(drag)
-    span.logo__item
-    a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}", title="{{item.title}}")
-      span(class="{{item.icon}}")
+    div.logo__overlay
+    div.logo__container
+      span.logo__item
+      a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}", title="{{item.title}}")
+        span(class="{{item.icon}}")
   div.assist.hide(ng-class="{hide: !user || !showUser}", title="{{user.login}}")
     div.assist__menu
       span.icon-user

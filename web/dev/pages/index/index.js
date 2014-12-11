@@ -15,24 +15,10 @@ define(['js/app'], function(app){
     ])
 
     .controller('desktopCtrl',
-    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
-        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
-            var systemApps = [
-                {
-                    name: '所有应用',
-                    link: '/#/app-square',
-                    icon: 'icon-stack',
-                    position: {left: '10px', top: 0, width: '100px', height: '100px'}
-                },
-                {
-                    name: '代码广场',
-                    link: '/#/snippet-square',
-                    icon: 'icon-code',
-                    position: {left: '114px', top: 0, width: '100px', height: '100px'}
-                }
-            ];
+    ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope', 'calcMethods',
+        function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope,   calcMethods){
+            $scope.apps = [];
             $scope.status = {};
-            $scope.allowDrag = true;
 
             if($rootScope.user){
                 //如果用户已经登录
@@ -45,22 +31,25 @@ define(['js/app'], function(app){
                 .success(function(data){
                     if(data.apps && data.apps.length){
                         $scope.apps = data.apps;
+                        $scope.apps_id = data._id;
                         data.apps.forEach(function(n, i){
                             n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
                         });
-                    }else{
-                        $scope.apps = systemApps;
                     }
-                })
-                .error(function(){
-                    $scope.apps = systemApps;
                 });
-            }else{
-                $scope.apps = systemApps;
             }
 
             $scope.$on('updateDesktop', function(){
-                desktopCurd.updateDesktopApps({apps: $scope.apps});
+                desktopCurd.updateDesktopApps({apps: $scope.apps, _id: $scope.apps_id})
+                .success(function(data){
+                    if(!$scope.apps_id){
+                        $scope.apps_id = data._id;
+                    }
+                });
+            });
+
+            $scope.$on('addDesktopApp', function(e, app){
+                $scope.addApp(app);
             });
 
             $scope.switchStatus = function(type){
@@ -73,6 +62,20 @@ define(['js/app'], function(app){
                 $scope.apps.splice(i, 1);
                 $rootScope.$broadcast('updateDesktop');
             };
+
+            $scope.addApp = function(app){
+                var position = calcMethods.autoPosition($scope.apps);
+                var had = false;
+                angular.forEach($scope.apps, function(n, i){
+                    if(n._id === app._id){
+                        had = true;
+                    }
+                });
+                if(had) return;
+                app.position = position;
+                $scope.apps.push(app);
+                $rootScope.$broadcast('updateDesktop');
+            }
         }
     ])
 
@@ -80,19 +83,10 @@ define(['js/app'], function(app){
     [
         function(){
             //生成占位元素
-            return function(el, contain, hasScreenshots){
+            return function(el, contain, isFrame){
                 var div = angular.element('<div>');
                 var rect = el[0].getBoundingClientRect();
                 var css = {};
-
-                require(['html2canvas'], function(){
-                    hasScreenshots &&
-                    html2canvas(el[0], {
-                        onrendered: function(canvas){
-                            div.append(canvas);
-                        }
-                    })
-                });
 
                 css.width = rect.right - rect.left +'px';
                 css.height = rect.bottom - rect.top +'px';
@@ -109,25 +103,25 @@ define(['js/app'], function(app){
     ])
 
     .factory('calcMethods', 
-    [
-        function(){
-            var cell = {
-                x: 104,
-                y: 104
-            };
-            var offset = 4;
+    ['config',
+        function(config){
+            var cell = config.desktop.appCell;
+            var offset = config.desktop.appCell.offset;
+            var mainOffset = config.desktop.offset;
+            var maxWidth = config.desktop.maxWidth;
 
             return {
                 position: function(item, point, containRect, contain){
                     return {
-                        left: Math.floor((contain.scrollLeft + point.x - containRect.left)/cell.x) * cell.x + 10 + 'px',
-                        top: Math.floor((contain.scrollTop + point.y - containRect.top)/cell.y) * cell.y + 'px',
-                        width: (item.size && item.size.x ? item.size.x * cell.x : cell.x) - offset + 'px',
-                        height: (item.size && item.size.y ? item.size.y * cell.y : cell.y) - offset + 'px'
+                        left: Math.floor((contain.scrollLeft + point.x - containRect.left)/(cell.x + offset)) * (cell.x + offset) + mainOffset + 'px',
+                        top: Math.floor((contain.scrollTop + point.y - containRect.top)/(cell.y + offset)) * (cell.y + offset) + 'px',
+                        width: (item.size && item.size.x ? (item.size.x * (cell.x + offset) - offset) : cell.x) + 'px',
+                        height: (item.size && item.size.y ? (item.size.y * (cell.y + offset) -offset ) : cell.y) + 'px'
                     }
                 },
                 //判断预设位置是否正确
                 positionIsRight: function(position, containRect, items, index){
+                    var containRect = containRect || {width: maxWidth};
                     var itemRect = {};
                     var overlap;
 
@@ -156,6 +150,37 @@ define(['js/app'], function(app){
                     }
 
                     return !overlap;
+                },
+                //自动获取可放置的位置
+                autoPosition: function(items){
+                    var isRight = false;
+                    var row = 0;
+                    var col = 0;
+                    var position = null;
+
+                    while(!isRight){
+                        position = {
+                            left: mainOffset + col * (offset + cell.x),
+                            top: row * (offset + cell.y),
+                            width: cell.x,
+                            height: cell.y
+                        };
+
+                        if(position.left + position.width > maxWidth){
+                            col = 0;
+                            row++;
+                            continue;
+                        }
+
+                        isRight = this.positionIsRight(position, null, items);
+                        col++;
+                    }
+
+                    for(var i in position){
+                        position[i] += 'px';
+                    }
+
+                    return position;
                 }
             };
 
@@ -209,28 +234,17 @@ define(['js/app'], function(app){
                     return function(scope, element, attrs){
                         var timer;
 
-                        element.find('a').bind('click', function(e){
-                            if(!scope.allowDrag) return;
-                            e.preventDefault();
-                            scope.app.show = !scope.app.show;
-                        });
-
                         element.bind(eventsMap[device].down, elementDown);
                         element.bind(eventsMap[device].up, elementUp);
 
                         function elementDown(e){
-                            if(!scope.allowDrag) return;
-                            if(device === 'web' && e.target.tagName !== 'SELECT'){
-                                e.preventDefault();
-                            }
-
                             if(timer){
                                 $timeout.cancel(timer);
                             }
 
                             timer = $timeout(function(){
                                 startDrag(e);
-                            }, 300);
+                            }, 100);
                         }
 
                         function elementUp(e){
@@ -242,13 +256,12 @@ define(['js/app'], function(app){
                         }
 
                         function startDrag(e){
-                            var item = scope.getDrapData(scope.$index);
                             var positionIsRight = true;
                             var $overlay = angular.element('<div class="resize-overlay"></div>');
                             var $moveContain = angular.element($window.document.body);
                             var $drag = dragPlaceholder(element, $moveContain, true);
-                            //TODO 使用了queryselector，待改进
-                            var $contain = angular.element($moveContain[0].querySelector('.desktop__apps'));
+                            var $contain = element.parent();
+                            var item = $contain.scope().apps[scope.$index];
                             var containRect = $contain[0].getBoundingClientRect();
                             var $placeholder = dragPlaceholder(element, $contain);
                             var rect = element[0].getBoundingClientRect();
@@ -320,7 +333,7 @@ define(['js/app'], function(app){
                                     positionIsRight = calcMethods.positionIsRight(position, containRect, $contain.scope().apps, scope.$index);
                                     $placeholder[positionIsRight ? 'removeClass' : 'addClass']('wrong');
                                     $placeholder.css(position);
-                                }, 20);
+                                }, 16);
                             });
 
                             $moveContain.bind(eventsMap[device].up, function(e){
@@ -341,10 +354,9 @@ define(['js/app'], function(app){
 //                                     point.y < containRect.top + containRect.height
                                     ){
                                     item.position = position;
-                                    if(scope.$parent !== $contain.scope()){
-                                        $contain.scope().add(item);
-                                    }
                                     $rootScope.$broadcast('updateDesktop');
+                                }else{
+                                    $contain.scope().removeApp(scope.$index);
                                 }
                                 
                                 item.draging = false;
@@ -355,64 +367,6 @@ define(['js/app'], function(app){
                     }
                 }
             }
-        }
-    ])
-
-    .directive('dragBox',
-    [
-        function(){
-            return {
-                restrict: 'A',
-                compile: function(){
-                    return function(scope, element, attrs){
-                        scope.add = function add(item, i){
-                            if(i !== undefined){
-                                scope[attrs.dragBox].splice(i, 0, item);
-                            }else{
-                                scope[attrs.dragBox].push(item);
-                            }
-                        };
-
-                        scope.remove = function(i){
-                            return scope[attrs.dragBox].splice(i, 1);
-                        };
-
-                        scope.getDrapData = function(i){
-                            return scope[attrs.dragBox][i];
-                        };
-                    };
-                }
-            };
-        }
-    ])
-
-    .directive('dragContain', 
-    [
-        function(){
-            return {
-                restrict: 'A',
-                compile: function(){
-                    return function(scope, element, attrs){
-                        scope.add = function add(item, i){
-                            if(i !== undefined){
-                                scope[attrs.dragContain].splice(i, 0, item);
-                            }else{
-                                scope[attrs.dragContain].push(item);
-                            }
-                        };
-
-                        scope.$on('dragStart', function(){
-                            element.addClass('draging');
-                            element.parent().addClass('draging');
-                        });
-
-                        scope.$on('dragEnd', function(){
-                            element.removeClass('draging');
-                            element.parent().removeClass('draging');
-                        });
-                    };
-                }
-            };
         }
     ])
 });
