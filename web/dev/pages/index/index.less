@@ -1,8 +1,6 @@
 //Page
 //Index
 
-@bigWidth: 1024px;
-@smallWidth: 480px;
 @main-content-color: @white-color;
 @main-aside-color: #f3f3f3;
 @desktop-icon-color: #aaa;
@@ -10,102 +8,96 @@
 .main{
   height: 100%;
   margin: 0 auto;
-  max-width: @bigWidth;
   position: relative;
   box-shadow: 0 0 4px #ccc;
-
-  &.active{
-    .main__top,
-    .main__content{
-      left: 4rem;
-      right: -4rem;
-    }
-
-    .main__aside{
-      left: 0;
-    }
-  }
-
-  &--minimal{
-    .main__top,
-    .main__content{
-      left: 4rem;
-      right: -4rem;
-    }
-
-    .main__aside{
-      left: 0;
-    }
-  }
 }
 
-.main__top{
-  top: -100%;
-  height: 4rem;
-  line-height: 4rem;
-  background-color: @main-aside-color;
-  transition: .3s all;
+.main__login{
+  position: fixed;
+  top: .5rem;
+  right: 1rem;
+  z-index: @assist-index;
 }
 
-.main__top-item{
-  padding: 0 1rem;
-  font-size: 2rem;
-  color: @base-color;
+.assist{
+  position: fixed;
+  top: .5rem;
+  right: 1rem;
+  height: 3rem;
+  width: 3rem;
+  .border-radius(100%);
+  z-index: @assist-index;
 
-  &.active{
-    color: @primary-color;
+  &:hover{
+    .assist__overlay{
+      height: 8rem;
+      width: 8rem;
+      margin-top: -2.5rem;
+      margin-left: -2.5rem;
+    }
+
+    .assist-item-rotate(2, 0);
   }
 }
 
-.main__aside{
-  overflow-y: auto;
-  width: 4rem;
-  background-color: @main-aside-color;
-  z-index: @aside-index;
-
-  & > ul{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    .position__full;
-  }
-}
-
-.main__aside-item{
-  overflow: hidden;
-  display: block;
-  height: 4rem;
+.assist__menu,
+.assist__overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
-  border: 0;
-  line-height: 4rem;
-  font-size: 2rem;
-  padding: 0 1rem;
-  color: @base-color;
-  background-color: transparent;
-  white-space: nowrap;
-  transition: .3s all;
+  .border-radius(100%);
+}
 
-  &:hover,
-  &.active{
-    color: @primary-color;
-    background-color: @main-content-color;
-  }
+.assist__menu{
+  overflow: hidden;
+  position: relative;
+  font-size: 3rem;
+  line-height: 3.8rem;
+  text-align: center;
+  color: @white-color;
+  background-color: @base-color;
+  z-index: 2;
 
-  &:hover .main__sub-aside{
-    display: block;
+  img{
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 
-.main__aside-text{
-  margin-left: 1rem;
+.assist__overlay{
+  z-index: 0;
+}
+
+.assist-item-rotate(@n, @i) when(@i <= @n){
+  .rotate-icon@{i}{
+    top: 3rem * sin(45deg * @i) + .5rem;
+    left: -3rem * cos(45deg * @i) + .5rem;
+  }
+  .assist-item-rotate(@n, @i+1);
+}
+
+.assist__item{
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  height: 2rem;
+  width: 2rem;
   font-size: 1rem;
-  vertical-align: top;
+  line-height: 2rem;
+  color: @white-color;
+  background-color: @success-color;
+  text-align: center;
+  .border-radius(100%);
+  .transition(.3s all);
+  z-index: 1;
 }
 
 .main__content{
-  left: 4rem;
   background-color: @main-content-color;
-  transition: .3s all;
+  .transition(.3s all);
   .animated;
 
   & > div{
@@ -142,55 +134,45 @@
   }
 }
 
-@media screen and (min-width: @bigWidth){
-  .main__aside{
-    width: 10rem;
-  }
-
-  .main__content{
-    left: 10rem;
-  }
-}
-
-@media screen and (max-width: @smallWidth){
-  .main__top{
-    top: 0;
-  }
-
-  .main__aside{
-    left: -4rem;
-  }
-
-  .main__content{
-    left: 0;
-    top: 4rem;
-  }
-}
-
-.desktop__bar{
-  padding: .5rem 0;
-}
-
-.desktop__bar-item{
+.desktop__search{
+  position: relative;
   display: inline-block;
-  height: 3rem;
-  width: 3rem;
-  margin: 0 .5rem;
-  font-size: 2rem;
-  line-height: 3rem;
-  vertical-align: middle;
-  color: @desktop-icon-color;
-  transition: .3s all;
+  margin: 2rem 1rem 1rem;
+  color: darken(@base-color, -50%);
+  font-size: 1rem;
+
+  input{
+    border: 0;
+    border-bottom: 1px solid;
+    outline: 0;
+    max-width: 100%;
+    padding-left: 3rem;
+    padding-bottom: .1rem;
+
+    &:focus{
+      border-color: @primary-color;
+    }
+  }
+}
+
+.desktop__search-button{
+  position: absolute;
+  top: .1rem;
+  left: 0;
+  color: inherit;
   cursor: pointer;
 
   &:hover{
-    color: darken(@desktop-icon-color, 20%);
-    border: 1px solid;
-    .border-radius();
+    color: darken(@base-color, -30%);
+  }
+
+  &:nth-child(2){
+    left: 1.5rem;
   }
 }
 
 .desktop__apps{
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -200,7 +182,7 @@
   position: absolute;
   margin-top: 10px;
   margin-left: 10px;
-  transition: .3s all;
+  .transition(.3s all);
 
   &:hover .desktop__app-aside{
     display: block;
@@ -216,7 +198,7 @@
   text-align: center;
   background-color: @success-color;
   color: @white-color;
-  transition: .3s all;
+  .transition(.3s all);
 
   &:hover{
     background-color: darken(@success-color, 10%);
@@ -247,4 +229,98 @@
 
 .drag__placeholder.wrong{
   background-color:#f00 !important;
+}
+
+.logo{
+  position: fixed;
+  top: 3rem;
+  left: 3rem;
+  transform-style: preserve-3d;
+  height: 3rem;
+  width: 3rem;
+  z-index: @logo-index;
+  .perspective(1000px);
+  .transform(rotateX(-45deg) rotateY(45deg));
+  .transition(.3s transform);
+
+  &:hover{
+    .perspective(100000px);
+    .transform(rotateX(0deg) rotateY(0deg));
+
+    .logo__item:nth-child(2){
+      .rotateX(0deg);
+    }
+
+    .logo__item:nth-child(3){
+      .rotateX(0deg);
+    }
+
+    .logo__item:nth-child(4){
+      .rotateY(0deg);
+    }
+
+    .logo__item:nth-child(5){
+      .rotateY(0deg);
+    }
+
+    span{
+      .opacity(1);
+    }
+  }
+}
+
+.logo__item{
+  display: block;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: @white-color;
+  font-size: 20px;
+  line-height: 3rem;
+  text-align: center;
+  .transition(.3s all);
+
+  span{
+    .opacity(0);
+    .transition(.3s all);
+  }
+
+  &:nth-child(1){
+    top: 0;
+    left: 0;
+    background-color: #235B66;
+    cursor: move;
+  }
+
+  &:nth-child(2){
+    top: -100%;
+    left: 0;
+    background-color: #11AEBF;
+    .transform-origin(bottom);
+    .rotateX(-90deg);
+  }
+
+  &:nth-child(3){
+    top: 100%;
+    left: 0;
+    background-color: #F2AE30;
+    .transform-origin(top);
+    .rotateX(90deg);
+  }
+
+  &:nth-child(4){
+    top: 0;
+    left: -100%;
+    background-color: #A0BF30;
+    .transform-origin(right);
+    .rotateY(90deg);
+  }
+
+  &:nth-child(5){
+    top: 0;
+    left: 100%;
+    background-color: #F25244;
+    .transform-origin(left);
+    .rotateY(-90deg);
+  }
 }

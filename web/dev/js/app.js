@@ -6,9 +6,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         defaultRoutePath: '/',
         routes: {
             '/': {
-                full: true,
                 title: '桌面',
                 icon: 'icon-home',
+                user: true,
                 templateUrl: '/index.html',
                 controller: 'desktopCtrl',
                 dependencies: [
@@ -95,6 +95,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/snippet-square': {
                 title: '代码广场',
                 icon: 'icon-code',
+                user: true,
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
                 dependencies: [
@@ -103,7 +104,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/app/:id': {
-                full: true,
                 title: '编辑应用',
                 auth: 'yes',
                 templateUrl: 'app-edit.html',
@@ -115,7 +115,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/app-pro/:id': {
-                full: true,
                 title: '编辑应用',
                 auth: 'yes',
                 templateUrl: 'app-edit-pro.html',
@@ -130,7 +129,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/snippet/:id': {
-                full: true,
                 title: '编辑代码片段',
                 auth: 'yes',
                 templateUrl: 'snippet-edit.html',
@@ -215,7 +213,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
 
                                 $rootScope.title = route.title;
                                 $rootScope.href = $location.path();
-                                $rootScope.full = !!route.full;
+                                $rootScope.showUser = route.user;
                                 $window.document.title = 'colorBox-' + route.title;
 
                                 $rootScope.$apply(function(){
@@ -286,18 +284,132 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
         }
     ]);
 
-    app.controller('indexCtrl',
-    ['$scope',
-        function($scope){
-            $scope.showAside = false;
+    app
+    .filter('dashboardNavs', 
+    [
+        function(){
+            var showTabs = ['/dashboard/account', '/dashboard/snippets', '/dashboard/apps', '/dashboard/appPros'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
 
-            $scope.toggleAside = function(){
-                $scope.showAside = !$scope.showAside;
+    .filter('logoNavs', 
+    [
+        function(){
+            var showTabs = ['/dashboard/appPros', '/snippet-square', '/message', '/'];
+            return function(navs){
+                var r = [];
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        n.href = i;
+                        r.push(n);
+                    }
+                });
+
+                r.sort(function(a, b){
+                    return showTabs.indexOf(a.href) - showTabs.indexOf(b.href);
+                });
+
+                return r;
+            }
+        }
+    ])
+
+    .filter('assistItems', 
+    [
+        function(){
+            var showTabs = ['/dashboard/apps', '/dashboard/snippets'];
+            return function(navs){
+                var r = {};
+                angular.forEach(navs, function(n, i){
+                    if(showTabs.indexOf(i) > -1){
+                        r[i] = n;
+                    }
+                });
+                return r;
+            }
+        }
+    ])
+
+    .directive('drag',
+    ['$window', '$timeout',
+        function($window, $timeout){
+            var eventsMap = {
+                web: {
+                    down: 'mousedown',
+                    up: 'mouseup',
+                    move: 'mousemove'
+                },
+                mobile: {
+                    down: 'touchstart',
+                    up: 'touchend',
+                    move: 'touchmove'
+                }
             };
-            
-            $scope.$on('$routeChangeSuccess', function(){
-                $scope.showAside = false;
-            });
+            var device;
+            var $body = angular.element($window.document.body);
+
+            if($window.document.hasOwnProperty("ontouchstart")){
+                device = 'mobile';
+            }else{
+                device = 'web';
+            }
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    element.bind(eventsMap[device].down, startDrag);
+
+                    function startDrag(e){
+                        var rect = element[0].getBoundingClientRect();
+                        var position = {};
+                        var relative = {};
+                        var point = {};
+
+                        if(e.touches){
+                            relative.x = e.touches[0].clientX - rect.left;
+                            relative.y = e.touches[0].clientY - rect.top;
+                        }else{
+                            relative.x = e.clientX - rect.left;
+                            relative.y = e.clientY - rect.top;
+                        }
+
+                        $body.bind(eventsMap[device].move, function(e){
+                            if(e.touches){
+                                e.preventDefault();
+                                point = {
+                                    x: e.touches[0].clientX,
+                                    y: e.touches[0].clientY
+                                };
+                            }else{
+                                point = {
+                                    x: e.clientX,
+                                    y: e.clientY
+                                };
+                            }
+
+                            position = {
+                                left: point.x - relative.x + 'px',
+                                top: point.y - relative.y + 'px'
+                            };
+                            
+                            element.css(position);
+                        });
+
+                        $body.bind(eventsMap[device].up, function(e){
+                            $body.off(eventsMap[device].move);
+                            $body.off(eventsMap[device].up);
+                        });
+                    }
+                }
+            };
         }
     ]);
 

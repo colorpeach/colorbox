@@ -14,22 +14,6 @@ define(['js/app'], function(app){
         }
     ])
 
-    .filter('desktopTab', 
-    [
-        function(){
-            var showTabs = ['/', '/snippet-square', '/dashboard/account'];
-            return function(navs){
-                var r = {};
-                angular.forEach(navs, function(n, i){
-                    if(showTabs.indexOf(i) > -1){
-                        r[i] = n;
-                    }
-                });
-                return r;
-            }
-        }
-    ])
-
     .controller('desktopCtrl',
     ['$scope', 'desktopCurd', 'safeApply', '$timeout', '$sce', '$rootScope',
         function($scope,   desktopCurd,   safeApply,   $timeout,   $sce,   $rootScope){
@@ -38,13 +22,13 @@ define(['js/app'], function(app){
                     name: '所有应用',
                     link: '/#/app-square',
                     icon: 'icon-stack',
-                    position: {left: '10px', top: 0, width: '100px', height: '100px'}
+                    position: {left: '2px', top: 0, width: '100px', height: '100px'}
                 },
                 {
                     name: '代码广场',
                     link: '/#/snippet-square',
                     icon: 'icon-code',
-                    position: {left: '130px', top: 0, width: '100px', height: '100px'}
+                    position: {left: '104px', top: 0, width: '100px', height: '100px'}
                 }
             ];
             $scope.status = {};
@@ -150,7 +134,7 @@ define(['js/app'], function(app){
                 x: 120,
                 y: 120
             };
-            var offset = 20;
+            var offset = 4;
 
             return {
                 position: function(item, point, containRect, contain){

@@ -1,16 +1,25 @@
 extends ./layout
 
 block content
-  div.main(ng-controller="indexCtrl", ng-class="{active: showAside}")
-    include ./aside
-    div.main__top.position__top
-      a.main__top-item(ng-click="toggleAside()", ng-class="{active: showAside}")
-        span.icon-menu2
-      b(ng-bind="title")
-    div.main__content.position__right(ng-view, ng-class="{blur: searchShow, main__full: $parent.full}")
-    div.main__overlay.position__right(ng-show="searchShow")
-      div.table
-        input.form__input
+  div.logo(drag)
+    span.logo__item
+    a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}")
+      span(class="{{item.icon}}")
+  div.assist(ng-show="user && showUser", title="{{user.login}}")
+    div.assist__menu
+      span.icon-user
+      img(src-element="http://identicon.relucks.org/{user.login}?size=48px")
+    div.assist__overlay
+    a.assist__item(ng-repeat="(href, item) in navs | assistItems track by $index", title="{{item.title}}", href="{{'/#' + href}}", ng-class="{true: 'rotate-icon' + $index}[true]")
+      span(class="{{item.icon}}")
+    a.assist__item.rotate-icon2(href="/_logout", title="退出登录")
+      span.icon-exit
+  div.main__login(ng-show="!user && showUser")
+    a(href="/#/login") 登录
+    |  | 
+    a(href="/#/register") 注册
+  div.main
+    div.main__content.position__full(ng-view)
   div.route-overlay(ng-show="loading || loadMessage")
     div.route-waiting
       span.icon-spinner2.waiting-icon(ng-show="loading")

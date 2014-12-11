@@ -1,28 +1,17 @@
-div.desktop
-  div.desktop__bar.text--center
-    span.desktop__bar-item
-      span(class="icon-search")
-    a.desktop__bar-item(ng-repeat="(href, item) in navs | desktopTab", title="{{item.title}}", href="{{'/#' + href}}")
-      span(class="{{item.icon}}")
-  div.relative(ng-class='{adding: status.adding}')
-    ul.desktop__apps(drag-contain='apps', drag-box='apps')
-      li.desktop__app(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
-        a(ng-if="app.icon", title="{{app.name}}", href="{{app.link}}", class="desktop__app-system {{app.icon}}")
-        a(ng-if="!app.icon && app.size.showIframe === 'false'", ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
-        iframe(ng-if="app.size.showIframe === 'true'", ng-src="{{app.url}}", border=0, frameBorder=0, width="100%", height="100%")
-        div.desktop__app-aside
-          span.icon-minus(ng-if="app.size.showIframe === 'true'", title="拖拽应用")
-          span.icon-remove(ng-if="!app.isButton", ng-click="removeApp($index)", title="从桌面删除应用")
-        
-div.desktop-all-list.app-list(ng-show="status.adding", ng-controller="ListCtrl")
-  form(action="", method="get", ng-submit="submit($event)")
-    div.row.collapse.sidebar
-      div.small-8.columns
-        input(type="text", placeholder="输入应用名称", name="name", ng-model="name")
-      div.small-4.columns
-        input.button-success(type="submit", value="搜索")
-    div.row
-      ul.clearing-thumbs(drag-box='apps')
-        li.relative(drag-item, ng-repeat="app in apps")
-          a.app-logo(ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank", title="{{app.name}}")
-          select.size-option(ng-model="app.size", ng-options="o as (o.x+' × '+o.y) for (key, o) in app.sizes")
+div.desktop(ng-class='{adding: status.adding}')
+  div.text--center
+    div.desktop__search
+      input.desktop__input(type="text", placeholder="输入应用名称")
+      span.desktop__search-button(title="搜索")
+        span.icon-search
+      a.desktop__search-button(href="/#/dashboard/apps", title="添加应用")
+        span.icon-plus
+  ul.desktop__apps(drag-contain='apps', drag-box='apps')
+    li.desktop__app(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
+      a(ng-if="app.icon", title="{{app.name}}", href="{{app.link}}", class="desktop__app-system {{app.icon}}")
+      a(ng-if="!app.icon && app.size.showIframe === 'false'", ng-bind="app.name", href="/_apps/preview/{{app._id}}", target="_blank")
+      iframe(ng-if="app.size.showIframe === 'true'", ng-src="{{app.url}}", border=0, frameBorder=0, width="100%", height="100%")
+      //div.desktop__app-aside
+        //span.icon-minus(ng-if="app.size.showIframe === 'true'", title="拖拽应用")
+        //span.icon-remove(ng-if="!app.isButton", ng-click="removeApp($index)", title="从桌面删除应用")
+  //div.position__full
