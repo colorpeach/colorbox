@@ -19,6 +19,9 @@ div.js-message.message.content
     div.message__content {{msg.content}}
     div.message__item(ng-repeat="m in msg.responses")
       a.message__response(ng-click="response(msg, m.user)", ng-if="passed()") 回复 
+      div.message__avator
+        img(src-element="http://identicon.relucks.org/{msg.user}?size=40")
+        span.icon-user
       div.message__head {{m.date | date:'yyyy-MM-dd HH:mm:ss'}} 
       div.message__head 
         a {{m.user}} 

@@ -18,6 +18,16 @@
         border-color: @success-color;
         color: @white-color;
     }
+
+    &.ng-enter{
+        .fadeIn;
+        .animated;
+    }
+    &.ng-leave{
+        .fadeOut;
+        .animated;
+        .animation-duration(0s);
+    }
 }
 
 .panel__header{

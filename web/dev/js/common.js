@@ -430,6 +430,42 @@ define(['angular'], function(){
                 }
             };
         }
+    ])
+
+    //动态居中
+    .directive('autoCenter',
+    ['$window',
+        function($window){
+            function center($box, itemWidth, itemLength){
+                var width = $box[0].getBoundingClientRect().width;
+                var paddingLeft = 0;
+
+                if(width > itemLength * itemWidth){
+                    paddingLeft = (width - itemLength * itemWidth) / 2;
+                }else{
+                    paddingLeft = (width % itemWidth) / 2;
+                }
+
+                $box.css({paddingLeft: paddingLeft + 'px'});
+            }
+
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var $element = angular.element(element);
+                    var itemWidth = parseFloat(attrs.autoCenter) || 243.2;
+
+                    scope.$watch(attrs.autoCenterLength, function(val){
+                        center($element, itemWidth, val);
+                    });
+
+                    angular.element($window).on('resize', function(){
+                        var itemLength = scope.$eval(attrs.autoCenterLength);
+                        center($element, itemWidth, itemLength);
+                    });
+                }
+            };
+        }
     ]);
     
 });

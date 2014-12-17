@@ -204,6 +204,10 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+iframe {
+  display: block;
+  background-color: #ffffff;
+}
 @font-face {
   font-family: 'icomoon';
   src: url('fonts/icomoon.eot?ldq7ra');
@@ -4995,6 +4999,24 @@ Copyright (c) 2014 Daniel Eden
   border-color: #43ac6a;
   color: #ffffff;
 }
+.panel.ng-enter {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.panel.ng-leave {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0s;
+  animation-duration: 0s;
+}
 .panel__header {
   padding: .5rem .5rem 0;
   text-align: left;
@@ -5095,7 +5117,7 @@ Copyright (c) 2014 Daniel Eden
   padding: 5px 10px;
   white-space: nowrap;
 }
-.route-overlay {
+.route__overlay {
   position: fixed;
   top: 35px;
   left: 0;
@@ -5105,7 +5127,7 @@ Copyright (c) 2014 Daniel Eden
   opacity: .7;
   z-index: 1200;
 }
-.route-overlay.ng-enter {
+.route__overlay.ng-enter {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
   -webkit-animation-duration: 1s;
@@ -5113,7 +5135,7 @@ Copyright (c) 2014 Daniel Eden
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
-.route-overlay.ng-leave {
+.route__overlay.ng-leave {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
   -webkit-animation-duration: 1s;
@@ -5121,7 +5143,7 @@ Copyright (c) 2014 Daniel Eden
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
-.route-waiting {
+.route__waiting {
   position: absolute;
   top: 50%;
   left: 0;
@@ -5129,18 +5151,19 @@ Copyright (c) 2014 Daniel Eden
   height: 30px;
   margin-top: -15px;
   text-align: center;
-  color: #ccc;
+  color: #43ac6a;
   line-height: 30px;
 }
-.route-waiting .waiting-icon {
+.route__waiting-icon {
   display: inline-block;
   height: 30px;
   font-size: 30px;
   vertical-align: top;
   -webkit-animation: waiting 1s infinite linear;
+  -o-animation: waiting 1s infinite linear;
   animation: waiting 1s infinite linear;
 }
-.route-waiting .waiting-msg {
+.route__waiting-msg {
   margin-left: 10px;
   font-size: 16px;
 }
@@ -5160,20 +5183,25 @@ Copyright (c) 2014 Daniel Eden
     transform: rotate(360deg);
   }
 }
-.resize-box > div {
+.resize__box > div {
   position: absolute;
 }
-.resize-bar {
+.resize__box > div:not(.resize__bar) {
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+}
+.resize__bar {
   position: absolute!important;
   overflow: hidden;
   display: none;
 }
-.resize-bar.dir-h {
+.resize__bar.dir-h {
   cursor: s-resize;
   display: block;
 }
-.resize-bar.dir-h:before,
-.resize-bar.dir-h:after {
+.resize__bar.dir-h:before,
+.resize__bar.dir-h:after {
   content: '';
   display: block;
   position: absolute;
@@ -5185,43 +5213,27 @@ Copyright (c) 2014 Daniel Eden
   border-top: 1px solid #666;
   margin: auto;
 }
-.resize-bar.dir-h:after {
+.resize__bar.dir-h:after {
   top: 6px;
 }
-.resize-bar.dir-v:before,
-.resize-bar.dir-v:after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 3px;
-  top: 0;
-  bottom: 0;
-  height: 20px;
-  width: 0;
-  border-left: 1px solid #666;
-  margin: auto;
-}
-.resize-bar.dir-v:after {
-  left: 6px;
-}
-.resize-bar.dir-v {
+.resize__bar.dir-v {
   cursor: w-resize;
   display: block;
 }
-.resize-mark {
+.resize__mark {
   background-color: #999;
-  position: absolute!important;
+  position: absolute;
   padding: 0!important;
   transition: none!important;
   z-index: 10;
 }
-.resize-overlay {
-  position: absolute!important;
+.resize__overlay {
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1011;
+  z-index: 9;
 }
 .alert-box.ng-enter {
   -webkit-animation-name: fadeInDown;
@@ -5296,37 +5308,41 @@ Copyright (c) 2014 Daniel Eden
 .dialog__close:hover {
   color: #919191;
 }
-.aui-tree {
+.aui__tree {
   margin-left: 0;
   padding: 0 10px;
   color: #efefef;
   white-space: nowrap;
 }
-.aui-tree li {
+.aui__tree li {
   display: block;
 }
-.aui-tree li > span {
+.aui__tree li > span {
   min-width: 100%;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-.aui-tree span {
+.aui__tree span {
   display: inline-block;
   cursor: pointer;
 }
-.aui-tree a {
+.aui__tree a {
   padding: 0 5px;
   margin-left: 3px;
   color: #efefef;
 }
-.aui-tree a:focus {
+.aui__tree a:focus {
   outline: 1px solid #0078a0;
   cursor: auto;
   background-color: transparent;
 }
-.aui-tree .aui-active {
+.aui__tree .aui__active {
   background-color: #748512;
 }
 .editor {
@@ -5432,16 +5448,15 @@ Copyright (c) 2014 Daniel Eden
   position: absolute;
   border-left: 1px solid #222;
   border-bottom: 1px solid #222;
-  transition: .3s all;
 }
-.editor__boxs > .resize-bar,
-.editor__boxs > .resize-mark {
+.editor__boxs > .resize__bar,
+.editor__boxs > .resize__mark {
   border: 0;
 }
-.editor__boxs > .resize-bar:before,
-.editor__boxs > .resize-mark:before,
-.editor__boxs > .resize-bar:after,
-.editor__boxs > .resize-mark:after {
+.editor__boxs > .resize__bar:before,
+.editor__boxs > .resize__mark:before,
+.editor__boxs > .resize__bar:after,
+.editor__boxs > .resize__mark:after {
   display: none;
 }
 .editor__tabs {
@@ -5782,7 +5797,7 @@ Copyright (c) 2014 Daniel Eden
   margin-right: .5rem;
 }
 .dashboard__list {
-  text-align: center;
+  text-align: left;
 }
 .dashboard__form {
   display: inline-block;
@@ -6001,6 +6016,7 @@ Copyright (c) 2014 Daniel Eden
   top: 100%;
   padding-top: 1.5rem;
   background-color: rgba(0, 0, 0, 0.2);
+  text-align: left;
   opacity: 0;
   filter: alpha(opacity=0);
   -webkit-transition: 0.3s opacity;
@@ -6303,9 +6319,6 @@ Copyright (c) 2014 Daniel Eden
 }
 .message__content {
   padding: 10px 0 10px 50px;
-}
-.message__item .message__item .message__content {
-  padding: 10px 0;
 }
 .snippet__editor {
   position: absolute;

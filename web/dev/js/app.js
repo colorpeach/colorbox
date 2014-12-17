@@ -178,12 +178,12 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 angular.forEach(config.routes, function(route, path){
                     $routeProvider.when(path, {
                         templateUrl: route.templateUrl, 
-                        resolve: dependencyResolverFor(route, path), 
+                        resolve: dependencyResolverFor(route), 
                         controller: route.controller, 
                         title: route.title,
                         redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
-                            if(route.path === 'no' && login){
+                            if(route.auth === 'no' && login){
                                 return '/';
                             }else if(route.auth === 'yes' && !login){
                                 return '/login';
@@ -204,7 +204,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 }
             }
 
-            function dependencyResolverFor(route, path){
+            function dependencyResolverFor(route){
                 var definition = {
                     resolver: [
                         '$q','$rootScope', '$window', '$location',

@@ -2,7 +2,6 @@ extends ./layout
 
 block content
   div.logo(drag)
-    div.logo__overlay
     div.logo__container
       span.logo__item
       a.logo__item(ng-repeat="item in navs | logoNavs", href="{{'/#' + item.href}}", title="{{item.title}}")
@@ -22,10 +21,10 @@ block content
     a(href="/#/register") 注册
   div.main
     div.main__content.position--full(ng-view)
-  div.route-overlay(ng-show="loading || loadMessage")
-    div.route-waiting
-      span.icon-spinner2.waiting-icon(ng-show="loading")
-      span.waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
+  div.route__overlay(ng-show="loading || loadMessage")
+    div.route__waiting
+      span.icon-spinner2.route__waiting-icon(ng-show="loading")
+      span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
 
 block script
   script(src="/js/bootstrap.js")
