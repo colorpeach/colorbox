@@ -50,9 +50,49 @@ script(type="text/ng-template", id="editor-route")
           td.table__td--gray
             span.table__cell-text {{file.name}}
 script(type="text/ng-template", id="editor-preview")
-  div.editor__tabs
+  div.editor__nav
     span.icon-loop2.button-icon(title="刷新", ng-click="reloadIframe()", ng-show="iframeLoaded")
     span.icon-close.button-icon(title="停止刷新", ng-hide="iframeLoaded")
-    span {{url}}
+    span  {{url}}
   div.editor__contents
     iframe(width="100%", height="100%", frameBorder=0, ng-src="{{url}}", editor-iframe)
+script(type="text/ng-template", id="editor-source")
+  div(style="padding: 10px;", ng-controller="editorSourceCtrl")
+    button.button--primary.form__button(ng-click="addTable()")
+      span.icon-plus  
+      | 添加表
+    button.button--success.form__button
+      span.icon-save
+      | 保存
+    table.table(ng-repeat="table in sourceTable.list track by $index")
+      thead
+        tr
+          th.table__th--gray(colspan=3)
+            span.table__cell-text
+              button.button-icon(ng-click="collapse = !collapse")
+                span.icon-arrow-up3(ng-class="{'icon-arrow-down3': collapse}")  
+                | 表{{$index + 1}}
+              button.button-icon(ng-click="addColumn($index)")
+                span.icon-plus  
+                | 添加字段
+              button.button-icon(ng-click="removeTable($index)")
+                span.icon-remove  
+                | 删除表
+        tr(ng-hide="collapse")
+          th.table__th--gray
+            span.table__cell-text 操作
+          th.table__th--gray
+            span.table__cell-text 字段
+          th.table__th--gray
+            span.table__cell-text 类型
+      tbody(ng-hide="collapse")
+        tr(ng-repeat="column in table.columns")
+          td.table__td--gray
+            span.table__cell-text
+              button.button-icon(ng-click="removeColumn($parent.$index, $index)")
+                span.icon-close  
+                | 删除
+          td.table__td--gray
+            input.table__input-text--gray(type="text", ng-model="column.name")
+          td.table__td--gray
+            select.table__input-text--gray(ng-options="type as type for type in typeList", ng-model="column.type")

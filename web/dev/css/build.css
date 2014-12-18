@@ -5497,6 +5497,7 @@ Copyright (c) 2014 Daniel Eden
   top: 30px;
 }
 .editor__contents > div {
+  overflow: auto;
   position: absolute;
   top: 0;
   left: 0;
@@ -6319,6 +6320,7 @@ Copyright (c) 2014 Daniel Eden
 }
 .message__content {
   padding: 10px 0 10px 50px;
+  word-break: break-all;
 }
 .snippet__editor {
   position: absolute;
@@ -6390,27 +6392,6 @@ Copyright (c) 2014 Daniel Eden
 }
 .snippet__remove:hover {
   color: #808080;
-}
-.snippet-detail {
-  padding-bottom: 100px;
-}
-.snippet-detail .snippet-iframe {
-  border: 2px solid #ccc;
-}
-.snippet-detail .snippet-bar {
-  margin-top: -7px;
-  background-color: #333;
-  box-shadow: 0 5px 5px #999;
-}
-.snippet-detail .snippet-bar li {
-  display: inline-block;
-  border-right: 1px solid #444;
-  padding: 5px 10px;
-  color: #fff;
-  cursor: pointer;
-}
-.snippet-detail .snippet-bar li:hover {
-  background-color: #444;
 }
 .snippets-square .snippets-square-labels button {
   display: inline-block;

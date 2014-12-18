@@ -56,7 +56,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
             }
         ],
         panels: [
-            {name: '数据源', type: 'source'},
+            {name: '数据源', type: 'source', template: 'editor-source'},
             {name: '路由', type: 'route', template: 'editor-route'},
             {name: '预览', type: 'preview', template: 'editor-preview'}
         ],
@@ -270,7 +270,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
             $scope.panels = editorNavConfig.panels;
             $scope.files = [];
             $scope.tabs = [];
-            $scope.panelTabs = ['source', 'route', 'preview'];
+            $scope.panelTabs = ['route', 'source', 'preview'];
             $scope.currentPanel = $scope.panelTabs[0];
             $scope._id = $routeParams.id;
 
@@ -293,6 +293,57 @@ define(['js/app', 'ace/ace'], function(app, ace){
             //隐藏显示区块
             $scope.toggleBlock = function(i){
                 $rootScope.$broadcast('toggleResizeBox', i);
+            };
+        }
+    ])
+
+    .controller('editorSourceCtrl',
+    ['$scope', 'DataList',
+        function($scope,   DataList){
+            var tableColumns = [];
+
+            $scope.typeList = [
+                'Array',
+                'Date',
+                'Number',
+                'Object',
+                'String',
+                'Defined'
+            ];
+
+            $scope.sourceTable = new DataList({
+                columns: 'Array'
+            });
+
+            $scope.addTable = function(){
+                var columns = new DataList({
+                    name: 'String',
+                    type: 'String'
+                });
+                tableColumns.push(columns);
+                $scope.sourceTable.add({
+                    columns: columns.list
+                });
+            };
+
+            $scope.removeTable = function($index){
+                $scope.sourceTable.remove($index);
+                tableColumns.splice($index, 1);
+            };
+
+            $scope.addColumn = function(tableIndex){
+                tableColumns[tableIndex].add({
+                    name: '',
+                    type: ''
+                });
+            };
+
+            $scope.removeColumn = function(tableIndex, $index){
+                tableColumns[tableIndex].remove($index);
+            };
+
+            $scope.save = function(){
+                
             };
         }
     ])
