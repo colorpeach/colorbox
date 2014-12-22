@@ -43,6 +43,24 @@
   display: block;
 }
 
+.resize__bar.dir-v:before,
+.resize__bar.dir-v:after{
+  content: '';
+  display: block;
+  position: absolute;
+  left: 3px;
+  top: 0;
+  bottom: 0;
+  height: 20px;
+  width: 0;
+  border-left: 1px solid #666;
+  margin: auto;
+}
+
+.resize__bar.dir-v:after{
+  left: 6px;
+}
+
 .resize__mark{
   background-color: #999;
   position: absolute;

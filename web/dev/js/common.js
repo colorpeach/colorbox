@@ -8,6 +8,14 @@ define(['angular'], function(){
         }
     ])
 
+    //所有后台交互的数据
+    .factory('crud', 
+    ['$cacheFactory',
+        function($cacheFactory){
+            return $cacheFactory('crud');
+        }
+    ])
+
     .factory('safeApply',
     ['$rootScope',
         function($rootScope){

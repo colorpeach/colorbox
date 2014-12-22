@@ -6,12 +6,8 @@ div
     span(tip="b", title="重新载入")
       span.icon-spinner6
   div.content
-    div.grid__8-12
-      div
-        div 描述
-        div(ng-bind="snippet.description || '无描述'")
-      hr
-      div
-        div 评论
-        ul
-          li(ng-repeat="comment in comments")
+    div.grid__8-12.form__full
+      label.form__label 描述
+      div.form__cell(ng-bind="snippet.description || '无描述'")
+      label.form__label 评论
+      include ../message/message

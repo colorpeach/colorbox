@@ -232,24 +232,29 @@ define(['js/app'], function(app){
                 restrict: 'A',
                 compile: function(){
                     return function(scope, element, attrs){
+                        var downTime;
+                        var clickGap = 100;
                         var timer;
 
                         element.bind(eventsMap[device].down, elementDown);
                         element.bind(eventsMap[device].up, elementUp);
 
                         function elementDown(e){
+                            e.preventDefault();
+                            downTime = new Date().getTime();
                             if(timer){
                                 $timeout.cancel(timer);
                             }
-
                             timer = $timeout(function(){
                                 startDrag(e);
-                            }, 100);
+                            }, clickGap);
                         }
 
                         function elementUp(e){
-//                             if(e.target.tagName !== 'SELECT')
-//                                 e.preventDefault();
+                            var time = new Date().getTime();
+                            if(time - downTime <= clickGap){
+                                element[0].click();
+                            }
                             if(timer){
                                 $timeout.cancel(timer);
                             }

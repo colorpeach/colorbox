@@ -170,7 +170,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             app.filter     = bind($filterProvider, 'register', app);
             app.factory    = bind($provide, 'factory', app);
             app.service    = bind($provide, 'service' ,app);
-            app.value    = bind($provide, 'value' ,app);
+            app.value      = bind($provide, 'value' ,app);
 
 //             $locationProvider.html5Mode(true);
 
