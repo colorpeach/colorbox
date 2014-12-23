@@ -21,10 +21,9 @@ block content
     a(href="/#/register") 注册
   div.main
     div.main__content.position--full(ng-view)
-  div.route__overlay(ng-show="loading || loadMessage")
-    div.route__waiting
-      span.icon-spinner2.route__waiting-icon(ng-show="loading")
-      span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
+  div.route__waiting(ng-show="loading || loadMessage")
+    span.icon-spinner2.route__waiting-icon(ng-show="loading")
+    span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
 
 block script
   script(src="/js/bootstrap.js")
