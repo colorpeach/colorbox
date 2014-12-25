@@ -323,6 +323,60 @@
   }
 }
 
+.logo--loading{
+  overflow: hidden;
+  .position--full;
+  background-color: @white-color;
+  z-index: @logo-index;
+  .animated;
+
+  &.ng-hide{
+    .fadeOut;
+  }
+}
+
+.logo__box--loading{
+  .animation-name(logoLoadingInBox);
+  .animation-duration(1s);
+  margin-top: 30vh;
+  text-align: center;
+
+  .logo__container{
+    display: inline-block;
+    .opacity(1);
+    height: 10vh;
+    width: 10vh;
+  }
+}
+
+@-webkit-keyframes logoLoadingInBox {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(20vh, 0, 0);
+            transform: translate3d(20vh, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
+@keyframes logoLoadingInBox {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(20vh, 0, 0);
+            transform: translate3d(20vh, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
 .logo__overlay{
   position: absolute;
   top: -10%;
@@ -330,6 +384,18 @@
   width: 150%;
   height: 175%;
   z-index: 1;
+}
+
+.logo__text{
+  display: inline-block;
+  font-size: 5vh;
+  margin-left: 10vh;
+  margin-top: 8vh;
+}
+
+.logo__sub-text{
+  font-size: 2vh;
+  margin-left: 15vh;
 }
 
 .logo__container{

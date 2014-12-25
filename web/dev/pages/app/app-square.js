@@ -8,6 +8,7 @@ define(['js/app'], function(app){
             $scope.isShow = false;
             var skip = 0;
             var last = false;
+            var limit = 30;
 
             $scope.search = function(){
                 $scope.isShow = true;
@@ -20,7 +21,7 @@ define(['js/app'], function(app){
                     loadMessage: '正在加载应用...'
                 });
 
-                appsCrud.getPublishedApps({name: $scope.searchName})
+                appsCrud.getPublishedApps({name: $scope.searchName, limit: limit})
                 .success(function(data){
                     skip++;
                     $scope.displayApps = data.apps;
@@ -43,7 +44,7 @@ define(['js/app'], function(app){
                 }
                 
                 $scope.message = '正在加载应用...';
-                appsCrud.getPublishedApps({name: $scope.searchName, skip: skip})
+                appsCrud.getPublishedApps({name: $scope.searchName, skip: skip, limit: limit})
                 .success(function(data){
                     if(data.apps.length){
                         skip++;

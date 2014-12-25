@@ -24,6 +24,16 @@ block content
   div.route__waiting(ng-show="loading || loadMessage")
     span.icon-spinner2.route__waiting-icon(ng-show="loading")
     span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
+  div.logo--loading(ng-hide="hideLogoLoading")
+    div.logo__box--loading
+      div.logo__container
+        span.logo__item
+        span.logo__item
+        span.logo__item
+        span.logo__item
+        span.logo__item
+      span.logo__text colorbox
+      div.logo__sub-text 你的前端收纳盒
 
 block script
   script(src="/js/bootstrap.js")

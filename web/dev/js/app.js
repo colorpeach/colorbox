@@ -236,8 +236,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ]);
 
     app.run(
-    ['$rootScope', '$sce', '$http', '$location',
-        function($rootScope,   $sce,   $http,   $location){
+    ['$rootScope', '$sce', '$http', '$location', '$timeout',
+        function($rootScope,   $sce,   $http,   $location,   $timeout){
             $rootScope.user = angular.user;
             delete angular.user;
             $rootScope.navs = config.routes;
@@ -259,6 +259,10 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             $rootScope.logined = function(){
                 return !!$rootScope.user;
             };
+
+            $timeout(function(){
+                $rootScope.hideLogoLoading = true;
+            }, 2000);
         }
     ]);
 
