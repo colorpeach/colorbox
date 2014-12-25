@@ -54,13 +54,13 @@ _snippets.del = function(req, res){
 _snippets.get_user_snippets = function(req, res){
     snippets.query({user: req.session.user.login}, function(list){
         res.end(baseRes({snippets: list}));
-    },{html: 0, css: 0, js: 0});
+    },{html: 0, css: 0, javascript: 0});
 };
 
 _snippets.get_snippets = function(req, res){
     snippets.query({}, function(list){
         res.end(baseRes({snippets: list}));
-    },{html: 0, css: 0, js: 0});
+    },{html: 0, css: 0, javascript: 0});
 };
 
 function isObject(value){return value != null && typeof value == 'object';}
