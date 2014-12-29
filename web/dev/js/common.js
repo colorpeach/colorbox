@@ -8,6 +8,14 @@ define(['angular'], function(){
         }
     ])
 
+    //所有后台交互的数据
+    .factory('crud', 
+    ['$cacheFactory',
+        function($cacheFactory){
+            return $cacheFactory('crud');
+        }
+    ])
+
     .factory('safeApply',
     ['$rootScope',
         function($rootScope){
@@ -287,6 +295,64 @@ define(['angular'], function(){
         }
     ])
 
+    //可设定数据类型： Array, Date, Number, Object, String, Defined
+    .factory('DataList', 
+    [
+        function(){
+            function DataList(columns){
+                this.list = [];
+                this.item = angular.extend({}, columns);
+            }
+
+            DataList.prototype = {
+                constructor: DataList,
+                setList: function(data){
+                    var list = data.slice(0);
+                    for(var i = 0, len = list.length; i < len; i++){
+                        list[i] = generate(this.item, list[i]);
+                    }
+                    return this.list = list;
+                },
+                add: function(data){
+                    this.list.push(generate(this.item, data));
+                },
+                remove: function(index){
+                    this.list.splice(index, 1);
+                },
+                get: function(index){
+                    return this.list[index];
+                }
+            };
+
+            var errorTypes = ['Function', 'Element', 'Undefined'];
+            //生成符合预定格式的数据
+            function generate(format, data, source){
+                var r = source || {};
+
+                for(var n in format){
+                    if(n in data){
+                        var type = format[n];
+                        if(angular['is' + type] && errorTypes.indexOf(type) < 0){
+                            if(angular['is' + type](data[n])){
+                                r[n] = data[n];
+                            }else{
+                                throw '字段：' + n + '类型错误';
+                            }
+                        }else if(type === 'Boolean'){
+                            r[n] = !!data[n];
+                        }else{
+                            throw '类型未定义或类型错误';
+                        }
+                    }
+                }
+
+                return r;
+            }
+
+            return DataList;
+        }
+    ])
+
     .directive('tip',
     ['fixed',
         function(fixed){
@@ -426,6 +492,45 @@ define(['angular'], function(){
                                 fn();
                             }
                         }, 100);
+                    });
+                }
+            };
+        }
+    ])
+
+    //动态居中
+    .directive('autoCenter',
+    ['$window',
+        function($window){
+            function center($box, itemWidth, itemLength, boxWidth){
+                var width = boxWidth;
+                var paddingLeft = 0;
+
+                if(width > itemLength * itemWidth){
+                    paddingLeft = (width - itemLength * itemWidth) / 2;
+                }else{
+                    paddingLeft = (width % itemWidth) / 2;
+                }
+
+                $box.css({paddingLeft: paddingLeft + 'px'});
+            }
+
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var $element = angular.element(element);
+                    var itemWidth = parseFloat(attrs.autoCenter) || 243.2;
+                    var oldWidth;
+
+                    scope.$watch(attrs.autoCenterLength, function(val){
+                        oldWidth = oldWidth || $element[0].getBoundingClientRect().width;
+                        center($element, itemWidth, val, oldWidth);
+                    });
+
+                    angular.element($window).on('resize', function(){
+                        var itemLength = scope.$eval(attrs.autoCenterLength);
+                        oldWidth = $element[0].getBoundingClientRect().width;
+                        center($element, itemWidth, itemLength, oldWidth);
                     });
                 }
             };

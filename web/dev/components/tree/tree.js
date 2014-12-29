@@ -3,13 +3,13 @@ define(['js/app'], function(app){
 
     .value('xtree.config', {
         unNameText: '新建',
-        treeClass: 'aui-tree',
-        iconClass: 'aui-tree-icon',
-        nodeClass: 'aui-tree-node',
+        treeClass: 'aui__tree',
+        iconClass: 'aui__tree-icon',
+        nodeClass: 'aui__tree-node',
         singleClass: 'icon-file4',
         expandClass: 'icon-folder-open',
         collapseClass: 'icon-folder',
-        activeClass: 'aui-active',
+        activeClass: 'aui__active',
         onedit: angular.noop,
         onclick: angular.noop,
         ondblclick: angular.noop,

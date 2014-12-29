@@ -56,9 +56,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
             }
         ],
         panels: [
-            {name: '数据源', type: 'source'},
+            {name: '数据源', type: 'source', template: 'editor-source'},
             {name: '路由', type: 'route', template: 'editor-route'},
-            {name: '预览', type: 'preview'}
+            {name: '预览', type: 'preview', template: 'editor-preview'}
         ],
         menuConfig: {
             main: [
@@ -92,8 +92,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .factory('appProMethod',
-    ['xtree.export', 'xtree.config', '$rootScope', 'appProCrud',
-        function(tree,   treeConfig,   $rootScope,   appProCrud){
+    ['xtree.export', 'xtree.config', '$rootScope', 'appProCrud', '$sce', 'safeApply',
+        function(tree,   treeConfig,   $rootScope,   appProCrud,   $sce,   safeApply){
             return function($scope){
 
                 treeConfig.ondblclick = function(e, node){
@@ -239,6 +239,24 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         $scope[current] = tabs[index];
                     }
                 }
+
+                $scope.$watch('app.entrance', function(entrance){
+                    if($scope.app){
+                        var prefix = ['/application/', $scope.app.user, '/', $scope.app.name];
+                        $scope.url = $sce.trustAsResourceUrl(prefix.join('') + entrance);
+                    }
+                });
+
+                $scope.reloadIframe = function(){
+                    $scope.$broadcast('editorIframeStartLoad');
+                    $scope.iframeLoaded = false;
+                };
+
+                $scope.$on('editorIframeLoadSuccess', function(){
+                    safeApply.call($scope, function(){
+                        $scope.iframeLoaded = true;
+                    });
+                });
             }
         }
     ])
@@ -252,7 +270,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
             $scope.panels = editorNavConfig.panels;
             $scope.files = [];
             $scope.tabs = [];
-            $scope.panelTabs = ['source', 'route', 'preview'];
+            $scope.panelTabs = ['route', 'source', 'preview'];
             $scope.currentPanel = $scope.panelTabs[0];
             $scope._id = $routeParams.id;
 
@@ -279,22 +297,87 @@ define(['js/app', 'ace/ace'], function(app, ace){
         }
     ])
 
-    .directive('panels',
+    .controller('editorSourceCtrl',
+    ['$scope', 'DataList',
+        function($scope,   DataList){
+            var tableColumns = [];
+
+            $scope.typeList = [
+                'Array',
+                'Date',
+                'Number',
+                'Object',
+                'String',
+                'Defined'
+            ];
+
+            $scope.sourceTable = new DataList({
+                columns: 'Array'
+            });
+
+            $scope.addTable = function(){
+                var columns = new DataList({
+                    name: 'String',
+                    type: 'String'
+                });
+                tableColumns.push(columns);
+                $scope.sourceTable.add({
+                    columns: columns.list
+                });
+            };
+
+            $scope.removeTable = function($index){
+                $scope.sourceTable.remove($index);
+                tableColumns.splice($index, 1);
+            };
+
+            $scope.addColumn = function(tableIndex){
+                tableColumns[tableIndex].add({
+                    name: '',
+                    type: ''
+                });
+            };
+
+            $scope.removeColumn = function(tableIndex, $index){
+                tableColumns[tableIndex].remove($index);
+            };
+
+            $scope.save = function(){
+                
+            };
+        }
+    ])
+
+    .directive('editorPanels',
     ['$compile', '$templateCache',
         function($compile,   $templateCache){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
-                    var panels = scope[attrs.panels];
-
-                    angular.forEach(panels, function(panel, index){
-                        var $div = angular.element('<div ng-show="currentPanel === \''+ panel.type +'\'"></div>');
-                        if(panel.template){
-                            $div.html($templateCache.get(panel.template));
-                        }
-                        $compile($div)(scope);
-                        element.append($div);
+                    scope.$watch('currentPanel', function(val){
+                        appendPanel(val);
                     });
+
+                    function appendPanel(currentPanel){
+                        if(!angular.isDefined(scope.panels) || !angular.isDefined(currentPanel)) return;
+                        var template = '';
+                        var panels = scope.panels;
+                        for(var i = 0, len = panels.length; i < len; i++){
+                            if(panels[i].type === currentPanel){
+                                template = $templateCache.get(panels[i].template);
+                                break;
+                            }
+                        }
+
+                        element.html('');
+
+                        if(template){
+                            var $panel = angular.element('<div></div>');
+                            $panel.append(template);
+                            $compile($panel)(scope);
+                            element.append($panel);
+                        }
+                    }
                 }
             };
         }
@@ -376,6 +459,24 @@ define(['js/app', 'ace/ace'], function(app, ace){
                             editor.resize();
                         }, 300);
                     }
+                }
+            };
+        }
+    ])
+
+    .directive('editorIframe',
+    [
+        function(){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    element.on('load', function(){
+                        scope.$emit('editorIframeLoadSuccess');
+                    });
+
+                    scope.$on('editorIframeStartLoad', function(){
+                        element[0].src = element[0].src;
+                    });
                 }
             };
         }

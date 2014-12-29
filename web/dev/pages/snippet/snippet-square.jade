@@ -1,12 +1,13 @@
-div.text--center
-  div
+div
+  div.text--center
     div.desktop__search
-      input.desktop__input(type="text", placeholder="输入片段名称")
-      span.desktop__search-button(title="搜索")
-        span.icon-search
-      a.desktop__search-button(href="/#/dashboard/apps", title="添加应用")
-        span.icon-plus
-  div
+      form(ng-submit="submit()")
+        input.desktop__input(type="text", placeholder="输入片段名称")
+        button.desktop__search-button(title="搜索", type="submit")
+          span.icon-search
+        a.desktop__add-button(href="/#/dashboard/snippets", title="添加代码片段")
+          span.icon-plus
+  div(auto-center, auto-center-length="snippets.length")
     a.panel(ng-repeat="snippet in snippets", href="/#/snippet/detail/{{snippet._id}}")
       div.panel__header
         span(ng-bind="snippet.name")

@@ -63,13 +63,12 @@ Apps.get_apps = function(req, res){
 Apps.get_published_apps = function(req, res){
     //拼接模糊查询
     var param = {};
-    var opera = {
-        limit: 8
-    };
+    var opera = {};
     opera.sort = {};
     req.query.name && (param.name = new RegExp(req.query.name));
     req.query.sort && (opera.sort[req.query.sort] = -1);
-    req.query.skip && (opera.skip = req.query.skip * 8);
+    req.query.skip && (opera.skip = req.query.skip * req.query.limit);
+    req.query.limit && (opera.limit = +req.query.limit || 8);
 
     apps.query(param, function(list){
         res.end(baseRes({apps: list}));

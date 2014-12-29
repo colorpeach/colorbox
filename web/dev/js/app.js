@@ -13,11 +13,13 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'desktopCtrl',
                 dependencies: [
                     'pages/index/index', 
+                    'pages/app/app-square', 
                     'pages/dashboard/dashboard-apps'
                 ]
             },
             '/log':{
                 title: '网站更新日志',
+                icon: 'icon-file',
                 templateUrl: 'log.html',
                 controller: 'logsCtrl',
                 dependencies: ['pages/log/log']
@@ -168,7 +170,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             app.filter     = bind($filterProvider, 'register', app);
             app.factory    = bind($provide, 'factory', app);
             app.service    = bind($provide, 'service' ,app);
-            app.value    = bind($provide, 'value' ,app);
+            app.value      = bind($provide, 'value' ,app);
 
 //             $locationProvider.html5Mode(true);
 
@@ -176,12 +178,12 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 angular.forEach(config.routes, function(route, path){
                     $routeProvider.when(path, {
                         templateUrl: route.templateUrl, 
-                        resolve: dependencyResolverFor(route, path), 
+                        resolve: dependencyResolverFor(route), 
                         controller: route.controller, 
                         title: route.title,
                         redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
-                            if(route.path === 'no' && login){
+                            if(route.auth === 'no' && login){
                                 return '/';
                             }else if(route.auth === 'yes' && !login){
                                 return '/login';
@@ -202,7 +204,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 }
             }
 
-            function dependencyResolverFor(route, path){
+            function dependencyResolverFor(route){
                 var definition = {
                     resolver: [
                         '$q','$rootScope', '$window', '$location',
@@ -234,8 +236,8 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     ]);
 
     app.run(
-    ['$rootScope', '$sce', '$http', '$location',
-        function($rootScope,   $sce,   $http,   $location){
+    ['$rootScope', '$sce', '$http', '$location', '$timeout',
+        function($rootScope,   $sce,   $http,   $location,   $timeout){
             $rootScope.user = angular.user;
             delete angular.user;
             $rootScope.navs = config.routes;
@@ -253,6 +255,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     $location.path('/');
                 });
             };
+
+            $rootScope.logined = function(){
+                return !!$rootScope.user;
+            };
+
+            $timeout(function(){
+                $rootScope.hideLogoLoading = true;
+            }, 2000);
         }
     ]);
 
@@ -304,7 +314,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('logoNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/appPros', '/snippet-square', '/message', '/'];
+            var showTabs = ['/log', '/snippet-square', '/message', '/'];
             return function(navs){
                 var r = [];
                 angular.forEach(navs, function(n, i){

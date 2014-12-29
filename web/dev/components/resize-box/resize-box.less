@@ -1,23 +1,27 @@
 //Component
 //Resize-box
 
-.resize-box > div{
+.resize__box > div{
   position: absolute;
+
+  &:not(.resize__bar){
+    .transition(.3s all);
+  }
 }
 
-.resize-bar{
+.resize__bar{
   position: absolute!important;
   overflow: hidden;
   display: none;
 }
 
-.resize-bar.dir-h{
+.resize__bar.dir-h{
   cursor: s-resize;
   display: block;
 }
 
-.resize-bar.dir-h:before,
-.resize-bar.dir-h:after{
+.resize__bar.dir-h:before,
+.resize__bar.dir-h:after{
   content: '';
   display: block;
   position: absolute;
@@ -30,12 +34,17 @@
   margin: auto;
 }
 
-.resize-bar.dir-h:after{
+.resize__bar.dir-h:after{
   top: 6px;
 }
 
-.resize-bar.dir-v:before,
-.resize-bar.dir-v:after{
+.resize__bar.dir-v{
+  cursor: w-resize;
+  display: block;
+}
+
+.resize__bar.dir-v:before,
+.resize__bar.dir-v:after{
   content: '';
   display: block;
   position: absolute;
@@ -48,28 +57,19 @@
   margin: auto;
 }
 
-.resize-bar.dir-v:after{
+.resize__bar.dir-v:after{
   left: 6px;
 }
 
-.resize-bar.dir-v{
-  cursor: w-resize;
-  display: block;
-}
-
-.resize-mark{
+.resize__mark{
   background-color: #999;
-  position: absolute!important;
+  position: absolute;
   padding: 0!important;
   transition: none!important;
   z-index: 10;
 }
 
-.resize-overlay{
-  position: absolute!important;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1011;
+.resize__overlay{
+  .position--full;
+  z-index: 9;
 }

@@ -6,12 +6,11 @@ var userCtrl = {};
 
 //更新桌面应用
 userCtrl.updateDesktopApps = function(req,res){
-    var data = {user: req.session.user.login};
+    var data = req.body;
+    data.user = req.session.user.login;
 
-    data.apps = req.body.apps || [];
-
-    desktopApps.update(data, function(){
-        res.end(baseRes());
+    desktopApps.save(data, function(data){
+        res.end(baseRes(data));
     }, ['user']);
 };
 
@@ -20,7 +19,7 @@ userCtrl.getDesktopApps = function(req, res){
 
     desktopApps.query(data, function(data){
         res.end(baseRes(data[0]));
-    }, {apps: 1});
+    });
 };
 
 module.exports = userCtrl;

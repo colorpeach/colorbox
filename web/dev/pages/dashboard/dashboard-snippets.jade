@@ -4,8 +4,8 @@ block content
   ul.dashboard__boxs
     li.dashboard__box(ng-show="status.page === 'list'")
       div.dashboard__head
-        span.icon-plus.button-hollow--primary(title="新建代码片段", ng-click="switch($event, 'add')")
-      div.dashboard__list
+        span.icon-plus.button-hollow--success(title="新建代码片段", ng-click="switch($event, 'add')")
+      div.dashboard__list(auto-center, auto-center-length="snippets.length")
         a.dashboard__item.panel(href="#/edit/snippet/{{snippet._id}}", ng-repeat="snippet in snippets")
           div.panel__header
             span {{snippet.name}}

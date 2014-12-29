@@ -18,10 +18,8 @@ define(['js/app'], function(app){
     ])
 
     .controller('messageCtrl',
-    ['$scope', 'messageCurd', 'prompt', '$window', '$rootScope',
-        function($scope,   messageCurd,   prompt,   $window,   $rootScope){
-            var $scrollBox = $window.document.querySelector('.js-message');
-            var $content = $window.document.querySelector('#content');
+    ['$scope', 'messageCurd', 'prompt', '$window', '$rootScope', '$anchorScroll', '$location',
+        function($scope,   messageCurd,   prompt,   $window,   $rootScope,   $anchorScroll,   $location){
             $scope.label = '留言';
             $scope.data = {};
             $scope.user = $rootScope.user;
@@ -45,8 +43,8 @@ define(['js/app'], function(app){
                 $scope.current = msg;
                 $scope.label = '回复 ' + user;
                 $scope.data.to = user;
-                $scrollBox.scrollTop = 0;
-                $content.focus();
+                $location.hash('content');
+//                 $anchorScroll();
             };
 
             $scope.cancel = function(){

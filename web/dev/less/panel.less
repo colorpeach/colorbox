@@ -11,9 +11,22 @@
     color: @success-color;
 
     &:hover{
+        position: relative;
+        z-index: 1;
         .box-shadow(0 17px 50px 0 rgba(0, 0, 0, .19));
         background-color: @success-color;
+        border-color: @success-color;
         color: @white-color;
+    }
+
+    &.ng-enter{
+        .fadeIn;
+        .animated;
+    }
+    &.ng-leave{
+        .fadeOut;
+        .animated;
+        .animation-duration(0s);
     }
 }
 

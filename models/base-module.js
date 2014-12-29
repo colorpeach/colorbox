@@ -26,6 +26,18 @@ base.update = function(data,fn, searchKeys){
     ],fn);
 }
 
+base.save = function(data,fn, searchKeys){
+    var model = this;
+    var d = base.tidy(model.column,data);
+    dbClient.connect([
+        function(db,callback){
+            db.collection(model.collection).save(d,function(err,data){
+                callback(err,data);
+            });
+        }
+    ],fn);
+}
+
 base.query = function(data,fn,filter,opera){
     var model = this;
     var d = base.tidy(model.column,data);

@@ -1,18 +1,13 @@
-div.snippet-detail
+div
   iframe.snippet-iframe(ng-src="{{url}}", width="100%", height="500px", frameBorder=0)
-  div.snippet-bar
-    ul.row
-      li(tip="b", title="赞")
-        span.icon-thumbs-up
-      li(tip="b", title="重新载入")
-        span.icon-spinner6
-  div.row.sidebar
-    div.medium-8.columns
-      div.large-12.columns
-        div 描述
-        div(ng-bind="snippet.description || '无描述'")
-      hr
-      div.large-12.columns
-        div 评论
-        ul
-          li(ng-repeat="comment in comments")
+  div.content
+    span(tip="b", title="赞")
+      span.icon-thumbs-up
+    span(tip="b", title="重新载入")
+      span.icon-spinner6
+  div.content
+    div.grid__8-12.form__full
+      label.form__label 描述
+      div.form__cell(ng-bind="snippet.description || '无描述'")
+      label.form__label 评论
+      include ../message/message

@@ -26,7 +26,7 @@ define(['angular', 'js/app'], function(_, app){
     .directive('resizeBox',
     ['$templateCache', '$rootScope', '$compile',
         function($templateCache,   $rootScope,   $compile){
-            var resizeBarTpl = '<div resize-bar class="resize-bar"></div>';
+            var resizeBarTpl = '<div resize-bar class="resize__bar"></div>';
                  
             //返回显示的group和item的数量
             function getShows(items, layout, groupReals){
@@ -133,7 +133,7 @@ define(['angular', 'js/app'], function(_, app){
                                 return $templateCache.get(n.template) || n.template;
                             }).join(''));
 
-                        element.addClass('resize-box');
+                        element.addClass('resize__box');
                         
                         //填充html
                         $compile($items)(scope);
@@ -291,8 +291,8 @@ define(['angular', 'js/app'], function(_, app){
     .directive('resizeBar',
     ['$rootScope', '$window',
         function($rootScope,   $window){
-            var resizeMarkTpl = '<div class="resize-mark"></div>';
-            var resizeOverlayTpl = '<div class="resize-overlay"></div>';
+            var resizeMarkTpl = '<div class="resize__mark"></div>';
+            var resizeOverlayTpl = '<div class="resize__overlay"></div>';
             var eventsMap = {
                 web: {
                     down: 'mousedown',

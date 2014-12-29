@@ -7,9 +7,9 @@ script(type="text/ng-template", id="editor-tree")
       span.icon-plus.button-icon(ng-click="addFile()")
       span.icon-remove.button-icon(ng-click="delFile()")
     div.editor__tree(context-menu="menuConfig", has-context-menu="main")
-      div.aui-tree(style="margin-top: 10px;")
+      div.aui__tree(style="margin-top: 10px;")
         span.icon-briefcase
-        a(href="/application/{{app.user}}/{{app.name}}{{app.entrance}}", target="_blank").aui-tree-node {{app.name}}
+        a(href="/application/{{app.user}}/{{app.name}}{{app.entrance}}", target="_blank").aui__tree-node {{app.name}}
       div(xtree="files")
 script(type="text/ng-template", id="editor-main")
   div
@@ -30,7 +30,7 @@ script(type="text/ng-template", id="editor-assist")
       span.editor__tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
-    div.editor__contents(style="background-color: #222;", panels="panels")
+    div.editor__contents(style="background-color: #222;", editor-panels)
 script(type="text/ng-template", id="editor-route")
   div(style="padding: 10px;")
     div.row--gray
@@ -49,3 +49,50 @@ script(type="text/ng-template", id="editor-route")
             input.table__input-text--gray(type="text", ng-model="file.url")
           td.table__td--gray
             span.table__cell-text {{file.name}}
+script(type="text/ng-template", id="editor-preview")
+  div.editor__nav
+    span.icon-loop2.button-icon(title="刷新", ng-click="reloadIframe()", ng-show="iframeLoaded")
+    span.icon-close.button-icon(title="停止刷新", ng-hide="iframeLoaded")
+    span  {{url}}
+  div.editor__contents
+    iframe(width="100%", height="100%", frameBorder=0, ng-src="{{url}}", editor-iframe)
+script(type="text/ng-template", id="editor-source")
+  div(style="padding: 10px;", ng-controller="editorSourceCtrl")
+    button.button--primary.form__button(ng-click="addTable()")
+      span.icon-plus  
+      | 添加表
+    button.button--success.form__button
+      span.icon-save
+      | 保存
+    table.table(ng-repeat="table in sourceTable.list track by $index")
+      thead
+        tr
+          th.table__th--gray(colspan=3)
+            span.table__cell-text
+              button.button-icon(ng-click="collapse = !collapse")
+                span.icon-arrow-up3(ng-class="{'icon-arrow-down3': collapse}")  
+                | 表{{$index + 1}}
+              button.button-icon(ng-click="addColumn($index)")
+                span.icon-plus  
+                | 添加字段
+              button.button-icon(ng-click="removeTable($index)")
+                span.icon-remove  
+                | 删除表
+        tr(ng-hide="collapse")
+          th.table__th--gray
+            span.table__cell-text 操作
+          th.table__th--gray
+            span.table__cell-text 字段
+          th.table__th--gray
+            span.table__cell-text 类型
+      tbody(ng-hide="collapse")
+        tr(ng-repeat="column in table.columns")
+          td.table__td--gray
+            span.table__cell-text
+              button.button-icon(ng-click="removeColumn($parent.$index, $index)")
+                span.icon-close  
+                | 删除
+          td.table__td--gray
+            input.table__input-text--gray(type="text", ng-model="column.name")
+          td.table__td--gray
+            select.table__input-text--gray(ng-options="type as type for type in typeList", ng-model="column.type")

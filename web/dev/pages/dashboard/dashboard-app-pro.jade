@@ -4,8 +4,8 @@ block content
   ul.dashboard__boxs
     li.dashboard__box(ng-show="status.page === 'list'")
       div.dashboard__head
-        span.icon-plus.button-hollow--primary(title="新建应用", ng-click="switch($event, 'add')")
-      div.dashboard__list
+        span.icon-plus.button-hollow--success(title="新建应用", ng-click="switch($event, 'add')")
+      div.dashboard__list(auto-center, auto-center-length="apps.length")
         a.dashboard__item.panel(href="#/edit/app-pro/{{app._id}}", ng-repeat="app in apps")
           div.panel__header
             span {{app.name}}
@@ -28,7 +28,7 @@ block content
         div.form__row
           span.form__cell
           span.form__cell
-            input.button-hollow--success(type="submit", value="提交")
+            input.button--success(type="submit", value="提交")
 
     li.dashboard__box(ng-show="status.page === 'detail'")
       div.dashboard__head
@@ -53,9 +53,9 @@ block content
           input.button-hollow(type="button", value="添加", ng-click="addSize()")
         label.form__label(for="description") 应用描述
         textarea.form__input(id="description", name="description", ng-model="current.description")
-        input.form__button.button-hollow--success(type="submit", value="保存修改")
-        input.form__button.button-hollow--primary(type="button", value="申请发布")
+        input.form__button.button--success(type="submit", value="保存修改")
+        input.form__button.button--primary(type="button", value="申请发布")
         label.form__label 编辑代码
-        a.form__button.button-hollow--primary(href="#/edit/app-pro/{{current._id}}") 编辑代码
+        a.form__button.button--primary(href="#/edit/app-pro/{{current._id}}") 编辑代码
         label.form__label 删除应用
-        input.form__button.button-hollow--alert(type="button", value="删除应用", ng-click="del()")
+        input.form__button.button--alert(type="button", value="删除应用", ng-click="del()")

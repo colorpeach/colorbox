@@ -4,8 +4,8 @@ block content
   ul.dashboard__boxs
     li.dashboard__box(ng-show="status.page === 'list'")
       div.dashboard__head
-        span.icon-plus.button-hollow--primary(title="新建应用", ng-click="switch($event, 'add')")
-      div.dashboard__list
+        span.icon-plus.button-hollow--success(title="新建应用", ng-click="switch($event, 'add')")
+      div.dashboard__list(auto-center, auto-center-length="apps.length")
         a.dashboard__item.panel(href="#/edit/app/{{app._id}}", ng-repeat="app in apps")
           div.panel__header
             span {{app.name}}
