@@ -26,6 +26,7 @@
   height: 3rem;
   width: 3rem;
   .border-radius(100%);
+  .box-shadow(0 0 17px 0 rgba(0, 0, 0, 0.2));
   z-index: @assist-index;
 
   &:hover{
@@ -323,29 +324,38 @@
   }
 }
 
-.logo--loading{
+.logo__overlay--loading{
   overflow: hidden;
   .position--full;
   background-color: @white-color;
   z-index: @logo-index;
-  .animated;
 
   &.ng-hide{
     .fadeOut;
+    .animated;
   }
 }
 
-.logo__box--loading{
+.logo--loading{
+  position: fixed;
+  top: 30vh;
+  width: 100%;
+  text-align: center;
+  z-index: @logo-index + 1;
   .animation-name(logoLoadingInBox);
   .animation-duration(1s);
-  margin-top: 30vh;
-  text-align: center;
 
   .logo__container{
     display: inline-block;
-    .opacity(1);
+    margin-left: -15vh;
     height: 10vh;
     width: 10vh;
+    .opacity(1);
+
+    &.ng-hide{
+      .fadeOut;
+      .animated;
+    }
   }
 }
 
@@ -389,13 +399,23 @@
 .logo__text{
   display: inline-block;
   font-size: 5vh;
-  margin-left: 10vh;
   margin-top: 8vh;
+  margin-left: 10vh;
+
+  &.ng-hide{
+    .fadeOut;
+    .animated;
+  }
 }
 
 .logo__sub-text{
   font-size: 2vh;
-  margin-left: 15vh;
+  margin-left: 10vh;
+
+  &.ng-hide{
+    .fadeOut;
+    .animated;
+  }
 }
 
 .logo__container{

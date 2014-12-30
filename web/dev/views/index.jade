@@ -24,16 +24,18 @@ block content
   div.route__waiting(ng-show="loading || loadMessage")
     span.icon-spinner2.route__waiting-icon(ng-show="loading")
     span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")
-  div.logo--loading(ng-hide="hideLogoLoading")
-    div.logo__box--loading
-      div.logo__container
-        span.logo__item
-        span.logo__item
-        span.logo__item
-        span.logo__item
-        span.logo__item
-      span.logo__text colorbox
-      div.logo__sub-text 你的前端收纳盒
+  div.logo__overlay--loading(ng-hide="hideLogoLoading")
+  div.logo--loading
+    div.logo__container(ng-hide="hideLogoLoading")
+      span.logo__item
+      span.logo__item
+      span.logo__item
+      span.logo__item
+      span.logo__item
+    div.logo__text(ng-hide="hideLogoLoading") colorbox
+    div.logo__sub-text(ng-hide="hideLogoLoading") 你的前端收纳盒
+  //div.position--bottom.text--center Create by 
+    //a colorpeach
 
 block script
   script(src="/js/bootstrap.js")

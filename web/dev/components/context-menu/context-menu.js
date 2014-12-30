@@ -7,7 +7,17 @@ define(['js/app'], function(app){
             var $body = angular.element($window.document.body);
             var template = utils.heredoc(function(){/*!
                 <ul class="context-menu" ng-repeat="(key, menu) in config" ng-show="$parent.shows[key]" ng-style="$parent.css[key]">
-                    <li ng-repeat="item in menu" ng-click="parentScope.$eval(item.command)">{{item.name}}</li>
+                    <li ng-repeat="item in menu" ng-click="exec()" ng-class="{'context-menu-split': item.line}">
+                        <span ng-if="item.key" class="context-menu-key">{{item.key && getCommand(item.key)}}</span>
+                        <span ng-if="item.mark && mark(item.mark)" class="context-menu-mark"></span>
+                        {{item.name}}
+                        <span ng-if="item.subMenu" class="context-menu-arrow"></span>
+                        <ul ng-if="item.subMenu">
+                            <li ng-repeat="item in item.subMenu" ng-click="exec()" ng-class="{'context-menu-split': item.line}">
+                                <span ng-if="item.key" class="context-menu-key">{{item.key && getCommand(item.key)}}</span>
+                                <span ng-if="item.mark && mark(item.mark)" class="context-menu-mark"></span>{{item.name}}</li>
+                        </ul>
+                    </li>
                 </ul>
             */});
 
@@ -23,7 +33,22 @@ define(['js/app'], function(app){
                         $scope.css = {};
                         $scope.activeMenu;
 
+                        $scope.getCommand = $scope.$parent.getCommand;
+
+                        $scope.exec = function(){
+                            if(this.item.command){
+                                $scope.$parent.$eval(this.item.command + '(' + angular.toJson(this.item.params || []).slice(1, -1) + ')');
+                            }else{
+                                $scope.$parent.execCommand(this.item.key);
+                            }
+                        };
+
+                        $scope.mark = function(mark){
+                            return $scope.$parent.$eval(mark);
+                        }
+
                         this.showMenu = function(show){
+                            $scope.activeMenu && ($scope.shows[$scope.activeMenu] = false);
                             $scope.activeMenu = show.menu;
                             $scope.shows[show.menu] = true;
                             $scope.css[show.menu] = calcPosition(show.target, show.point);
@@ -85,6 +110,29 @@ define(['js/app'], function(app){
                         } 
 
                         contextMenuCtrl.showMenu({point: point, menu: attrs.hasContextMenu, target: element});
+                    });
+                }
+            };
+        }
+    ])
+
+    .directive('triggerContextMenu',
+    [
+        function(){
+            return {
+                restrict: 'A',
+                require: '^contextMenu',
+                link: function(scope, element, attrs, contextMenuCtrl){
+
+                    element.on('click', function(e){
+                        e.stopPropagation();
+                        var rect = element[0].getBoundingClientRect();
+                        var point = {
+                            x: rect.right,
+                            y: rect.top
+                        } 
+
+                        contextMenuCtrl.showMenu({point: point, menu: attrs.triggerContextMenu, target: element});
                     });
                 }
             };
