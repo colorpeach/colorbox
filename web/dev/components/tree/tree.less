@@ -1,13 +1,13 @@
 //Components
 //Tree
 
-@component-tree-color: #efefef;
-@component-tree-background-color: #748512;
+@component-tree-node-color: #efefef;
+@component-tree-node-background-color: @success-color;
 
 .aui__tree{
-    margin-left: 0;
+    margin: 5px 0 5px 0;
     padding: 0 10px;
-    color: @component-tree-color;
+    color: @component-tree-node-color;
     white-space: nowrap;
 }
 
@@ -16,20 +16,22 @@
 }
 
 .aui__tree li>span{
+    display: inline-block;
     min-width: 100%;
+    padding: 2px;
+    line-height: 1;
     .border-radius(4px);
     .user-select(none);
 }
 
 .aui__tree span{
-    display: inline-block;
     cursor: pointer;
 }
 
 .aui__tree a{
     padding:0 5px;
     margin-left: 3px;
-    color: @component-tree-color;
+    color: @component-tree-node-color;
 }
 
 .aui__tree a:focus{
@@ -39,5 +41,5 @@
 }
 
 .aui__tree .aui__active{
-    background-color: @component-tree-background-color;
+    background-color: @component-tree-node-background-color;
 }

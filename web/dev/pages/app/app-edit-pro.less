@@ -18,6 +18,35 @@
     color: @editor-color;
     border-top: 1px solid #444;
     font-size: 12px;
+
+    .ace_search{
+        background-color: @editor-background-color;
+        border-color: @editor-border-color;
+    }
+
+    .ace_search_field{
+        background-color: @editor-nav-backcolor;
+    }
+
+    .ace_searchbtn,
+    .ace_replacebtn{
+        background-color: @editor-background-color;
+        border-left-color: @editor-border-color;
+        padding: 0 2px;
+    }
+
+    .ace_search_form,
+    .ace_replace_form{
+        border-color: @editor-border-color;
+    }
+
+    .ace_button{
+        color: @editor-color;
+
+        &:hover{
+            background-color: @editor-nav-hover-backcolor;
+        }
+    }
 }
 
 .editor__nav{
@@ -74,6 +103,7 @@
     color: @editor-color;
     border: 1px solid @editor-border-color;
     box-shadow: 0 2px 5px @editor-border-color;
+    z-index: 1;
 
     li{
         position: relative;
@@ -84,6 +114,7 @@
 
         &:hover{
             background-color: @editor-nav-hover-backcolor;
+            color: @success-color;
         }
 
         > ul{
@@ -99,24 +130,35 @@
     }
 }
 
-.editor__nav-mark{
-    position: absolute;
-    left: 10px;
-    top: 8px;
-    border: 3px solid;
-    border-radius: 50%;
-}
+.editor__nav,
+.context-menu{
+    &-mark{
+        position: absolute;
+        left: 10px;
+        top: 8px;
+        border: 3px solid;
+        border-radius: 50%;
+    }
 
-.editor__nav-arrow{
-    position: absolute;
-    right: 5px;
-    top: 7px;
-    display: block;
-    border-style: solid;
-    border-color: transparent transparent transparent @editor-color;
-    border-width: 4px 0 4px 6px;
-}
+    &-arrow{
+        position: absolute;
+        right: 5px;
+        top: 7px;
+        display: block;
+        border-style: solid;
+        border-color: transparent transparent transparent @editor-color;
+        border-width: 4px 0 4px 6px;
+    }
 
+    &-split{
+        border-top: 1px solid @editor-border-color;
+    }
+
+    &-key{
+        float: right;
+        margin-left: 120px;
+    }
+}
 
 .editor__boxs{
     .position--full;
@@ -155,6 +197,11 @@
         margin-right: 5px;
         border: 1px solid transparent;
         vertical-align: baseline;
+
+        &:hover{
+            background-color: darken(@editor-background-color, -10%);
+            .border-radius(4px);
+        }
   
         &.active{
             border: 1px solid @editor-border-color;
@@ -186,6 +233,26 @@
     text-align: center;
     font-size: 3em;
     line-height: 3em;
+}
+
+div.editor__bottom-assist{
+  top: auto;
+  left: auto;
+  padding: .2em 0 .2em .2em;
+  font-size: 1.2em;
+  z-index: @editor-index;
+
+  .button-icon{
+    &:extend(.editor__tabs .button-icon);
+
+    &:hover{
+      &:extend(.editor__tabs .button-icon:hover);
+    }
+
+    &.active{
+      &:extend(.editor__tabs .button-icon.active);
+    }
+  }
 }
 
 .editor__tab{
