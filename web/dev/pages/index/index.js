@@ -33,7 +33,7 @@ define(['js/app'], function(app){
                         $scope.apps = data.apps;
                         $scope.apps_id = data._id;
                         data.apps.forEach(function(n, i){
-                            n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                            n.url = $sce.trustAsResourceUrl('/_app-pro/preview/' + n._id);
                         });
                     }
                 });

@@ -30,7 +30,7 @@ block content
           span.form__cell
             input.button--success(type="submit", value="提交")
 
-    li.dashboard__box(ng-show="status.page === 'detail'")
+    li.dashboard__box--fixed(ng-show="status.page === 'detail'")
       div.dashboard__head
         span.icon-arrow-left2.button-icon(ng-click="switch($event, 'list')", title="返回")
         a(href="/_snippets/preview/{{current._id}}", target="_blank", ng-bind="current.name")
