@@ -5407,6 +5407,11 @@ Copyright (c) 2014 Daniel Eden
 .aui__tree .aui__active {
   background-color: #43ac6a;
 }
+/* @editor-background-color: #ddd;
+@editor-border-color: #999;
+@editor-color: #666;
+@editor-nav-hover-backcolor: #ddd;
+@editor-nav-backcolor: #ccc; */
 .editor {
   background-color: #333333;
   color: #ffffff;
@@ -5544,8 +5549,8 @@ Copyright (c) 2014 Daniel Eden
 }
 .editor__boxs > div {
   position: absolute;
-  border-left: 1px solid #222;
-  border-bottom: 1px solid #222;
+  border-left: 1px solid #222222;
+  border-bottom: 1px solid #222222;
 }
 .editor__boxs > .resize__bar,
 .editor__boxs > .resize__mark {
@@ -5603,6 +5608,7 @@ div.editor__bottom-assist .button-icon.active {
   right: 0;
   bottom: 0;
   top: 30px;
+  background-color: #222222;
 }
 .editor__contents > div {
   overflow: auto;
@@ -5611,6 +5617,9 @@ div.editor__bottom-assist .button-icon.active {
   left: 0;
   right: 0;
   bottom: 0;
+}
+.editor__back-logo {
+  background-color: transparent;
 }
 .editor__back-logo:before {
   position: absolute;
@@ -5669,21 +5678,21 @@ div.editor__bottom-assist {
 }
 .editor__select {
   display: inline-block;
-  background-color: #444;
+  background-color: #333333;
   height: 28px;
   width: auto;
   vertical-align: top;
   min-width: 80px;
-  border: 4px solid #333;
+  border: 4px solid #333333;
   padding: 0;
   margin-bottom: 0;
-  color: #fff;
+  color: #ffffff;
 }
 .editor__select:hover,
 .editor__select:focus {
-  background-color: #555555;
-  color: #fff;
-  border-color: #333;
+  background-color: #4d4d4d;
+  color: #ffffff;
+  border-color: #333333;
 }
 .full-screen {
   position: fixed!important;
@@ -5737,8 +5746,8 @@ div.editor__bottom-assist {
 }
 .table__th--gray,
 .table__td--gray {
-  border: 1px solid #222;
-  background-color: #444;
+  border: 1px solid #222222;
+  background-color: #333333;
 }
 .table__th--gray:hover,
 .table__td--gray:hover {
@@ -5747,7 +5756,7 @@ div.editor__bottom-assist {
 .table__cell-text {
   display: block;
   padding: 5px 10px;
-  color: #fff;
+  color: #ffffff;
   text-align: left;
 }
 .table__input-text--gray {
@@ -5755,8 +5764,8 @@ div.editor__bottom-assist {
   height: 100%;
   padding: 0 10px;
   border: 0;
-  color: #fff;
-  background-color: #444;
+  color: #ffffff;
+  background-color: #333333;
 }
 .table__input-text--gray:hover,
 .table__input-text--gray:focus {
