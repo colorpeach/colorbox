@@ -151,8 +151,11 @@ define(['js/app', 'ace/ace'], function(app, ace){
         ],
         menuConfig: {
             main: [
-                {name: '新建文件'},
-                {name: '新建文件夹'}
+                {name: '打开', command: 'openFile'},
+                {name: '新建文件', command: 'addFile', line: true},
+                {name: '新建文件夹', command: 'addDir'},
+                {name: '重命名', line: true},
+                {name: '删除', command: 'delFile', line: true}
             ]
         },
         editorAssist: {
@@ -250,6 +253,14 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 });
 
                 $scope.openFile =  function(unique){
+                    if(!unique){
+                        var node = tree.getSelected();
+                        if(node){
+                            unique = node.unique;
+                        }else{
+                            return;
+                        }
+                    }
                     if($scope.tabs.indexOf(unique) < 0){
                         $scope.currentTab = unique;
                         $scope.tabs.push(unique);

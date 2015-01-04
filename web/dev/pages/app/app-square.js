@@ -2,8 +2,8 @@ define(['js/app'], function(app){
     app
 
     .controller('appSquareCtrl', 
-    ['$scope', 'appsCrud', '$sce', '$location',
-        function($scope,   appsCrud,   $sce,   $location){
+    ['$scope', 'appProCrud', '$sce', '$location',
+        function($scope,   appProCrud,   $sce,   $location){
             $scope.displayApps = [];
             $scope.isShow = false;
             var skip = 0;
@@ -21,12 +21,12 @@ define(['js/app'], function(app){
                     loadMessage: '正在加载应用...'
                 });
 
-                appsCrud.getPublishedApps({name: $scope.searchName, limit: limit})
+                appProCrud.getPublishedApps({name: $scope.searchName, limit: limit})
                 .success(function(data){
                     skip++;
                     $scope.displayApps = data.apps;
                     data.apps.forEach(function(n, i){
-                        n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                        n.url = $sce.trustAsResourceUrl('/_app-pro/preview/' + n._id);
                     });
                 });
             };
@@ -44,13 +44,13 @@ define(['js/app'], function(app){
                 }
                 
                 $scope.message = '正在加载应用...';
-                appsCrud.getPublishedApps({name: $scope.searchName, skip: skip, limit: limit})
+                appProCrud.getPublishedApps({name: $scope.searchName, skip: skip, limit: limit})
                 .success(function(data){
                     if(data.apps.length){
                         skip++;
                         $scope.displayApps.push.apply($scope.displayApps, data.apps);
                         data.apps.forEach(function(n, i){
-                            n.url = $sce.trustAsResourceUrl('/_apps/preview/' + n._id);
+                            n.url = $sce.trustAsResourceUrl('/_app-pro/preview/' + n._id);
                         });
                     }else{
                         last = true;

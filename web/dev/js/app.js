@@ -12,9 +12,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: '/index.html',
                 controller: 'desktopCtrl',
                 dependencies: [
-                    'pages/index/index',
-                    'pages/app/app-square',
-                    'pages/dashboard/dashboard-apps'
+                    'pages/index/index', 
+                    'pages/app/app-square', 
+                    'pages/dashboard/dashboard-app-pro'
                 ]
             },
             '/log':{
@@ -298,7 +298,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('dashboardNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/account', '/dashboard/snippets', '/dashboard/apps', '/dashboard/appPros'];
+            var showTabs = ['/dashboard/snippets', '/dashboard/appPros'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){
@@ -336,7 +336,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('assistItems', 
     [
         function(){
-            var showTabs = ['/dashboard/apps', '/dashboard/snippets'];
+            var showTabs = ['/dashboard/appPros', '/dashboard/snippets'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){

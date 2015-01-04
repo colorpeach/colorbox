@@ -1,0 +1,38 @@
+//Label
+
+.generate-label(@color: @base-color, @background: darken(@base-color, -50%)){
+    color: @color;
+    background-color: @background;
+    border-color: @background;
+}
+
+.label{
+    display: inline-block;
+    padding: .25em;
+    margin: .25em;
+    border-width: 1px;
+    border-style: solid;
+    font-size: .8rem;
+    line-height: 1;
+    vertical-align: middle;
+
+    &--success{
+        &:extend(.label);
+        .generate-label(@white-color, @success-color);
+    }
+
+    &--alert{
+        &:extend(.label);
+        .generate-label(@white-color, @alert-color);
+    }
+
+    &--primary{
+        &:extend(.label);
+        .generate-label(@white-color, @primary-color);
+    }
+
+    &--warning{
+        &:extend(.label);
+        .generate-label(@white-color, @warning-color);
+    }
+}
