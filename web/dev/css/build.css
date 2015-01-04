@@ -6057,6 +6057,19 @@ div.editor__bottom-assist {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+.main__footer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  height: 2rem;
+  font-size: .8rem;
+  line-height: 2rem;
+  text-align: center;
+  z-index: -1;
+}
 .main__full {
   left: 0!important;
   top: 0!important;

@@ -105,14 +105,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/dashboard/dashboard-snippets'
                 ]
             },
-            '/edit/app/:id': {
-                title: '编辑应用',
+            '/edit/article/:id': {
+                title: '编辑文章',
                 auth: 'yes',
-                templateUrl: 'app-edit.html',
-                controller: 'editAppCtrl',
+                templateUrl: 'article-edit.html',
+                controller: 'editArticleCtrl',
                 dependencies: [
-                    'pages/app/app-edit',
-                    'pages/dashboard/dashboard-apps',
+                    'pages/article/article-edit', 
+                    'pages/app/app-edit-pro', 
                     'components/resize-box/resize-box'
                 ]
             },
