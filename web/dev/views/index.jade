@@ -13,7 +13,7 @@ block content
     div.assist__overlay
     a.assist__item(ng-repeat="(href, item) in navs | assistItems track by $index", title="{{item.title}}", href="{{'/#' + href}}", ng-class="{true: 'rotate-icon' + $index}[true]")
       span(class="{{item.icon}}")
-    a.assist__item.rotate-icon2(href="/_logout", title="退出登录")
+    a.assist__item.rotate-icon3(href="/_logout", title="退出登录")
       span.icon-exit
   div.main__login.hide(ng-class="{hide: user || !showUser}")
     a(href="/#/login") 登录

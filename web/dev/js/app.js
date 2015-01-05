@@ -40,14 +40,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'registerCtrl',
                 dependencies: ['pages/login/login']
             },
-            '/dashboard/apps': {
-                title: '我的应用',
-                icon: 'icon-stack',
+            '/dashboard/articles': {
+                title: '我的文档',
+                icon: 'icon-file',
                 auth: 'yes',
-                templateUrl: 'dashboard-apps.html',
-                controller: 'myAppsCtrl',
+                templateUrl: 'dashboard-articles.html',
+                controller: 'myArticlesCtrl',
                 dependencies: [
-                    'pages/dashboard/dashboard-apps'
+                    'pages/dashboard/dashboard-articles'
                 ]
             },
             '/dashboard/appPros': {
@@ -106,13 +106,12 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 ]
             },
             '/edit/article/:id': {
-                title: '编辑文章',
+                title: '编辑文档',
                 auth: 'yes',
                 templateUrl: 'article-edit.html',
                 controller: 'editArticleCtrl',
                 dependencies: [
                     'pages/article/article-edit', 
-                    'pages/app/app-edit-pro', 
                     'components/resize-box/resize-box'
                 ]
             },
@@ -298,7 +297,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('dashboardNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/snippets', '/dashboard/appPros'];
+            var showTabs = ['/dashboard/snippets', '/dashboard/appPros', '/dashboard/articles'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){
@@ -336,7 +335,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('assistItems', 
     [
         function(){
-            var showTabs = ['/dashboard/appPros', '/dashboard/snippets'];
+            var showTabs = ['/dashboard/appPros', '/dashboard/snippets', '/dashboard/articles'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){
