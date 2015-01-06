@@ -8,13 +8,13 @@ define(['js/app'], function(app){
                     return $http.get('/get/app?_id='+ id);
                 },
                 add: function(data){
-                    return $http.post('/post/add/app', data);
+                    return $http.post('/add/app', data);
                 },
                 del: function(id){
-                    return $http.post('/post/del/app', {_id: id});
+                    return $http.post('/del/app', {_id: id});
                 },
                 save: function(data){
-                    return $http.post('/post/save/app', data);
+                    return $http.post('/save/app', data);
                 },
                 getUserApps: function(){
                     return $http.get('/get/apps', {cache: true});

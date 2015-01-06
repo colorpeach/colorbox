@@ -8,13 +8,13 @@ define(['js/app'], function(app){
                     return $http.get('/get/snippet?_id='+ id);
                 },
                 add: function(data){
-                    return $http.post('/post/add/snippet', data);
+                    return $http.post('/add/snippet', data);
                 },
                 del: function(id){
-                    return $http.post('/post/del/snippet', {_id: id});
+                    return $http.post('/del/snippet', {_id: id});
                 },
                 save: function(data){
-                    return $http.post('/post/save/snippet', data);
+                    return $http.post('/save/snippet', data);
                 },
                 getSnippets: function(){
                     return $http.get('/_get/user/snippets', {cache: true});

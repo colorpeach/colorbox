@@ -8,10 +8,10 @@ define(['js/app'], function(app){
                     return $http.get('/_get/messages');
                 },
                 save: function(data){
-                    return $http.post('/post/save/message', data);
+                    return $http.post('/save/message', data);
                 },
                 add: function(data){
-                    return $http.post('/post/add/message', data);
+                    return $http.post('/add/message', data);
                 }
             };
         }
