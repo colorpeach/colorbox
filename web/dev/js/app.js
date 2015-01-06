@@ -82,6 +82,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 icon: 'icon-info',
                 templateUrl: 'message.html',
                 controller: 'messageCtrl',
+                reloadOnSearch: false,
                 dependencies: ['pages/message/message']
             },
             '/app-square': {
@@ -174,6 +175,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                         resolve: dependencyResolverFor(route), 
                         controller: route.controller, 
                         title: route.title,
+                        reloadOnSearch: route.reloadOnSearch === false ? false : true,
                         redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
                             if(route.auth === 'no' && login){

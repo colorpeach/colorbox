@@ -28,7 +28,7 @@ define(['js/app'], function(app){
                 $scope.label = '回复 ' + user;
                 $scope.data.to = user;
                 $location.hash('content');
-//                 $anchorScroll();
+                $anchorScroll();
             };
 
             $scope.cancel = function(){
