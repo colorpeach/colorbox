@@ -2,8 +2,8 @@ define(['js/app'], function(app){
     app
 
     .directive('contextMenu',
-    ['utils', '$window', '$compile',
-        function(utils,   $window,   $compile){
+    ['utils', '$window', '$compile', '$rootScope',
+        function(utils,   $window,   $compile,   $rootScope){
             var $body = angular.element($window.document.body);
             var template = utils.heredoc(function(){/*!
                 <ul class="context-menu" ng-repeat="(key, menu) in config" ng-show="$parent.shows[key]" ng-style="$parent.css[key]">
@@ -85,9 +85,16 @@ define(['js/app'], function(app){
                     }
                 ],
                 link: function(scope, element, attrs){
-                    var $contextMenu = angular.element(template);
-                    $compile($contextMenu)(scope);
-                    $body.append($contextMenu);
+                    var $wrap = angular.element('<div></div>');
+                    
+                    $wrap.html(template);
+                    $compile($wrap.contents())(scope);
+                    $body.append($wrap);
+
+                    scope.$on('$destroy', function(){
+                        $wrap.remove();
+                        scope = $wrap = null;
+                    });
                 }
             };
         }

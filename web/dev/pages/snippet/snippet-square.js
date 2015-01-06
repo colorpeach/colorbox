@@ -1,22 +1,20 @@
 define(['js/app'], function(app){
     app
     .controller('snippetSquareCtrl',
-    ['$scope', 'snippetsCrud', '$location',
-        function($scope,   snippetsCrud,   $location){
-            $scope.snippets = [];
+    ['$scope', 'data::store', '$location',
+        function($scope,   store,   $location){
+            $scope.snippets = store.get('snippet', 'getAllSnippets', 'snippets');
 
             $scope.submit = function(){
                 $scope.setLoad({
                     loading: true,
                     loadMessage: '载入代码片段'
                 });
-                snippetsCrud.getAllSnippets().
-                success(function(data){
+                store('snippet', 'getAllSnippets', true)
+                .success(function(data){
                     $scope.snippets = data.snippets;
                 });
             };
-
-            $scope.submit();
         }
     ]);
 });

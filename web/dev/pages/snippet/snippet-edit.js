@@ -1,8 +1,8 @@
 define(['js/app', 'ace/ace'], function(app, ace){
     app
     .controller('editSnippetCtrl',
-    ['$scope', 'snippetsCrud', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
-        function($scope,   snippetsCrud,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
+    ['$scope', 'data::store', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
+        function($scope,   store,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
             var dialog = dialog({
                 template: 'edit-snippet-dialog',
                 scope: $scope,
@@ -54,7 +54,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 loading: true,
                 loadMessage: '载入代码'
             });
-            snippetsCrud.get($routeParams.id)
+            store('snippet', 'get', $routeParams.id)
             .success(function(data){
                 extend($scope.data, data.snippet);
                 $scope.previewUrl = $sce.trustAsResourceUrl('/_snippets/preview/' + data.snippet._id);
@@ -70,7 +70,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     data = $scope.data;
                 }
 
-                snippetsCrud.save(data)
+                store('snippet', 'save', data)
                 .success(function(){
                     !unload && $window.frames[0].location.reload();
                 });

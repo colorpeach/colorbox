@@ -1,15 +1,15 @@
 define(['js/app'], function(app){
     app
     .controller('snippetDetailCtrl',
-    ['$scope', '$sce', '$routeParams', 'snippetsCrud',
-        function($scope,   $sce,   $routeParams, snippetsCrud){
+    ['$scope', '$sce', '$routeParams', 'data::store',
+        function($scope,   $sce,   $routeParams,   store){
             $scope.url = $sce.trustAsResourceUrl('/_snippets/preview/' + $routeParams.id);
 
             $scope.setLoad({
                 loading: true,
                 loadMessage: '载入代码片段详细'
             });
-            snippetsCrud.get($routeParams.id)
+            store('snippet', 'get', $routeParams.id)
             .success(function(data){
                 $scope.snippet = data.snippet;
             });

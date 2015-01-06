@@ -1,54 +1,9 @@
 define(['js/app'], function(app){
     app
 
-    .factory('appProCrud',
-    ['$http',
-        function($http){
-            return {
-                get: function(id){
-                    return $http.get('/get/app-pro', {params: {_id: id}});
-                },
-                add: function(data){
-                    return $http.post('/add/app-pro', data);
-                },
-                save: function(data){
-                    return $http.post('/save/app-pro', data);
-                },
-                del: function(id){
-                    return $http.post('/del/app-pro', {_id: id});
-                },
-                getUserApps: function(){
-                    return $http.get('/get/user/app-pro', {cache: true});
-                },
-                getPublishedApps: function(data){
-                    return $http.get('/_get/published/app-pros', {params: data});
-                },
-                getFile: function(id){
-                    return $http.get('/get/app-pro/item', {params: {id: id}});
-                },
-                getFiles: function(id){
-                    return $http.get('/get/app-pro/items', {params: {_id: id}});
-                },
-                addFile: function(data){
-                    return $http.post('/add/app-pro/item', data);
-                },
-                saveFile: function(data){
-                    return $http.post('/save/app-pro/item', data);
-                },
-                delFile: function(id, _id){
-                    return $http.post('/del/app-pro/item', {id: id, _id: _id});
-                }
-            };
-        }
-    ])
-
     .controller('myAppProsCtrl',
-    ['$scope', 'appProCrud', 'prompt',
-        function($scope,   appProCrud, prompt){
-//             if($scope.tab !== 'appPros'){
-//                 return;
-//             }
-
+    ['$scope', 'data::store', 'prompt',
+        function($scope,   store,   prompt){
             $scope.currentSize = {};
             $scope.current = {};
             $scope.sizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -72,7 +27,7 @@ define(['js/app'], function(app){
                 loadMessage: '载入应用列表...'
             });
 
-            appProCrud.getUserApps()
+            store('app', 'getUserApps')
             .success(function(data){
                 $scope.apps = data.apps;
             });
@@ -97,7 +52,7 @@ define(['js/app'], function(app){
 
             $scope.add = function(){
                 $scope.data.sizes = [{x: 1, y: 1}];
-                appProCrud.add($scope.data)
+                store('app', 'add', $scope.data)
                 .success(function(data){
                     $scope.apps.push(data.app);
                     prompt({
@@ -113,7 +68,16 @@ define(['js/app'], function(app){
             };
 
             $scope.del = function(){
-                appProCrud.del($scope.current._id)
+                var sure = window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称');
+
+                if(sure !== $scope.current.name){
+                    sure !== null && prompt({
+                        content: '无法删除，应用名称填写错误',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                store('app', 'del', $scope.current._id)
                 .success(function(){
                     $scope.apps.splice($scope.current.$index, 1);
                     prompt({
@@ -140,7 +104,7 @@ define(['js/app'], function(app){
 
             $scope.submit = function(e){
                 e.preventDefault();
-                appProCrud.save($scope.current)
+                store('app', 'save', $scope.current)
                 .success(function(){
                     prompt({
                         content: '保存成功'

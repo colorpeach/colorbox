@@ -215,8 +215,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .factory('appProMethod',
-    ['xtree.export', 'xtree.config', '$rootScope', 'appProCrud', '$sce', 'safeApply',
-        function(tree,   treeConfig,   $rootScope,   appProCrud,   $sce,   safeApply){
+    ['xtree.export', 'xtree.config', '$rootScope', 'data::store', '$sce', 'safeApply',
+        function(tree,   treeConfig,   $rootScope,   store,   $sce,   safeApply){
             return function($scope){
 
                 treeConfig.ondblclick = function(e, node){
@@ -232,7 +232,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         url: node.url,
                         updateKeys: ['name', 'url']
                     };
-                    appProCrud.saveFile(data)
+                    store('app', 'saveFile', data)
                     .success(function(){
 
                     })
@@ -245,7 +245,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                         content: content,
                         updateKeys: ['content']
                     };
-                    appProCrud.saveFile(data)
+                    store('app', 'saveFile', data)
                     .success(function(){
                         $scope.currentFile.content = content;
                         $scope.$broadcast('editorSaved');
@@ -274,7 +274,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     tree.addNode(node);
                     var data = angular.copy(node);
                     data._id = $scope._id;
-                    appProCrud.addFile(data)
+                    store('app', 'addFile', data)
                     .success(function(data){
                         node.id = data.id;
                         $scope.openFile(node.unique);
@@ -286,7 +286,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     var tabIndex;
                     if(node){
                         if(!confirm('确认删除文件?')) return;
-                        appProCrud.delFile(node.id, $scope._id)
+                        store('app', 'delFile', {id: node.id, _id: $scope._id})
                         .success(function(){
                             tree.deleteSelected();
                             if((tabIndex = $scope.tabs.indexOf(node.unique)) > -1){
@@ -393,8 +393,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .controller('editAppProCtrl',
-    ['$scope', 'editorNavConfig', 'layoutConfig', '$rootScope', 'appProCrud', '$routeParams', 'appProMethod', 'generateThemeNavs',
-        function($scope,   editorNavConfig,   layoutConfig,   $rootScope,   appProCrud,   $routeParams,   appProMethod,   generateThemeNavs){
+    ['$scope', 'editorNavConfig', 'layoutConfig', '$rootScope', 'data::store', '$routeParams', 'appProMethod', 'generateThemeNavs',
+        function($scope,   editorNavConfig,   layoutConfig,   $rootScope,   store,   $routeParams,   appProMethod,   generateThemeNavs){
             editorNavConfig.editorNav[3].subNav[6].subNav = generateThemeNavs;
             $scope.editorNav = editorNavConfig.editorNav;
             $scope.layoutConfig = layoutConfig;
@@ -413,13 +413,13 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 loading: true,
                 loadMessage: '载入应用'
             });
-            appProCrud.get($routeParams.id)
+            store('app', 'get', $routeParams.id)
             .success(function(data){
                 $scope.files = data.app.files;
                 $scope.app = data.app;
 
                 $scope.$watch('app.entrance', function(entrance){
-                    entrance && appProCrud.save({_id: $scope._id, entrance: entrance});
+                    entrance && store('app', 'save', {_id: $scope._id, entrance: entrance});
                 });
             });
             

@@ -1,25 +1,9 @@
 define(['js/app'], function(app){
     app
-    .factory('messageCurd',
-    ['$http',
-        function($http){
-            return {
-                getMessages: function(){
-                    return $http.get('/_get/messages');
-                },
-                save: function(data){
-                    return $http.post('/save/message', data);
-                },
-                add: function(data){
-                    return $http.post('/add/message', data);
-                }
-            };
-        }
-    ])
 
     .controller('messageCtrl',
-    ['$scope', 'messageCurd', 'prompt', '$window', '$rootScope', '$anchorScroll', '$location',
-        function($scope,   messageCurd,   prompt,   $window,   $rootScope,   $anchorScroll,   $location){
+    ['$scope', 'data::store', 'prompt', '$window', '$rootScope', '$anchorScroll', '$location',
+        function($scope,   store,   prompt,   $window,   $rootScope,   $anchorScroll,   $location){
             $scope.label = '留言';
             $scope.data = {};
             $scope.user = $rootScope.user;
@@ -30,7 +14,7 @@ define(['js/app'], function(app){
                 loadMessage: '载入留言...'
             });
 
-            messageCurd.getMessages()
+            store('message', 'getMessages')
             .success(function(data){
                 $scope.messages = data.messages;
             });
@@ -55,7 +39,7 @@ define(['js/app'], function(app){
 
             $scope.submit = function(){
                 if(!$scope.current){
-                    messageCurd.add($scope.data)
+                    store('message', 'add', $scope.data)
                     .success(function(data){
                         $scope.messages.unshift(data.message);
                         $scope.current = null;
@@ -72,7 +56,7 @@ define(['js/app'], function(app){
                         _id: $scope.current._id,
                         responses: $scope.current.responses
                     };
-                    messageCurd.save(data)
+                    store('message', 'save', data)
                     .success(function(data){
                         $scope.current.responses = data.responses;
                         $scope.current = null;

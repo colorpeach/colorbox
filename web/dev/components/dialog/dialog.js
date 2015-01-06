@@ -1,15 +1,28 @@
 define(['angular', 'js/app'], function(_, app){
+    /**
+    *@name dialog
+    *@param opts {Object}
+    *@param opts.scope {Object} 作用域
+    *@param opts.template {string} 模板或模板id
+    *@param opts.target {Object} 元素id直接作为模板
+    *@param opts.width {string} dialog宽度
+    *@param opts.minWidth {string} dialog最小宽度
+    *@param opts.maxWidth {string} dialog最大宽度
+    *@param opts.height {string} dialog高度
+    *@param opts.minHeight {string} dialog最小高度
+    *@param opts.maxHeight {string} dialog最大高度
+    */
+
     app
     .factory('dialog',
-    ['$window', '$templateCache', '$compile',
-        function($window,   $templateCache,   $compile){
+    ['$window', '$templateCache', '$compile', '$rootScope',
+        function($window,   $templateCache,   $compile,   $rootScope){
             var $document = angular.element($window.document);
             var cssList = ['maxWidth', 'minWidth', 'width', 'maxHeight', 'minHeight', 'height'];
             var template;
             var css = {
                 visibility: 'visible'
             };
-            
 
             function Dialog(opts){
                 this.element = angular.element('<div class="dialog"></div>');
@@ -26,7 +39,7 @@ define(['angular', 'js/app'], function(_, app){
                 this.element.append(opts.template);
 
                 if(opts.template && opts.scope){
-                    $compile(this.element)(opts.scope);
+                    $compile(this.element.contents())(opts.scope);
                 }
 
                 addCss(opts, this.element);
@@ -38,6 +51,14 @@ define(['angular', 'js/app'], function(_, app){
                 }
 
                 bindEvents.call(this);
+
+                if(opts.scope){
+                    var self = this;
+                    opts.scope.$on('$destroy', function(){
+                        self.destroy();
+                        opts.scope = null;
+                    });
+                }
             }
 
             Dialog.prototype = {
@@ -49,6 +70,11 @@ define(['angular', 'js/app'], function(_, app){
                     this.element.css({display: 'none'});
                     this.overlay.css({display: 'none'});
                     this.opts.onClose && this.opts.onClose();
+                },
+                destroy: function(){
+                    this.element.remove();
+                    this.overlay.remove();
+                    this.element = this.overlay = null;
                 }
             };
 

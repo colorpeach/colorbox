@@ -1,22 +1,9 @@
 define(['js/app'], function(app){
     app
-    .factory('loginBox',
-    ['$http',
-        function($http){
-            return {
-                enter: function(data){
-                    return $http.post('/_login', data);
-                },
-                register: function(data){
-                    return $http.post('/_register', data);
-                }
-            };
-        }
-    ])
 
     .controller('loginCtrl', 
-    ['$scope', 'loginBox', '$rootScope', '$location',
-        function($scope,   loginBox,   $rootScope,   $location){
+    ['$scope', 'data::store', '$rootScope', '$location',
+        function($scope,   store,   $rootScope,   $location){
             $scope.errorMsgs = [];
             //提交表单
             $scope.submit = function(e){
@@ -26,7 +13,8 @@ define(['js/app'], function(app){
                     loading: true,
                     loadMessage: '登陆中...'
                 });
-                loginBox.enter($scope.data)
+
+                store('login', 'enter', $scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;
                     $location.path('/dashboard/snippets');
@@ -39,8 +27,8 @@ define(['js/app'], function(app){
     ])
 
     .controller('registerCtrl', 
-    ['$scope', 'loginBox', '$rootScope', '$location',
-        function($scope,   loginBox,   $rootScope,   $location){
+    ['$scope', 'data::store', '$rootScope', '$location',
+        function($scope,   store,   $rootScope,   $location){
             $scope.errorMsgs = [];
             //提交表单
             $scope.submit = function(e){
@@ -50,7 +38,7 @@ define(['js/app'], function(app){
                     loading: true,
                     loadMessage: '注册中...'
                 });
-                loginBox.register($scope.data)
+                store('login', 'register', $scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;
                     $location.path('/dashboard/snippets');

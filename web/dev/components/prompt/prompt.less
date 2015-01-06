@@ -3,31 +3,42 @@
 
 /*
 *@name prompt
-*@require alert
 */
-.prompt-box{
-  position: fixed;
-  width: 400px;
-  top:30px;
-  left:0;
-  right:0;
-  z-index: 1050;
-  margin: auto;
-  text-align:center;
+.prompt__box{
+    position: fixed;
+    width: 400px;
+    top: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: @prompt-index;
+    text-align:center;
 }
 
-.prompt-box .alert-box{
-  padding: 5px 40px;
-  display: inline-block;
-  font-size: 16px;
+.generate-prompt-item(@suffix, @background: darken(@base-color, -50%), @color: @base-color){
+    .prompt__item@{suffix}{
+        &:extend(.prompt__item);
+        background-color: @background;
+        color: @color;
+
+        &.ng-enter{
+            .fadeInUp
+        }
+
+        &.ng-leave{
+            .fadeOutUp;
+        }
+    }
 }
 
-.prompt-box .alert-box.ng-enter{
-  -webkit-animation-name: fadeInUp;
-          animation-name: fadeInUp;
+.prompt__item{
+    padding: 5px 40px;
+    display: inline-block;
+    font-size: 16px;
+    border: 1px solid;
 }
 
-.prompt-box .alert-box.ng-leave{
-  -webkit-animation-name: fadeOutUp;
-          animation-name: fadeOutUp;
-}
+.generate-prompt-item(--success, @success-color, @white-color);
+.generate-prompt-item(--alert,   @alert-color,   @white-color);
+.generate-prompt-item(--primary, @primary-color, @white-color);
+.generate-prompt-item(--warning, @warning-color, @white-color);

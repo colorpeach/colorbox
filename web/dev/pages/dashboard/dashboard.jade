@@ -4,6 +4,7 @@ div.dashboard
       span.icon-user
       img(src-element="http://identicon.relucks.org/{$parent.user.login}?size=160")
     p(ng-bind="$parent.user.login")
+    a(href="/_logout", title="退出登录") 退出登录
   div.text--center
     a.button--success(ng-repeat="(href, item) in navs | dashboardNavs", href="{{'/#' + href}}", ng-class="{active: href === $parent.href}")
       span(class="{{item.icon}}")

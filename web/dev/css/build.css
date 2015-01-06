@@ -5714,28 +5714,72 @@ Copyright (c) 2014 Daniel Eden
 }
 /*
 *@name prompt
-*@require alert
 */
-.prompt-box {
+.prompt__box {
   position: fixed;
   width: 400px;
   top: 30px;
   left: 0;
   right: 0;
-  z-index: 1050;
   margin: auto;
+  z-index: 1300;
   text-align: center;
 }
-.prompt-box .alert-box {
+.prompt__item,
+.prompt__item--success,
+.prompt__item--alert,
+.prompt__item--primary,
+.prompt__item--warning {
   padding: 5px 40px;
   display: inline-block;
   font-size: 16px;
+  border: 1px solid;
 }
-.prompt-box .alert-box.ng-enter {
+.prompt__item--success {
+  background-color: #43ac6a;
+  color: #ffffff;
+}
+.prompt__item--success.ng-enter {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
 }
-.prompt-box .alert-box.ng-leave {
+.prompt__item--success.ng-leave {
+  -webkit-animation-name: fadeOutUp;
+  animation-name: fadeOutUp;
+}
+.prompt__item--alert {
+  background-color: #f04124;
+  color: #ffffff;
+}
+.prompt__item--alert.ng-enter {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+.prompt__item--alert.ng-leave {
+  -webkit-animation-name: fadeOutUp;
+  animation-name: fadeOutUp;
+}
+.prompt__item--primary {
+  background-color: #008cba;
+  color: #ffffff;
+}
+.prompt__item--primary.ng-enter {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+.prompt__item--primary.ng-leave {
+  -webkit-animation-name: fadeOutUp;
+  animation-name: fadeOutUp;
+}
+.prompt__item--warning {
+  background-color: #f08a24;
+  color: #ffffff;
+}
+.prompt__item--warning.ng-enter {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+.prompt__item--warning.ng-leave {
   -webkit-animation-name: fadeOutUp;
   animation-name: fadeOutUp;
 }
@@ -6335,9 +6379,6 @@ div.editor__bottom-assist {
 .dashboard__head {
   padding: 1rem 0;
   font-weight: bold;
-}
-.dashboard__head span {
-  margin-right: .5rem;
 }
 .dashboard__list {
   text-align: left;

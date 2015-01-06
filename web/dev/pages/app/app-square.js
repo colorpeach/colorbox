@@ -2,8 +2,8 @@ define(['js/app'], function(app){
     app
 
     .controller('appSquareCtrl', 
-    ['$scope', 'appProCrud', '$sce', '$location',
-        function($scope,   appProCrud,   $sce,   $location){
+    ['$scope', 'data::store', '$sce', '$location',
+        function($scope,   store,   $sce,   $location){
             $scope.displayApps = [];
             $scope.isShow = false;
             var skip = 0;
@@ -21,7 +21,7 @@ define(['js/app'], function(app){
                     loadMessage: '正在加载应用...'
                 });
 
-                appProCrud.getPublishedApps({name: $scope.searchName, limit: limit})
+                store('app', 'getPublishedApps', {name: $scope.searchName, limit: limit})
                 .success(function(data){
                     skip++;
                     $scope.displayApps = data.apps;
@@ -44,7 +44,7 @@ define(['js/app'], function(app){
                 }
                 
                 $scope.message = '正在加载应用...';
-                appProCrud.getPublishedApps({name: $scope.searchName, skip: skip, limit: limit})
+                store('app', 'getPublishedApps', {name: $scope.searchName, skip: skip, limit: limit})
                 .success(function(data){
                     if(data.apps.length){
                         skip++;
