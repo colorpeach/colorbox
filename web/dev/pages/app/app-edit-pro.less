@@ -4,12 +4,17 @@
 @editor-background-color: #333;
 @editor-border-color: #222;
 @editor-color: #fff;
+@editor-nav-hover-backcolor: #555;
+@editor-nav-backcolor: #666;
+/* @editor-background-color: #ddd;
+@editor-border-color: #999;
+@editor-color: #666;
+@editor-nav-hover-backcolor: #ddd;
+@editor-nav-backcolor: #ccc; */
 @editor-tab-height: 30px;
 @editor-nav-height: 30px;
 @editor-row-height: 30px;
-@editor-nav-hover-backcolor: #555;
-@editor-nav-backcolor: #666;
-@editor-nav-index: 5;
+@editor-nav-index: 8;
 @editor-full-screen-index: 10;
 @editor-index: 10;
 
@@ -18,6 +23,35 @@
     color: @editor-color;
     border-top: 1px solid #444;
     font-size: 12px;
+
+    .ace_search{
+        background-color: @editor-background-color;
+        border-color: @editor-border-color;
+    }
+
+    .ace_search_field{
+        background-color: @editor-nav-backcolor;
+    }
+
+    .ace_searchbtn,
+    .ace_replacebtn{
+        background-color: @editor-background-color;
+        border-left-color: @editor-border-color;
+        padding: 0 2px;
+    }
+
+    .ace_search_form,
+    .ace_replace_form{
+        border-color: @editor-border-color;
+    }
+
+    .ace_button{
+        color: @editor-color;
+
+        &:hover{
+            background-color: @editor-nav-hover-backcolor;
+        }
+    }
 }
 
 .editor__nav{
@@ -74,6 +108,7 @@
     color: @editor-color;
     border: 1px solid @editor-border-color;
     box-shadow: 0 2px 5px @editor-border-color;
+    z-index: 1;
 
     li{
         position: relative;
@@ -84,6 +119,7 @@
 
         &:hover{
             background-color: @editor-nav-hover-backcolor;
+            color: @success-color;
         }
 
         > ul{
@@ -99,24 +135,35 @@
     }
 }
 
-.editor__nav-mark{
-    position: absolute;
-    left: 10px;
-    top: 8px;
-    border: 3px solid;
-    border-radius: 50%;
-}
+.editor__nav,
+.context-menu{
+    &-mark{
+        position: absolute;
+        left: 10px;
+        top: 8px;
+        border: 3px solid;
+        border-radius: 50%;
+    }
 
-.editor__nav-arrow{
-    position: absolute;
-    right: 5px;
-    top: 7px;
-    display: block;
-    border-style: solid;
-    border-color: transparent transparent transparent @editor-color;
-    border-width: 4px 0 4px 6px;
-}
+    &-arrow{
+        position: absolute;
+        right: 5px;
+        top: 7px;
+        display: block;
+        border-style: solid;
+        border-color: transparent transparent transparent @editor-color;
+        border-width: 4px 0 4px 6px;
+    }
 
+    &-split{
+        border-top: 1px solid @editor-border-color;
+    }
+
+    &-key{
+        float: right;
+        margin-left: 120px;
+    }
+}
 
 .editor__boxs{
     .position--full;
@@ -124,8 +171,8 @@
 
     & > div{
         position: absolute;
-        border-left: 1px solid #222;
-        border-bottom: 1px solid #222;
+        border-left: 1px solid @editor-border-color;
+        border-bottom: 1px solid @editor-border-color;
     }
   
     & > .resize__bar,
@@ -155,6 +202,11 @@
         margin-right: 5px;
         border: 1px solid transparent;
         vertical-align: baseline;
+
+        &:hover{
+            background-color: darken(@editor-background-color, -10%);
+            .border-radius(4px);
+        }
   
         &.active{
             border: 1px solid @editor-border-color;
@@ -167,6 +219,7 @@
 .editor__contents{
     .position--full;
     top: @editor-tab-height;
+    background-color: @editor-border-color;
 }
 
 .editor__contents > div{
@@ -174,18 +227,41 @@
     .position--full;
 }
 
-.editor__back-logo:before{
-    position: absolute;
-    display: block;
-    content: 'colorBox';
-    top: 50%;
-    width: 100%;
-    margin-top: -1.5em;
-    font-weight: 700;
-    color: @editor-border-color;
-    text-align: center;
-    font-size: 3em;
-    line-height: 3em;
+.editor__back-logo{
+    background-color: transparent;
+    
+    &:before{
+        position: absolute;
+        display: block;
+        content: 'colorBox';
+        top: 50%;
+        width: 100%;
+        margin-top: -1.5em;
+        font-weight: 700;
+        color: @editor-border-color;
+        text-align: center;
+        font-size: 3em;
+        line-height: 3em;
+    }
+}
+
+div.editor__bottom-assist{
+  top: auto;
+  left: auto;
+  padding: .2em 1em 1em .2em;
+  z-index: @editor-index;
+
+  .button-icon{
+    &:extend(.editor__tabs .button-icon);
+
+    &:hover{
+      &:extend(.editor__tabs .button-icon:hover);
+    }
+
+    &.active{
+      &:extend(.editor__tabs .button-icon.active);
+    }
+  }
 }
 
 .editor__tab{
@@ -228,22 +304,22 @@
 
 .editor__select{
     display: inline-block;
-    background-color: #444;
+    background-color: @editor-background-color;
     height: 28px;
     width: auto;
     vertical-align: top;
     min-width: 80px;
-    border: 4px solid #333;
+    border: 4px solid @editor-background-color;
     padding: 0;
     margin-bottom: 0;
-    color: #fff;
+    color: @editor-color;
 }
 
 .editor__select:hover,
 .editor__select:focus{
-    background-color: @editor-nav-hover-backcolor;
-    color: #fff;
-    border-color: #333;
+    background-color: darken(@editor-background-color, -10%);
+    color: @editor-color;
+    border-color: @editor-background-color;
 }
 
 .full-screen{
@@ -275,8 +351,8 @@
 
 .table__th--gray,
 .table__td--gray{
-    border: 1px solid #222;
-    background-color: #444;
+    border: 1px solid @editor-border-color;
+    background-color: @editor-background-color;
 }
 
 .table__th--gray:hover,
@@ -287,7 +363,7 @@
 .table__cell-text{
     display: block;
     padding: 5px 10px;
-    color: #fff;
+    color: @editor-color;
     text-align: left;
 }
 
@@ -296,8 +372,8 @@
     height: 100%;
     padding: 0 10px;
     border: 0;
-    color: #fff;
-    background-color: #444;
+    color: @editor-color;
+    background-color: @editor-background-color;
 }
 
 .table__input-text--gray:hover,

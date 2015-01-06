@@ -7,11 +7,11 @@ var userCtrl = {};
 //更新桌面应用
 userCtrl.updateDesktopApps = function(req,res){
     var data = req.body;
-    data.user = req.session.user.login;
+data.user = req.session.user.login;
 
-    desktopApps.save(data, function(data){
-        res.end(baseRes(data));
-    }, ['user']);
+desktopApps.save(data, function(data){
+    res.end(baseRes(data));
+}, ['user']);
 };
 
 userCtrl.getDesktopApps = function(req, res){

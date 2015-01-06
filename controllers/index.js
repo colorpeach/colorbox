@@ -14,6 +14,7 @@ module.exports = {
             }
         }
     },
+    //html模板
     '/:template.html': {
         get: function () {
             return function (req, res, next) {
@@ -30,6 +31,7 @@ module.exports = {
             }
         }
     },
+    //app页面
     '/apps/:appName': {
         get: function () {
             return function (req, res, next) {

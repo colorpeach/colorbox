@@ -20,6 +20,7 @@
   height: 160px;
   width: 160px;
   .border-radius(100%);
+  .box-shadow(0 0 17px 0 rgba(0, 0, 0, 0.2));
   background-color: @base-color;
 
   img{
@@ -44,6 +45,14 @@
   display: block;
   padding: 0 1rem;
   text-align: center;
+}
+
+.dashboard__box--fixed{
+  &:extend(.dashboard__box);
+
+  text-align: left;
+  width: 20rem;
+  margin: 0 auto;
 }
 
 .dashboard__head{

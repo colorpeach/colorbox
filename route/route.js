@@ -110,6 +110,8 @@ module.exports = function(app){
 //    app.get('/get/app-pro', appPro.get);
 //    //获取用户的所有应用
 //    app.get('/get/user/app-pro', appPro.get_user_apps);
+//    //获取发布的应用
+//    app.get('/_get/published/app-pros', appPro.get_published_apps);
 //    //添加文件
 //    app.post('/post/add/app-pro/item', appPro.post_add_app_item);
 //    //添加更新
@@ -122,4 +124,6 @@ module.exports = function(app){
 //    app.post('/post/del/app-pro/item', appPro.post_del_app_item);
 //    //应用文件页
 //    app.get('/application/:user/:app/*', appPro.static_file);
+//    //应用预览页面
+//    app.get('/_app-pro/preview/:id', appPro.preview);
 };

@@ -2,6 +2,7 @@ var snippets = require('../models/snippets');
 var baseRes = require('./baseResponse');
 
 module.exports = {
+    //片段预览页面
     '/_snippets/preview/:id':{
         get:function(){
             return function(req,res,next){
@@ -19,6 +20,7 @@ module.exports = {
             }
         }
     },
+    //获取片段
     '/get/snippet':{
         get:function(){
             return function(req,res,next){
@@ -28,6 +30,7 @@ module.exports = {
             }
         }
     },
+    //添加片段
     '/add/snippet':{
         post:function(){
             return function(req,res,next){
@@ -45,6 +48,7 @@ module.exports = {
             }
         }
     },
+    //更新片段
     '/save/snippet':{
         post:function(){
             return function(req,res,next){
@@ -54,6 +58,7 @@ module.exports = {
             }
         }
     },
+    //删除片段
     '/del/snippet':{
         post:function(){
             return function(req,res,next){
@@ -63,6 +68,7 @@ module.exports = {
             }
         }
     },
+    //获取用户的所有片段
     '/_get/user/snippets':{
         get:function(){
             return function(req,res,next){
@@ -72,6 +78,7 @@ module.exports = {
             }
         }
     },
+    //获取所有片段
     '/_get/snippets':{
         get:function(){
             return function(req,res,next){

@@ -2,6 +2,7 @@ var desktopApps = require('../models/desktop-app');
 var baseRes = require('./baseResponse');
 
 module.exports = {
+    //获取用户桌面应用
     '/get/desktop/apps':{
         get:function(){
             return function(req,res,next){
@@ -13,6 +14,7 @@ module.exports = {
             }
         }
     },
+    //更新桌面应用
     '/save/desktop/apps':{
         post:function(){
             return function(req,res,next){

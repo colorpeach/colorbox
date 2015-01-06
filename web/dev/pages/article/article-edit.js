@@ -1,0 +1,199 @@
+define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
+    app
+
+    .value('article::layoutConfig',
+    {
+        resizeBarWidth: 10,
+        items: [
+            {template: 'article-list', hide: true, title: '列表'},
+            {template: 'article-editor', hide: false, title: '编辑'},
+            {template: 'article-preview', hide: false, title: '预览'}
+        ],
+        layout: 0,
+        layouts: {
+            0: {dir: 'h', groupReals: [20, 40, 40], items: [[{index: 0}], [{index: 1}], [{index: 2}]]}
+        }
+    })
+
+    .value('article::functions',
+    [
+        {title: '加粗 <strong>', icon: 'icon-bold', command: 'replaceText', params: ['**%s**', '加粗文本']},
+        {title: '斜体 <em>', icon: 'icon-italic', command: 'replaceText', params: ['_%s_', '斜体文本']},
+        {title: '超链接 <a>', icon: 'icon-link', command: 'opera'},
+        {title: '图片 <img>', icon: 'icon-image', command: 'opera'},
+        {title: '块引用 <blockquote>', icon: 'icon-indent-increase', command: 'replaceText', params: ['\n> %s\n', '引用']},
+        {title: '代码 <code>', icon: 'icon-embed', command: 'replaceText', params: ['\n```\n%s\n```\n', '代码']},
+        {title: '有序列表 <ol>', icon: 'icon-numbered-list', command: 'replaceText', params: ['\n1. %s\n', '列表项']},
+        {title: '无序列表 <ul>', icon: 'icon-list', command: 'replaceText', params: ['\n* %s\n', '列表项']},
+        {title: '标题 <h1>~<h6>', icon: 'icon-text-height', command: 'replaceText', params: ['\n# %s\n', '标题']},
+        {title: '分隔线 <hr>', icon: 'icon-page-break', command: 'replaceText', params: ['\n***\n', '']},
+        {title: '撤销', icon: 'icon-undo2', command: 'editor.undo', disable: '!editor.session.getUndoManager().hasUndo() || layoutConfig.items[1].hide'},
+        {title: '还原', icon: 'icon-redo2', command: 'editor.redo', disable: '!editor.session.getUndoManager().hasRedo() || layoutConfig.items[1].hide'},
+    ])
+
+    .controller('editArticleCtrl',
+    ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage',
+        function($scope,   $routeParams,   layoutConfig,    functions,   storage){
+            storage.bind($scope, 'currentFile', {
+                defaultValue: {name: '新建文档', content: '#新建文档'}
+            });
+            
+            angular.forEach(functions.slice(0, -2), function(n){
+                n.disable = 'layoutConfig.items[1].hide';
+            });
+
+            $scope.files = [$scope.currentFile];
+            $scope.layoutConfig = layoutConfig;
+            $scope.functions = functions;
+            $scope.status = {
+                editingName: false
+            };
+            
+            //隐藏显示区块
+            $scope.toggleBlock = function(i){
+                $scope.$broadcast('toggleResizeBox', i);
+            };
+
+            $scope.editName = function(mark){
+                $scope.status.editingName = mark;
+            };
+
+            $scope.selectFile = function(file){
+                $scope.currentFile = file;
+            };
+
+            $scope.disable = function(fun){
+                return $scope.$eval(fun.disable);
+            };
+            
+            //操作
+            $scope.opera = function(fun){
+                if($scope.editor){
+                    var expression = [fun.command, '(', ')'];
+                    expression.splice(2, 0, angular.toJson(fun));
+                    $scope.$eval(expression.join(''));
+                }
+            };
+
+            $scope.replaceText = function(fun){
+                var ranges = $scope.editor.selection.getAllRanges();
+                angular.forEach(ranges, function(n, i){
+                    //替换选择的文本
+                    var selectionText = $scope.editor.session.getTextRange(n);
+                    var tpl = fun.params[0];
+                    var text = selectionText || fun.params[1];
+                    var range = $scope.editor.session.replace(n, tpl.replace('%s', text));
+                    var offset = tpl.indexOf('%s');
+
+                    if(text.length){
+                        //选中提供编辑的文本
+                        var start = {
+                            row: range.row,
+                            column: range.column
+                        };
+                        var end = {};
+
+                        if(offset > -1){
+                            while(tpl[offset++] !== undefined){
+                                if(tpl[offset] === '\n'){
+                                    start.row--;
+                                }
+                            }
+                        }
+                        tpl.replace(/(?:^|\n)(.*)%s/, function(s, m){
+                            if(start.row !== range.row){
+                                start.column = m.length;
+                            }else{
+                                start.column = n.start.column + m.length;
+                            }
+                        });
+                        end.row = start.row;
+                        end.column = start.column + text.length;
+
+                        $scope.editor.selection.setSelectionRange({end: end, start: start});
+                    }
+                });
+
+                $scope.editor.focus();
+            };
+
+            $scope.$on('editorSaving', function(e, content){
+                $scope.currentFile.content = content;
+                $scope.$broadcast('editorSaved');
+                storage.update('currentFile', {name: $scope.currentFile.name, content: content});
+            });
+        }
+    ])
+
+    .directive('articleEditor',
+    ['$timeout', '$sce',
+        function($timeout,   $sce){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var resizeTimer;
+                    var editor = ace.edit(element[0]);
+                    var converter = new Showdown.converter();
+
+                    scope.editor = editor;
+
+                    editor.renderer.setShowGutter(false);
+                    editor.renderer.setPadding(10);
+                    editor.session.highlight(false);
+                    editor.setTheme('ace/theme/chrome');
+
+                    editor.on('input', function(){
+                        if(!scope[attrs.articleEditor]) return;
+                        if(editor.session.getUndoManager().isClean()){
+                            scope[attrs.articleEditor].isChange = false;
+                        }else{
+                            scope[attrs.articleEditor].isChange = true;
+                        }
+                        scope.html = $sce.trustAsHtml(converter.makeHtml(editor.getValue()));
+                        scope.$apply();
+                    });
+
+                    editor.commands.addCommand({
+                        name: 'save',
+                        bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+                        exec: function(editor) {
+                            if(scope[attrs.articleEditor].isChange){
+                                scope.$emit('editorSaving', editor.getValue());
+                            }
+                        },
+                        readOnly: false
+                    });
+
+                    scope.$on('editorSaved', function(){
+                        editor.session.getUndoManager().markClean();
+                        scope[attrs.articleEditor].isChange = false;
+                        scope.$apply();
+                    });
+
+                    scope.$watch(attrs.articleEditor, function(file){
+                        if(file){
+                            if(!file.editSession){
+                                file.editSession = ace.createEditSession(file.content || '');
+                            }
+                            editor.setSession(file.editSession);
+                            editor.session.setMode("ace/mode/markdown");
+                            editor.focus();
+                            scope.html =  $sce.trustAsHtml(converter.makeHtml(editor.getValue()));
+                        }
+                    });
+
+                    scope.$on('resizeUpdate', resize);
+
+                    function resize(){
+                        if(resizeTimer){
+                            resizeTimer = $timeout.cancel(resizeTimer);
+                        }
+                        $timeout(function(){
+                            editor.resize();
+                        }, 300);
+                    }
+                }
+            };
+        }
+    ]);
+});

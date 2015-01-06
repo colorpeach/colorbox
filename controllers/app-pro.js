@@ -2,7 +2,8 @@ var apps = require('../models/app-pro');
 var baseRes = require('./baseResponse');
 
 module.exports = {
-    '/get':{
+    //获取应用
+    '/get/app-pro':{
         get:function(){
             return function(req,res,next){
                 apps.query(req.query, function(data){
@@ -11,6 +12,7 @@ module.exports = {
             };
         }
     },
+    //添加应用
     '/add/app-pro':{
         post:function(){
             return function(req,res,next){
@@ -30,6 +32,7 @@ module.exports = {
 
         }
     },
+    //更新应用
     '/save/app-pro':{
         post:function(){
             return function(req,res,next){
@@ -40,6 +43,7 @@ module.exports = {
 
         }
     },
+    //删除应用
     '/del/app-pro':{
         post:function(){
             return function(req,res,next){
@@ -50,6 +54,7 @@ module.exports = {
 
         }
     },
+    //获取用户的所有应用
     '/get/user/app-pro':{
         get:function(){
             return function(req,res,next){
@@ -59,7 +64,8 @@ module.exports = {
             }
         }
     },
-    '/_get/published/app-pro':{
+    //获取发布的应用
+    '/_get/published/app-pros':{
         get:function(){
             return function(req,res,next){
                 //拼接模糊查询
@@ -78,6 +84,7 @@ module.exports = {
             }
         }
     },
+    //获取文件内容
     '/get/app-pro/item':{
         get:function(){
             return function(req,res,next){
@@ -93,6 +100,7 @@ module.exports = {
             }
         }
     },
+    //获取文件
     '/get/app-pro/items':{
         get:function(){
             return function(req,res,next){
@@ -102,6 +110,7 @@ module.exports = {
             }
         }
     },
+    //添加文件
     '/add/app-pro/item':{
         post:function(){
             return function(req,res,next){
@@ -111,6 +120,7 @@ module.exports = {
             }
         }
     },
+    //添加更新
     '/save/app-pro/item':{
         post:function(){
             return function(req,res,next){
@@ -120,6 +130,7 @@ module.exports = {
             }
         }
     },
+    //删除文件
     '/del/app-pro/item':{
         post: function () {
             return function(req,res,next){
@@ -129,6 +140,7 @@ module.exports = {
             }
         }
     },
+    //应用文件页
     '/application/:user/:app/*':{
         get:function(){
             return function(req,res,next){
@@ -136,7 +148,7 @@ module.exports = {
                     user: req.params.user,
                     name: req.params.app
                 };
-                var filePath = req.url.replace('/application/' + data.user + '/' + data.name, '');
+                var filePath = '/' + req.url.split('/').slice(4).join('/');
 
                 data.search = {
                     'files.url': filePath
@@ -145,6 +157,26 @@ module.exports = {
                 apps.queryItem(data, function(data){
                     if(data.length){
                         res.end(data[0].files.content);
+                    }else{
+                        res.statusCode = 401;
+                        res.render('views/not-found',{user:req.session.user});
+                    }
+                });
+            }
+        }
+    },
+    //应用预览页面
+    '/_app-pro/preview/:id':{
+        get:function(){
+            return function(req,res,next){
+                var data = {
+                    _id: req.params.id
+                };
+
+                apps.query(data, function(data){
+                    if(data.length === 1){
+                        var url = ['', 'application', data[0].user, data[0].name + data[0].entrance].join('/');
+                        res.redirect(url);
                     }else{
                         res.statusCode = 401;
                         res.render('views/not-found',{user:req.session.user});

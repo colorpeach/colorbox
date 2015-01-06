@@ -14,7 +14,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 dependencies: [
                     'pages/index/index', 
                     'pages/app/app-square', 
-                    'pages/dashboard/dashboard-apps'
+                    'pages/dashboard/dashboard-app-pro'
                 ]
             },
             '/log':{
@@ -40,14 +40,14 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'registerCtrl',
                 dependencies: ['pages/login/login']
             },
-            '/dashboard/apps': {
-                title: '我的应用',
-                icon: 'icon-stack',
+            '/dashboard/articles': {
+                title: '我的文档',
+                icon: 'icon-file',
                 auth: 'yes',
-                templateUrl: 'dashboard-apps.html',
-                controller: 'myAppsCtrl',
+                templateUrl: 'dashboard-articles.html',
+                controller: 'myArticlesCtrl',
                 dependencies: [
-                    'pages/dashboard/dashboard-apps'
+                    'pages/dashboard/dashboard-articles'
                 ]
             },
             '/dashboard/appPros': {
@@ -66,7 +66,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 auth: 'yes',
                 templateUrl: 'dashboard-snippets.html',
                 controller: 'mySnippetsCtrl',
-                dependencies: [ 
+                dependencies: [
                     'pages/dashboard/dashboard-snippets'
                 ]
             },
@@ -90,7 +90,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'app-square.html',
                 controller: 'appSquareCtrl',
                 dependencies: [
-                    'pages/app/app-square', 
+                    'pages/app/app-square',
                     'pages/dashboard/dashboard-apps'
                 ]
             },
@@ -101,18 +101,17 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
                 dependencies: [
-                    'pages/snippet/snippet-square', 
+                    'pages/snippet/snippet-square',
                     'pages/dashboard/dashboard-snippets'
                 ]
             },
-            '/edit/app/:id': {
-                title: '编辑应用',
+            '/edit/article/:id': {
+                title: '编辑文档',
                 auth: 'yes',
-                templateUrl: 'app-edit.html',
-                controller: 'editAppCtrl',
+                templateUrl: 'article-edit.html',
+                controller: 'editArticleCtrl',
                 dependencies: [
-                    'pages/app/app-edit', 
-                    'pages/dashboard/dashboard-apps', 
+                    'pages/article/article-edit', 
                     'components/resize-box/resize-box'
                 ]
             },
@@ -122,9 +121,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'app-edit-pro.html',
                 controller: 'editAppProCtrl',
                 dependencies: [
-                    'pages/app/app-edit-pro', 
-                    'pages/dashboard/dashboard-app-pro', 
-                    'components/resize-box/resize-box', 
+                    'pages/app/app-edit-pro',
+                    'pages/dashboard/dashboard-app-pro',
+                    'components/resize-box/resize-box',
                     'components/tree/tree',
                     'components/editor-nav/editor-nav',
                     'components/context-menu/context-menu'
@@ -136,9 +135,9 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'snippet-edit.html',
                 controller: 'editSnippetCtrl',
                 dependencies: [
-                    'pages/snippet/snippet-edit', 
-                    'pages/dashboard/dashboard-snippets', 
-                    'components/resize-box/resize-box', 
+                    'pages/snippet/snippet-edit',
+                    'pages/dashboard/dashboard-snippets',
+                    'components/resize-box/resize-box',
                     'components/dialog/dialog'
                 ]
             },
@@ -147,7 +146,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'snippet-detail.html',
                 controller: 'snippetDetailCtrl',
                 dependencies: [
-                    'pages/snippet/snippet-detail', 
+                    'pages/snippet/snippet-detail',
                     'pages/dashboard/dashboard-snippets'
                 ]
             }
@@ -298,7 +297,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('dashboardNavs', 
     [
         function(){
-            var showTabs = ['/dashboard/account', '/dashboard/snippets', '/dashboard/apps', '/dashboard/appPros'];
+            var showTabs = ['/dashboard/snippets', '/dashboard/appPros', '/dashboard/articles'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){
@@ -336,7 +335,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
     .filter('assistItems', 
     [
         function(){
-            var showTabs = ['/dashboard/apps', '/dashboard/snippets'];
+            var showTabs = ['/dashboard/appPros', '/dashboard/snippets', '/dashboard/articles'];
             return function(navs){
                 var r = {};
                 angular.forEach(navs, function(n, i){

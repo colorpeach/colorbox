@@ -18,7 +18,10 @@ define(['js/app'], function(app){
                     return $http.post('/del/app-pro', {_id: id});
                 },
                 getUserApps: function(){
-                    return $http.get('/get/user/app-pro');
+                    return $http.get('/get/user/app-pro', {cache: true});
+                },
+                getPublishedApps: function(data){
+                    return $http.get('/_get/published/app-pros', {params: data});
                 },
                 getFile: function(id){
                     return $http.get('/get/app-pro/item', {params: {id: id}});

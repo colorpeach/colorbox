@@ -2,6 +2,7 @@ var logs = require('../models/logs');
 var baseRes = require('./baseResponse');
 
 module.exports = {
+    //网站日志
     '/_logs':{
         get:function(){
             return function(req,res,next){
@@ -17,6 +18,7 @@ module.exports = {
             }
         }
     },
+    //获取网站日志
     '/_get/logs':{
         get:function(){
             return function(req,res,next){
@@ -29,6 +31,7 @@ module.exports = {
             }
         }
     },
+    //添加网站日志
     '/add/log':{
         post:function(){
             return function(req,res,next){

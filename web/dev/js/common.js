@@ -518,19 +518,38 @@ define(['angular'], function(){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
-                    var $element = angular.element(element);
                     var itemWidth = parseFloat(attrs.autoCenter) || 243.2;
                     var oldWidth;
 
                     scope.$watch(attrs.autoCenterLength, function(val){
-                        oldWidth = oldWidth || $element[0].getBoundingClientRect().width;
-                        center($element, itemWidth, val, oldWidth);
+                        oldWidth = oldWidth || element[0].getBoundingClientRect().width;
+                        center(element, itemWidth, val, oldWidth);
                     });
 
                     angular.element($window).on('resize', function(){
                         var itemLength = scope.$eval(attrs.autoCenterLength);
-                        oldWidth = $element[0].getBoundingClientRect().width;
-                        center($element, itemWidth, itemLength, oldWidth);
+                        oldWidth = element[0].getBoundingClientRect().width;
+                        center(element, itemWidth, itemLength, oldWidth);
+                    });
+                }
+            };
+        }
+    ])
+
+    //自动获取焦点
+    .directive('autoFocus',
+    ['$timeout',
+        function($timeout){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    scope.$watch(attrs.autoFocus, function(val){
+                        if(val){
+                            $timeout(function(){
+                                element[0].focus();
+                                element[0].select();
+                            }, 0);
+                        }
                     });
                 }
             };

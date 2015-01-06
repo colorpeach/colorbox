@@ -1,5 +1,6 @@
 div.editor
   div.editor__nav(editor-nav="editorNav")
+    a.editor__nav-item.text--success colorbox
   div.editor__boxs(resize-box="layoutConfig")
 script(type="text/ng-template", id="editor-tree")
   div
@@ -23,6 +24,10 @@ script(type="text/ng-template", id="editor-main")
         button(ng-click="closeTab('tabs', item)") ×
     div.editor__contents.editor__back-logo
       div(editor="currentFile", ng-show="currentTab")
+      div.editor__bottom-assist(ng-show="currentTab", context-menu="editorAssist")
+        span.button-icon(trigger-context-menu="tab") {{editor.session.getUseSoftTabs() ? 'Spaces' : 'Tab'}} {{editor.session.getTabSize()}}
+        span.button-icon(trigger-context-menu="syntax") {{editor.session.$modeId.split('/').pop()}}
+        span.icon-cog.button-icon(trigger-context-menu="settings")
 script(type="text/ng-template", id="editor-assist")
   div(ng-class="{'full-screen': fullScreen}")
     div.editor__tabs
@@ -30,7 +35,7 @@ script(type="text/ng-template", id="editor-assist")
       span.editor__tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
-    div.editor__contents(style="background-color: #222;", editor-panels)
+    div.editor__contents(editor-panels)
 script(type="text/ng-template", id="editor-route")
   div(style="padding: 10px;")
     div.row--gray

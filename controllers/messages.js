@@ -2,6 +2,7 @@ var messages = require('../models/messages');
 var baseRes = require('./baseResponse');
 
 module.exports = {
+    //添加留言
     '/add/message':{
         post:function(){
             return function(req,res,next){
@@ -14,6 +15,7 @@ module.exports = {
             }
         }
     },
+    //回复留言
     '/save/message':{
         post:function(){
             return function(req,res,next){
@@ -29,6 +31,7 @@ module.exports = {
             }
         }
     },
+    //获取留言
     '/_get/messages':{
         get:function(){
             return function(req,res,next){
