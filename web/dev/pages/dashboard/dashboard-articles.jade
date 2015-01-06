@@ -1,0 +1,14 @@
+extends ./dashboard
+
+block content
+  ul.dashboard__boxs
+    li.dashboard__box
+      div.dashboard__head
+        a.icon-plus.button-hollow--success(title="添加文档", href="#/edit/article/_")
+      div.dashboard__list(auto-center, auto-center-length="articles.length")
+        a.dashboard__item.panel(href="#/edit/article/{{article._id}}", ng-repeat="article in articles")
+          div.panel__header
+            span {{article.name}}
+          div.panel__body
+          div.panel__footer
+            span.icon-cog(title="应用设置", ng-click="switch($event, 'detail', app, $index)")

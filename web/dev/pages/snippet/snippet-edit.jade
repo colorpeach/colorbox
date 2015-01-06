@@ -12,27 +12,27 @@ script(type='text/ng-template',id='html-editor')
   div
     div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('html')", tip, title="设置")
-      span.box-name html 
+      span.box-name  html 
         span(ng-show="data.html.type !== 'html'") ({{data.html.type}})
     div.snippet__box(snippet-editor="html")
 script(type='text/ng-template',id='javascript-editor')
   div
     div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('javascript')", tip, title="设置")
-      span.box-name js 
+      span.box-name  js 
         span(ng-show="data.javascript.type !== 'javascript'") ({{data.javascript.type}})
     div.snippet__box(snippet-editor="javascript")
 script(type='text/ng-template',id='css-editor')
   div
     div.snippet__bar
       span.icon-cog.button-icon(ng-click="dialogOpen('css')", tip, title="设置")
-      span.box-name css 
+      span.box-name  css 
         span(ng-show="data.css.type !== 'css'") ({{data.css.type}})
     div.snippet__box(snippet-editor="css")
 script(type='text/ng-template',id='preview')
   div
     div.snippet__bar
-      span.box-name preview
+      span.box-name  preview
     div.snippet__box
       iframe(ng-src="{{previewUrl}}", frameBorder=0)
 script(type='text/ng-template', id="edit-snippet-dialog")

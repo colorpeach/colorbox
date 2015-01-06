@@ -30,6 +30,7 @@ module.exports = {
         "",
         "_logout",
         "_apps",
+        "_app-pro",
         "_user",
         "_snippets",
         "_logs",

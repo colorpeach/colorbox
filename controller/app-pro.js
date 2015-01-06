@@ -38,23 +38,22 @@ Apps.del = function(req, res){
 Apps.get_user_apps = function(req, res){
     apps.query({user: req.session.user.login}, function(list){
         res.end(baseRes({apps: list}));
-    },{jade: 0, css: 0, js: 0});
+    },{files: 0});
 };
 
 Apps.get_published_apps = function(req, res){
     //拼接模糊查询
     var param = {};
-    var opera = {
-        limit: 8
-    };
+    var opera = {};
     opera.sort = {};
     req.query.name && (param.name = new RegExp(req.query.name));
     req.query.sort && (opera.sort[req.query.sort] = -1);
-    req.query.skip && (opera.skip = req.query.skip * 8);
+    req.query.skip && (opera.skip = req.query.skip * req.query.limit);
+    req.query.limit && (opera.limit = +req.query.limit || 8);
 
-    apps.operaQuery(param, function(list){
+    apps.query(param, function(list){
         res.end(baseRes({apps: list}));
-    }, {jade: 0, css: 0, js: 0}, opera);
+    }, {files: 0}, opera);
 };
 
 Apps.get_app_item = function(req, res){
@@ -98,7 +97,7 @@ Apps.static_file = function(req, res){
         user: req.params.user,
         name: req.params.app
     };
-    var filePath = req.url.replace('/application/' + data.user + '/' + data.name, '');
+    var filePath = '/' + req.url.split('/').slice(4).join('/');
 
     data.search = {
         'files.url': filePath
@@ -107,6 +106,22 @@ Apps.static_file = function(req, res){
     apps.queryItem(data, function(data){
         if(data.length){
             res.end(data[0].files.content);
+        }else{
+            res.statusCode = 401;
+            res.render('views/not-found',{user:req.session.user});
+        }
+    });
+};
+
+Apps.preview = function(req, res){
+    var data = {
+        _id: req.params.id
+    };
+
+    apps.query(data, function(data){
+        if(data.length === 1){
+            var url = ['', 'application', data[0].user, data[0].name + data[0].entrance].join('/');
+            res.redirect(url);
         }else{
             res.statusCode = 401;
             res.render('views/not-found',{user:req.session.user});

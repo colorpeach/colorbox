@@ -13,7 +13,7 @@ block content
     div.assist__overlay
     a.assist__item(ng-repeat="(href, item) in navs | assistItems track by $index", title="{{item.title}}", href="{{'/#' + href}}", ng-class="{true: 'rotate-icon' + $index}[true]")
       span(class="{{item.icon}}")
-    a.assist__item.rotate-icon2(href="/_logout", title="退出登录")
+    a.assist__item.rotate-icon3(href="/_logout", title="退出登录")
       span.icon-exit
   div.main__login.hide(ng-class="{hide: user || !showUser}")
     a(href="/#/login") 登录
@@ -21,6 +21,9 @@ block content
     a(href="/#/register") 注册
   div.main
     div.main__content.position--full(ng-view)
+    div.main__footer
+      | Create by 
+      a colorpeach
   div.route__waiting(ng-show="loading || loadMessage")
     span.icon-spinner2.route__waiting-icon(ng-show="loading")
     span.route__waiting-msg(ng-click="reload()", ng-bind="loadMessage", ng-show="loadMessage")

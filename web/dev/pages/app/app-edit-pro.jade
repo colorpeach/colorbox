@@ -35,7 +35,7 @@ script(type="text/ng-template", id="editor-assist")
       span.editor__tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
-    div.editor__contents(style="background-color: #222;", editor-panels)
+    div.editor__contents(editor-panels)
 script(type="text/ng-template", id="editor-route")
   div(style="padding: 10px;")
     div.row--gray

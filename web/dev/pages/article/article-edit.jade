@@ -1,0 +1,20 @@
+div.article
+  div.article__bar
+    span.article__name.button-icon.text--overflow(ng-click="editName(true)", ng-show="!status.editingName", title="{{currentFile.name}}")
+      | {{currentFile.name}}
+      span(ng-show="currentFile.isChange") *
+    input.article__input(type="text", ng-model="currentFile.name", auto-focus="status.editingName", ng-show="status.editingName", ng-blur="editName(false)")
+    button.article__button.button-icon(ng-repeat="fun in functions", title="{{fun.title}}", ng-click="opera(fun)", ng-disabled="disable(fun)")
+      span(class="{{fun.icon}}")
+    div.article__toggle
+      span.button(ng-repeat="item in layoutConfig.items track by $index", ng-class="{'button--primary': !item.hide}", ng-click="toggleBlock($index)") {{item.title}}
+  div.article__main(resize-box="layoutConfig")
+script(type="text/ng-template", id="article-list")
+  div.article__list
+    div.article__item.text--overflow(ng-repeat="file in files", ng-click="selectFile(file)", ng-class="{active: currentFile === file}", title="{{file.name}}")
+      | {{file.name}}
+      span(ng-show="file.isChange") *
+script(type="text/ng-template", id="article-editor")
+  div.article__editor(article-editor="currentFile")
+script(type="text/ng-template", id="article-preview")
+  div.article__preview.markdown-body(ng-bind-html="html")
