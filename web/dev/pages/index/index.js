@@ -8,7 +8,7 @@ define(['js/app'], function(app){
                     return $http.get('/get/desktop/apps');
                 },
                 updateDesktopApps: function(data){
-                    return $http.post('/post/save/desktop/apps', data);
+                    return $http.post('/save/desktop/apps', data);
                 }
             };
         }

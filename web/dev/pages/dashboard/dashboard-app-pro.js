@@ -9,13 +9,13 @@ define(['js/app'], function(app){
                     return $http.get('/get/app-pro', {params: {_id: id}});
                 },
                 add: function(data){
-                    return $http.post('/post/add/app-pro', data);
+                    return $http.post('/add/app-pro', data);
                 },
                 save: function(data){
-                    return $http.post('/post/save/app-pro', data);
+                    return $http.post('/save/app-pro', data);
                 },
                 del: function(id){
-                    return $http.post('/post/del/app-pro', {_id: id});
+                    return $http.post('/del/app-pro', {_id: id});
                 },
                 getUserApps: function(){
                     return $http.get('/get/user/app-pro');
@@ -27,13 +27,13 @@ define(['js/app'], function(app){
                     return $http.get('/get/app-pro/items', {params: {_id: id}});
                 },
                 addFile: function(data){
-                    return $http.post('/post/add/app-pro/item', data);
+                    return $http.post('/add/app-pro/item', data);
                 },
                 saveFile: function(data){
-                    return $http.post('/post/save/app-pro/item', data);
+                    return $http.post('/save/app-pro/item', data);
                 },
                 delFile: function(id, _id){
-                    return $http.post('/post/del/app-pro/item', {id: id, _id: _id});
+                    return $http.post('/del/app-pro/item', {id: id, _id: _id});
                 }
             };
         }

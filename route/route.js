@@ -5,7 +5,8 @@ var login = require('../controller/login.js');
 var user = require('../controller/user.js');
 var messages = require('../controller/messages.js');
 var snippets = require('../controller/snippets.js');
-var logs = require('../controller/logs.js');
+//var logs = require('../controller/logs.js');
+var initRoute = require('../init/initRoute.js');
 
 var settings = require('../config/settings');
 var authPath = settings.authPath;
@@ -21,7 +22,7 @@ module.exports = function(app){
         var path = req._parsedUrl.pathname.split('/')[1];
 
         if(validPath.indexOf(path) >= 0 || req.url.indexOf('.html') > 0){
-            
+
             if(!req.session.user){
                 if(authAjaxPath.indexOf(path) >= 0){
                     //访问未授权信息
@@ -39,86 +40,86 @@ module.exports = function(app){
             res.render('views/not-found',{user:req.session.user});
         }
     });
-    //首页
-    app.get('/', pages.index);
-    //app页面
-    app.get('/apps/:appName', pages.apps);
-    //html模板
-    app.get('/:template.html', pages.html);
-    //网站日志
-    app.get('/_logs', logs.index);
+    initRoute.route(app);
 
-    app.post('/_login', login.enter);
-    app.post('/_register', login.register);
-    app.get('/_logout', login.out);
-    //获取用户桌面应用
-    app.get('/get/desktop/apps', user.getDesktopApps);
-    //更新桌面应用
-    app.post('/post/save/desktop/apps', user.updateDesktopApps);
-    
-    //应用预览页面
-    app.get('/_apps/preview/:id', apps.apps_preview);
-    //添加应用
-    app.post('/post/add/app', apps.add);
-    //更新应用
-    app.post('/post/save/app', apps.save);
-    //删除应用
-    app.post('/post/del/app', apps.del);
-    //获取应用
-    app.get('/get/app', apps.get);
-    //获取用户的所有应用
-    app.get('/get/apps', apps.get_apps);
-    //获取发布的应用
-    app.get('/_get/published/apps', apps.get_published_apps);
-    
-    //片段预览页面
-    app.get('/_snippets/preview/:id', snippets.snippets_preview);
-    //添加片段
-    app.post('/post/add/snippet', snippets.add);
-    //更新片段
-    app.post('/post/save/snippet', snippets.save);
-    //删除片段
-    app.post('/post/del/snippet', snippets.del);
-    //获取片段
-    app.get('/get/snippet', snippets.get);
-    //获取用户的所有片段
-    app.get('/_get/user/snippets', snippets.get_user_snippets);
-    //获取所有片段
-    app.get('/_get/snippets', snippets.get_snippets);
-
-    //获取留言
-    app.get('/_get/messages', messages.get_messages);
-    //回复留言
-    app.post('/post/save/message', messages.save);
-    //添加留言
-    app.post('/post/add/message', messages.add);
-
-    //获取网站日志
-    app.get('/_get/logs', logs.get)
-    //添加网站日志
-    app.post('/post/add/log', logs.add);
-
-
-    //添加应用
-    app.post('/post/add/app-pro', appPro.add);
-    //更新应用
-    app.post('/post/save/app-pro', appPro.save);
-    //删除应用
-    app.post('/post/del/app-pro', appPro.del);
-    //获取应用
-    app.get('/get/app-pro', appPro.get);
-    //获取用户的所有应用
-    app.get('/get/user/app-pro', appPro.get_user_apps);
-    //添加文件
-    app.post('/post/add/app-pro/item', appPro.post_add_app_item);
-    //添加更新
-    app.post('/post/save/app-pro/item', appPro.post_update_app_item);
-    //获取文件内容
-    app.get('/get/app-pro/item', appPro.get_app_item);
-    //获取文件
-    app.get('/get/app-pro/items', appPro.get_app_items);
-    //删除文件
-    app.post('/post/del/app-pro/item', appPro.post_del_app_item);
-    //应用文件页
-    app.get('/application/:user/:app/*', appPro.static_file);
+//    //app页面
+//    app.get('/apps/:appName', pages.apps);
+//    //html模板
+//    app.get('/:template.html', pages.html);
+//    //网站日志
+//    app.get('/_logs', logs.index);
+//
+//    app.post('/_login', login.enter);
+//    app.post('/_register', login.register);
+//    app.get('/_logout', login.out);
+//    //获取用户桌面应用
+//    app.get('/get/desktop/apps', user.getDesktopApps);
+//    //更新桌面应用
+//    app.post('/post/save/desktop/apps', user.updateDesktopApps);
+//
+//    //应用预览页面
+//    app.get('/_apps/preview/:id', apps.apps_preview);
+//    //添加应用
+//    app.post('/post/add/app', apps.add);
+//    //更新应用
+//    app.post('/post/save/app', apps.save);
+//    //删除应用
+//    app.post('/post/del/app', apps.del);
+//    //获取应用
+//    app.get('/get/app', apps.get);
+//    //获取用户的所有应用
+//    app.get('/get/apps', apps.get_apps);
+//    //获取发布的应用
+//    app.get('/_get/published/apps', apps.get_published_apps);
+//
+//    //片段预览页面
+//    app.get('/_snippets/preview/:id', snippets.snippets_preview);
+//    //添加片段
+//    app.post('/post/add/snippet', snippets.add);
+//    //更新片段
+//    app.post('/post/save/snippet', snippets.save);
+//    //删除片段
+//    app.post('/post/del/snippet', snippets.del);
+//    //获取片段
+//    app.get('/get/snippet', snippets.get);
+//    //获取用户的所有片段
+//    app.get('/_get/user/snippets', snippets.get_user_snippets);
+//    //获取所有片段
+//    app.get('/_get/snippets', snippets.get_snippets);
+//
+//    //获取留言
+//    app.get('/_get/messages', messages.get_messages);
+//    //回复留言
+//    app.post('/post/save/message', messages.save);
+//    //添加留言
+//    app.post('/post/add/message', messages.add);
+//
+//    //获取网站日志
+//    app.get('/_get/logs', logs.get)
+//    //添加网站日志
+//    app.post('/post/add/log', logs.add);
+//
+//
+//    //添加应用
+//    app.post('/post/add/app-pro', appPro.add);
+//    //更新应用
+//    app.post('/post/save/app-pro', appPro.save);
+//    //删除应用
+//    app.post('/post/del/app-pro', appPro.del);
+//    //获取应用
+//    app.get('/get/app-pro', appPro.get);
+//    //获取用户的所有应用
+//    app.get('/get/user/app-pro', appPro.get_user_apps);
+//    //添加文件
+//    app.post('/post/add/app-pro/item', appPro.post_add_app_item);
+//    //添加更新
+//    app.post('/post/save/app-pro/item', appPro.post_update_app_item);
+//    //获取文件内容
+//    app.get('/get/app-pro/item', appPro.get_app_item);
+//    //获取文件
+//    app.get('/get/app-pro/items', appPro.get_app_items);
+//    //删除文件
+//    app.post('/post/del/app-pro/item', appPro.post_del_app_item);
+//    //应用文件页
+//    app.get('/application/:user/:app/*', appPro.static_file);
 };
