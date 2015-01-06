@@ -36,7 +36,7 @@ define(['js/app'], function(app){
                     return;
                 }
 
-                var article = $scope.articles.splice($index, 1);
+                var article = $scope.articles.splice($index, 1)[0];
                 
                 store('article', 'del', article._id)
                 .success(function(data){
