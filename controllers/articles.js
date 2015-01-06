@@ -44,17 +44,26 @@ module.exports = {
     '/add/article': {
         post: function(){
             return function(req, res, next){
-                articles.query({name: req.body.name},function(list){
-                    if(list.length){
-                        res.end(baseRes({errorMsg: ['文档已经存在']}));
-                    }else{
-                        req.body.user = req.session.user.login;
+                if(req.body.name){
+                    articles.query({name: req.body.name},function(list){
+                        if(list.length){
+                            res.end(baseRes({errorMsg: ['文档已经存在']}));
+                        }else{
+                            add();
+                        }
+                    });
+                }else{
+                    //文档名可以为空
+                    add();
+                }
 
-                        articles.add(req.body, function(data){
-                            res.end(baseRes({article: data[0]}));
-                        });
-                    }
-                });
+                function add(){
+                    req.body.user = req.session.user.login;
+
+                    articles.add(req.body, function(data){
+                        res.end(baseRes({article: data[0]}));
+                    });
+                }
             }
         }
     },

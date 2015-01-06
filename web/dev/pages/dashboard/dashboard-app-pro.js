@@ -2,8 +2,8 @@ define(['js/app'], function(app){
     app
 
     .controller('myAppProsCtrl',
-    ['$scope', 'data::store', 'prompt',
-        function($scope,   store,   prompt){
+    ['$scope', 'data::store', 'prompt', '$window',
+        function($scope,   store,   prompt,   $window){
             $scope.currentSize = {};
             $scope.current = {};
             $scope.sizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -68,7 +68,7 @@ define(['js/app'], function(app){
             };
 
             $scope.del = function(){
-                var sure = window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称');
+                var sure = $window.prompt('删除应用将无法撤销，确认删除请填写正确的应用名称');
 
                 if(sure !== $scope.current.name){
                     sure !== null && prompt({

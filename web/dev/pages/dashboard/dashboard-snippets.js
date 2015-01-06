@@ -2,8 +2,8 @@ define(['js/app'], function(app){
     app
 
     .controller('mySnippetsCtrl',
-    ['$scope', 'data::store', 'prompt',
-        function($scope, store, prompt){
+    ['$scope', 'data::store', 'prompt', '$window',
+        function($scope,   store,   prompt,   $window){
             $scope.current = {};
             $scope.status = {
                 page: 'list'
@@ -53,7 +53,7 @@ define(['js/app'], function(app){
             };
 
             $scope.del = function(){
-                var sure = window.confirm('删除将无法撤销，确认删除？');
+                var sure = $window.confirm('删除将无法撤销，确认删除？');
 
                 if(!sure){
                     return;

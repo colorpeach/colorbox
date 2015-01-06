@@ -82,6 +82,23 @@ define(['js/app'], function(app){
                         return $http.get('/_get/snippets');
                     }
                 },
+                article: {
+                    get: function(id){
+                        return $http.get('/_get/article?_id='+ id);
+                    },
+                    add: function(data){
+                        return $http.post('/add/article', data);
+                    },
+                    del: function(id){
+                        return $http.post('/del/article', {_id: id});
+                    },
+                    save: function(data){
+                        return $http.post('/save/article', data);
+                    },
+                    getArticles: function(){
+                        return $http.get('/get/article-list/user');
+                    }
+                },
                 message: {
                     getMessages: function(){
                         return $http.get('/_get/messages');
