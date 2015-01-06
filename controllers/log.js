@@ -1,5 +1,7 @@
 var logs = require('../models/logs');
 var baseRes = require('./baseResponse');
+var Showdown = require('showdown');
+var converter = new Showdown.converter();
 
 module.exports = {
     //网站日志
