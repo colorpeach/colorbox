@@ -103,14 +103,16 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/snippet/snippet-square'
                 ]
             },
-            '/edit/article/:id': {
+            '/edit/article': {
                 title: '编辑文档',
                 auth: 'yes',
                 templateUrl: 'article-edit.html',
                 controller: 'editArticleCtrl',
+                reloadOnSearch: false,
                 dependencies: [
                     'pages/article/article-edit', 
-                    'components/resize-box/resize-box'
+                    'components/resize-box/resize-box',
+                    'components/dialog/dialog'
                 ]
             },
             '/edit/app-pro/:id': {

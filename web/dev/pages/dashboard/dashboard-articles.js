@@ -23,7 +23,8 @@ define(['js/app'], function(app){
                 store('article', 'add', {})
                 .success(function(data){
                     $scope.articles.push(data.article);
-                    $location.path('/edit/article/' + data.article._id);
+                    $location.path('/edit/article');
+                    $location.search('_id', data.article._id);
                 });
             };
 
