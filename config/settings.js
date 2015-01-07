@@ -6,12 +6,6 @@ module.exports = {
     ],
     //需要权限ajax访问
     authAjaxPath:[
-        /*"get",
-         "post",
-         "put",
-         "options",
-         "head",
-         "delete"*/
         "get",
         "add",
         "del",
@@ -20,15 +14,6 @@ module.exports = {
     ],
     //不需要权限ajax访问
     unauthAjaxPath:[
-        /*"_get",
-        "_post",
-        "_put",
-        "_options",
-        "_head",
-        "_delete",
-        "_login",
-        "_register",
-        "_template"*/
         "_get",
         "_add",
         "_del",
