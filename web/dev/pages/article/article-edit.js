@@ -32,21 +32,48 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
     ])
 
     .controller('editArticleCtrl',
-    ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage',
-        function($scope,   $routeParams,   layoutConfig,    functions,   storage){
-            storage.bind($scope, 'currentFile', {
-                defaultValue: {name: '新建文档', content: '#新建文档'}
+    ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage', 'data::store',
+        function($scope,   $routeParams,   layoutConfig,    functions,   storage,   store){
+            //获取文档列表
+            store('article', 'getArticles')
+            .success(function(data){
+                $scope.files = data.articles;
+            });
+
+            //获取当前编辑文档
+            store('article', 'get', $routeParams.id)
+            .success(function(data){
+                $scope.currentFile = data.article;
+                if($scope.files){
+                    for(var i = 0, len = $scope.files.length; i < len; i++){
+                        if($scope.files[i]._id === $scope.currentFile._id){
+                            $scope.files[i] = $scope.currentFile;
+                        }
+                    }
+                }
             });
             
             angular.forEach(functions.slice(0, -2), function(n){
                 n.disable = 'layoutConfig.items[1].hide';
             });
 
-            $scope.files = [$scope.currentFile];
             $scope.layoutConfig = layoutConfig;
             $scope.functions = functions;
+            $scope.defaultName = '未命名';
             $scope.status = {
                 editingName: false
+            };
+
+            $scope.saveName = function(){
+                var data = {
+                    _id: $scope.currentFile._id,
+                    name: $scope.currentFile.name
+                };
+
+                store('article', 'save', data)
+                .success(function(){
+                    $scope.editName(false);
+                });
             };
             
             //隐藏显示区块
@@ -58,8 +85,15 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                 $scope.status.editingName = mark;
             };
 
-            $scope.selectFile = function(file){
-                $scope.currentFile = file;
+            $scope.selectFile = function($index, _id){
+                $scope.currentFile = $scope.files[$index];
+
+                if(angular.isUndefined($scope.currentFile.content)){
+                    store('article', 'get', $scope.currentFile._id)
+                    .success(function(data){
+                        $scope.currentFile = data.article;
+                    });
+                }
             };
 
             $scope.disable = function(fun){
@@ -70,18 +104,18 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
             $scope.opera = function(fun){
                 if($scope.editor){
                     var expression = [fun.command, '(', ')'];
-                    expression.splice(2, 0, angular.toJson(fun));
+                    expression.splice(2, 0, angular.toJson(fun.params));
                     $scope.$eval(expression.join(''));
                 }
             };
 
-            $scope.replaceText = function(fun){
+            $scope.replaceText = function(params){
                 var ranges = $scope.editor.selection.getAllRanges();
                 angular.forEach(ranges, function(n, i){
                     //替换选择的文本
                     var selectionText = $scope.editor.session.getTextRange(n);
-                    var tpl = fun.params[0];
-                    var text = selectionText || fun.params[1];
+                    var tpl = params[0];
+                    var text = selectionText || params[1];
                     var range = $scope.editor.session.replace(n, tpl.replace('%s', text));
                     var offset = tpl.indexOf('%s');
 
@@ -118,9 +152,15 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
             };
 
             $scope.$on('editorSaving', function(e, content){
-                $scope.currentFile.content = content;
-                $scope.$broadcast('editorSaved');
-                storage.update('currentFile', {name: $scope.currentFile.name, content: content});
+                var data = {
+                    _id: $scope.currentFile._id,
+                    content: content
+                };
+
+                store('article', 'save', data)
+                .success(function(){
+                    $scope.$broadcast('editorSaved');
+                });
             });
         }
     ])
@@ -180,6 +220,10 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                             editor.focus();
                             scope.html =  $sce.trustAsHtml(converter.makeHtml(editor.getValue()));
                         }
+                    });
+
+                    editor.renderer.scrollBar.on('scroll', function(){
+                        console.log(arguments);
                     });
 
                     scope.$on('resizeUpdate', resize);

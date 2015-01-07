@@ -8,14 +8,6 @@ define(['angular'], function(){
         }
     ])
 
-    //所有后台交互的数据
-    .factory('crud', 
-    ['$cacheFactory',
-        function($cacheFactory){
-            return $cacheFactory('crud');
-        }
-    ])
-
     .factory('safeApply',
     ['$rootScope',
         function($rootScope){
@@ -152,7 +144,7 @@ define(['angular'], function(){
             var className = "success";
             switch(obj.type){
                 case "info":
-                    className = "info";
+                    className = "primary";
                     break;
                 case "warning":
                     className = "warning";
@@ -163,8 +155,8 @@ define(['angular'], function(){
             }
 
             return "<div>" +
-                    "<div class='alert-box "+className+" animated ng-enter'>"+
-                        "<strong>"+(obj.title||"")+"</strong>"+obj.content+
+                    "<div class='prompt__item--" + className + " animated ng-enter'>" +
+                        "<strong>" + (obj.title || "") + "</strong>" + obj.content +
                     "</div>" +
                     "</div>";
         },
@@ -207,9 +199,9 @@ define(['angular'], function(){
                 return;
             }
         },
-        box = angular.element("<div class='prompt-box'></div>"),
+        box = angular.element("<div class='prompt__box'></div>"),
         prompt = function(options){
-            if(!document.querySelectorAll(".prompt-box").length){
+            if(!document.querySelectorAll(".prompt__box").length){
                 document.body.appendChild(box[0]);
             }
 
@@ -350,6 +342,55 @@ define(['angular'], function(){
             }
 
             return DataList;
+        }
+    ])
+
+    .factory('data::store',
+    ['data::crud', '$q', '$rootScope',
+        function(crud,   $q,   $rootScope){
+            var store = {};
+
+            function main(mod, type, params){
+                if(store[mod] && store[mod][type] && !params){
+                    var deferred = $q.defer();
+                    deferred.resolve(store[mod][type]);
+
+                    deferred.promise.success = function(fun){
+                        deferred.promise.then(function(data){
+                            fun(data);
+                        });
+                    }
+                    
+                    $rootScope.removeLoad();
+
+                    deferred.promise.error = angular.noop;
+
+                    return deferred.promise;
+                }else{
+                    return crud[mod][type](params).success(function(data){
+                        if(!store[mod]) store[mod] = {};
+                        store[mod][type] = data;
+                    });
+                }
+            }
+
+            main.get = function(mod, type, key){
+                if(store[mod] && store[mod][type]){
+                    if(key != undefined){
+                        return store[mod][type][key];
+                    }
+                    return store[mod][type];
+                };
+            };
+
+            main.set = function(mod, type, data){
+                if(!store[mod]){
+                    store[mod] = {};
+                }
+                store[mod][type] = data;
+            };
+
+            return main;
         }
     ])
 

@@ -13,8 +13,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'desktopCtrl',
                 dependencies: [
                     'pages/index/index', 
-                    'pages/app/app-square', 
-                    'pages/dashboard/dashboard-app-pro'
+                    'pages/app/app-square'
                 ]
             },
             '/log':{
@@ -83,6 +82,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 icon: 'icon-info',
                 templateUrl: 'message.html',
                 controller: 'messageCtrl',
+                reloadOnSearch: false,
                 dependencies: ['pages/message/message']
             },
             '/app-square': {
@@ -90,8 +90,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'app-square.html',
                 controller: 'appSquareCtrl',
                 dependencies: [
-                    'pages/app/app-square',
-                    'pages/dashboard/dashboard-apps'
+                    'pages/app/app-square'
                 ]
             },
             '/snippet-square': {
@@ -101,8 +100,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
                 dependencies: [
-                    'pages/snippet/snippet-square',
-                    'pages/dashboard/dashboard-snippets'
+                    'pages/snippet/snippet-square'
                 ]
             },
             '/edit/article/:id': {
@@ -122,7 +120,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'editAppProCtrl',
                 dependencies: [
                     'pages/app/app-edit-pro',
-                    'pages/dashboard/dashboard-app-pro',
                     'components/resize-box/resize-box',
                     'components/tree/tree',
                     'components/editor-nav/editor-nav',
@@ -136,7 +133,6 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 controller: 'editSnippetCtrl',
                 dependencies: [
                     'pages/snippet/snippet-edit',
-                    'pages/dashboard/dashboard-snippets',
                     'components/resize-box/resize-box',
                     'components/dialog/dialog'
                 ]
@@ -146,8 +142,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                 templateUrl: 'snippet-detail.html',
                 controller: 'snippetDetailCtrl',
                 dependencies: [
-                    'pages/snippet/snippet-detail',
-                    'pages/dashboard/dashboard-snippets'
+                    'pages/snippet/snippet-detail'
                 ]
             }
         }
@@ -180,6 +175,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                         resolve: dependencyResolverFor(route), 
                         controller: route.controller, 
                         title: route.title,
+                        reloadOnSearch: route.reloadOnSearch === false ? false : true,
                         redirectTo: function(){
                             //如果用户已经登录，无法再看到登录和注册页面
                             if(route.auth === 'no' && login){

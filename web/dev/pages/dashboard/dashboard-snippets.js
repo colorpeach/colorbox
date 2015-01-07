@@ -1,38 +1,9 @@
 define(['js/app'], function(app){
     app
-    .factory('snippetsCrud', 
-    ['$http',
-        function($http){
-            return {
-                get: function(id){
-                    return $http.get('/get/snippet?_id='+ id);
-                },
-                add: function(data){
-                    return $http.post('/add/snippet', data);
-                },
-                del: function(id){
-                    return $http.post('/del/snippet', {_id: id});
-                },
-                save: function(data){
-                    return $http.post('/save/snippet', data);
-                },
-                getSnippets: function(){
-                    return $http.get('/_get/user/snippets', {cache: true});
-                },
-                getAllSnippets: function(){
-                    return $http.get('/_get/snippets');
-                }
-            };
-        }
-    ])
 
     .controller('mySnippetsCtrl',
-    ['$scope', 'snippetsCrud', 'prompt',
-        function($scope, snippetsCrud, prompt){
-//             if($scope.tab !== 'snippets'){
-//                 return;
-//             }
-            
+    ['$scope', 'data::store', 'prompt', '$window',
+        function($scope,   store,   prompt,   $window){
             $scope.current = {};
             $scope.status = {
                 page: 'list'
@@ -43,7 +14,7 @@ define(['js/app'], function(app){
                 loadMessage: '载入代码片段列表...'
             });
             
-            snippetsCrud.getSnippets()
+            store('snippet', 'getSnippets')
             .success(function(data){
                 $scope.snippets = data.snippets;
             });
@@ -66,7 +37,7 @@ define(['js/app'], function(app){
             };
 
             $scope.add = function(){
-                snippetsCrud.add($scope.data)
+                store('snippet', 'add', $scope.data)
                 .success(function(data){
                     $scope.snippets.push(data.snippet);
                     prompt({
@@ -82,12 +53,12 @@ define(['js/app'], function(app){
             };
 
             $scope.del = function(){
-                var sure = window.confirm('删除将无法撤销，确认删除？');
+                var sure = $window.confirm('删除将无法撤销，确认删除？');
 
                 if(!sure){
                     return;
                 }
-                snippetsCrud.del($scope.current._id)
+                store('snippet', 'del', $scope.current._id)
                 .success(function(){
                     $scope.snippets.splice($scope.current.$index, 1);
                     prompt({
@@ -99,7 +70,7 @@ define(['js/app'], function(app){
 
             $scope.submit = function(e){
                 e.preventDefault();
-                snippetsCrud.save($scope.current)
+                store('snippet', 'save', $scope.current)
                 .success(function(){
                     prompt({
                         content: '保存成功'

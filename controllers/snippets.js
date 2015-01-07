@@ -1,5 +1,6 @@
 var snippets = require('../models/snippets');
 var baseRes = require('./baseResponse');
+var snippet = require('../utils/snippet');
 
 module.exports = {
     //片段预览页面

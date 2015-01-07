@@ -60,7 +60,7 @@ module.exports = {
             return function(req,res,next){
                 apps.query({user: req.session.user.login}, function(list){
                     res.end(baseRes({apps: list}));
-                },{jade: 0, css: 0, js: 0});
+                },{files: 0});
             }
         }
     },
@@ -80,7 +80,7 @@ module.exports = {
 
                 apps.operaQuery(param, function(list){
                     res.end(baseRes({apps: list}));
-                }, {jade: 0, css: 0, js: 0}, opera);
+                }, {files: 0}, opera);
             }
         }
     },
