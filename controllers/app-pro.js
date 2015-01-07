@@ -74,9 +74,10 @@ module.exports = {
                     limit: 8
                 };
                 opera.sort = {};
-                req.query.name && (param.name = new RegExp(req.query.name));
-                req.query.sort && (opera.sort[req.query.sort] = -1);
-                req.query.skip && (opera.skip = req.query.skip * 8);
+                req.query.name  && (param.name = new RegExp(req.query.name));
+                req.query.sort  && (opera.sort[req.query.sort] = -1);
+                req.query.skip  && (opera.skip = req.query.skip * 8);
+                req.query.limit && (opera.limit = +req.query.limit)
 
                 apps.operaQuery(param, function(list){
                     res.end(baseRes({apps: list}));
