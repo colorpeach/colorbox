@@ -80,6 +80,9 @@ define(['js/app'], function(app){
                     },
                     getSnippetsFuzzy: function(data){
                         return $http.get('/_get/snippets/fuzzy', {params: data});
+                    },
+                    addFork: function(id){
+                        return $http.post('/add/snippets-fork', {_id: id});
                     }
                 },
                 article: {

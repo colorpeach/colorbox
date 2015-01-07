@@ -2,6 +2,9 @@ var fs = require('fs');
 var path = require('path');
 var user = require('../models/user');
 var baseRes = require('./baseResponse');
+var desktopApps = require('../models/desktop-app');
+var registerValid = require('../utils/rules');
+var userRule = require('../web/validate/user');
 
 module.exports = {
     '/': {
@@ -65,9 +68,9 @@ module.exports = {
         }
     },
     '/_register':{
-        get:function(){
+        post:function(){
             return function(req,res,next){
-                var r = registerValid.validate(req.body,userRule);
+                var r = registerValid.validate(req.body, userRule);
                 if(r.valid){
                     user.query({username:req.body.username},function(list){
                         if(list.length){

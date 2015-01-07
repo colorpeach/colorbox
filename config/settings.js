@@ -19,6 +19,7 @@ module.exports = {
         "_del",
         "_save",
         "_login",
+        "_register"
     ],
     //不需要权限访问
     unauthPath:[

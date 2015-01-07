@@ -417,7 +417,8 @@ define(['angular'], function(){
                         
                         element.removeAttr('title');
                         
-                        element.bind('mouseenter',function(){
+                        element.bind('mouseenter', function(e){
+                            e.preventDefault();
                             var arrowClass = 'cm-tip-arrow-left';
 
                             tip.removeClass('hide');
@@ -442,7 +443,7 @@ define(['angular'], function(){
                             tip.children().eq(0).addClass(arrowClass + ' cm-tip-arrow');
                         });
                         
-                        element.bind('mouseleave',function(){
+                        element.bind('mouseleave', function(){
                             tip.addClass('hide');
                         })
                     }

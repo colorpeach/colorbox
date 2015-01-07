@@ -8,15 +8,19 @@ module.exports = {
         get:function(){
             return function(req,res,next){
                 snippets.query({_id: req.params.id}, function(data){
-                    var defaultData = {
-                        html: {type: 'html', heads: [""]},
-                        css: {type: 'css', libs: [], externals: [""]},
-                        javascript: {type: 'javascript', libs: [], externals: [""]}
-                    }
-                    var appData = extend(defaultData, data[0]);
-                    var html = snippet(appData);
+                    if(data.length){
+                        var defaultData = {
+                            html: {type: 'html', heads: [""]},
+                            css: {type: 'css', libs: [], externals: [""]},
+                            javascript: {type: 'javascript', libs: [], externals: [""]}
+                        }
+                        var appData = extend(defaultData, data[0]);
+                        var html = snippet(appData);
 
-                    res.end(html, 'utf-8');
+                        res.end(html, 'utf-8');
+                    }else{
+                        next();
+                    }
                 });
             }
         }
@@ -53,6 +57,11 @@ module.exports = {
     '/add/snippets-fork':{
         post:function(){
             return function(req,res,next){
+                if(!req.body._id){
+                    res.end(baseRes({errorMsg:['参数缺失']}));
+                    return;
+                }
+
                 snippets.query(req.body, function(list){
                     if(!list.length){
                         res.end(baseRes({errorMsg:['代码片段不存在']}));
@@ -142,7 +151,7 @@ function isObject(value){return value != null && typeof value == 'object';}
 function extend(first, second){
     for(var n in second){
         if(isObject(second[n]) && isObject(first[n])){
-            extend(first[n], second[n]);_get/snippets
+            extend(first[n], second[n]);
         }else{
             first[n] = second[n];
         }

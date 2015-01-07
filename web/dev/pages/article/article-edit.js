@@ -32,32 +32,23 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
     ])
 
     .controller('editArticleCtrl',
-    ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage', 'data::store',
-        function($scope,   $routeParams,   layoutConfig,    functions,   storage,   store){
+    ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage', 'data::store', '$timeout',
+        function($scope,   $routeParams,   layoutConfig,    functions,   storage,   store,   $timeout){
             $scope.prompts = [];
 
-            $scope.prompts.push({
-                message: '获取文档列表',
-                    status: 'doing'
-            });
-            $scope.prompts.push({
-                message: '获取文档内容',
-                    status: 'doing'
-            });
             //获取文档列表
             store('article', 'getArticles')
             .success(function(data){
-                $scope.prompts[0].status = 'success';
                 $scope.files = data.articles;
-            })
-            .error(function(){
-                $scope.prompts[0].status = 'error';
             });
 
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '加载文档内容'
+            });
             //获取当前编辑文档
             store('article', 'get', $routeParams.id)
             .success(function(data){
-                $scope.prompts[1].status = 'success';
                 $scope.currentFile = data.article;
                 if($scope.files){
                     for(var i = 0, len = $scope.files.length; i < len; i++){
@@ -66,9 +57,6 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                         }
                     }
                 }
-            })
-            .error(function(){
-                $scope.prompts[1].status = 'error';
             });
             
             angular.forEach(functions.slice(0, -2), function(n){
@@ -88,15 +76,17 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                     name: $scope.currentFile.name
                 };
                 var promptMessage = {
-                    message: '保存文档名',
+                    message: '正在保存文档名',
                     status: 'doing'
                 };
                 $scope.prompts.push(promptMessage);
 
                 store('article', 'save', data)
                 .success(function(){
+                    promptMessage.message = promptMessage.message.replace('正在', '') + '成功';
                     promptMessage.status = 'success';
                     $scope.editName(false);
+                    $scope.removePrompt(promptMessage);
                 })
                 .error(function(){
                     promptMessage.status = 'error';
@@ -116,6 +106,10 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                 $scope.currentFile = $scope.files[$index];
 
                 if(angular.isUndefined($scope.currentFile.content)){
+                    $scope.setLoad({
+                        loading: true,
+                        loadMessage: '加载文档内容'
+                    });
                     store('article', 'get', $scope.currentFile._id)
                     .success(function(data){
                         $scope.currentFile = data.article;
@@ -184,19 +178,33 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                     content: content
                 };
                 var promptMessage = {
-                    message: '保存文档名',
+                    message: '正在保存文档内容',
                     status: 'doing'
                 };
                 $scope.prompts.push(promptMessage);
 
                 store('article', 'save', data)
                 .success(function(){
+                    promptMessage.message = promptMessage.message.replace('正在', '') + '成功';
+                    promptMessage.status = 'success';
                     $scope.$broadcast('editorSaved');
+                    $scope.removePrompt(promptMessage);
                 })
                 .error(function(){
                     promptMessage.status = 'error';
                 });
             });
+
+            $scope.removePrompt = function(prompt){
+                $timeout(function(){
+                    for(var i = 0, len = $scope.prompts.length; i < len; i++){
+                        if(prompt === $scope.prompts[i]){
+                            $scope.prompts.splice(i, 1);
+                            break;
+                        }
+                    }
+                }, 2000);
+            }
         }
     ])
 
@@ -241,7 +249,7 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
 
                     scope.$on('editorSaved', function(){
                         editor.session.getUndoManager().markClean();
-                        safeApply(scope, function(){
+                        safeApply(function(){
                             scope[attrs.articleEditor].isChange = false;
                         });
                     });

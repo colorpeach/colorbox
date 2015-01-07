@@ -8,9 +8,10 @@ div.article
       span(class="{{fun.icon}}")
     div.article__toggle
       span.button(ng-repeat="item in layoutConfig.items track by $index", ng-class="{'button--primary': !item.hide}", ng-click="toggleBlock($index)") {{item.title}}
+    span(ng-repeat="prompt in prompts", 
+      ng-class="{'success': 'text--success', 'error': 'text--alert', 'doing': 'text--primary'}[prompt.status]"
+      ) {{prompt.message}}
   div.article__main(resize-box="layoutConfig")
-  div.prompt__box.article__prompt
-    div(ng-repeat="prompt in prompts", ng-class="{'success': 'prompt__item--success', 'error': 'prompt__item--alert', 'doing': 'prompt__item--primary'}[prompt.status]") {{prompt.message}}
 script(type="text/ng-template", id="article-list")
   div.article__list
     div.article__item.text--overflow(ng-repeat="file in files track by $index", ng-click="selectFile($index)", ng-class="{active: currentFile._id === file._id}", title="{{file.name}}")

@@ -13,5 +13,6 @@ div
         span(ng-bind="snippet.name")
       div.panel__body
       div.panel__footer
-        span.icon-spoon-knife(ng-click="", title="Fork代码片段")
-        span.snippet-user by {{snippet.user}}
+        img.left.circle(src-element="http://identicon.relucks.org/{user.login}?size=20px", title="{{user.login}}")
+        span.icon-copy(ng-click="fork($event, snippet._id)", ng-if="logined()", title="Fork代码片段")
+        span.icon-info(title="by {{snippet.user}}", tip)
