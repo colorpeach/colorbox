@@ -17,32 +17,47 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
 
     .value('article::functions',
     [
-        {title: '加粗 <strong>', icon: 'icon-bold', command: 'replaceText', params: ['**%s**', '加粗文本']},
-        {title: '斜体 <em>', icon: 'icon-italic', command: 'replaceText', params: ['_%s_', '斜体文本']},
-        {title: '超链接 <a>', icon: 'icon-link', command: 'opera'},
-        {title: '图片 <img>', icon: 'icon-image', command: 'opera'},
-        {title: '块引用 <blockquote>', icon: 'icon-indent-increase', command: 'replaceText', params: ['\n> %s\n', '引用']},
-        {title: '代码 <code>', icon: 'icon-embed', command: 'replaceText', params: ['\n```\n%s\n```\n', '代码']},
-        {title: '有序列表 <ol>', icon: 'icon-numbered-list', command: 'replaceText', params: ['\n1. %s\n', '列表项']},
-        {title: '无序列表 <ul>', icon: 'icon-list', command: 'replaceText', params: ['\n* %s\n', '列表项']},
-        {title: '标题 <h1>~<h6>', icon: 'icon-text-height', command: 'replaceText', params: ['\n# %s\n', '标题']},
-        {title: '分隔线 <hr>', icon: 'icon-page-break', command: 'replaceText', params: ['\n***\n', '']},
-        {title: '撤销', icon: 'icon-undo2', command: 'editor.undo', disable: '!editor.session.getUndoManager().hasUndo() || layoutConfig.items[1].hide'},
-        {title: '还原', icon: 'icon-redo2', command: 'editor.redo', disable: '!editor.session.getUndoManager().hasRedo() || layoutConfig.items[1].hide'},
+        {title: '加粗 <strong>', icon: 'icon-bold', command: 'replaceText', params: ['**%s**', '加粗文本'], key: 'Ctrl-B'},
+        {title: '斜体 <em>', icon: 'icon-italic', command: 'replaceText', params: ['_%s_', '斜体文本'], key: 'Ctrl-I'},
+        {title: '超链接 <a>', icon: 'icon-link', command: 'opera', key: 'Ctrl-L'},
+        {title: '图片 <img>', icon: 'icon-image', command: 'opera', key: 'Ctrl-Q'},
+        {title: '块引用 <blockquote>', icon: 'icon-indent-increase', command: 'replaceText', params: ['\n> %s\n', '引用'], key: 'Ctrl-K'},
+        {title: '代码 <code>', icon: 'icon-embed', command: 'replaceText', params: ['\n```\n%s\n```\n', '代码'], key: 'Ctrl-G'},
+        {title: '有序列表 <ol>', icon: 'icon-list-numbered', command: 'replaceText', params: ['\n1. %s\n', '列表项'], key: 'Ctrl-O'},
+        {title: '无序列表 <ul>', icon: 'icon-list', command: 'replaceText', params: ['\n* %s\n', '列表项'], key: 'Ctrl-U'},
+        {title: '标题 <h1>~<h6>', icon: 'icon-text-height', command: 'replaceText', params: ['\n# %s\n', '标题'], key: 'Ctrl-H'},
+        {title: '分隔线 <hr>', icon: 'icon-page-break', command: 'replaceText', params: ['\n***\n', ''], key: 'Ctrl-R'},
+        {title: '撤销', icon: 'icon-undo2', command: 'editor.undo', disable: '!editor.session.getUndoManager().hasUndo() || layoutConfig.items[1].hide', key: 'Ctrl-Z'},
+        {title: '还原', icon: 'icon-redo2', command: 'editor.redo', disable: '!editor.session.getUndoManager().hasRedo() || layoutConfig.items[1].hide', key: 'Ctrl-Y'},
     ])
 
     .controller('editArticleCtrl',
     ['$scope', '$routeParams','article::layoutConfig', 'article::functions', 'storage', 'data::store',
         function($scope,   $routeParams,   layoutConfig,    functions,   storage,   store){
+            $scope.prompts = [];
+
+            $scope.prompts.push({
+                message: '获取文档列表',
+                    status: 'doing'
+            });
+            $scope.prompts.push({
+                message: '获取文档内容',
+                    status: 'doing'
+            });
             //获取文档列表
             store('article', 'getArticles')
             .success(function(data){
+                $scope.prompts[0].status = 'success';
                 $scope.files = data.articles;
+            })
+            .error(function(){
+                $scope.prompts[0].status = 'error';
             });
 
             //获取当前编辑文档
             store('article', 'get', $routeParams.id)
             .success(function(data){
+                $scope.prompts[1].status = 'success';
                 $scope.currentFile = data.article;
                 if($scope.files){
                     for(var i = 0, len = $scope.files.length; i < len; i++){
@@ -51,6 +66,9 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                         }
                     }
                 }
+            })
+            .error(function(){
+                $scope.prompts[1].status = 'error';
             });
             
             angular.forEach(functions.slice(0, -2), function(n){
@@ -69,10 +87,19 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                     _id: $scope.currentFile._id,
                     name: $scope.currentFile.name
                 };
+                var promptMessage = {
+                    message: '保存文档名',
+                    status: 'doing'
+                };
+                $scope.prompts.push(promptMessage);
 
                 store('article', 'save', data)
                 .success(function(){
+                    promptMessage.status = 'success';
                     $scope.editName(false);
+                })
+                .error(function(){
+                    promptMessage.status = 'error';
                 });
             };
             
@@ -156,18 +183,26 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                     _id: $scope.currentFile._id,
                     content: content
                 };
+                var promptMessage = {
+                    message: '保存文档名',
+                    status: 'doing'
+                };
+                $scope.prompts.push(promptMessage);
 
                 store('article', 'save', data)
                 .success(function(){
                     $scope.$broadcast('editorSaved');
+                })
+                .error(function(){
+                    promptMessage.status = 'error';
                 });
             });
         }
     ])
 
     .directive('articleEditor',
-    ['$timeout', '$sce',
-        function($timeout,   $sce){
+    ['$timeout', '$sce', 'safeApply',
+        function($timeout,   $sce,   safeApply){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
@@ -206,8 +241,9 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
 
                     scope.$on('editorSaved', function(){
                         editor.session.getUndoManager().markClean();
-                        scope[attrs.articleEditor].isChange = false;
-                        scope.$apply();
+                        safeApply(scope, function(){
+                            scope[attrs.articleEditor].isChange = false;
+                        });
                     });
 
                     scope.$watch(attrs.articleEditor, function(file){

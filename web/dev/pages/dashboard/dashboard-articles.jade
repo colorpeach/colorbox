@@ -11,4 +11,4 @@ block content
             span {{article.name || $parent.defaultName}}
           div.panel__body
           div.panel__footer
-            span.icon-remove(title="删除文档", ng-click="delArticle($event, $index)")
+            span.icon-bin(title="删除文档", ng-click="delArticle($event, $index)")

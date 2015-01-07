@@ -359,6 +359,7 @@ define(['angular'], function(){
                         deferred.promise.then(function(data){
                             fun(data);
                         });
+                        return deferred.promise;
                     }
                     
                     $rootScope.removeLoad();

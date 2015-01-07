@@ -18,7 +18,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/log':{
                 title: '网站更新日志',
-                icon: 'icon-file',
+                icon: 'icon-file-text',
                 templateUrl: 'log.html',
                 controller: 'logsCtrl',
                 dependencies: ['pages/log/log']
@@ -41,7 +41,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/dashboard/articles': {
                 title: '我的文档',
-                icon: 'icon-file',
+                icon: 'icon-file-text',
                 auth: 'yes',
                 templateUrl: 'dashboard-articles.html',
                 controller: 'myArticlesCtrl',
@@ -61,7 +61,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/dashboard/snippets': {
                 title: '我的代码',
-                icon: 'icon-code',
+                icon: 'icon-embed2',
                 auth: 'yes',
                 templateUrl: 'dashboard-snippets.html',
                 controller: 'mySnippetsCtrl',
@@ -95,7 +95,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/snippet-square': {
                 title: '代码广场',
-                icon: 'icon-code',
+                icon: 'icon-embed2',
                 user: true,
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',

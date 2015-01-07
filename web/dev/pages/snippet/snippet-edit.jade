@@ -44,7 +44,7 @@ script(type='text/ng-template', id="edit-snippet-dialog")
       label.form__label 头信息
         span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].heads.push('')")
       div.relative(ng-repeat="head in data[current.mark].heads track by $index")
-        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].heads.splice($index, 1)")
+        span.snippet__remove.icon-cross.button-icon(ng-click="data[current.mark].heads.splice($index, 1)")
         input.form__input(type="text", placeholder="例如：<meta name='viewport' content='width=device-width'>", ng-model="data[current.mark].heads[$index]")
     div(ng-if="current.mark === 'css'")
       label 基础css
@@ -55,7 +55,7 @@ script(type='text/ng-template', id="edit-snippet-dialog")
       label.form__label 外部css
         span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
       div.relative(ng-repeat="external in data[current.mark].externals track by $index")
-        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
+        span.snippet__remove.icon-cross.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
         input.form__input(type="text", placeholder="例如：http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.css", ng-model="data[current.mark].externals[$index]")
     div(ng-if="current.mark === 'javascript'")
       label 基础scripts
@@ -66,5 +66,5 @@ script(type='text/ng-template', id="edit-snippet-dialog")
       label.form__label 外部scripts
         span.snippet__add.icon-plus.button-icon(ng-click="data[current.mark].externals.push('')")
       div.relative(ng-repeat="external in data[current.mark].externals track by $index")
-        span.snippet__remove.icon-close.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
+        span.snippet__remove.icon-cross.button-icon(ng-click="data[current.mark].externals.splice($index, 1)")
         input.form__input(type="text", placeholder="例如：http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js", ng-model="data[current.mark].externals[$index]")
