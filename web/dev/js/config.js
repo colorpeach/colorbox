@@ -78,8 +78,8 @@ define(['js/app'], function(app){
                     getSnippets: function(){
                         return $http.get('/_get/user/snippets', {cache: true});
                     },
-                    getAllSnippets: function(){
-                        return $http.get('/_get/snippets');
+                    getSnippetsFuzzy: function(data){
+                        return $http.get('/_get/snippets/fuzzy', {params: data});
                     }
                 },
                 article: {
