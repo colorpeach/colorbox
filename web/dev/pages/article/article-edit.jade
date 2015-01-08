@@ -14,6 +14,8 @@ div.article
   div.article__main(resize-box="layoutConfig")
 script(type="text/ng-template", id="article-list")
   div.article__list
+    div.article__item
+      span.icon-plus
     div.article__item.text--overflow(ng-repeat="file in files track by $index", ng-click="selectFile($index)", ng-class="{active: currentFile._id === file._id}", title="{{file.name}}")
       | {{file.name || $parent.defaultName}}
       span(ng-show="file.isChange") *

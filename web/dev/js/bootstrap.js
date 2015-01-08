@@ -11,7 +11,8 @@ require.config({
         'raphael'                 : '/lib/raphael/2.1.0/raphael.min',
         'sequence-diagram'        : '/lib/sequence-diagram/1.0.4/sequence-diagram.min',
         'underscore'              : '/lib/underscore/1.4.2/underscore.min',
-        'flowchart'               : '/lib/flowchart/1.3.4/flowchart.min'
+        'flowchart'               : '/lib/flowchart/1.3.4/flowchart.min',
+        'highlight'               : '/lib/highlight/highlight.pack'
     },
     shim: {
         'angular': {

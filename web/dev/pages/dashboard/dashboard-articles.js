@@ -14,6 +14,10 @@ define(['js/app'], function(app){
         function($scope,   store,   $location,   prompt,   $window){
             $scope.defaultName = '未命名';
 
+            $scope.setLoad({
+                loading: true,
+                loadMessage: '加载文档列表'
+            });
             store('article', 'getArticles')
             .success(function(data){
                 $scope.articles = data.articles;

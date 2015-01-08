@@ -229,8 +229,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .controller('editArticleLinkCtrl',
-    ['$scope',
-        function($scope){
+    ['$scope', 'safeApply',
+        function($scope,   safeApply){
             var defaultLink = 'http://colorpeach.com';
             $scope.link = defaultLink;
 
@@ -245,8 +245,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
             });
 
             $scope.submit = function(){
-                $scope.$parent.dialog.close();
                 $scope.replaceText(['[%s](' + $scope.link + ')', '链接']);
+                $scope.$parent.dialog.close();
             };
         }
     ])
@@ -268,8 +268,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
             });
 
             $scope.submit = function(){
-                $scope.$parent.dialog.close();
                 $scope.replaceText(['![%s](' + $scope.image + ')', '图片描述']);
+                $scope.$parent.dialog.close();
             };
         }
     ])
@@ -352,44 +352,105 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .directive('markdownPreview',
-    ['$sanitize', '$document',
-        function($sanitize,   $document){
+    ['$sanitize', '$document', '$timeout',
+        function($sanitize,   $document,   $timeout){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
                     var converter = new Showdown.converter({extensions: ['code', 'table']});
+                    var renderTimer = 0;
+                    var cache = {
+                        flow: {},
+                        sequence: {}
+                    };
                     
                     scope.$watch(attrs.markdownPreview, function(val){
                         if(val){
-                            try{
-                                element.html($sanitize(converter.makeHtml(val)));
-                                var $sequence = angular.element(document.querySelectorAll('code.sequence', element));
-                                var $flow = angular.element(document.querySelectorAll('code.flow', element));
+                            if(renderTimer){
+                                $timeout.cancel(renderTimer);
+                            }
+                            renderTimer = $timeout(function(){
+                                render(val);
+                            }, 100);
+                        }
+                    });
 
-                                if($sequence.length){
-                                    require(['sequence-diagram'], function(Diagram){
-                                        angular.forEach($sequence, function(n){
+                    function render(val){
+                        try{
+                            element.html($sanitize(converter.makeHtml(val)));
+                            var $sequence = angular.element(document.querySelectorAll('code.sequence', element));
+                            var $flow = angular.element(document.querySelectorAll('code.flow', element));
+                            var $code = angular.element(document.querySelectorAll('code:not(.flow):not(.sequence)', element));
+
+                            if($sequence.length){
+                                require(['sequence-diagram'], function(Diagram){
+                                    angular.forEach($sequence, function(n){
+                                        var key = angular.toJson(n.textContent);
+                                        if(key in cache.sequence){
+                                            n.innerHTML = cache.sequence[key].content;
+                                            cache.sequence[key].store = true;
+                                        }else{
                                             var diagram = Diagram.parse(n.textContent);
                                             n.innerHTML = '';
                                             diagram.drawSVG(n);
-                                        });
+                                            //以文本为键，缓存绘制好的图像
+                                            cache.sequence[key] = {
+                                                content: n.innerHTML,
+                                                store: true
+                                            }
+                                        }
                                     });
-                                }
 
-                                if($flow.length){
-                                    require(['flowchart'], function(flowchart){
-                                        angular.forEach($flow, function(n){
+                                    //删除不再需要的缓存
+                                    for(var n in cache.sequence){
+                                        if(!cache.sequence[n].store)
+                                            delete cache.sequence[n];
+                                    }
+                                });
+                            }else{
+                                cache.sequence = {};
+                            }
+
+                            if($flow.length){
+                                require(['flowchart'], function(flowchart){
+                                    angular.forEach($flow, function(n){
+                                        var key = angular.toJson(n.textContent);
+                                        if(key in cache.flow){
+                                            n.innerHTML = cache.flow[key].content;
+                                            cache.flow[key].store = true;
+                                        }else{
                                             var diagram = flowchart.parse(n.textContent);
                                             n.innerHTML = '';
                                             diagram.drawSVG(n);
-                                        });
+                                            //以文本为键，缓存绘制好的图像
+                                            cache.flow[key] = {
+                                                content: n.innerHTML,
+                                                store: true
+                                            }
+                                        }
                                     });
-                                }
-                            }catch(e){
-//                                 element.html(converter.makeHtml(val));
+
+                                    //删除不再需要的缓存
+                                    for(var n in cache.flow){
+                                        if(!cache.flow[n].store)
+                                            delete cache.flow[n];
+                                    }
+                                });
+                            }else{
+                                cache.flow = {};
                             }
+
+                            if($code.length){
+                                require(['highlight'], function(highlight){
+                                    angular.forEach($code, function(n){
+                                        hljs.highlightBlock(n);
+                                    });
+                                });
+                            }
+                        }catch(e){
+//                                 element.html(converter.makeHtml(val));
                         }
-                    });
+                    }
                 }
             };
         }
