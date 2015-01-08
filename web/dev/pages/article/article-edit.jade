@@ -21,6 +21,23 @@ script(type="text/ng-template", id="article-editor")
   div.article__editor(article-editor="currentFile")
 script(type="text/ng-template", id="article-preview")
   div.article__preview
-    div.content.markdown-body(ng-bind-html="html")
+    div.content.markdown-body(markdown-preview="html")
 script(type='text/ng-template', id="edit-article-dialog")
-  button.button--primary 插入
+  div(ng-show="dialogType === 'link'")
+    form.form__full(name="linkForm", ng-submit="submit()", ng-controller="editArticleLinkCtrl")
+      div.text--center
+        div.prompt__item--alert(ng-show="linkForm.link.$error.required") 请填写url
+        div.prompt__item--alert(ng-show="linkForm.link.$error.url") 格式错误
+      label.form__label(for="edit-article-link-ctrl") 链接
+      input#edit-article-link-ctrl.form__input(type="url", name="link", required,
+       auto-focus="$parent.dialogType === 'link'", ng-model="link", placeholder="例如：http://colorbox.colorpeach.com")
+      button.button--primary(type="submit") 插入
+  div(ng-show="dialogType === 'image'")
+    form.form__full(name="imageForm", ng-submit="submit()", ng-controller="editArticleImageCtrl")
+      div.text--center
+        div.prompt__item--alert(ng-show="imageForm.image.$error.required") 请填写url
+        div.prompt__item--alert(ng-show="imageForm.image.$error.url") 格式错误
+      label.form__label(for="edit-article-image-ctrl") 图片地址
+      input#edit-article-image-ctrl.form__input(type="url", name="image", required,
+       auto-focus="$parent.dialogType === 'image'", ng-model="image", placeholder="例如：http://www.baidu.com/img/bd_logo1.png")
+      button.button--primary(type="submit") 插入

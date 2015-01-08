@@ -7290,6 +7290,9 @@ div.article__editor {
   font-size: 13px;
   line-height: 22px;
 }
+div.article__editor .ace_cursor {
+  border-left-width: 1px;
+}
 .article__item {
   padding: .5em 1em;
   border-bottom: 1px solid #333333;

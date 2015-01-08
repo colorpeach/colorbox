@@ -5,9 +5,13 @@ require.config({
         'angular'                 : '/lib/angular/1.3.0/angular.min',
         'angular-route'           : '/lib/angular/1.3.0/angular-route.min',
         'angular-animate'         : '/lib/angular/1.3.0/angular-animate.min',
+        'angular-sanitize'        : '/lib/angular/1.3.0/angular-sanitize.min',
         'html2canvas'             : '/lib/html2canvas/0.4.1/html2canvas.min',
         'markdown'                : '/lib/markdown/0.6.0/markdown',
-        'showdown'                : '/lib/showdown/showdown'
+        'raphael'                 : '/lib/raphael/2.1.0/raphael.min',
+        'sequence-diagram'        : '/lib/sequence-diagram/1.0.4/sequence-diagram.min',
+        'underscore'              : '/lib/underscore/1.4.2/underscore.min',
+        'flowchart'               : '/lib/flowchart/1.3.4/flowchart.min'
     },
     shim: {
         'angular': {
@@ -21,8 +25,25 @@ require.config({
             exports: 'angular-animate',
             deps: ['angular']
         },
+        'angular-sanitize': {
+            exports: 'angular-sanitize',
+            deps: ['angular']
+        },
         'markdown': {
             exports: 'markdown'
+        },
+        'showdown/extensions/code': {
+            deps: ['showdown']
+        },
+        'showdown/extensions/table': {
+            deps: ['showdown']
+        },
+        'sequence-diagram': {
+            exports: 'Diagram',
+            deps: ['raphael', 'underscore']
+        },
+        'flowchart': {
+            deps: ['raphael']
         }
     },
     packages: [
@@ -37,6 +58,11 @@ require.config({
         {
             name: 'components',
             location: '/components'
+        },
+        {
+            name: 'showdown',
+            location: '/lib/showdown',
+            main: 'showdown'
         }
     ]
 });

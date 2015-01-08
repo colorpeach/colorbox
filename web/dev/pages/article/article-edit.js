@@ -1,4 +1,4 @@
-define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
+define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/extensions/table'], function(app, ace){
     app
 
     .value('article::layoutConfig',
@@ -27,15 +27,15 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
         {title: '无序列表 <ul>', icon: 'icon-list', command: 'replaceText', params: ['\n* %s\n', '列表项'], key: 'Ctrl-U'},
         {title: '标题 <h1>~<h6>', icon: 'icon-text-height', command: 'replaceText', params: ['\n# %s\n', '标题'], key: 'Ctrl-H'},
         {title: '分隔线 <hr>', icon: 'icon-page-break', command: 'replaceText', params: ['\n***\n', ''], key: 'Ctrl-R'},
-        {title: '保存', icon: 'icon-floppy-disk', command: 'save', key: 'Ctrl-S'},
+        {title: '保存', icon: 'icon-floppy-disk', command: 'save', key: 'Ctrl-S', disable: '!currentFile.isChange || layoutConfig.items[1].hide'},
         {title: '撤销', icon: 'icon-undo2', command: 'editor.undo', disable: '!editor.session.getUndoManager().hasUndo() || layoutConfig.items[1].hide', key: 'Ctrl-Z'},
         {title: '还原', icon: 'icon-redo2', command: 'editor.redo', disable: '!editor.session.getUndoManager().hasRedo() || layoutConfig.items[1].hide', key: 'Ctrl-Y'},
     ])
 
     .controller('editArticleCtrl',
-    ['$scope', '$location','article::layoutConfig', 'article::functions', 'storage', 'data::store', '$timeout', 'dialog',
-        function($scope,   $location,   layoutConfig,    functions,   storage,   store,   $timeout,   dialog){
-            var dialog = dialog({
+    ['$scope', '$location','article::layoutConfig', 'article::functions', 'storage', 'data::store', '$timeout', 'dialog', 'safeApply',
+        function($scope,   $location,   layoutConfig,    functions,   storage,   store,   $timeout,   dialog,   safeApply){
+            $scope.dialog = dialog({
                 template: 'edit-article-dialog',
                 scope: $scope,
                 maxWidth: '600px'
@@ -65,7 +65,7 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                 }
             });
             
-            angular.forEach(functions.slice(0, -2), function(n){
+            angular.forEach(functions.slice(0, -3), function(n){
                 n.disable = 'layoutConfig.items[1].hide';
             });
 
@@ -76,8 +76,11 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                 editingName: false
             };
 
-            $scope.dialogOpen = function(){
-                dialog.open();
+            $scope.dialogOpen = function(type){
+                $scope.dialogType = type;
+                $scope.$broadcast('dialogOpen', type);
+                $scope.dialog.open();
+                safeApply.apply($scope);
             };
 
             //保存文件名
@@ -225,6 +228,52 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
         }
     ])
 
+    .controller('editArticleLinkCtrl',
+    ['$scope',
+        function($scope){
+            var defaultLink = 'http://colorpeach.com';
+            $scope.link = defaultLink;
+
+            $scope.$on('dialogOpen', function(e, type){
+                if(type === 'link'){
+                    $scope.$parent.dialog.setOption('onClose', function(){
+                        $scope.link = defaultLink;
+                        $scope.$parent.dialogType = '';
+                        safeApply.call($scope.$parent);
+                    });
+                }
+            });
+
+            $scope.submit = function(){
+                $scope.$parent.dialog.close();
+                $scope.replaceText(['[%s](' + $scope.link + ')', '链接']);
+            };
+        }
+    ])
+
+    .controller('editArticleImageCtrl',
+    ['$scope', 'safeApply',
+        function($scope,   safeApply){
+            var defaultImage = 'http://www.baidu.com/img/bd_logo1.png';
+            $scope.image = defaultImage;
+
+            $scope.$on('dialogOpen', function(e, type){
+                if(type === 'image'){
+                    $scope.$parent.dialog.setOption('onClose', function(){
+                        $scope.image = defaultImage;
+                        $scope.$parent.dialogType = '';
+                        safeApply.call($scope.$parent);
+                    });
+                }
+            });
+
+            $scope.submit = function(){
+                $scope.$parent.dialog.close();
+                $scope.replaceText(['![%s](' + $scope.image + ')', '图片描述']);
+            };
+        }
+    ])
+
     .directive('articleEditor',
     ['$timeout', '$sce', 'safeApply',
         function($timeout,   $sce,   safeApply){
@@ -233,7 +282,6 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                 link: function(scope, element, attrs){
                     var resizeTimer;
                     var editor = ace.edit(element[0]);
-                    var converter = new Showdown.converter();
 
                     scope.editor = editor;
 
@@ -249,7 +297,7 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                         }else{
                             scope[attrs.articleEditor].isChange = true;
                         }
-                        scope.html = $sce.trustAsHtml(converter.makeHtml(editor.getValue()));
+                        scope.html = editor.getValue();
                         scope.$apply();
                     });
 
@@ -263,15 +311,6 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                             },
                             readOnly: false
                         });
-                    });
-
-                    editor.commands.addCommand({
-                        name: 'save',
-                        bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
-                        exec: function(editor) {
-                            scope.save();
-                        },
-                        readOnly: false
                     });
 
                     scope.$on('editorSaved', function(){
@@ -289,7 +328,7 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                             editor.setSession(file.editSession);
                             editor.session.setMode("ace/mode/markdown");
                             editor.focus();
-                            scope.html =  $sce.trustAsHtml(converter.makeHtml(editor.getValue()));
+                            scope.html =  editor.getValue();
                         }
                     });
 
@@ -307,6 +346,50 @@ define(['js/app', 'ace/ace', 'showdown'], function(app, ace, Showdown){
                             editor.resize();
                         }, 300);
                     }
+                }
+            };
+        }
+    ])
+
+    .directive('markdownPreview',
+    ['$sanitize', '$document',
+        function($sanitize,   $document){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    var converter = new Showdown.converter({extensions: ['code', 'table']});
+                    
+                    scope.$watch(attrs.markdownPreview, function(val){
+                        if(val){
+                            try{
+                                element.html($sanitize(converter.makeHtml(val)));
+                                var $sequence = angular.element(document.querySelectorAll('code.sequence', element));
+                                var $flow = angular.element(document.querySelectorAll('code.flow', element));
+
+                                if($sequence.length){
+                                    require(['sequence-diagram'], function(Diagram){
+                                        angular.forEach($sequence, function(n){
+                                            var diagram = Diagram.parse(n.textContent);
+                                            n.innerHTML = '';
+                                            diagram.drawSVG(n);
+                                        });
+                                    });
+                                }
+
+                                if($flow.length){
+                                    require(['flowchart'], function(flowchart){
+                                        angular.forEach($flow, function(n){
+                                            var diagram = flowchart.parse(n.textContent);
+                                            n.innerHTML = '';
+                                            diagram.drawSVG(n);
+                                        });
+                                    });
+                                }
+                            }catch(e){
+//                                 element.html(converter.makeHtml(val));
+                            }
+                        }
+                    });
                 }
             };
         }

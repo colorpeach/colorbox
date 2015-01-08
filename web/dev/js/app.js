@@ -1,5 +1,5 @@
-define(['angular-route', 'angular-animate', 'js/common'], function(){
-    var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
+define(['angular-route', 'angular-animate', 'angular-sanitize', 'js/common'], function(){
+    var app = angular.module('index', ['ngRoute', 'ngAnimate', 'ngSanitize', 'common']);
     var login = false;
 
     var config = {
