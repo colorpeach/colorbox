@@ -13,6 +13,6 @@ div
         span(ng-bind="snippet.name")
       div.panel__body
       div.panel__footer
-        img.left.circle(src-element="http://identicon.relucks.org/{user.login}?size=20px", title="{{user.login}}")
+        img.left.circle(src-element="http://identicon.relucks.org/{snippet.user}?size=20px", title="{{snippet.user}}")
         span.icon-copy(ng-click="fork($event, snippet._id)", ng-if="logined()", title="Fork代码片段")
         span.icon-info(title="by {{snippet.user}}", tip)
