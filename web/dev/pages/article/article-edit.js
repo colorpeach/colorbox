@@ -225,6 +225,19 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                     }
                 }, 2000);
             }
+
+            $scope.addArticle = function(){
+                $scope.setLoad({
+                    loading: true,
+                    loadMessage: '新建文档中'
+                });
+                store('article', 'add', {})
+                .success(function(data){
+                    $scope.files.push(data.article);
+                    $scope.currentFile = data.article;
+                    $location.search('_id', data.article._id);
+                });
+            };
         }
     ])
 
@@ -365,13 +378,15 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                     };
                     
                     scope.$watch(attrs.markdownPreview, function(val){
+                        if(renderTimer){
+                            $timeout.cancel(renderTimer);
+                        }
                         if(val){
-                            if(renderTimer){
-                                $timeout.cancel(renderTimer);
-                            }
                             renderTimer = $timeout(function(){
                                 render(val);
                             }, 100);
+                        }else{
+                            element.html('');
                         }
                     });
 
