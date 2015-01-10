@@ -17,6 +17,7 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
 
     .value('article::functions',
     [
+        {title: '保存', icon: 'icon-floppy-disk', command: 'save', key: 'Ctrl-S', disable: '!currentFile.isChange || layoutConfig.items[1].hide'},
         {title: '加粗 <strong>', icon: 'icon-bold', command: 'replaceText', params: ['**%s**', '加粗文本'], key: 'Ctrl-B'},
         {title: '斜体 <em>', icon: 'icon-italic', command: 'replaceText', params: ['_%s_', '斜体文本'], key: 'Ctrl-I'},
         {title: '超链接 <a>', icon: 'icon-link', command: 'dialogOpen', key: 'Ctrl-L', params: 'link'},
@@ -27,7 +28,6 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
         {title: '无序列表 <ul>', icon: 'icon-list', command: 'replaceText', params: ['\n* %s\n', '列表项'], key: 'Ctrl-U'},
         {title: '标题 <h1>~<h6>', icon: 'icon-text-height', command: 'replaceText', params: ['\n# %s\n', '标题'], key: 'Ctrl-H'},
         {title: '分隔线 <hr>', icon: 'icon-page-break', command: 'replaceText', params: ['\n***\n', ''], key: 'Ctrl-R'},
-        {title: '保存', icon: 'icon-floppy-disk', command: 'save', key: 'Ctrl-S', disable: '!currentFile.isChange || layoutConfig.items[1].hide'},
         {title: '撤销', icon: 'icon-undo2', command: 'editor.undo', disable: '!editor.session.getUndoManager().hasUndo() || layoutConfig.items[1].hide', key: 'Ctrl-Z'},
         {title: '还原', icon: 'icon-redo2', command: 'editor.redo', disable: '!editor.session.getUndoManager().hasRedo() || layoutConfig.items[1].hide', key: 'Ctrl-Y'},
     ])
@@ -65,7 +65,7 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                 }
             });
             
-            angular.forEach(functions.slice(0, -3), function(n){
+            angular.forEach(functions.slice(1, -2), function(n){
                 n.disable = 'layoutConfig.items[1].hide';
             });
 
@@ -365,17 +365,23 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .directive('markdownPreview',
-    ['$sanitize', '$document', '$timeout',
-        function($sanitize,   $document,   $timeout){
+    ['$sanitize', '$document', '$timeout', 'markdownDiagram', '$anchorScroll', '$location',
+        function($sanitize,   $document,   $timeout,   markdownDiagram,   $anchorScroll,   $location){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
-                    var converter = new Showdown.converter({extensions: ['code', 'table']});
+                    var converter = new Showdown.converter({extensions: ['table']});
                     var renderTimer = 0;
-                    var cache = {
-                        flow: {},
-                        sequence: {}
-                    };
+
+                    element.on('click', function(e){
+                        var target = e.target;
+
+                        if(target = isAnchor(target)){
+//                             e.preventDefault();
+                            $location.hash();
+                            $anchorScroll();
+                        }
+                    });
                     
                     scope.$watch(attrs.markdownPreview, function(val){
                         if(renderTimer){
@@ -390,84 +396,188 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                         }
                     });
 
+                    function isAnchor(el){
+                        var dom = el;
+                        do{
+                            if(dom.tagName === 'A') return dom;
+                        }while(dom = dom.parentNode && dom !== element)
+                    }
+
                     function render(val){
                         try{
-                            element.html($sanitize(converter.makeHtml(val)));
-                            var $sequence = angular.element(document.querySelectorAll('code.sequence', element));
-                            var $flow = angular.element(document.querySelectorAll('code.flow', element));
-                            var $code = angular.element(document.querySelectorAll('code:not(.flow):not(.sequence)', element));
-
-                            if($sequence.length){
-                                require(['sequence-diagram'], function(Diagram){
-                                    angular.forEach($sequence, function(n){
-                                        var key = angular.toJson(n.textContent);
-                                        if(key in cache.sequence){
-                                            n.innerHTML = cache.sequence[key].content;
-                                            cache.sequence[key].store = true;
-                                        }else{
-                                            var diagram = Diagram.parse(n.textContent);
-                                            n.innerHTML = '';
-                                            diagram.drawSVG(n);
-                                            //以文本为键，缓存绘制好的图像
-                                            cache.sequence[key] = {
-                                                content: n.innerHTML,
-                                                store: true
-                                            }
-                                        }
-                                    });
-
-                                    //删除不再需要的缓存
-                                    for(var n in cache.sequence){
-                                        if(!cache.sequence[n].store)
-                                            delete cache.sequence[n];
-                                    }
-                                });
-                            }else{
-                                cache.sequence = {};
-                            }
-
-                            if($flow.length){
-                                require(['flowchart'], function(flowchart){
-                                    angular.forEach($flow, function(n){
-                                        var key = angular.toJson(n.textContent);
-                                        if(key in cache.flow){
-                                            n.innerHTML = cache.flow[key].content;
-                                            cache.flow[key].store = true;
-                                        }else{
-                                            var diagram = flowchart.parse(n.textContent);
-                                            n.innerHTML = '';
-                                            diagram.drawSVG(n);
-                                            //以文本为键，缓存绘制好的图像
-                                            cache.flow[key] = {
-                                                content: n.innerHTML,
-                                                store: true
-                                            }
-                                        }
-                                    });
-
-                                    //删除不再需要的缓存
-                                    for(var n in cache.flow){
-                                        if(!cache.flow[n].store)
-                                            delete cache.flow[n];
-                                    }
-                                });
-                            }else{
-                                cache.flow = {};
-                            }
-
-                            if($code.length){
-                                require(['highlight'], function(highlight){
-                                    angular.forEach($code, function(n){
-                                        hljs.highlightBlock(n);
-                                    });
-                                });
-                            }
+                            markdownDiagram($sanitize(converter.makeHtml(val)), function(html){
+                                element.html(html);
+                            });
                         }catch(e){
+                            throw e;
 //                                 element.html(converter.makeHtml(val));
                         }
                     }
                 }
             };
+        }
+    ])
+
+    .factory('markdownDiagram',
+    ['$q', '$location',
+        function($q,   $location){
+            var codeReg = /<code class="(.+?)">([\S\s]*?)<\/code>/g;
+            var hashReg = /<a href="#(.+?)">/g;
+            var div = angular.element('<div></div>');
+            div.css({
+                height: '400px',
+                width: '400px',
+                position: 'fixed',
+                top: 0,
+                left: '-100%'
+            });
+            div = div[0];
+
+            document.body.appendChild(div);
+
+            var cache = {
+                flow: {},
+                sequence: {},
+                highlight: {}
+            };
+            var Diagram;
+            var flowchart;
+            var color = '#666';
+
+            function generateSequenceDiagram(code){
+                return generate('sequence', code, function(text){
+                    var diagram = Diagram.parse(text);
+                    div.innerHTML = '';
+                    diagram.drawSVG(div, {theme: 'simple'});
+                    return div.innerHTML;
+                });
+            }
+
+            function generateFlowChart(code){
+                return generate('flow', code, function(text){
+                    var diagram = flowchart.parse(text);
+                    div.innerHTML = '';
+                    diagram.drawSVG(div);
+                    return div.innerHTML;
+                });
+            }
+
+            function generateHighlight(lang, code){
+                return generate('highlight', code, function(text){
+                    return hljs.highlight(lang, text).value;
+                });
+            }
+
+            function generate(type, code, parse){
+                var key = angular.toJson(code);
+                var text = code;
+
+                if(key in cache[type]){
+                    cache[type][key].store = true;
+                    return cache[type][key].content;
+                }else{
+                    div.innerHTML = code;
+                    try{
+                    //将被转义的字符转义回来
+                        text = parse(div.textContent);
+                    }catch(e){
+                        console.log(e);
+                    }
+
+                    //以文本为键，缓存解析好的字符
+                    cache[type][key] = {
+                        content: text,
+                        store: true
+                    }
+
+                    return cache[type][key].content;
+                }
+            }
+
+            function removeCache(){
+                //删除不再需要的缓存
+                for(var type in cache){
+                    for(var n in cache[type]){
+                        if(!cache[type][n].store)
+                            delete cache[type][n];
+                    }
+                }
+            }
+
+            return function(mdStr, callback){
+                var strList = [];
+                var promises = [];
+                var lastIndex = 0;
+
+                mdStr = mdStr.replace(hashReg, function(match, hash){
+                    return match.replace(hash, $location.url().split('#')[0] + '#' + hash);
+                })
+                mdStr.replace(codeReg, function(match, type, code, index){
+                    strList.push(mdStr.substring(lastIndex, index));
+                    lastIndex = index + match.length;
+                    strList.push({
+                        match: match,
+                        type: type,
+                        code: code
+                    });
+                    return '';
+                });
+
+                strList.push(mdStr.substring(lastIndex));
+
+                angular.forEach(strList, function(n, i, strList){
+                    if(!n.type) return;
+
+                    if(n.type === 'sequence'){
+                        if(!Diagram){
+                            var defered = $q.defer();
+                            promises.push(defered.promise);
+                            require(['sequence-diagram'], function(d){ 
+                                Diagram = d;
+                                strList.splice(i, 1, generateSequenceDiagram(n.code));
+                                defered.resolve();
+                            });
+                        }else{
+                            strList.splice(i, 1, generateSequenceDiagram(n.code));
+                        }
+                    }else if(n.type === 'flow'){
+                        if(!flowchart){
+                            var defered = $q.defer();
+                            promises.push(defered.promise);
+                            require(['flowchart'], function(f){
+                                flowchart = f;
+                                strList.splice(i, 1, generateFlowChart(n.code));
+                                defered.resolve();
+                            });
+                        }else{
+                            strList.splice(i, 1, generateFlowChart(n.code));
+                        }
+                    }else if(n.type){
+                        if(typeof hljs === 'undefined'){
+                            var defered = $q.defer();
+                            promises.push(defered.promise);
+                            require(['highlight'], function(){
+                                strList.splice(i, 1, generateHighlight(n.type, n.code));
+                                defered.resolve();
+                            });
+                        }else{
+                            strList.splice(i, 1, generateHighlight(n.type, n.code));
+                        }
+                    }
+                });
+
+                if(promises.length){
+                    $q
+                    .all(promises)
+                    .then(function(){
+                        callback(strList.join(''));
+                        removeCache();
+                    });
+                }else{
+                    callback(strList.join(''));
+                    removeCache();
+                }
+            }
         }
     ]);
 });
