@@ -7189,6 +7189,7 @@ div.editor__bottom-assist {
   color: #808080;
 }
 .article__bar {
+  overflow: hidden;
   padding: 0 5px;
   height: 3rem;
   line-height: 3rem;
@@ -7216,10 +7217,11 @@ div.editor__bottom-assist {
 }
 .article__name,
 .article__button {
+  position: relative;
   max-width: 10em;
   height: 1.6rem;
-  padding: 0 5px;
-  margin-right: 10px;
+  padding: 0 .4em;
+  margin-left: .5em;
   line-height: 1.6rem;
   text-align: center;
   -webkit-border-radius: 4px;
@@ -7232,8 +7234,13 @@ div.editor__bottom-assist {
 .article__item:hover {
   background-color: #666666;
 }
+.article__mark {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .article__button {
-  width: 1.6rem;
+  width: 1.8rem;
 }
 .article__button[disabled] {
   background-color: transparent;

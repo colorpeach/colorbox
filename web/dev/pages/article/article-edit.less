@@ -7,6 +7,7 @@
 
 .article__bar{
     &:extend(.position--bottom);
+    overflow: hidden;
     padding: 0 5px;
     height: @article-bar-height;
     line-height: @article-bar-line-height;
@@ -33,10 +34,11 @@
 }
 
 .article__name{
+    position: relative;
     max-width: 10em;
     height: 1.6rem;
-    padding: 0 5px;
-    margin-right: 10px;
+    padding: 0 .4em;
+    margin-left: .5em;
     line-height: 1.6rem;
     text-align: center;
     .border-radius(4px);
@@ -46,9 +48,15 @@
     }
 }
 
+.article__mark{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .article__button{
     &:extend(.article__name);
-    width: 1.6rem;
+    width: 1.8rem;
 
     &:hover{
         &:extend(.article__name:hover);

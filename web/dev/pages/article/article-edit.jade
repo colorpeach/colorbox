@@ -2,7 +2,7 @@ div.article
   div.article__bar
     span.article__name.button-icon.text--overflow(ng-click="editName(true)", ng-show="!status.editingName", title="{{currentFile.name}}")
       | {{currentFile.name || defaultName}}
-      span(ng-show="currentFile.isChange") *
+      span.article__mark(ng-show="currentFile.isChange") *
     input.article__input(type="text", ng-model="currentFile.name", auto-focus="status.editingName", ng-show="status.editingName", ng-blur="saveName()")
     button.article__button.button-icon(ng-repeat="fun in functions", title="{{fun.title + ' ' + fun.key}}", ng-click="opera(fun)", ng-disabled="disable(fun)")
       span(class="{{fun.icon}}")

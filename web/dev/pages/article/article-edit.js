@@ -429,7 +429,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                 width: '400px',
                 position: 'fixed',
                 top: 0,
-                left: '-100%'
+                left: '400px',
+                overflow: 'hidden'
             });
             div = div[0];
 
