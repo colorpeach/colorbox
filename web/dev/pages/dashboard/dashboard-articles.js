@@ -8,11 +8,11 @@ define(['js/app'], function(app){
             };
         }
     ])
-
+    
     .controller('myArticlesCtrl',
-    ['$scope', 'data::store', '$location', 'prompt', '$window',
-        function($scope,   store,   $location,   prompt,   $window){
-            $scope.defaultName = '未命名';
+    ['$scope', 'data::store', '$location', 'prompt', '$window', 'config',
+        function($scope,   store,   $location,   prompt,   $window,   config){
+            $scope.defaultName = config.articleDefaultName;
 
             $scope.setLoad({
                 loading: true,

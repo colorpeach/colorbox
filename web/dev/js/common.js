@@ -493,6 +493,27 @@ define(['angular'], function(){
         }
     ])
 
+    .factory('toAnchor',
+    ['$location',
+        function($location){
+            return function(anchor){
+                return '#' + $location.url().split('#')[0] + anchor;
+            }
+        }
+    ])
+
+    .directive('anchor',
+    ['toAnchor',
+        function(toAnchor){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    element[0].href = toAnchor(scope.$eval(attrs.anchor));
+                }
+            };
+        }
+    ])
+
     .directive('srcElement',
     ['$sce',
         function($sce){

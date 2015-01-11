@@ -112,6 +112,30 @@ div.article__editor{
 }
 
 .article__preview{
-  padding: 2em 1em;
-  overflow: auto;
+    padding: 2em 1em;
+    overflow: auto;
+}
+
+.article__table{
+    position: absolute;
+    right: 1.5em;
+    top: 1em;
+    z-index: 1;
+    cursor: pointer;
+
+    > ul{
+        position: absolute;
+        top: 1em;
+        right: 0;
+        padding: .5em 1em;
+        margin-bottom: 0;
+        background-color: @white-color;
+        border: 1px solid darken(@base-color, -50%);
+        .box-shadow(0 5px 10px rgba(0, 0, 0, .2));
+        white-space: nowrap;
+    }
+
+    a:hover{
+        text-decoration: underline;
+    }
 }

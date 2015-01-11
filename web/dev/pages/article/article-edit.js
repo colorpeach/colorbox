@@ -1,4 +1,4 @@
-define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/extensions/table'], function(app, ace){
+define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/table'], function(app, ace){
     app
 
     .value('article::layoutConfig',
@@ -33,8 +33,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .controller('editArticleCtrl',
-    ['$scope', '$location','article::layoutConfig', 'article::functions', 'storage', 'data::store', '$timeout', 'dialog', 'safeApply',
-        function($scope,   $location,   layoutConfig,    functions,   storage,   store,   $timeout,   dialog,   safeApply){
+    ['$scope', '$location','article::layoutConfig', 'article::functions', 'storage', 'data::store', '$timeout', 'dialog', 'safeApply', 'config',
+        function($scope,   $location,   layoutConfig,    functions,   storage,   store,   $timeout,   dialog,   safeApply,   config){
             $scope.dialog = dialog({
                 template: 'edit-article-dialog',
                 scope: $scope,
@@ -71,7 +71,7 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
 
             $scope.layoutConfig = layoutConfig;
             $scope.functions = functions;
-            $scope.defaultName = '未命名';
+            $scope.defaultName = config.articleDefaultName;
             $scope.status = {
                 editingName: false
             };
@@ -365,23 +365,13 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .directive('markdownPreview',
-    ['$sanitize', '$document', '$timeout', 'markdownDiagram', '$anchorScroll', '$location',
-        function($sanitize,   $document,   $timeout,   markdownDiagram,   $anchorScroll,   $location){
+    ['$sanitize', '$document', '$timeout', 'markdownDiagram', '$location',
+        function($sanitize,   $document,   $timeout,   markdownDiagram,   $location){
             return {
                 restrict: 'A',
                 link: function(scope, element, attrs){
                     var converter = new Showdown.converter({extensions: ['table']});
                     var renderTimer = 0;
-
-                    element.on('click', function(e){
-                        var target = e.target;
-
-                        if(target = isAnchor(target)){
-//                             e.preventDefault();
-                            $location.hash();
-                            $anchorScroll();
-                        }
-                    });
                     
                     scope.$watch(attrs.markdownPreview, function(val){
                         if(renderTimer){
@@ -396,17 +386,13 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                         }
                     });
 
-                    function isAnchor(el){
-                        var dom = el;
-                        do{
-                            if(dom.tagName === 'A') return dom;
-                        }while(dom = dom.parentNode && dom !== element)
-                    }
-
                     function render(val){
                         try{
-                            markdownDiagram($sanitize(converter.makeHtml(val)), function(html){
+                            markdownDiagram($sanitize(converter.makeHtml(val)), function(html, hs){
                                 element.html(html);
+                                if(attrs.markdownPreviewTable){
+                                    scope[attrs.markdownPreviewTable] = hs;
+                                }
                             });
                         }catch(e){
                             throw e;
@@ -419,17 +405,18 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
     ])
 
     .factory('markdownDiagram',
-    ['$q', '$location',
-        function($q,   $location){
+    ['$q', 'toAnchor',
+        function($q,   toAnchor){
             var codeReg = /<code class="(.+?)">([\S\s]*?)<\/code>/g;
-            var hashReg = /<a href="#(.+?)">/g;
+            var hashReg = /<a href="(#.+?)">/g;
+            var hReg = /<h([1-6])>(.+?)<\/h\1>/g;
             var div = angular.element('<div></div>');
             div.css({
                 height: '400px',
                 width: '400px',
                 position: 'fixed',
                 top: 0,
-                left: '400px',
+                left: '-400px',
                 overflow: 'hidden'
             });
             div = div[0];
@@ -509,10 +496,17 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                 var strList = [];
                 var promises = [];
                 var lastIndex = 0;
+                var hs = [];
 
                 mdStr = mdStr.replace(hashReg, function(match, hash){
-                    return match.replace(hash, $location.url().split('#')[0] + '#' + hash);
-                })
+                    return match.replace(hash, toAnchor(hash));
+                });
+                //给没有id的h1~h6加上id
+                mdStr = mdStr.replace(hReg, function(match, h, hContent){
+                    div.innerHTML = hContent;
+                    hs.push([h, div.textContent]);
+                    return '<h' + h + ' id="' + hContent + '">' + hContent + '</h' + h + '>';
+                });
                 mdStr.replace(codeReg, function(match, type, code, index){
                     strList.push(mdStr.substring(lastIndex, index));
                     lastIndex = index + match.length;
@@ -571,11 +565,11 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/code', 'showdown/e
                     $q
                     .all(promises)
                     .then(function(){
-                        callback(strList.join(''));
+                        callback(strList.join(''), hs);
                         removeCache();
                     });
                 }else{
-                    callback(strList.join(''));
+                    callback(strList.join(''), hs);
                     removeCache();
                 }
             }

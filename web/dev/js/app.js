@@ -115,6 +115,16 @@ define(['angular-route', 'angular-animate', 'angular-sanitize', 'js/common'], fu
                     'components/dialog/dialog'
                 ]
             },
+            '/article/:id': {
+                title: '文档查看',
+                templateUrl: 'article.html',
+                controller: 'articleCtrl',
+                reloadOnSearch: false,
+                dependencies: [
+                    'pages/article/article',
+                    'pages/article/article-edit'
+                ]
+            },
             '/edit/app-pro/:id': {
                 title: '编辑应用',
                 auth: 'yes',
