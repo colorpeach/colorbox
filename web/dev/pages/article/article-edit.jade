@@ -27,7 +27,7 @@ script(type="text/ng-template", id="article-preview")
       span.text--primary(ng-class="{true: 'icon-menu4', false: 'icon-menu3'}[menu]", ng-click="menu = !menu", ng-init="menu = false", title="内容列表")
       ul(ng-show="menu")
         li(ng-repeat="item in table", style="margin-left: {{(item[0] - 1) * 20 + 'px'}}; display: block;")
-          a(anchor="'#' + item[1]") {{item[1]}}
+          a(anchor="'#' + item[2]") {{item[1]}}
     div.article__preview.position--full
       div.content.markdown-body(markdown-preview="html", markdown-preview-table="table")
 script(type='text/ng-template', id="edit-article-dialog")

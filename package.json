@@ -39,7 +39,8 @@
     "nodemailer-smtp-transport": "^0.1.13",
     "serve-favicon": "^2.1.6",
     "serve-static": "~1.1.0",
-    "showdown": "^0.3.1"
+    "showdown": "^0.3.1",
+    "later": "^1.1.6"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
