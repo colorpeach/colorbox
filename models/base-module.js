@@ -28,7 +28,7 @@ base.update = function(data,fn, searchKeys){
 
 base.save = function(data,fn, searchKeys){
     var model = this;
-    var d = base.tidy(model.column,data);
+    var d = base.dbClient.split(base.tidy(model.column,data),searchKeys);
     dbClient.connect([
         function(db,callback){
             db.collection(model.collection).save(d,function(err,data){

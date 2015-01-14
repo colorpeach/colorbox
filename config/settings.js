@@ -1,11 +1,11 @@
 module.exports = {
     //需要权限访问
-    authPath:[
+    authPath: [
         "apps",
         "user"
     ],
     //需要权限ajax访问
-    authAjaxPath:[
+    authAjaxPath: [
         "get",
         "add",
         "del",
@@ -13,7 +13,7 @@ module.exports = {
 
     ],
     //不需要权限ajax访问
-    unauthAjaxPath:[
+    unauthAjaxPath: [
         "_get",
         "_add",
         "_del",
@@ -22,7 +22,7 @@ module.exports = {
         "_register"
     ],
     //不需要权限访问
-    unauthPath:[
+    unauthPath: [
         "",
         "_logout",
         "_apps",
@@ -35,7 +35,7 @@ module.exports = {
         "application"
     ],
     //静态文件路径
-    staticPath:[
+    staticPath: [
         "public",
         "lib",
         "source"

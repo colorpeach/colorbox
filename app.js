@@ -5,11 +5,11 @@ var staticPath = path.join(__dirname, '/web/dev');
 
 process.env.staticPath = staticPath;
 app.set("views", staticPath);
-app.set("view engine","jade");
+app.set("view engine", "jade");
 
 //压缩
 app.use(require('compression')({
-    threshold:512
+    threshold: 512
 }));
 //报文实体解析
 app.use(require('body-parser')());
@@ -22,14 +22,16 @@ app.use(require("cookie-parser")());
 app.use(require("express-session")({
     secret: 'colorbox',
     name: 'sid',
-    cookie: { maxAge:86400000 }
+    cookie: { maxAge: 86400000 }
 }));
+
 
 //静态文件路径
 app.use(require("serve-static")(staticPath));
 
-app.listen(process.env.PORT || process.env.VMC_APP_PORT || 3000, function(){
+app.listen(process.env.PORT || process.env.VMC_APP_PORT || 3000, function () {
     console.log('running colorbox');
 });
 
 require("./route/route.js")(app);
+require("./config/task.js");
