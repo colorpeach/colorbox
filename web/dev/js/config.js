@@ -84,6 +84,12 @@ define(['js/app'], function(app){
                     },
                     addFork: function(id){
                         return $http.post('/add/snippets-fork', {_id: id});
+                    },
+                    instantSave: function(data){
+                        return $http.post('/_save/snippet-instant', data);
+                    },
+                    instantGet: function(id){
+                        return $http.get('/_get/snippet-instant?_id='+ id);
                     }
                 },
                 article: {

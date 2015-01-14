@@ -149,6 +149,16 @@ define(['angular-route', 'angular-animate', 'angular-sanitize', 'js/common'], fu
                     'components/dialog/dialog'
                 ]
             },
+            '/snippet/Instantedit/:id': {
+                title: '即时编辑代码片段',
+                templateUrl: 'snippet-edit.html',
+                controller: 'editSnippetCtrl',
+                dependencies: [
+                    'pages/snippet/snippet-edit',
+                    'components/resize-box/resize-box',
+                    'components/dialog/dialog'
+                ]
+            },
             '/snippet/detail/:id': {
                 title: '代码片段',
                 templateUrl: 'snippet-detail.html',

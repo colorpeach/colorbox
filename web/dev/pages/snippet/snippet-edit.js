@@ -1,8 +1,8 @@
 define(['js/app', 'ace/ace'], function(app, ace){
     app
     .controller('editSnippetCtrl',
-    ['$scope', 'data::store', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog',
-        function($scope,   store,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog){
+    ['$scope', 'data::store', '$routeParams', '$window', '$sce', '$rootScope', 'storage', 'dialog', '$location',
+        function($scope,   store,   $routeParams,   $window,   $sce,   $rootScope,   storage,   dialog, $location){
             var dialog = dialog({
                 template: 'edit-snippet-dialog',
                 scope: $scope,
@@ -11,6 +11,9 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     $scope.submit(null, $scope.current.mark, true);
                 }
             });
+            var saveMethod = $location.search().save || 'save';
+            var getMethod = $location.search().get || 'get';
+            var preview = $location.search().preview || '/_snippets/preview/';
             $scope.data = {
                 html: {type: 'html', heads: [""]},
                 css: {type: 'css', libs: [], externals: [""]},
@@ -54,10 +57,10 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 loading: true,
                 loadMessage: '载入代码'
             });
-            store('snippet', 'get', $routeParams.id)
+            store('snippet', getMethod, $routeParams.id)
             .success(function(data){
                 extend($scope.data, data.snippet);
-                $scope.previewUrl = $sce.trustAsResourceUrl('/_snippets/preview/' + data.snippet._id);
+                $scope.previewUrl = $sce.trustAsResourceUrl(preview + data.snippet._id);
             });
 
             $scope.submit = function(e, key, unload){
@@ -70,7 +73,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     data = $scope.data;
                 }
 
-                store('snippet', 'save', data)
+                store('snippet', saveMethod, data)
                 .success(function(){
                     !unload && $window.frames[0].location.reload();
                 });

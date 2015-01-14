@@ -5185,6 +5185,9 @@ Copyright (c) 2014 Daniel Eden
   -webkit-animation-duration: 0s;
   animation-duration: 0s;
 }
+.panel a {
+  color: inherit;
+}
 .panel__header {
   display: block;
   padding: .5rem .5rem 0;
