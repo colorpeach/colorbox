@@ -11,7 +11,8 @@ define(['js/app'], function(app){
             maxWidth: 1000,
             offset: 10
         },
-        editorThemes: ["ambiance", "chaos", "chrome", "clouds", "clouds_midnight", "cobalt", "crimson_editor", "dawn", "dreamweaver", "eclipse", "github", "idle_fingers", "katzenmilch", "kr_theme", "kuroir", "merbivore", "merbivore_soft", "mono_industrial", "monokai", "pastel_on_dark", "solarized_dark", "solarized_light", "terminal", "textmate", "tomorrow", "tomorrow_night", "tomorrow_night_blue", "tomorrow_night_bright", "tomorrow_night_eighties", "twilight", "vibrant_ink", "xcode"]
+        editorThemes: ["ambiance", "chaos", "chrome", "clouds", "clouds_midnight", "cobalt", "crimson_editor", "dawn", "dreamweaver", "eclipse", "github", "idle_fingers", "katzenmilch", "kr_theme", "kuroir", "merbivore", "merbivore_soft", "mono_industrial", "monokai", "pastel_on_dark", "solarized_dark", "solarized_light", "terminal", "textmate", "tomorrow", "tomorrow_night", "tomorrow_night_blue", "tomorrow_night_bright", "tomorrow_night_eighties", "twilight", "vibrant_ink", "xcode"],
+        articleDefaultName: '未命名'
     })
     
     //接口
@@ -80,6 +81,15 @@ define(['js/app'], function(app){
                     },
                     getSnippetsFuzzy: function(data){
                         return $http.get('/_get/snippets/fuzzy', {params: data});
+                    },
+                    addFork: function(id){
+                        return $http.post('/add/snippets-fork', {_id: id});
+                    },
+                    instantSave: function(data){
+                        return $http.post('/_save/snippet-instant', data);
+                    },
+                    instantGet: function(id){
+                        return $http.get('/_get/snippet-instant?_id='+ id);
                     }
                 },
                 article: {

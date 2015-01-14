@@ -359,6 +359,7 @@ define(['angular'], function(){
                         deferred.promise.then(function(data){
                             fun(data);
                         });
+                        return deferred.promise;
                     }
                     
                     $rootScope.removeLoad();
@@ -416,7 +417,8 @@ define(['angular'], function(){
                         
                         element.removeAttr('title');
                         
-                        element.bind('mouseenter',function(){
+                        element.bind('mouseenter', function(e){
+                            e.preventDefault();
                             var arrowClass = 'cm-tip-arrow-left';
 
                             tip.removeClass('hide');
@@ -441,7 +443,7 @@ define(['angular'], function(){
                             tip.children().eq(0).addClass(arrowClass + ' cm-tip-arrow');
                         });
                         
-                        element.bind('mouseleave',function(){
+                        element.bind('mouseleave', function(){
                             tip.addClass('hide');
                         })
                     }
@@ -486,6 +488,27 @@ define(['angular'], function(){
                     var list = Object.keys(map || {});
 
                     updateScore(list, element);
+                }
+            };
+        }
+    ])
+
+    .factory('toAnchor',
+    ['$location',
+        function($location){
+            return function(anchor){
+                return '#' + $location.url().split('#')[0] + anchor;
+            }
+        }
+    ])
+
+    .directive('anchor',
+    ['toAnchor',
+        function(toAnchor){
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs){
+                    element[0].href = toAnchor(scope.$eval(attrs.anchor));
                 }
             };
         }

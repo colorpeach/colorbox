@@ -6,7 +6,7 @@ div.desktop(ng-class='{adding: status.adding}')
         button.desktop__search-button(title="搜索", type="submit", ng-show="!isShow")
           span.icon-search
         button.desktop__search-button(title="取消搜索", ng-click="cancelSearch($event)", ng-show="isShow")
-          span.icon-close
+          span.icon-cross
     div.desktop__search-box(ng-class="{active: isShow}", auto-center, auto-center-length="displayApps.length")
       div.desktop__search-shadow
       div.panel(ng-repeat="app in displayApps", ng-init="hasAdded = hasAddedApps.indexOf(app._id) > -1")
@@ -16,9 +16,9 @@ div.desktop(ng-class='{adding: status.adding}')
         div.panel__footer
           span.icon-plus(ng-if="logined() && !hasAdded", title="添加至桌面", ng-click="addToDesktop(app)")
           span(ng-if="hasAdded") 已添加
-  ul.desktop__apps(ng-class="{blur: $$childHead.isShow}")
+  ul.desktop__apps
     li.text--center(ng-show="!apps.length") 您可以搜索应用并添加到这里
-    li.desktop__app(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging}")
+    li.desktop__app(drag-item, ng-repeat="app in apps", ng-style="app.position", ng-class="{draging: app.draging, blur: $parent.$$childHead.isShow}")
       a(ng-if="app.icon", title="{{app.name}}", href="{{app.link}}", class="desktop__app-system {{app.icon}}")
       a(ng-if="!app.icon", ng-bind="app.name", href="/_app-pro/preview/{{app._id}}", target="_blank")
       iframe(ng-if="app.size.showIframe === 'true'", ng-src="{{app.url}}", border=0, frameBorder=0, width="100%", height="100%")

@@ -1,5 +1,5 @@
-define(['angular-route', 'angular-animate', 'js/common'], function(){
-    var app = angular.module('index', ['ngRoute', 'ngAnimate', 'common']);
+define(['angular-route', 'angular-animate', 'angular-sanitize', 'js/common'], function(){
+    var app = angular.module('index', ['ngRoute', 'ngAnimate', 'ngSanitize', 'common']);
     var login = false;
 
     var config = {
@@ -18,7 +18,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/log':{
                 title: '网站更新日志',
-                icon: 'icon-file',
+                icon: 'icon-file-text',
                 templateUrl: 'log.html',
                 controller: 'logsCtrl',
                 dependencies: ['pages/log/log']
@@ -41,7 +41,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/dashboard/articles': {
                 title: '我的文档',
-                icon: 'icon-file',
+                icon: 'icon-file-text',
                 auth: 'yes',
                 templateUrl: 'dashboard-articles.html',
                 controller: 'myArticlesCtrl',
@@ -61,7 +61,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/dashboard/snippets': {
                 title: '我的代码',
-                icon: 'icon-code',
+                icon: 'icon-embed2',
                 auth: 'yes',
                 templateUrl: 'dashboard-snippets.html',
                 controller: 'mySnippetsCtrl',
@@ -95,7 +95,7 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             },
             '/snippet-square': {
                 title: '代码广场',
-                icon: 'icon-code',
+                icon: 'icon-embed2',
                 user: true,
                 templateUrl: 'snippet-square.html',
                 controller: 'snippetSquareCtrl',
@@ -103,14 +103,26 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
                     'pages/snippet/snippet-square'
                 ]
             },
-            '/edit/article/:id': {
+            '/edit/article': {
                 title: '编辑文档',
                 auth: 'yes',
                 templateUrl: 'article-edit.html',
                 controller: 'editArticleCtrl',
+                reloadOnSearch: false,
                 dependencies: [
                     'pages/article/article-edit', 
-                    'components/resize-box/resize-box'
+                    'components/resize-box/resize-box',
+                    'components/dialog/dialog'
+                ]
+            },
+            '/article/:id': {
+                title: '文档查看',
+                templateUrl: 'article.html',
+                controller: 'articleCtrl',
+                reloadOnSearch: false,
+                dependencies: [
+                    'pages/article/article',
+                    'pages/article/article-edit'
                 ]
             },
             '/edit/app-pro/:id': {
@@ -129,6 +141,16 @@ define(['angular-route', 'angular-animate', 'js/common'], function(){
             '/edit/snippet/:id': {
                 title: '编辑代码片段',
                 auth: 'yes',
+                templateUrl: 'snippet-edit.html',
+                controller: 'editSnippetCtrl',
+                dependencies: [
+                    'pages/snippet/snippet-edit',
+                    'components/resize-box/resize-box',
+                    'components/dialog/dialog'
+                ]
+            },
+            '/snippet/Instantedit/:id': {
+                title: '即时编辑代码片段',
                 templateUrl: 'snippet-edit.html',
                 controller: 'editSnippetCtrl',
                 dependencies: [

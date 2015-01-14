@@ -1,27 +1,6 @@
 //Component
 //Route-waiting
 
-.route__overlay{
-  position: fixed;
-  top: 35px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-  opacity: .7;
-  z-index: @route-index;
-
-  &.ng-enter{
-    .fadeIn;
-    .animated;
-  }
-
-  &.ng-leave{
-    .fadeOut;
-    .animated;
-  }
-}
-
 .route__waiting{
   position: absolute;
   top: 50%;
@@ -32,6 +11,7 @@
   text-align: center;
   color: @primary-color;
   line-height: 30px;
+  z-index: @route-index;
 }
 
 .route__waiting-icon{

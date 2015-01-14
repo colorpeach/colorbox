@@ -62,6 +62,9 @@ define(['angular', 'js/app'], function(_, app){
             }
 
             Dialog.prototype = {
+                setOption: function(key, value){
+                    this.opts[key] = value;
+                },
                 open: function(){
                     this.element.css({display: 'block'});
                     this.overlay.css({display: 'block'});

@@ -7,6 +7,7 @@
 
 .article__bar{
     &:extend(.position--bottom);
+    overflow: hidden;
     padding: 0 5px;
     height: @article-bar-height;
     line-height: @article-bar-line-height;
@@ -33,10 +34,11 @@
 }
 
 .article__name{
+    position: relative;
     max-width: 10em;
     height: 1.6rem;
-    padding: 0 5px;
-    margin-right: 10px;
+    padding: 0 .4em;
+    margin-left: .5em;
     line-height: 1.6rem;
     text-align: center;
     .border-radius(4px);
@@ -46,9 +48,15 @@
     }
 }
 
+.article__mark{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .article__button{
     &:extend(.article__name);
-    width: 1.6rem;
+    width: 1.8rem;
 
     &:hover{
         &:extend(.article__name:hover);
@@ -82,6 +90,10 @@
 div.article__editor{
     font-size: 13px;
     line-height: 22px;
+
+    .ace_cursor{
+        border-left-width: 1px;
+    }
 }
 
 .article__item{
@@ -100,6 +112,30 @@ div.article__editor{
 }
 
 .article__preview{
-  padding: 2em 1em;
-  overflow: auto;
+    padding: 2em 1em;
+    overflow: auto;
+}
+
+.article__table{
+    position: absolute;
+    right: 1.5em;
+    top: 1em;
+    z-index: 1;
+    cursor: pointer;
+
+    > ul{
+        position: absolute;
+        top: 1em;
+        right: 0;
+        padding: .5em 1em;
+        margin-bottom: 0;
+        background-color: @white-color;
+        border: 1px solid darken(@base-color, -50%);
+        .box-shadow(0 5px 10px rgba(0, 0, 0, .2));
+        white-space: nowrap;
+    }
+
+    a:hover{
+        text-decoration: underline;
+    }
 }

@@ -16,7 +16,7 @@ script(type="text/ng-template", id="editor-main")
   div
     div.editor__tabs
       span.icon-tree.button-icon(ng-click="toggleBlock(0)", ng-class="{active: !layoutConfig.items[0].hide}")
-      span.icon-console.button-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
+      span.icon-terminal.button-icon(ng-click="toggleBlock(2)", ng-class="{active: !layoutConfig.items[2].hide}")
       span.icon-plus.button-icon(ng-click="addFile()")
       span.editor__tab(ng-repeat='item in tabs', ng-init="file = getNode({unique: item})", ng-class='{active: $parent.currentTab === item}', ng-click="$parent.currentTab = item")
         | {{file.name}}
@@ -31,7 +31,7 @@ script(type="text/ng-template", id="editor-main")
 script(type="text/ng-template", id="editor-assist")
   div(ng-class="{'full-screen': fullScreen}")
     div.editor__tabs
-      span.icon-expand.button-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
+      span.icon-enlarge.button-icon(ng-click="fullScreen = !fullScreen", ng-class="{active: fullScreen}" )
       span.editor__tab(ng-repeat='item in panelTabs', ng-class='{active: currentPanel === item}', ng-click="$parent.currentPanel = item")
         | {{getPanel(item).name}}
         button(ng-click="closeTab('panelTabs', item)") ×
@@ -57,7 +57,7 @@ script(type="text/ng-template", id="editor-route")
 script(type="text/ng-template", id="editor-preview")
   div.editor__nav
     span.icon-loop2.button-icon(title="刷新", ng-click="reloadIframe()", ng-show="iframeLoaded")
-    span.icon-close.button-icon(title="停止刷新", ng-hide="iframeLoaded")
+    span.icon-cross.button-icon(title="停止刷新", ng-hide="iframeLoaded")
     span  {{url}}
   div.editor__contents
     iframe(width="100%", height="100%", frameBorder=0, ng-src="{{url}}", editor-iframe)
