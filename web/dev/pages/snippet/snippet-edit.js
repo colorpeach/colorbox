@@ -11,9 +11,26 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     $scope.submit(null, $scope.current.mark, true);
                 }
             });
-            var saveMethod = $location.search().save || 'save';
-            var getMethod = $location.search().get || 'get';
-            var preview = $location.search().preview || '/_snippets/preview/';
+            var crudMap = {
+                save: 'save',
+                get: 'get',
+                idKey: '_id',
+                dataKey: 'snippet',
+                preview: '/_snippets/preview/'
+            };
+
+            if($location.search().crud && $location.search().crud === 'instant'){
+                //即时编辑
+                crudMap = {
+                    save: 'instantSave',
+                    get: 'instantGet',
+                    idKey: 'snippetId',
+                    dataKey: 'instant',
+                    preview: '/_snippets/instantPreview/'
+                }
+            }
+
+
             $scope.data = {
                 html: {type: 'html', heads: [""]},
                 css: {type: 'css', libs: [], externals: [""]},
@@ -57,15 +74,17 @@ define(['js/app', 'ace/ace'], function(app, ace){
                 loading: true,
                 loadMessage: '载入代码'
             });
-            store('snippet', getMethod, $routeParams.id)
+            store('snippet', crudMap.get, $routeParams.id)
             .success(function(data){
-                extend($scope.data, data.snippet);
-                $scope.previewUrl = $sce.trustAsResourceUrl(preview + data.snippet._id);
+                extend($scope.data, data[crudMap.dataKey]);
+                $scope.previewUrl = $sce.trustAsResourceUrl(crudMap.preview + data[crudMap.dataKey][crudMap.idKey]);
             });
 
             $scope.submit = function(e, key, unload){
                 e && e.preventDefault();
-                var data = {_id: $scope.data._id};
+                var data = {};
+
+                data[crudMap.idKey] = $scope.data[crudMap.idKey];
 
                 if(key){
                     data[key] = $scope.data[key];
@@ -73,7 +92,7 @@ define(['js/app', 'ace/ace'], function(app, ace){
                     data = $scope.data;
                 }
 
-                store('snippet', saveMethod, data)
+                store('snippet', crudMap.save, data)
                 .success(function(){
                     !unload && $window.frames[0].location.reload();
                 });

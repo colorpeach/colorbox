@@ -14,5 +14,5 @@ div
       a.panel__body(href="/#/snippet/detail/{{snippet._id}}")
       div.panel__footer
         img.left.circle(src-element="http://identicon.relucks.org/{snippet.user}?size=20px", title="{{snippet.user}}")
-        a.icon-pencil.button-icon(href="/#/snippet/Instantedit/{{snippet._id}}?save=instantSave&get=instantGet&preview=/_snippet/instantPreview/", title="即时编辑")
+        a.icon-pencil.button-icon(href="/#/snippet/Instantedit/{{snippet._id}}?crud=instant", title="即时编辑")
         span.icon-copy.button-icon(ng-click="fork($event, snippet._id)", ng-if="logined()", title="Fork代码片段")
