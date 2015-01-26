@@ -1,11 +1,11 @@
 var dbClient = require('../database');
 
-var base = {};
+var dev = {};
 
-base.add = function(data,fn){
+dev.add = function(data,fn){
     var model = this;
-    var d = base.tidy(model.column,data);
-    dbClient.connect([
+    var d = dev.tidy(model.column,data);
+    dbClient.connectDev([
         function(db,callback){
             db.collection(model.collection).insert(d,function(err,data){
                 callback(err,data);
@@ -14,10 +14,10 @@ base.add = function(data,fn){
     ],fn);
 };
 
-base.update = function(data,fn, searchKeys){
+dev.update = function(data,fn, searchKeys){
     var model = this;
-    var d = base.dbClient.split(base.tidy(model.column,data),searchKeys);
-    dbClient.connect([
+    var d = dev.dbClient.split(dev.tidy(model.column,data),searchKeys);
+    dbClient.connectDev([
         function(db,callback){
             db.collection(model.collection).update(d.search,{$set:d.data},function(err,data){
                 callback(err,data);
@@ -26,10 +26,10 @@ base.update = function(data,fn, searchKeys){
     ],fn);
 };
 
-base.save = function(data,fn, searchKeys){
+dev.save = function(data,fn, searchKeys){
     var model = this;
-    var d = base.dbClient.split(base.tidy(model.column,data),searchKeys);
-    dbClient.connect([
+    var d = dev.dbClient.split(dev.tidy(model.column,data),searchKeys);
+    dbClient.connectDev([
         function(db,callback){
             db.collection(model.collection).save(d,function(err,data){
                 callback(err,data);
@@ -38,10 +38,10 @@ base.save = function(data,fn, searchKeys){
     ],fn);
 };
 
-base.query = function(data,fn,filter,opera){
+dev.query = function(data,fn,filter,opera){
     var model = this;
-    var d = base.tidy(model.column,data);
-    dbClient.connect([
+    var d = dev.tidy(model.column,data);
+    dbClient.connectDev([
         function(db,callback){
             db.collection(model.collection).find(d,{fields:filter})
                 .sort(opera ? opera.sort : null)
@@ -53,10 +53,10 @@ base.query = function(data,fn,filter,opera){
     ],fn);
 };
 
-base.del = function(data,fn){
+dev.del = function(data,fn){
     var model = this;
-    var d = base.tidy(model.column,data);
-    dbClient.connect([
+    var d = dev.tidy(model.column,data);
+    dbClient.connectDev([
         function(db,callback){
             db.collection(model.collection).remove(d,function(err,data){
                 callback(err,data);
@@ -65,9 +65,9 @@ base.del = function(data,fn){
     ],fn);
 };
 
-base.tidy = function(column,data){
+dev.tidy = function(column,data){
     return dbClient.column(column)(data);
 };
 
-base.dbClient = dbClient;
-module.exports = base;
+dev.dbClient = dbClient;
+module.exports = dev;

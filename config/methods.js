@@ -10,7 +10,7 @@ if (http.METHODS) {
 
     module.exports = [
         'get',
-        'post',
+        'post'
     ];
 
 }

@@ -5,7 +5,7 @@ module.exports = {
     //添加留言
     '/add/message':{
         post:function(){
-            return function(req,res,next){
+            return function(req,res){
                 req.body.user = req.session.user.login;
                 req.body.date = new Date();
 
@@ -18,14 +18,14 @@ module.exports = {
     //回复留言
     '/save/message':{
         post:function(){
-            return function(req,res,next){
+            return function(req,res){
                 var user = req.session.user.login;
                 var data = req.body.responses[req.body.responses.length - 1];
 
                 data.user = user;
                 data.date = new Date();
 
-                messages.update(req.body, function(data){
+                messages.update(req.body, function(){
                     res.end(baseRes({responses: req.body.responses}));
                 });
             }
@@ -34,11 +34,11 @@ module.exports = {
     //获取留言
     '/_get/messages':{
         get:function(){
-            return function(req,res,next){
+            return function(req,res){
                 messages.query({}, function(list){
                     res.end(baseRes({messages: list}));
                 },null,{sort:{"date":-1}});
             }
         }
     }
-}
+};
