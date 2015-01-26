@@ -5,7 +5,7 @@ module.exports = {
     //获取文档
     '/_get/article':{
         get:function(){
-            return function(req, res, next){
+            return function(req, res){
                 articles.query(req.query, function(data){
                     res.end(baseRes({article: data[0]}));
                 })
@@ -14,7 +14,7 @@ module.exports = {
     },
     '/get/article-list/user': {
         get: function(){
-            return function(req, res, next){
+            return function(req, res){
                 articles.query({user: req.session.user.login}, function(list){
                     res.end(baseRes({articles: list}));
                 },{content: 0});
@@ -23,7 +23,7 @@ module.exports = {
     },
     '/_get/article-published': {
         get: function(){
-            return function(req, res, next){
+            return function(req, res){
                 //拼接模糊查询
                 var param = {};
                 var opera = {};
@@ -43,7 +43,7 @@ module.exports = {
     //添加文档
     '/add/article': {
         post: function(){
-            return function(req, res, next){
+            return function(req, res){
                 if(req.body.name){
                     articles.query({name: req.body.name},function(list){
                         if(list.length){
@@ -70,7 +70,7 @@ module.exports = {
     //保存文档
     '/save/article': {
         post:function(){
-            return function(req, res, next){
+            return function(req, res){
                 articles.update(req.body, function(){
                     res.end(baseRes());
                 });
@@ -80,7 +80,7 @@ module.exports = {
     //删除文档
     '/del/article': {
         post:function(){
-            return function(req, res, next){
+            return function(req, res){
                 articles.del(req.body, function(){
                     res.end(baseRes());
                 });

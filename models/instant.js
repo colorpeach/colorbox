@@ -14,7 +14,7 @@ instant.column = {
     html: 'html',
     css: 'css',
     javascript: 'javascript'
-}
+};
 
 //自动删除30min之前的instant
 instant.delInvalid = function (fn) {

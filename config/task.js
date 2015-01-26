@@ -4,7 +4,7 @@ var instant = require('../models/instant');
 var sche = later.parse.recur().every(30).minute(),
     t = later.setInterval(function () {
         instant.delInvalid(function () {
-            console.log("Remove invalid instant-snippets already.");
+            console.log("Clean invalid instant-snippets already." + new Date());
         })
     }, sche);
 
