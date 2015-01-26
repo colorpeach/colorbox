@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="Chrome 39.0.2171 (Windows XP)" package="unit" timestamp="2015-01-23T06:00:03" id="0" hostname="WSWINCNHZ1183" tests="3" errors="0" failures="0" time="0.032">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"/>
+    </properties>
+    <testcase name="应用初始化" time="0" classname="unit Chrome 39.0.2171 (Windows XP).应用启动"/>
+    <testcase name="初始化DataList对象" time="0.032" classname="unit Chrome 39.0.2171 (Windows XP).DataList测试"/>
+    <testcase name="设置DataList数据" time="0" classname="unit Chrome 39.0.2171 (Windows XP).DataList测试"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

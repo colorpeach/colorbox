@@ -17,12 +17,7 @@ appPros.column = {
     files: 'files',
     route: 'route',
     entrance: 'entrance',
-    table: {
-        tName: 'tName',
-        column: {
-            tType: 'tType'
-        }
-    }
+    table: 'table'
 };
 appPros.subTidy = {
     id: 'id',

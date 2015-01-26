@@ -1,5 +1,6 @@
 var apps = require('../models/app-pro');
 var baseRes = require('./baseResponse');
+var tables = require('../utils/app-tables');
 
 module.exports = {
     //获取应用
@@ -183,6 +184,30 @@ module.exports = {
                         res.statusCode = 401;
                         res.render('views/not-found', {user: req.session.user});
                     }
+                });
+            }
+        }
+    },
+    //判断表名是否重复
+    '/get/app-pro/check': {
+        get: function(){
+            return function(req, res, next){
+                var pass = req.query.name && tables.checkTableName(req.query.name);
+                if(pass){
+                    res.end(baseRes());
+                }else{
+                    res.end(baseRes({errorMsg: ['表名已经存在']}));
+                }
+            };
+        }
+    },
+    //保存app下的表
+    '/save/app-pro/tables': {
+        post: function(){
+            return function(req, res, next){
+                apps.update(req.body, function () {
+                    tables.save(req.appName, req.tables);
+                    res.end(baseRes());
                 });
             }
         }

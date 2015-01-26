@@ -442,8 +442,8 @@ define(['js/app', 'ace/ace'], function(app, ace){
     ])
 
     .controller('editorSourceCtrl',
-    ['$scope', 'DataList',
-        function($scope,   DataList){
+    ['$scope', 'DataList', 'data::store',
+        function($scope,   DataList,   store){
             var tableColumns = [];
 
             $scope.typeList = [
@@ -456,17 +456,43 @@ define(['js/app', 'ace/ace'], function(app, ace){
             ];
 
             $scope.sourceTable = new DataList({
-                columns: 'Array'
+                columns: 'Array',
+                name: 'String'
             });
 
             $scope.addTable = function(){
-                var columns = new DataList({
-                    name: 'String',
-                    type: 'String'
-                });
-                tableColumns.push(columns);
-                $scope.sourceTable.add({
-                    columns: columns.list
+                var tableName = ($scope.tableName || '').trim();
+
+                $scope.errorMessage = '';
+
+                if(!tableName){
+                    $scope.errorMessage = '请填写表名';
+                    return;
+                }
+
+                if(!tableName.match(/[a-zA-z_]{4,20}/)){
+                    $scope.errorMessage = '表名格式不正确，表名只允许字母和下划线，长度在4~20之间'
+                    return;
+                }
+
+                $scope.errorMessage = '正在检测表名';
+                store('app', 'checkTableName', tableName)
+                .success(function(data){
+                    var columns = new DataList({
+                        name: 'String',
+                        type: 'String'
+                    });
+                    tableColumns.push(columns);
+                    $scope.sourceTable.add({
+                        columns: columns.list,
+                        name: tableName,
+                        appName: $scope.$parent.app.name
+                    });
+                    $scope.errorMessage = 
+                    $scope.tableName = '';
+                })
+                .error(function(data){
+                    $scope.errorMessage = data.errorMessage[0];
                 });
             };
 
@@ -487,8 +513,28 @@ define(['js/app', 'ace/ace'], function(app, ace){
             };
 
             $scope.save = function(){
-                
+                var data = {_id: $scope.$parent._id};
+
+                data.table = generateTableData($scope.sourceTable.list);
+
+                store('app', 'save', data)
+                .success(function(){
+                    
+                });
             };
+
+            function generateTableData(tables){
+                tables.forEach(function(table, i){
+                    var temp = {};
+                    (table || []).forEach(function(row){
+                        temp[row.name] = {
+                            type: row.type
+                        };
+                    });
+                    tables[i] = temp;
+                });
+                return tables;
+            }
         }
     ])
 

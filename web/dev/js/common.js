@@ -93,8 +93,8 @@ define(['angular'], function(){
 
     //拦截器
     .factory('promptInterceptor',
-    ['$q', 'prompt', '$rootScope',
-        function($q,   prompt,   $rootScope){
+    ['$q', 'prompt', '$rootScope', '$location',
+        function($q,   prompt,   $rootScope,   $location){
             return {
                 response: function success(d){
                     if(!(angular.isString(d.data) && d.data[0] === '<')){
@@ -121,6 +121,9 @@ define(['angular'], function(){
                     if(rejection.status === 401){
                         //session失效
                         $rootScope.user = null;
+                        $rootScope.$broadcast('clearStore');
+                        $rootScope.backUrl = $location.url();
+                        $location.path('/login');
                     }
                     $rootScope.removeLoad();
 
@@ -390,6 +393,10 @@ define(['angular'], function(){
                 }
                 store[mod][type] = data;
             };
+
+            $rootScope.$on('clearStore', function(){
+                store = {};
+            });
 
             return main;
         }
