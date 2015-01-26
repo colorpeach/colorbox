@@ -410,6 +410,7 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/table'], function(
             var codeReg = /<code class="(.+?)">([\S\s]*?)<\/code>/g;
             var hashReg = /<a href="(#.+?)">/g;
             var hReg = /<h([1-6])>(.+?)<\/h\1>/g;
+            var noReg = /[\s\.]*/g;
             var div = angular.element('<div></div>');
             div.css({
                 height: '400px',
@@ -504,8 +505,8 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/table'], function(
                 //给没有id的h1~h6加上id
                 mdStr = mdStr.replace(hReg, function(match, h, hContent){
                     div.innerHTML = hContent;
-                    hs.push([h, div.textContent]);
-                    return '<h' + h + ' id="' + hContent + '">' + hContent + '</h' + h + '>';
+                    hs.push([h, div.textContent, div.textContent.replace(noReg, '')]);
+                    return '<h' + h + ' id="' + hContent.replace(noReg, '') + '">' + hContent + '</h' + h + '>';
                 });
                 mdStr.replace(codeReg, function(match, type, code, index){
                     strList.push(mdStr.substring(lastIndex, index));

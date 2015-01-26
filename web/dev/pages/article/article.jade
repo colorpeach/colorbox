@@ -8,6 +8,6 @@ div
       span.right 作者：{{article.user}}
     ul(ng-show="menu", style="padding-left: 0")
       li(ng-repeat="item in table", style="margin-left: {{(item[0] - 1) * 20 + 'px'}}; display: block;")
-        a(anchor="'#' + item[1]") {{item[1]}}
+        a(anchor="'#' + item[2]") {{item[1]}}
     hr
     div(markdown-preview="article.content", markdown-preview-table="table")
