@@ -5,12 +5,11 @@ var Controller = function(app, func, path, method) {
     this.path = path;
     this.name = path.replace(/.*\//, "");
     this.newName = null;
-    var self = this;
     this.filters = [];
     this.beforeFilter = [];
     this.afterFilter = [];
     this.mainRoute = func.call(this);
-}
+};
 
 Controller.prototype = {
     getRoutes: function() {
@@ -26,6 +25,6 @@ Controller.prototype = {
         this.afterFilter.concat(afterFilters);
     }
 
-}
+};
 
-module.exports = Controller
+module.exports = Controller;

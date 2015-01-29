@@ -17,7 +17,7 @@ define(['js/app'], function(app){
                 store('login', 'enter', $scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;
-                    $location.path('/dashboard/snippets');
+                    $location.path($rootScope.backUrl || '/');
                 })
                 .error(function(data){
                     $scope.errorMsgs = data.errorMsg || [];
@@ -41,7 +41,7 @@ define(['js/app'], function(app){
                 store('login', 'register', $scope.data)
                 .success(function(data){
                     $rootScope.user = data.user;
-                    $location.path('/dashboard/snippets');
+                    $location.path('/');
                 })
                 .error(function(data){
                     $scope.errorMsgs = data.errorMsg || [];

@@ -6,7 +6,7 @@ script(type="text/ng-template", id="editor-tree")
   div
     div.editor__tabs
       span.icon-plus.button-icon(ng-click="addFile()")
-      span.icon-remove.button-icon(ng-click="delFile()")
+      span.icon-bin.button-icon(ng-click="delFile()")
     div.editor__tree(context-menu="menuConfig", has-context-menu="main")
       div.aui__tree(style="margin-top: 10px;")
         span.icon-briefcase
@@ -63,12 +63,17 @@ script(type="text/ng-template", id="editor-preview")
     iframe(width="100%", height="100%", frameBorder=0, ng-src="{{url}}", editor-iframe)
 script(type="text/ng-template", id="editor-source")
   div(style="padding: 10px;", ng-controller="editorSourceCtrl")
+    input.table__input-text--gray.form__input(type="text", ng-model="tableName", auto-focus="errorMessage",
+     ng-focus="this.select()", ng-blur="errorMessage = ''", ng-keydown="$event.keyCode === 13 && addTable()",
+     style="height: 24px;width: 200px; vertical-align: middle;")
     button.button--primary.form__button(ng-click="addTable()")
       span.icon-plus  
       | 添加表
     button.button--success.form__button
       span.icon-save
       | 保存
+    div
+      span.prompt__item--warning(ng-bind="errorMessage", ng-show="errorMessage", style="font-size: 12px; margin-bottom: 1em; display: inline-block;")
     table.table(ng-repeat="table in sourceTable.list track by $index")
       thead
         tr
@@ -76,7 +81,7 @@ script(type="text/ng-template", id="editor-source")
             span.table__cell-text
               button.button-icon(ng-click="collapse = !collapse")
                 span.icon-arrow-up3(ng-class="{'icon-arrow-down3': collapse}")  
-                | 表{{$index + 1}}
+                | 表{{table.name}}
               button.button-icon(ng-click="addColumn($index)")
                 span.icon-plus  
                 | 添加字段

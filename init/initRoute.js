@@ -1,5 +1,5 @@
 var glob = require('glob');
-var BaseController = require('../init/BaseController.js')
+var BaseController = require('../init/BaseController.js');
 var methods = require('../config/methods');
 
 exports.route = function(app){
@@ -12,7 +12,7 @@ exports.route = function(app){
     glob.sync(ctrlDir + '/**/*.+(js)').forEach(function(file) {
         file = file.replace(/\/index\.(js)$/, '');
         var router = require(file);
-        var path = file.replace(ctrlDir.replace(/\/$/, ''), '').replace(/\.(js)$/, '');
+//        var path = file.replace(ctrlDir.replace(/\/$/, ''), '').replace(/\.(js)$/, '');
         for (var i in router) {
             var p = i;
             if (p != '/') {
@@ -27,10 +27,10 @@ exports.route = function(app){
 
                     if (controller.newName) {
                         p = p.replace(controller.name, controller.newName);
-                        console.log("route:" + method + ':' + p)
+                        console.log("route:" + method + ':' + p);
                         app[method].apply(app, [p].concat(controller.getRoutes()));
                     } else {
-                        console.log("route:" + method + ':' + p)
+                        console.log("route:" + method + ':' + p);
                         app[method].apply(app, [p].concat(controller.getRoutes()));
                     }
 
@@ -40,4 +40,4 @@ exports.route = function(app){
 
     });
 
-}
+};

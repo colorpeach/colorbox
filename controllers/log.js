@@ -7,9 +7,9 @@ module.exports = {
     //网站日志
     '/_logs':{
         get:function(){
-            return function(req,res,next){
+            return function(req,res){
                 logs.query({}, function(list){
-                    list.forEach(function(n, i){
+                    list.forEach(function(n){
                         n.content = converter.makeHtml(n.content);
                     });
                     res.render('public/logs', {
@@ -23,9 +23,9 @@ module.exports = {
     //获取网站日志
     '/_get/logs':{
         get:function(){
-            return function(req,res,next){
+            return function(req,res){
                 logs.query({}, function(list){
-                    list.forEach(function(n, i){
+                    list.forEach(function(n){
                         n.content = converter.makeHtml(n.content);
                     });
                     res.end(baseRes({logs: list}));
@@ -36,7 +36,7 @@ module.exports = {
     //添加网站日志
     '/add/log':{
         post:function(){
-            return function(req,res,next){
+            return function(req,res){
                 if(req.session.user && req.session.user.admin){
                     req.body.date = new Date();
 
@@ -49,4 +49,4 @@ module.exports = {
             }
         }
     }
-}
+};

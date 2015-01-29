@@ -11,6 +11,6 @@ user.column = {
     password:'password',
     config: 'config',
     desktopApps: 'desktopApps'
-}
+};
 
 module.exports = user;

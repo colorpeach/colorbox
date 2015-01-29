@@ -61,6 +61,12 @@ define(['js/app'], function(app){
                     },
                     delFile: function(data){
                         return $http.post('/del/app-pro/item', data);
+                    },
+                    saveAppTables: function(data){
+                        return $http.post('/save/app-pro/tables', data);
+                    },
+                    checkTableName: function(name){
+                        return $http.get('/get/app-pro/check', {params: {name: name}});
                     }
                 },
                 snippet: {
