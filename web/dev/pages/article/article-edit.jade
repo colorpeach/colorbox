@@ -16,7 +16,7 @@ script(type="text/ng-template", id="article-list")
   div.article__list
     div.article__item
       span.icon-plus.button-icon(title="新建文档", ng-click="addArticle()")
-    div.article__item.text--overflow(ng-repeat="file in files track by $index", ng-click="selectFile($index)", ng-class="{active: currentFile._id === file._id}", title="{{file.name}}")
+    div.article__item.text--overflow(ng-repeat="file in files track by $index", ng-click="selectFile(file._id)", ng-class="{active: currentFile._id === file._id}", title="{{file.name}}")
       | {{file.name || $parent.defaultName}}
       span(ng-show="file.isChange") *
 script(type="text/ng-template", id="article-editor")

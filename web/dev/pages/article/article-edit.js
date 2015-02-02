@@ -116,11 +116,16 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/table'], function(
                 $scope.status.editingName = mark;
             };
 
-            $scope.selectFile = function($index, _id){
-                if($scope.currentFile._id === $scope.files[$index]._id) return;
+            $scope.$watch(function(){return $location.search()._id;}, function(id){
+                if(!id || !$scope.files || $scope.currentFile._id === id) return;
 
-                $scope.currentFile = $scope.files[$index];
-                $location.search('_id', $scope.currentFile._id);
+                for(var i = 0, len = $scope.files.length; i < len; i++){
+                    if($scope.files[i]._id === id){
+                        break;
+                    }
+                }
+
+                $scope.files[i] && ($scope.currentFile = $scope.files[i]);
 
                 if(angular.isUndefined($scope.currentFile.content)){
                     $scope.setLoad({
@@ -129,9 +134,15 @@ define(['js/app', 'ace/ace', 'showdown', 'showdown/extensions/table'], function(
                     });
                     store('article', 'get', $scope.currentFile._id)
                     .success(function(data){
-                        $scope.files[$index] = $scope.currentFile = data.article;
+                        $scope.files[i] = $scope.currentFile = data.article;
                     });
                 }
+            });
+
+            $scope.selectFile = function(_id){
+                if($scope.currentFile._id === _id) return;
+
+                $location.search('_id', _id);
             };
 
             $scope.disable = function(fun){
