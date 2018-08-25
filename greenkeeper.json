@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "web/dev/lib/codemirror/4.7/package.json"
+      ]
+    }
+  }
+}
